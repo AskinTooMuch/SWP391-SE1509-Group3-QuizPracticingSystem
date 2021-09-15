@@ -9,6 +9,6 @@ package entity;
  *
  * @author admin
  */
-public class QuestionLevel {
+public class QuizLevel {
     
 }
