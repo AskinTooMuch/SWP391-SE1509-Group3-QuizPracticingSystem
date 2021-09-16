@@ -224,6 +224,13 @@ CREATE TABLE dbo.[Blog](
 	FOREIGN KEY (postCateId) REFERENCES dbo.[PostCate](postCateId),
 )
 -------------------------------------------
+CREATE TABLE dbo.[BlogCate](
+	blogId	int	NOT NULL,
+	postCateId	int NOT NULL,
+	FOREIGN KEY (blogId) REFERENCES dbo.[Blog](blogId),
+	FOREIGN KEY (postCateId) REFERENCES dbo.[PostCate](postCateId),
+)
+-------------------------------------------
 CREATE TABLE dbo.[Slider](
 	sliderId	int				NOT NULL identity(1,1) PRIMARY KEY,
 	sliderTitle nvarchar(255)	NOT NULL,
