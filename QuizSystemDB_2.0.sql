@@ -217,11 +217,9 @@ CREATE TABLE dbo.[Blog](
 	lastEdited	datetime		NOT NULL,
 	author		int				NOT NULL, --User id
 	detail		nvarchar(2047)	NOT NULL,
-	postCateId	int				NOT NULL,
 	thumbnail	nvarchar(255),
 	[status]		bit,
 	FOREIGN KEY (author) REFERENCES dbo.[User](userId),
-	FOREIGN KEY (postCateId) REFERENCES dbo.[PostCate](postCateId),
 )
 -------------------------------------------
 CREATE TABLE dbo.[BlogCate](
