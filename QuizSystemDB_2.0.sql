@@ -225,6 +225,7 @@ CREATE TABLE dbo.[Blog](
 CREATE TABLE dbo.[BlogCate](
 	blogId	int	NOT NULL,
 	postCateId	int NOT NULL,
+	[status]		bit,
 	FOREIGN KEY (blogId) REFERENCES dbo.[Blog](blogId),
 	FOREIGN KEY (postCateId) REFERENCES dbo.[PostCate](postCateId),
 )
