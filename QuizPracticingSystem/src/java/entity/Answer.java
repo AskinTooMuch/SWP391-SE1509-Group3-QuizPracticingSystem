@@ -10,5 +10,5 @@ package entity;
  * @author admin
  */
 public class Answer {
-    public
+    
 }
