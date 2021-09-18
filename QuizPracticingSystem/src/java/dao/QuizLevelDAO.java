@@ -15,8 +15,12 @@ import model.QuizLevel;
 public class QuizLevelDAO extends MyDAO{
     
     public ArrayList<QuizLevel> getAllQuizLevel(){
-        return null;
+        ArrayList<QuizLevel> quizLevels = null;
+        return quizLevels;
     }
     
-    
+    public QuizLevel getQuizLevelById(){
+        QuizLevel quizLevel = null;
+        return quizLevel;
+    }
 }
