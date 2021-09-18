@@ -1,13 +1,13 @@
 USE master
 GO
 
-if exists (select * from sysdatabases where name='Quiz_System') drop database Quiz_System
+if exists (select * from sysdatabases where name='QuizSystem') drop database QuizSystem
 GO
 
-CREATE DATABASE Quiz_System
+CREATE DATABASE QuizSystem
 GO
 
-USE [Quiz_System]
+USE [QuizSystem]
 GO
 
 -------------------------------------------

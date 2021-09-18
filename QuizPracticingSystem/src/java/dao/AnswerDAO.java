@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package dao;
 
 /**
  *
  * @author admin
  */
-public class QuizLevel {
+public class AnswerDAO {
     
 }

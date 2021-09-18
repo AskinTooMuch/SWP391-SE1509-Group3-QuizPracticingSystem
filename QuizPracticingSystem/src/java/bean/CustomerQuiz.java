@@ -9,6 +9,6 @@ package model;
  *
  * @author admin
  */
-public class QuizLevel {
+public class CustomerQuiz {
     
 }
