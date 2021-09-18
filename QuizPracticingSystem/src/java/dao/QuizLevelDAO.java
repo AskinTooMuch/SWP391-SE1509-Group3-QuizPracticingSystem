@@ -5,10 +5,18 @@
  */
 package dao;
 
+import java.util.ArrayList;
+import model.QuizLevel;
+
 /**
  *
  * @author admin
  */
-public class QuizLevelDAO {
+public class QuizLevelDAO extends MyDAO{
+    
+    public ArrayList<QuizLevel> getAllQuizLevel(){
+        return null;
+    }
+    
     
 }
