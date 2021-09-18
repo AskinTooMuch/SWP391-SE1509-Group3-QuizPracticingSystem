@@ -5,10 +5,28 @@
  */
 package dao;
 
+import bean.Slider;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
-public class SliderDAO {
-    
+public class SliderDAO extends MyDAO {
+
+    public ArrayList<Slider> getSlider(String title, String link, boolean status) {
+        return null;
+    }
+
+    public Slider getSliderById() {
+        return null;
+    }
+
+    public int editSlider(Slider a) {
+        return 0;
+    }
+
+    public int addSlider() {
+        return 0;
+    }
 }
