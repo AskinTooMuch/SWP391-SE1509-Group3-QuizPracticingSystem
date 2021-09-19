@@ -7,12 +7,13 @@ package dao;
 
 import bean.Blog;
 import java.util.ArrayList;
+import dao.impl.MyDAO;
 
 /**
  *
  * @author admin
  */
-public class BlogDAO {
+public class BlogDAO extends MyDAO{
     
     public ArrayList<Blog> getAllBlog(){
         ArrayList<Blog> allBlog = null;

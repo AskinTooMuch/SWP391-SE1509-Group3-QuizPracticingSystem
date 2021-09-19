@@ -7,6 +7,7 @@ package dao;
 
 import java.util.ArrayList;
 import bean.PostCate;
+import dao.impl.MyDAO;
 
 /**
  *

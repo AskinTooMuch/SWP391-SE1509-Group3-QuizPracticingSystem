@@ -6,13 +6,14 @@
 package dao;
 
 import bean.CustomerQuiz;
+import dao.impl.MyDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class CustomerQuizDAO {
+public class CustomerQuizDAO extends MyDAO{
     public ArrayList<CustomerQuiz> getAllCustomerQuiz(){
         ArrayList<CustomerQuiz> allCustomerQuiz = null;
         
