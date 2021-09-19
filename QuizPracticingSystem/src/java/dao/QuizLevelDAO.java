@@ -10,7 +10,7 @@ import bean.QuizLevel;
 
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
 public class QuizLevelDAO extends MyDAO{
     
@@ -19,8 +19,26 @@ public class QuizLevelDAO extends MyDAO{
         return quizLevels;
     }
     
-    public QuizLevel getQuizLevelById(){
+    public QuizLevel getQuizLevelById(int quizLevelId){
         QuizLevel quizLevel = null;
         return quizLevel;
+    }
+    
+    public int editQuizLevel(int quizLevelId, QuizLevel quizLevel){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int addQuizLevel(QuizLevel quizLevel){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int deleteQuizLevel(int quizLevelId){
+        int i = 0;
+        
+        return i;
     }
 }

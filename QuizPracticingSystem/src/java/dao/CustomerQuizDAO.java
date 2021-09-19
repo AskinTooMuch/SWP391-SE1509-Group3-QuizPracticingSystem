@@ -5,10 +5,47 @@
  */
 package dao;
 
+import bean.CustomerQuiz;
+import java.util.ArrayList;
+
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
 public class CustomerQuizDAO {
+    public ArrayList<CustomerQuiz> getAllCustomerQuiz(){
+        ArrayList<CustomerQuiz> allCustomerQuiz = null;
+        
+        return allCustomerQuiz;
+    }
     
+    public ArrayList<CustomerQuiz> getQuizByUser(int userId){
+        ArrayList<CustomerQuiz> customerQuiz = null;
+        
+        return customerQuiz;
+    }
+    
+    public CustomerQuiz getQuizById(int quizId){
+        CustomerQuiz customerQuiz = null;
+        
+        return customerQuiz;
+    }
+    
+    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int addCustomerQuiz(CustomerQuiz customerQuiz){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int deleteCustomerQuiz(int customerQuizId){
+        int i = 0;
+        
+        return i;
+    }
 }

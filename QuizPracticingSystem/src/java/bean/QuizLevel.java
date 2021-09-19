@@ -7,7 +7,7 @@ package bean;
 
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
 public class QuizLevel {
     private int quizLevelId;

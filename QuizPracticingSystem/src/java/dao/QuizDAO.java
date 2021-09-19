@@ -5,10 +5,49 @@
  */
 package dao;
 
+import bean.Quiz;
+import java.util.ArrayList;
+
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
-public class QuizDAO {
+public class QuizDAO extends MyDAO{
+    public ArrayList<Quiz> getAllQuiz(){
+        ArrayList<Quiz> allQuiz = null;
+        
+        return allQuiz;
+    }
+    
+    public ArrayList<Quiz> getQuizBySubject(int subjectId){
+        ArrayList<Quiz> subjectQuiz = null;
+        
+        return subjectQuiz;
+    } 
+    
+    public ArrayList<Quiz> getQuizByLesson(int lessonId){
+        ArrayList<Quiz> lessonQuiz = null;
+        
+        return lessonQuiz;
+    }
+    
+    public int editQuiz(int quizId, Quiz quiz){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int addQuiz(Quiz quiz){
+        int i = 0;
+        
+        return i;
+    }
+    
+    public int deleteQuiz(int quizId){
+        int i = 0;
+        
+        return i;
+    }
+    
     
 }
