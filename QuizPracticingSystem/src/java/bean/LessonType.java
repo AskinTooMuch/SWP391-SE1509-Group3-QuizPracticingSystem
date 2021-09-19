@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package bean;
 
 /**
  *
  * @author admin
  */
 public class LessonType {
+    private int lessonTypeId;
+    private String lessonTypeName;
+    private boolean status;
+    
     
 }

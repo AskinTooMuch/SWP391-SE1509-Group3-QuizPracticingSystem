@@ -9,6 +9,6 @@ package dao;
  *
  * @author admin
  */
-public class LessonTypeDAO {
+public class LessonTypeDAO extends MyDAO{
     
 }

@@ -6,7 +6,7 @@
 package dao;
 
 import java.util.ArrayList;
-import model.QuizLevel;
+import bean.QuizLevel;
 
 /**
  *
