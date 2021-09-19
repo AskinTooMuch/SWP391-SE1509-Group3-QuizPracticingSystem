@@ -5,10 +5,22 @@
  */
 package dao;
 
+import bean.Subject;
+import dao.impl.MyDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
-public class SubjectDAO {
-    
+public class SubjectDAO extends MyDAO {
+    public ArrayList<Subject> getSubject(int subjectId, int cateId, boolean featuredSubject, boolean status, String subjectName, String description, String thumbnail){
+        return null;
+    }
+    public Subject getSubjectbyId(int subjectId){
+        return null;
+    }
+    public ArrayList<Subject> getSubjectbyCateId(int cateId){
+        return null;
+    }
 }
