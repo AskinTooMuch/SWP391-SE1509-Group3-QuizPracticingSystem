@@ -5,10 +5,31 @@
  */
 package dao;
 
+import java.util.ArrayList;
+import bean.PostCate;
+
 /**
  *
- * @author admin
+ * @author duong
  */
-public class PostCateDAO {
+public class PostCateDAO extends MyDAO{
+    public ArrayList<PostCate> getAllPostCates(){
+        return null;
+    }
     
+    public PostCate getPostCateById(int pcId){
+        return null;
+    }
+    
+    public int updatePostCate(PostCate updatedPostCate){
+        return 0;
+    }
+    
+    public int deletePostCate(int pcId){
+        return 0;
+    }
+    
+    public int addPostCate(PostCate newPostCate){
+        return 0;
+    }
 }

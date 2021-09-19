@@ -5,10 +5,31 @@
  */
 package dao;
 
+import bean.LessonType;
+import java.util.ArrayList;
+
 /**
  *
- * @author admin
+ * @author tuan
  */
 public class LessonTypeDAO extends MyDAO{
+    public ArrayList<LessonType> getAllLessonType(){
+        return null;
+    }
     
+    public LessonType getLessonTypeById(int ltId){
+        return null;
+    }
+    
+    public int addLessonType(LessonType newLessonType){
+        return 0;
+    }
+    
+    public int updateLessonType(LessonType updatedLessonType){
+        return 0;
+    }
+    
+    public int deleteLessonType(int ltId){
+        return 0;
+    }
 }

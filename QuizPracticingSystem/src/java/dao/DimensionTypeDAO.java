@@ -5,10 +5,32 @@
  */
 package dao;
 
+import bean.DimensionType;
+import java.util.ArrayList;
+
 /**
  *
- * @author admin
+ * @author duong
  */
-public class DimensionTypeDAO {
+public class DimensionTypeDAO extends MyDAO{
     
+    public ArrayList<DimensionType> getAllDimensionTypes(){
+        return null;
+    }
+    
+    public DimensionType getDimensionTypeById(int dtId){
+        return null;
+    }
+    
+    public int updateDimensionType (DimensionType updatedDimensionType){
+        return 0;
+    }
+    
+    public int deteteDimensionTyoe(int dtId){
+        return 0;
+    }
+    
+    public int addDimensionType(DimensionType newDimensionType ){
+        return 0;
+    }
 }

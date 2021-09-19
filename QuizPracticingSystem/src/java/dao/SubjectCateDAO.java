@@ -5,10 +5,27 @@
  */
 package dao;
 
+import bean.SubjectCate;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
-public class SubjectCateDAO {
-    
+public class SubjectCateDAO extends MyDAO{
+//    public ArrayList<SubjectCate> getAllSubjectCates(){
+//        return null;
+//    }
+//    
+//    public SubjectCate getSubjectCateById(int scId){
+//        return null;
+//    }
+//    
+//    public int updateSubjectCate(SubjectCate updatedSubjectCate){
+//        return 0;
+//    }
+//    
+//    public int deteleSubjectCate(int scId){
+//        return 0;
+//    }
 }
