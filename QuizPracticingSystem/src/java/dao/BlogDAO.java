@@ -11,7 +11,7 @@ import dao.impl.MyDAO;
 
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
 public class BlogDAO extends MyDAO{
     
