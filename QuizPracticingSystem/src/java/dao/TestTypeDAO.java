@@ -6,6 +6,7 @@
 package dao;
 
 import bean.TestType;
+import dao.impl.MyDAO;
 import java.util.ArrayList;
 
 /**
