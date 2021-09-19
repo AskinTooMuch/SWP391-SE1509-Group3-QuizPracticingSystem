@@ -10,16 +10,16 @@ package bean;
  * @author admin
  */
 public class User {
-    private int userId, roldId;
+    private int userId, roleId;
     private boolean gender, status;
     private String userName, password, profilePic, userMail, userMobile;
 
     public User() {
     }
 
-    public User(int userId, int roldId, boolean gender, boolean status, String userName, String password, String profilePic, String userMail, String userMobile) {
+    public User(int userId, int roleId, boolean gender, boolean status, String userName, String password, String profilePic, String userMail, String userMobile) {
         this.userId = userId;
-        this.roldId = roldId;
+        this.roleId = roleId;
         this.gender = gender;
         this.status = status;
         this.userName = userName;
@@ -37,12 +37,12 @@ public class User {
         this.userId = userId;
     }
 
-    public int getRoldId() {
-        return roldId;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRoldId(int roldId) {
-        this.roldId = roldId;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public boolean isGender() {
