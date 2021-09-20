@@ -17,7 +17,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, int roleId, boolean gender, boolean status, String userName, String password, String profilePic, String userMail, String userMobile) {
+    public User(int userId,String userName, String password, int roleId, String profilePic, String userMail,  boolean gender, String userMobile, boolean status) {
         this.userId = userId;
         this.roleId = roleId;
         this.gender = gender;
