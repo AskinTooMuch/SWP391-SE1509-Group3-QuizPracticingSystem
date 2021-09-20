@@ -21,11 +21,11 @@ public class PricePackage {
     public PricePackage() {
     }
 
-    public PricePackage(int packId, int subjectId, int duration, String packName, float listPrice, float salePrice, boolean status) {
+    public PricePackage(int packId, String packName, int subjectId, int duration, float listPrice, float salePrice, boolean status) {
         this.packId = packId;
+        this.packName = packName;
         this.subjectId = subjectId;
         this.duration = duration;
-        this.packName = packName;
         this.listPrice = listPrice;
         this.salePrice = salePrice;
         this.status = status;
@@ -37,6 +37,14 @@ public class PricePackage {
 
     public void setPackId(int packId) {
         this.packId = packId;
+    }
+
+    public String getPackName() {
+        return packName;
+    }
+
+    public void setPackName(String packName) {
+        this.packName = packName;
     }
 
     public int getSubjectId() {
@@ -53,14 +61,6 @@ public class PricePackage {
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public String getPackName() {
-        return packName;
-    }
-
-    public void setPackName(String packName) {
-        this.packName = packName;
     }
 
     public float getListPrice() {
@@ -86,6 +86,7 @@ public class PricePackage {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
     
     
 }
