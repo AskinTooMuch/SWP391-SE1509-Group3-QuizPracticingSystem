@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author admin
  */
 public class SubjectDAO extends MyDAO {
-    public ArrayList<Subject> getSubject(int subjectId, int cateId, boolean featuredSubject, boolean status, String subjectName, String description, String thumbnail){
+    public ArrayList<Subject> getAllSubjects(){
         return null;
     }
     public Subject getSubjectbyId(int subjectId){

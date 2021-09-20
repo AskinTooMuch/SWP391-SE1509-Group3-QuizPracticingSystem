@@ -6,14 +6,15 @@
 package dao;
 
 import bean.UserRole;
+import dao.impl.MyDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author admin
  */
-public class UserRoleDAO {
-    public ArrayList<UserRole> getUserRole(int userRoleId, String userRoleName, boolean status){
+public class UserRoleDAO extends MyDAO{
+    public ArrayList<UserRole> getAllUserRole(){
         return null;
     }
     public int changeRole(int userRoleId){

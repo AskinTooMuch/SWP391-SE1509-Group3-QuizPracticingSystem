@@ -6,13 +6,14 @@
 package dao;
 
 import bean.User;
+import dao.impl.MyDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author admin
  */
-public class UserDAO {
+public class UserDAO extends MyDAO{
 
     public ArrayList<User> getUserAllUser() {
         return null;
