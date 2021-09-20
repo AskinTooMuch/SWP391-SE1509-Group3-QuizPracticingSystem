@@ -10,9 +10,12 @@ package bean;
  * @author admin
  */
 public class PricePackage {
-    private int packId, subjectId, duration;
+    private int packId;
     private String packName;
-    private float listPrice, salePrice;
+    private int subjectId;
+    private int duration;
+    private float listPrice;
+    private float salePrice;
     private boolean status;
 
     public PricePackage() {

@@ -10,33 +10,30 @@ package bean;
  * @author admin
  */
 public class Lesson {
-    private int lessonId, subjectId, lessonTypeId;
-    private String lessonName,lessonTypeName, lessonOrder,videoLink,content;
+    private int lessonId;
+    private int subjectId;
+    private String lessonName;
+    private int lessonOrder;
+    private int lessonTypeId;
+    private String videoLink;
+    private String content;
     private boolean status;
+    private String lessonTypeName;
 
     public Lesson() {
     }
 
-    public Lesson(int lessonId, int subjectId, int lessonTypeId, String lessonName, String lessonTypeName, String lessonOrder, String videoLink, String content, boolean status) {
+    public Lesson(int lessonId, int subjectId, String lessonName, int lessonOrder, int lessonTypeId, String videoLink, String content, boolean status, String lessonTypeName) {
         this.lessonId = lessonId;
         this.subjectId = subjectId;
-        this.lessonTypeId = lessonTypeId;
         this.lessonName = lessonName;
-        this.lessonTypeName = lessonTypeName;
         this.lessonOrder = lessonOrder;
+        this.lessonTypeId = lessonTypeId;
         this.videoLink = videoLink;
         this.content = content;
         this.status = status;
-    }
-
-    public String getLessonTypeName() {
-        return lessonTypeName;
-    }
-
-    public void setLessonTypeName(String lessonTypeName) {
         this.lessonTypeName = lessonTypeName;
     }
-
 
     public int getLessonId() {
         return lessonId;
@@ -54,14 +51,6 @@ public class Lesson {
         this.subjectId = subjectId;
     }
 
-    public int getLessonTypeId() {
-        return lessonTypeId;
-    }
-
-    public void setLessonTypeId(int lessonTypeId) {
-        this.lessonTypeId = lessonTypeId;
-    }
-
     public String getLessonName() {
         return lessonName;
     }
@@ -70,12 +59,20 @@ public class Lesson {
         this.lessonName = lessonName;
     }
 
-    public String getLessonOrder() {
+    public int getLessonOrder() {
         return lessonOrder;
     }
 
-    public void setLessonOrder(String lessonOrder) {
+    public void setLessonOrder(int lessonOrder) {
         this.lessonOrder = lessonOrder;
+    }
+
+    public int getLessonTypeId() {
+        return lessonTypeId;
+    }
+
+    public void setLessonTypeId(int lessonTypeId) {
+        this.lessonTypeId = lessonTypeId;
     }
 
     public String getVideoLink() {
@@ -101,6 +98,14 @@ public class Lesson {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
+    public String getLessonTypeName() {
+        return lessonTypeName;
+    }
+
+    public void setLessonTypeName(String lessonTypeName) {
+        this.lessonTypeName = lessonTypeName;
+    }
+
     
 }
