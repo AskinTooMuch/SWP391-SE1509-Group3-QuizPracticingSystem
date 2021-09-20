@@ -16,7 +16,7 @@ public class Quiz {
     private String quizName;
     private int quizLevelId;
     private String quizLevelName;
-    private int quizDuration; /* In second*/
+    private int quizDuration; /*In second*/
     private int passRate;
     private int testTypeId;
     private String testTypeName;

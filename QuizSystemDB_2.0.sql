@@ -9,8 +9,7 @@ GO
 
 USE [QuizSystem]
 GO
-
--------------------------------------------
+---------------Create Table----------------
 CREATE TABLE dbo.[UserRole](
 	userRoleId		int	NOT NULL identity(1,1) PRIMARY KEY,
 	userRoleName	nvarchar(63) NOT NULL,
@@ -59,9 +58,9 @@ CREATE TABLE dbo.[User](
 	[password]	nvarchar(255)	NOT NULL,
 	roleId		int				NOT NULL,
 	profilePic	nvarchar(255),
-	userMail	nvarchar(255),
+	userMail	nvarchar(255)	UNIQUE,
 	gender		bit, 
-	userMobile	nchar(10),
+	userMobile	nchar(10)		UNIQUE,
 	[status]	bit,
 	FOREIGN KEY (roleId) REFERENCES dbo.[UserRole](userRoleId),
 )
@@ -238,3 +237,101 @@ CREATE TABLE dbo.[Slider](
 	note		nvarchar(255),
 	[status]	bit,
 )
+----------Insert Data----------------------
+----------dbo.[UserRole]-------------------
+INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Customer',1);
+INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Marketing',1);
+INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Sale',1);
+INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Expert',1);
+INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Admin',1);
+----------dbo.[PostCate]-------------------
+INSERT INTO dbo.PostCate(postCateName,status) VALUES('Tips and Tricks',1);
+INSERT INTO dbo.PostCate(postCateName,status) VALUES('Review and Recommendation',1);
+INSERT INTO dbo.PostCate(postCateName,status) VALUES('Casuals',1);
+INSERT INTO dbo.PostCate(postCateName,status) VALUES('Rest and Relax',1);
+----------dbo.[SubjectCate]----------------
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Computer Science',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Java',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('OOP-Object Oriented Programming',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C#',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Web Design',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Digital Art',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Japanese',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('English',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Algebra',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Organic Chemistry',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Basic Economic',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Buiseness Ethics',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('CSS',1);
+----------dbo.[TestType]-------------------
+INSERT INTO dbo.TestType(testTypeName,status) VALUES('Simulation',1);
+INSERT INTO dbo.TestType(testTypeName,status) VALUES('Midterm',1);
+INSERT INTO dbo.TestType(testTypeName,status) VALUES('Progress Test',1);
+----------dbo.[QuizLevel]------------------
+INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Hard',1);
+INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Medium',1);
+INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Easy',1);
+----------dbo.[LessonType]-----------------
+INSERT INTO dbo.LessonType(lessonTypeName,status) VALUES('Subject-Topic',1);
+INSERT INTO dbo.LessonType(lessonTypeName,status) VALUES('Lesson',1);
+INSERT INTO dbo.LessonType(lessonTypeName,status) VALUES('Quiz',1);
+----------dbo.[DimensionType]--------------
+INSERT INTO dbo.DimensionType(dimensionTypeName,status) VALUES('Domain',1);
+INSERT INTO dbo.DimensionType(dimensionTypeName,status) VALUES('Group',1);
+----------dbo.[User]-----------------------
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES(DuongNH,1,5,'','DuongNHHE150328@fpt.edu.vn',1,'',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES(NamDH,1,5,'','NamDHHE150519@fpt.edu.vn',1,'',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES(TuanPA,1,5,'','TuanPAHE150543@fpt.edu.vn',1,'',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES(ChucNV,1,5,'','ChucNVHE150618@fpt.edu.vn',1,'',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES(TungBT,1,5,'','TungBTHE150621@fpt.edu.vn',1,'',1);
+----------dbo.[Subject]--------------------
+
+-------------------------------------------
+----------dbo.[SubjectExpert]--------------
+
+-------------------------------------------
+----------dbo.[Lesson]---------------------
+
+-------------------------------------------
+----------dbo.[Dimension]------------------
+
+-------------------------------------------
+----------dbo.[PricePackage]---------------
+
+-------------------------------------------
+----------dbo.[Question]-------------------
+
+-------------------------------------------
+----------dbo.[Answer]---------------------
+
+-------------------------------------------
+----------dbo.[Quiz]-----------------------
+
+-------------------------------------------
+----------dbo.[QuizQuestion]---------------
+
+-------------------------------------------
+----------dbo.[CustomerQuiz]---------------
+
+-------------------------------------------
+----------dbo.[TakeAnswer]-----------------
+
+-------------------------------------------
+----------dbo.[Registration]---------------
+
+-------------------------------------------
+----------dbo.[Blog]-----------------------
+
+-------------------------------------------
+----------dbo.[BlogCate]-------------------
+
+-------------------------------------------
+----------dbo.[Slider]---------------------
+
+-------------------------------------------
