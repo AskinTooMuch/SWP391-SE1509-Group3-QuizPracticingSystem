@@ -20,7 +20,7 @@ public class UserDAO {
     public User getUser(String userName, String password) {
         return null;
     }
-    public int changePassword(int userId, String password){
+    public int updateUser(User updatedUser){
         return 0;
     }
     public int changeStatus(boolean status){
