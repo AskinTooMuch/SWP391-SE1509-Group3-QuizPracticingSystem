@@ -266,8 +266,7 @@ INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Buiseness Ethics',1)
 INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('CSS',1);
 ----------dbo.[TestType]-------------------
 INSERT INTO dbo.TestType(testTypeName,status) VALUES('Simulation',1);
-INSERT INTO dbo.TestType(testTypeName,status) VALUES('Midterm',1);
-INSERT INTO dbo.TestType(testTypeName,status) VALUES('Progress Test',1);
+INSERT INTO dbo.TestType(testTypeName,status) VALUES('Lesson-Quiz',1);
 ----------dbo.[QuizLevel]------------------
 INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Hard',1);
 INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Medium',1);
@@ -281,15 +280,15 @@ INSERT INTO dbo.DimensionType(dimensionTypeName,status) VALUES('Domain',1);
 INSERT INTO dbo.DimensionType(dimensionTypeName,status) VALUES('Group',1);
 ----------dbo.[User]-----------------------
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
-				VALUES(DuongNH,1,5,'','DuongNHHE150328@fpt.edu.vn',1,'',1);
+				VALUES('DuongNH',1,5,'','DuongNHHE150328@fpt.edu.vn',1,'0696044711',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
-				VALUES(NamDH,1,5,'','NamDHHE150519@fpt.edu.vn',1,'',1);
+				VALUES('NamDH',1,5,'','NamDHHE150519@fpt.edu.vn',1,'0969044712',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
-				VALUES(TuanPA,1,5,'','TuanPAHE150543@fpt.edu.vn',1,'',1);
+				VALUES('TuanPA',1,5,'','TuanPAHE150543@fpt.edu.vn',1,'0969044713',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
-				VALUES(ChucNV,1,5,'','ChucNVHE150618@fpt.edu.vn',1,'',1);
+				VALUES('ChucNV',1,5,'','ChucNVHE150618@fpt.edu.vn',1,'0969044714',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
-				VALUES(TungBT,1,5,'','TungBTHE150621@fpt.edu.vn',1,'',1);
+				VALUES('TungBT',1,5,'','TungBTHE150621@fpt.edu.vn',1,'0969044715',1);
 ----------dbo.[Subject]--------------------
 
 -------------------------------------------
