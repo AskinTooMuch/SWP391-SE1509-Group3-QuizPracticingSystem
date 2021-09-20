@@ -11,13 +11,13 @@ package bean;
  */
 public class SubjectCate {
     private int subjectCateId;
-    private boolean status;
     private String subjectCateName;
+    private boolean status;
 
     public SubjectCate() {
     }
 
-    public SubjectCate(int subjectCateId, boolean status, String subjectCateName) {
+    public SubjectCate(int subjectCateId, String subjectCateName, boolean status) {
         this.subjectCateId = subjectCateId;
         this.status = status;
         this.subjectCateName = subjectCateName;

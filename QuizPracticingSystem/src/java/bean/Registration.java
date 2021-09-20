@@ -5,32 +5,42 @@
  */
 package bean;
 
+import java.sql.Date;
+
 /**
  *
  * @author admin
  */
 public class Registration {
 
-    private int regId, userId, packId, lastUpdatedBy;
+    private int regId;
+    private int userId;
+    private Date regTime;
+    private int packId;
     private double cost;
-    private String regTime, validFrom, validTo, note;
+    private Date validFrom;
+    private Date validTo;
+    private int lastUpdatedBy;
+    private String note;
     private boolean status;
 
     public Registration() {
     }
 
-    public Registration(int regId, int userId, int packId, int lastUpdatedBy, double cost, String regTime, String validFrom, String validTo, String note, boolean status) {
+    public Registration(int regId, int userId, Date regTime, int packId, double cost, Date validFrom, Date validTo, int lastUpdatedBy, String note, boolean status) {
         this.regId = regId;
         this.userId = userId;
-        this.packId = packId;
-        this.lastUpdatedBy = lastUpdatedBy;
-        this.cost = cost;
         this.regTime = regTime;
+        this.packId = packId;
+        this.cost = cost;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.note = note;
         this.status = status;
     }
+
+    
 
     public int getRegId() {
         return regId;
@@ -72,29 +82,31 @@ public class Registration {
         this.cost = cost;
     }
 
-    public String getRegTime() {
+    public Date getRegTime() {
         return regTime;
     }
 
-    public void setRegTime(String regTime) {
-        this.regTime = regTime;
-    }
-
-    public String getValidFrom() {
+    public Date getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(String validFrom) {
-        this.validFrom = validFrom;
-    }
-
-    public String getValidTo() {
+    public Date getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(String validTo) {
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
+    }
+
+    public void setValidFrom(Date validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public void setValidTo(Date validTo) {
         this.validTo = validTo;
     }
+
+    
 
     public String getNote() {
         return note;

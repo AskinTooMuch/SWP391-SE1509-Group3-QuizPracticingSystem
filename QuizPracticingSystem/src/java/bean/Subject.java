@@ -10,22 +10,29 @@ package bean;
  * @author admin
  */
 public class Subject {
-    private int subjectId, cateId;
-    private boolean featuredSubject, status;
-    private String subjectName, description, thumbnail;
+    private int subjectId;
+    private String subjectName;
+    private int cateId;
+    private String description;
+    private String thumbnail;
+    private boolean featuredSubject;
+    private boolean status;
+    
 
     public Subject() {
     }
 
-    public Subject(int subjectId, int cateId, boolean featuredSubject, boolean status, String subjectName, String description, String thumbnail) {
+    public Subject(int subjectId, String subjectName, int cateId, String description, String thumbnail, boolean featuredSubject, boolean status) {
         this.subjectId = subjectId;
-        this.cateId = cateId;
-        this.featuredSubject = featuredSubject;
-        this.status = status;
         this.subjectName = subjectName;
+        this.cateId = cateId;
         this.description = description;
         this.thumbnail = thumbnail;
+        this.featuredSubject = featuredSubject;
+        this.status = status;
     }
+
+    
 
     public int getSubjectId() {
         return subjectId;

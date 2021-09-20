@@ -12,11 +12,12 @@ import java.sql.Date;
  * @author ChucNVHE150618
  */
 public class Blog {
+
     private int blogId;
-    private int author; /*userId of user write the blog*/
+    private String blogTitle;
     private Date created;
     private Date lastEdited;
-    private String blogTitle;
+    private int author;    /*userId of user write the blog*/
     private String detail;
     private String thumbnail;
     private Boolean status;
@@ -24,16 +25,18 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int blogId, int author, Date created, Date lastEdited, String blogTitle, String detail, String thumbnail, Boolean status) {
+    public Blog(int blogId, String blogTitle, Date created, Date lastEdited, int author, String detail, String thumbnail, Boolean status) {
         this.blogId = blogId;
-        this.author = author;
+        this.blogTitle = blogTitle;
         this.created = created;
         this.lastEdited = lastEdited;
-        this.blogTitle = blogTitle;
+        this.author = author;
         this.detail = detail;
         this.thumbnail = thumbnail;
         this.status = status;
     }
+    
+    
 
     public int getBlogId() {
         return blogId;
@@ -98,6 +101,5 @@ public class Blog {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-    
-    
+
 }

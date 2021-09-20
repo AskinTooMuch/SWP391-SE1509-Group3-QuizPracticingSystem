@@ -11,15 +11,15 @@ package bean;
  */
 public class QuizLevel {
     private int quizLevelId;
-    private String quizLevel;
+    private String quizLevelName;
     private boolean status;
 
     public QuizLevel() {
     }
 
-    public QuizLevel(int quizLevelId, String quizLevel, boolean status) {
+    public QuizLevel(int quizLevelId, String quizLevelName, boolean status) {
         this.quizLevelId = quizLevelId;
-        this.quizLevel = quizLevel;
+        this.quizLevelName = quizLevelName;
         this.status = status;
     }
 
@@ -32,11 +32,11 @@ public class QuizLevel {
     }
 
     public String getQuizLevel() {
-        return quizLevel;
+        return quizLevelName;
     }
 
     public void setQuizLevel(String quizLevel) {
-        this.quizLevel = quizLevel;
+        this.quizLevelName = quizLevel;
     }
 
     public boolean isStatus() {

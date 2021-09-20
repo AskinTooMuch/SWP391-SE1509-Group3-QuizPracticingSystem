@@ -10,24 +10,32 @@ package bean;
  * @author admin
  */
 public class User {
-    private int userId, roleId;
-    private boolean gender, status;
-    private String userName, password, profilePic, userMail, userMobile;
+    private int userId;
+    private String userName;
+    private String password;
+    private int roleId;
+    private String profilePic;
+    private String  userMail;   
+    private boolean gender;
+    private String userMobile;
+    private boolean status;
 
     public User() {
     }
 
-    public User(int userId,String userName, String password, int roleId, String profilePic, String userMail,  boolean gender, String userMobile, boolean status) {
+    public User(int userId, String userName, String password, int roleId, String profilePic, String userMail, boolean gender, String userMobile, boolean status) {
         this.userId = userId;
-        this.roleId = roleId;
-        this.gender = gender;
-        this.status = status;
         this.userName = userName;
         this.password = password;
+        this.roleId = roleId;
         this.profilePic = profilePic;
         this.userMail = userMail;
+        this.gender = gender;
         this.userMobile = userMobile;
+        this.status = status;
     }
+
+    
 
     public int getUserId() {
         return userId;

@@ -11,9 +11,14 @@ package bean;
  */
 public class Question {
 
-    private int questionId, subjectId, dimensionId, lessonId;
-    private String content, media, explanation;
-    boolean status;
+    private int questionId;
+    private int subjectId;
+    private int dimensionId;
+    private int lessonId;
+    private String content;
+    private String media;
+    private String explanation;
+    private boolean status;
 
     public Question() {
     }
@@ -28,6 +33,8 @@ public class Question {
         this.explanation = explanation;
         this.status = status;
     }
+
+    
 
     public int getQuestionId() {
         return questionId;
