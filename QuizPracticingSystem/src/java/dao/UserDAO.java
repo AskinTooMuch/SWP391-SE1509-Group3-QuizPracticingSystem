@@ -14,15 +14,23 @@ import java.util.ArrayList;
  */
 public class UserDAO {
 
-    public ArrayList<User> getUser(int userId, int roleId, boolean gender, boolean status, String userName, String password, String profilePic, String userMail, String userMobile) {
+    public ArrayList<User> getUserAllUser() {
         return null;
     }
+    
     public User getUser(String userName, String password) {
         return null;
     }
+    
     public int updateUser(User updatedUser){
         return 0;
     }
+    
     public int changeStatus(boolean status){
-        return 0;}
+        return 0;
+    }
+    
+    public int addUser(User newUser){
+        return 0;
+    }
 }
