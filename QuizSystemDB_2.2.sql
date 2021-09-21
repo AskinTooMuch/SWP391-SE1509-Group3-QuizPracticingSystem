@@ -1,4 +1,4 @@
-USE master
+﻿USE master
 GO
 
 if exists (select * from sysdatabases where name='QuizSystem') drop database QuizSystem
@@ -68,12 +68,18 @@ CREATE TABLE dbo.[User](
 CREATE TABLE dbo.[Subject](
 	subjectId		int				NOT NULL identity(1,1) PRIMARY KEY,
 	subjectName		nvarchar(255)	NOT NULL,
-	cateId			int				NOT NULL,
 	[description]	nvarchar(1023)	NOT NULL,
 	thumbnail		nvarchar(255),
 	featuredSubject bit,
 	[status]		bit,
-	FOREIGN KEY (cateId) REFERENCES dbo.[SubjectCate](subjectCateId),
+)
+-------------------------------------------
+CREATE TABLE dbo.[CategorySubject](
+	subjectId	int	NOT NULL,
+	cateId		int	NOT NULL,
+	FOREIGN KEY (subjectId) REFERENCES dbo.[Subject](subjectId),
+	FOREIGN KEY (cateId)	REFERENCES dbo.[SubjectCate](subjectCateId),
+
 )
 -------------------------------------------
 CREATE TABLE dbo.[SubjectExpert](
@@ -250,20 +256,20 @@ INSERT INTO dbo.PostCate(postCateName,status) VALUES('Review and Recommendation'
 INSERT INTO dbo.PostCate(postCateName,status) VALUES('Casuals',1);
 INSERT INTO dbo.PostCate(postCateName,status) VALUES('Rest and Relax',1);
 ----------dbo.[SubjectCate]----------------
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Computer Science',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Java',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('OOP-Object Oriented Programming',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C#',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Web Design',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Digital Art',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Japanese',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('English',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Algebra',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Organic Chemistry',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Basic Economic',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Buiseness Ethics',1);
-INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('CSS',1);
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Computer Science',1);--1
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Java',1);			--2
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('OOP-Object Oriented Programming',1);--3
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C',1);--4
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('C#',1);--5
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Web Design',1);--6
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Digital Art',1);--7
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Japanese',1);--8
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('English',1);--9
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Algebra',1);--10
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Organic Chemistry',1);--11
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Basic Economic',1);--12
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('Buiseness Ethics',1);--13
+INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('CSS',1);--14
 ----------dbo.[TestType]-------------------
 INSERT INTO dbo.TestType(testTypeName,status) VALUES('Simulation',1);
 INSERT INTO dbo.TestType(testTypeName,status) VALUES('Lesson-Quiz',1);
@@ -289,21 +295,83 @@ INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,use
 				VALUES('ChucNV',1,5,'','ChucNVHE150618@fpt.edu.vn',1,'0969044714',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
 				VALUES('TungBT',1,5,'','TungBTHE150621@fpt.edu.vn',1,'0969044715',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('Expert1',1,4,'','Expert1@gmail.com',0,'0969044716',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('Expert2',1,4,'','Expert2@gmail.com',1,'0969044717',1);
 ----------dbo.[Subject]--------------------
-
--------------------------------------------
+INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
+				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','',1,1);--1
+INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
+				   VALUES('Elementary Japanese 101','Japanese from zero.','',1,1);--2
+INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
+				   VALUES('Physics in Programming','Basic physics and its role in programming.','',0,1);--3
+INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
+				   VALUES('Photoshop 101','Manipulates reality with just your mouse.','',1,1);--4
+----------dbo.[CategorySubject]------------
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(1,2);
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(1,3);
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(2,8);
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(3,1);
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(3,10);
+INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(4,7);
 ----------dbo.[SubjectExpert]--------------
-
--------------------------------------------
+INSERT INTO dbo.SubjectExpert(subjectId,userId,[status]) VALUES(1,6,1);
+INSERT INTO dbo.SubjectExpert(subjectId,userId,[status]) VALUES(2,7,1);
+INSERT INTO dbo.SubjectExpert(subjectId,userId,[status]) VALUES(3,6,1);
+INSERT INTO dbo.SubjectExpert(subjectId,userId,[status]) VALUES(3,7,1);
+INSERT INTO dbo.SubjectExpert(subjectId,userId,[status]) VALUES(4,6,1);
 ----------dbo.[Lesson]---------------------
-
--------------------------------------------
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(1,'Introduction',1,1,'','Welcome to this course. Maybe right now you dont know how to code in a object oriented way or dont even know Java but at the end of this course, we hope youll be able to master it.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(1,'4 main ideas of OOP in Java',2,2,'','OOP concepts in Java are the main ideas behind Java Object Oriented Programming. They are an abstraction, encapsulation, inheritance, and polymorphism. ... Basically, Java OOP concepts let us create working methods and variables, then re-use all or part of them without compromising security.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(1,'Quiz: 4 main ideas of OOP in Java',3,3,'','First quiz, but dont be too afraid.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(2,'Introduction',1,1,'','Japanese for the absolute beginners, whether for academic purposes, work or if you just admire Japan and its culture',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(2,'Hiragana',2,2,'https://youtu.be/K-nw5EUxDz0','Hiragana and katakana are both kana systems. With few exceptions, each mora in the Japanese language is represented by one character (or one digraph) in each system. This may be either a vowel such as "a" (hiragana あ); a consonant followed by a vowel such as "ka" (か); or "n" (ん), a nasal sonorant which, depending on the context, sounds either like English m, n or ng ([ŋ]) when syllable-final or like the nasal vowels of French, Portuguese or Polish. Because the characters of the kana do not represent single consonants (except in the case of ん "n"), the kana are referred to as syllabic symbols and not alphabetic letters.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(2,'Basic Greetings',3,2,'https://youtu.be/o9O18DkU2Yc',
+'Konnichiwa (Hi; Good afternoon.)
+Ohayō gozaimasu/ Ohayō (Good morning [formal/informal])
+Konbanwa (Good evening)
+Hajimemashite. (How do you do?)
+O-genki desu ka. (How are you? [formal])
+Genki? (How are you? [informal])
+Maiku-san wa? (How about you, Mike?)
+Hai, genki desu. (Yes, I’m fine.)
+Ē, māmā desu. (Well, so-so.)
+Hai, watashi mo genki desu. (Yes, I’m fine, too.)
+Mata ashita. (See you tomorrow.)
+Sayōnara. (Goodbye.)
+Oyasumi nasai. (Good night.)
+'
+,1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(2,'Small Quiz',4,3,'','Just a little practice and you can do it',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(2,'See you again',5,1,'','Keep on learning!',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(3,'Introduction',1,1,'','Introduce realism in apps and games!',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(3,'Basics',2,2,'','Physics programmers create software that forms the basis of crashes, collisions and other things that move. When, for example, a car drives through water or bursts into flames, the effect needs to be similar to what would happen in real life. Physics programmers write the code, based on the laws of physics, to make this happen. It requires high-level knowledge of both physics and programming. It also requires a sense of gameplay and the right blend of realism and fun.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(3,'Small Quiz',3,3,'','Its not done yet, more lessons are on their way.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(4,'Introduction',1,1,'','Learn how to photoshop for your own needs, and for higher, professional jobs.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(4,'Some crucial skills needed in photoshop',2,2,'https://youtu.be/IyR_uYsRdPs','The key to photoshop is patience.',1);
+INSERT INTO dbo.Lesson(subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,[status])
+				VALUES(4,'Small Quiz',3,3,'','Just the basics so far.',1);
 ----------dbo.[Dimension]------------------
-
--------------------------------------------
+INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Java Programming',1,1,'',1);
+INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Japanese',2,2,'',1);
+INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Physics',1,3,'',1);
+INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Graphics Design',1,4,'',1);
 ----------dbo.[PricePackage]---------------
 
--------------------------------------------
 ----------dbo.[Question]-------------------
 
 -------------------------------------------
