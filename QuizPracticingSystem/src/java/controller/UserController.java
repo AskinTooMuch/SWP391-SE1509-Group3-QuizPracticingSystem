@@ -5,8 +5,8 @@
  */
 package controller;
 
-import bean.User;
-import dao.UserDAO;
+import bean.*;
+import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -36,36 +36,75 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userMail = request.getParameter("userMail");
-            String mess = "";
-            String password = request.getParameter("password");
-            User log = null;
-            UserDAO t = new UserDAO();
-            log = t.getUserLogin(userMail, password);
+            String service = request.getParameter("service");
 
-            if (log == null) {
-                mess = "Sorry, username and/or password are/is invalid!";
-                sendDispatcher(request, response, "/login.html");
+//            String userMail = request.getParameter("userMail");
+//            String mess = "";
+//            String password = request.getParameter("password");
+//            User log = null;
+//            UserDAO t = new UserDAO();
+//            log = t.getUserLogin(userMail, password);
+//
+//            if (log == null) {
+//                mess = "Sorry, username and/or password are/is invalid!";
+//                sendDispatcher(request, response, "/login.html");
+//
+//            } else {
+//                request.getSession().setAttribute("currUser", log);
+//                request.getSession().setAttribute("role", log.getRoleId());
+//                sendDispatcher(request, response, "/Home.jsp");
+//
+//            }
+//            out.print(mess);
+//            request.getRequestDispatcher("/index.html").include(request, response);
+            //register
+            if (service.equalsIgnoreCase("register")) {
+                String mess = "";
+                String userName = request.getParameter("userName");
+                String password = request.getParameter("password");
+                String confirmPass = request.getParameter("confirmPass");
+                String userMail = request.getParameter("userMail");
+                String userMobile = request.getParameter("userMobile");
+                String txtGender = request.getParameter("gender");
+                User addUser = new User();
+                UserDAO ud = new UserDAO();
 
-            } else {
-                request.getSession().setAttribute("currUser", log);
-                request.getSession().setAttribute("role", log.getRoleId());
-                sendDispatcher(request, response, "/Home.jsp");
+                boolean gender;
 
+                if (!password.equals(confirmPass)) {
+                    mess = "The confirm-password is not match with the password!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                }
+
+                String mailRegex = "";
+
+                if (ud.isExistedEmail(userMail)) {
+                    mess = "This email have already been used!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                }
+                
+                String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";
+                if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
+                    mess = "The phone number is invalid";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                }
+
+                if (txtGender.equalsIgnoreCase("Male")) {
+                    gender = true;
+                } else {
+                    gender = false;
+                }
+
+                addUser.setUserName(userName);
+                addUser.setPassword(password);
+                addUser.setUserMobile(userMobile);
+                addUser.setUserMail(userMail);
+                addUser.setGender(gender);
+                ud.addUser(addUser);
             }
-            out.print(mess);
-            request.getRequestDispatcher("/index.html").include(request, response);
-
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

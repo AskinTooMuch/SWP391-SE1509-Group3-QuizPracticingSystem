@@ -6,6 +6,7 @@
 package dao;
 
 import bean.User;
+import dao.impl.DBConnection;
 import dao.impl.MyDAO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,6 +73,21 @@ public class UserDAO extends MyDAO{
         return null;
     }
     
+    public boolean isExistedEmail(String userMail){
+        xSql = "SELECT * FROM [User] WHERE userMail = ?";
+        try {
+            ps = conn.prepareStatement(xSql);
+            ps.setString(1, userMail);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public User getUser(String userMail, String password) {
         return null;
     }
@@ -85,7 +101,7 @@ public class UserDAO extends MyDAO{
     }
     
     public int addUser(User newUser){
-        xSql = "INSERT INTO [User](userName,password,roleId,userMail,gender,userMobile,status)"
+        xSql = "INSERT INTO [User](userName,[password],roleId,userMail,gender,userMobile,[status])"
                         + "values(?,?,?,?,?,?,?)";
         int check = 0;
         try {
@@ -104,4 +120,11 @@ public class UserDAO extends MyDAO{
         
         return check;
     }
+    
+    public static void main(String[] args) {
+        UserDAO ud = new UserDAO();
+        User newUser = new User(0, "Duong", "12", 1, null, "duonghoang88@gmail.com", true, "0852274855", true);
+        ud.addUser(newUser);
+    }
+        
 }
