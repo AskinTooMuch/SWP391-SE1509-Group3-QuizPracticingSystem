@@ -44,29 +44,27 @@ public class MarketingController extends HttpServlet {
                 String[] cate = request.getParameterValues("category");
                 String page_raw = request.getParameter("page");
                 String search = request.getParameter("search");
-                
                 int page;
-                if (page_raw == null) {
-                    page = 1;
-                } else {
-                    page = Integer.parseInt(page_raw);
-                }
-                
-                ArrayList<Blog> blogList = blogDAO.Paging(page, blogDAO.getAllBlog());
-                request.setAttribute("blogList", blogList);
-                ArrayList<PostCate> postCateList = postCateDAO.getAllPostCates();
-                request.setAttribute("postCateList", postCateList);
-                
-                if (cate != null) {
-                    ArrayList<Blog> blogListByCate = blogDAO.Paging(page, blogDAO.getBlogByCategory(cate));
-                    request.setAttribute("blogList", blogListByCate);
-                }
-                if (search!=null){
-                    ArrayList<Blog> blogListByCate = blogDAO.Paging(page, blogDAO.getBlogByCategory(cate));
+                if (page_raw == null) page = 1;
+                else page = Integer.parseInt(page_raw);
+                ArrayList<Blog> blogList;
+                blogList = blogDAO.getAllBlog();
+                if (search != null || cate != null) {
+                    blogList = blogDAO.getBlogByCategoryAndTitle(cate, search);
                 }
                 int size = blogList.size();
                 int pagenum = (size % 9 == 0) ? (size / 9) : (size / 9 + 1);
-                request.setAttribute("num", pagenum);
+                String alterUrl = "";
+                for (String c : cate) {
+                    alterUrl += "&category=" + c;
+                }
+                alterUrl += "%search=" + search;
+                ArrayList<Blog> paginatedBlogList = blogDAO.Paging(page, blogList);
+                ArrayList<PostCate> postCateList = postCateDAO.getAllPostCates();
+                request.setAttribute("postCateList", postCateList);
+                request.setAttribute("blogList", paginatedBlogList);
+                request.setAttribute("alterUrl", alterUrl);
+                request.setAttribute("pagenum", pagenum);
                 request.setAttribute("page", page);
                 request.getRequestDispatcher("blogList.jsp").forward(request, response);
             }

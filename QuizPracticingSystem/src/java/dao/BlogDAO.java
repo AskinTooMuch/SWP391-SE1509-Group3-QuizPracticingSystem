@@ -22,7 +22,7 @@ public class BlogDAO extends MyDAO {
     public ArrayList<Blog> getAllBlog() {
         ArrayList<Blog> allBlog = new ArrayList();
 
-        String sql = "SELECT * FROM [Blog]";
+        String sql = "SELECT * FROM [Blog] ORDER BY created DESC";
 
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -73,24 +73,6 @@ public class BlogDAO extends MyDAO {
         }
         return blogList;
     }
-
-    public ArrayList<Blog> Paging(int page, List<Blog> list) {
-        int start, end; 
-        int numberpage = 9;
-        start = (page - 1) * numberpage;
-        if (page * numberpage > list.size()) {
-            end = list.size();
-        } else {
-            end = page * numberpage;
-        }
-        ArrayList<Blog> t = new ArrayList<>();
-        for (int i = start; i < end; i++) {
-            t.add(list.get(i));
-        }
-        return t;
-       
-    }
-
 
     public ArrayList<Blog> getBlogByUser(int userId) {
         ArrayList<Blog> userBlog = new ArrayList();
@@ -158,6 +140,43 @@ public class BlogDAO extends MyDAO {
         return titleBlog;
     }
 
+    public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
+        ArrayList<Blog> blogList = new ArrayList();
+        String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE 1=1";
+        if (postCateIdList != null) {
+            int[] cateList = null;
+            for (int i = 0; i < postCateIdList.length; i++) {
+                cateList[i] = Integer.parseInt(postCateIdList[i]);
+            }
+            sql += " AND b.postCateId in (";
+            for (int i = 0; i < cateList.length; i++) {
+                sql += "," + cateList[i];
+            }
+            sql += ")";
+        }
+        if (search != null) {
+            sql += " AND a.blogTitle like '%" + search + "%'";
+        }
+        sql += "ORDER BY created DESC";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                blogList.add(new Blog(rs.getInt(1),
+                        rs.getString("blogTitle"),
+                        rs.getDate("created"),
+                        rs.getDate("lastEdited"),
+                        rs.getInt("author"),
+                        rs.getString("detail"),
+                        rs.getString("thumbnail"),
+                        rs.getBoolean("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return blogList;
+    }
+
     public int editBlog(int blogId, Blog blog) {
         String sql = "UPDATE [Blog] SET blogTitle =?, created =?, lastEdited =?, author =?, detail =?, thumbnail =?, status =? WHERE blogId =?";
         try {
@@ -204,6 +223,22 @@ public class BlogDAO extends MyDAO {
             System.out.println(e);
         }
         return 0;
+    }
+
+    public ArrayList<Blog> Paging(int page, List<Blog> list) {
+        int start, end;
+        int numberpage = 9;
+        start = (page - 1) * numberpage;
+        if (page * numberpage > list.size()) {
+            end = list.size();
+        } else {
+            end = page * numberpage;
+        }
+        ArrayList<Blog> t = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            t.add(list.get(i));
+        }
+        return t;
     }
 
 }
