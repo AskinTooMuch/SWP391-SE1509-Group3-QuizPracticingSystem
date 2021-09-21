@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
 
 /**
  *
@@ -37,6 +38,7 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
+            UserDAO ud = new UserDAO();
 
 //            String userMail = request.getParameter("userMail");
 //            String mess = "";
@@ -66,30 +68,44 @@ public class UserController extends HttpServlet {
                 String userMail = request.getParameter("userMail");
                 String userMobile = request.getParameter("userMobile");
                 String txtGender = request.getParameter("gender");
-                User addUser = new User();
-                UserDAO ud = new UserDAO();
-
                 boolean gender;
+                User addUser = new User();
 
                 if (!password.equals(confirmPass)) {
                     mess = "The confirm-password is not match with the password!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
                 }
 
-                String mailRegex = "";
+                String mailRegex = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
+                if (false) {
+                    mess = "The Email is invalid !";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
 
-                if (ud.isExistedEmail(userMail)) {
+                if (ud.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
                 }
                 
+                if(ud.getUserByMobile(userMobile) != null){
+                    mess = "The phone number is already been used";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
+
                 String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";
                 if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
                     mess = "The phone number is invalid";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
                 }
 
                 if (txtGender.equalsIgnoreCase("Male")) {
@@ -104,8 +120,28 @@ public class UserController extends HttpServlet {
                 addUser.setUserMail(userMail);
                 addUser.setGender(gender);
                 ud.addUser(addUser);
+
+                SystemEmail se = new SystemEmail();
+                String confirmLink = "http://localhost:8080/QuizPracticingSystem/userController?service=confirmAccount&userMail=" + userMail;
+                se.sendEmail(userMail, "Confirm Your Account", confirmLink);
+                out.println("<p>An confirm mail have been sent to your email address!</p>");
+            }
+
+            if (service.equalsIgnoreCase("confirmAccount")) {
+                String userMail = request.getParameter("userMail");
+                User user = ud.getUserByMail(userMail);
+                ud.changeStatus(user.getUserId(), true);
+                System.out.println("Confirmed");
             }
         }
+    }
+
+    public void sendResetMail(String userMail) {
+        SystemEmail se = new SystemEmail();
+        long milis = System.currentTimeMillis();
+        String confirmLink = "http://localhost:8080/QuizPracticingSystem/userController?service=confirmAccount&userMail="
+                + userMail + "&createTime=" + milis;
+        se.sendEmail(userMail, "Confirm Your Account", confirmLink);
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
