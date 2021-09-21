@@ -19,17 +19,20 @@ public class QuestionDAO extends MyDAO {
         return null;
     }
 
-    public Question getQuestionById(int id) {
+    public Question getQuestionById(int questionId) {
         return null;
     }
 
-    public int addQuestion(Question a) {
+    public int addQuestion(Question newQuestion) {
         return 0;
     }
-    public int editQuestion(Question a,boolean delete){
+    public int editQuestion(int questionId, Question editedQuestion){
         return 0;
     }
-    public int importQuestion(ArrayList<Question> list) {
+    public int deleteQuestion(int questionId){
+        return 0;
+    }
+    public int importQuestion(ArrayList<Question> questionList) {
         return 0;
     }
 
