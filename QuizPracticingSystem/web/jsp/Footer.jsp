@@ -20,7 +20,7 @@
     </head>
     <body>
         <!-- Footer -->
-        <footer class="page-footer font-small mdb-color pt-4" style="background-color:#EDF0F4" >
+        <footer class="page-footer font-small mdb-color pt-4 " style="background-color:#EDF0F4" >
             <!-- Footer Links -->
             <!-- Footer links -->
             <div class="row text-center text-md-left mt-3 pb-3" >
