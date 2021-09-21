@@ -19,15 +19,18 @@ public class RegistrationDAO extends MyDAO {
         return null;
     }
 
-    public Registration getRegistrationById(int id) {
+    public Registration getRegistrationById(int registrationId) {
         return null;
     }
 
-    public int addRegistration(Registration a) {
+    public int addRegistration(Registration newRegistration) {
         return 0;
     }
 
-    public int editRegistration(Registration a) {
+    public int editRegistration(int registrationId,Registration editedRegistration) {
+        return 0;
+    }
+    public int deleteRegistration(int registrationId){
         return 0;
     }
 }

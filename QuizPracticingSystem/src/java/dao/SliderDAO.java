@@ -19,15 +19,18 @@ public class SliderDAO extends MyDAO {
         return null;
     }
 
-    public Slider getSliderById() {
+    public Slider getSliderById(int sliderId) {
         return null;
     }
 
-    public int editSlider(Slider a) {
+    public int editSlider(int sliderId,Slider editedSlider) {
         return 0;
     }
 
-    public int addSlider() {
+    public int addSlider(Slider newSlder) {
+        return 0;
+    }
+    public int deleteSlider(int sliderId){
         return 0;
     }
 }
