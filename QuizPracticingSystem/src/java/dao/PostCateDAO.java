@@ -5,9 +5,12 @@
  */
 package dao;
 
+import bean.Blog;
 import java.util.ArrayList;
 import bean.PostCate;
 import dao.impl.MyDAO;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -15,10 +18,36 @@ import dao.impl.MyDAO;
  */
 public class PostCateDAO extends MyDAO{
     public ArrayList<PostCate> getAllPostCates(){
-        return null;
+        ArrayList<PostCate> allPostCate = new ArrayList();
+        String sql = "SELECT * FROM [PostCate] ";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                allPostCate.add(new PostCate(rs.getInt("postCateId"),
+                        rs.getString("postCateName"),
+                        rs.getBoolean("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return allPostCate;
     }
     
+    
     public PostCate getPostCateById(int pcId){
+        String sql = "SELECT * FROM Blog [PostCate] WHERE postCateId =" + pcId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                return new PostCate(rs.getInt("postCateId"),
+                        rs.getString("postCateName"),
+                        rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         return null;
     }
     

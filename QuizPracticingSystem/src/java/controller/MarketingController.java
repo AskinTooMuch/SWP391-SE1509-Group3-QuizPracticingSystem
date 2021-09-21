@@ -5,8 +5,11 @@
  */
 package controller;
 
+import bean.*;
+import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,20 +30,53 @@ public class MarketingController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    BlogDAO blogDAO = new BlogDAO();
+    PostCateDAO postCateDAO = new PostCateDAO();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MarketingController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet MarketingController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String service = request.getParameter("service");
+
+            if (service.equalsIgnoreCase("blogList")) {
+                String[] cate = request.getParameterValues("category");
+                String page_raw = request.getParameter("page");
+                String search = request.getParameter("search");
+                
+                int page;
+                if (page_raw == null) {
+                    page = 1;
+                } else {
+                    page = Integer.parseInt(page_raw);
+                }
+                
+                ArrayList<Blog> blogList = blogDAO.Paging(page, blogDAO.getAllBlog());
+                request.setAttribute("blogList", blogList);
+                ArrayList<PostCate> postCateList = postCateDAO.getAllPostCates();
+                request.setAttribute("postCateList", postCateList);
+                
+                if (cate != null) {
+                    ArrayList<Blog> blogListByCate = blogDAO.Paging(page, blogDAO.getBlogByCategory(cate));
+                    request.setAttribute("blogList", blogListByCate);
+                }
+                if (search!=null){
+                    ArrayList<Blog> blogListByCate = blogDAO.Paging(page, blogDAO.getBlogByCategory(cate));
+                }
+                int size = blogList.size();
+                int pagenum = (size % 9 == 0) ? (size / 9) : (size / 9 + 1);
+                request.setAttribute("num", pagenum);
+                request.setAttribute("page", page);
+                request.getRequestDispatcher("blogList.jsp").forward(request, response);
+            }
+
+            if (service.equalsIgnoreCase("blogDetail")) {
+                int blogId = Integer.parseInt(request.getParameter("blogId"));
+                Blog blog = blogDAO.getBlogById(blogId);
+                request.setAttribute("blog", blog);
+                request.getRequestDispatcher("blogDetail.jsp").forward(request, response);
+            }
         }
     }
 
