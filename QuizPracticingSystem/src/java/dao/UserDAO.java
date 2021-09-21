@@ -7,6 +7,8 @@ package dao;
 
 import bean.User;
 import dao.impl.MyDAO;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,6 +21,29 @@ import java.util.logging.Logger;
 public class UserDAO extends MyDAO{
 
     public ArrayList<User> getUserAllUser() {
+        return null;
+    }
+    public User getUserLogin(String userMail, String password) {
+        String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ps.setString(1, userMail);
+            ps.setString(2, password);
+            rs=ps.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getInt("userId"),
+                            rs.getString("userName"),
+                            rs.getString("password"),
+                            rs.getInt("roleId"),
+                            rs.getString("profilePic"),
+                            rs.getString("userMail"),
+                            rs.getBoolean("gender"),
+                            rs.getString("userMobile"),
+                            rs.getBoolean("status"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
     
