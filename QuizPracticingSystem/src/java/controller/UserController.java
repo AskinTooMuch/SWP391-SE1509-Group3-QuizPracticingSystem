@@ -36,28 +36,26 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-        String userMail = request.getParameter("userMail");
+            String userMail = request.getParameter("userMail");
             String mess = "";
             String password = request.getParameter("password");
             User log = null;
             UserDAO t = new UserDAO();
             log = t.getUserLogin(userMail, password);
-            
-            
+
             if (log == null) {
                 mess = "Sorry, username and/or password are/is invalid!";
                 sendDispatcher(request, response, "/login.html");
-                
+
             } else {
                 request.getSession().setAttribute("currUser", log);
                 request.getSession().setAttribute("role", log.getRoleId());
                 sendDispatcher(request, response, "/Home.jsp");
-                
+
             }
             out.print(mess);
             request.getRequestDispatcher("/index.html").include(request, response);
-    
-            
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -70,6 +68,7 @@ public class UserController extends HttpServlet {
             out.println("</html>");
         }
     }
+
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
@@ -108,7 +107,7 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-       }
+    }
 
     /**
      * Returns a short description of the servlet.
