@@ -301,13 +301,13 @@ INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,use
 				VALUES('Expert2',1,4,'','Expert2@gmail.com',1,'0969044717',1);
 ----------dbo.[Subject]--------------------
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
-				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','',1,1);--1
+				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','java-oops.png',1,1);--1
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
-				   VALUES('Elementary Japanese 101','Japanese from zero.','',1,1);--2
+				   VALUES('Elementary Japanese 101','Japanese from zero.','nihongo101.png',1,1);--2
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
-				   VALUES('Physics in Programming','Basic physics and its role in programming.','',0,1);--3
+				   VALUES('Physics in Programming','Basic physics and its role in programming.','physInProgramming.png',0,1);--3
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
-				   VALUES('Photoshop 101','Manipulates reality with just your mouse.','',1,1);--4
+				   VALUES('Photoshop 101','Manipulates reality with just your mouse.','pts101.png',1,1);--4
 ----------dbo.[CategorySubject]------------
 INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(1,2);
 INSERT INTO dbo.CategorySubject(subjectId,cateId) VALUES(1,3);
