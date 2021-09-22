@@ -4,6 +4,7 @@
     Author     : tuan
 --%>
 
+<%@page import="bean.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -44,13 +45,23 @@
                             </span>
                         </div>
                     </form>
-
-                    <form class="form-inline" style="float:right">
-                        <a href="login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
-                           role="button" aria-pressed="true">Login</a>
-                        <a href="#" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
-                           role="button" aria-pressed="true">Signup</a>
-                    </form>
+                    
+                    <% User currUser = (User)request.getSession().getAttribute("currUser");
+                        if (currUser==null) {%>
+                            <div class="form-inline" style="float:right">
+                                <a href="login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
+                                   role="button" aria-pressed="true">Login</a>
+                                <a href="#" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
+                                   role="button" aria-pressed="true">Signup</a>
+                            </div>
+                    <%  }  else { %>
+                        <div class="form-inline" style="float:right">
+                                <a href="#" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
+                                   role="button" aria-pressed="true">Profile</a>
+                                <a href="userController?service=logout" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
+                                   role="button" aria-pressed="true">Logout</a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </nav>

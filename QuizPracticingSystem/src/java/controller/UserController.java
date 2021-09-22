@@ -61,7 +61,10 @@ public class UserController extends HttpServlet {
                 out.print(mess);
                 request.getRequestDispatcher("index.jsp").include(request, response);
             }
-
+            if (service.equalsIgnoreCase("logout")) {
+                request.getSession().invalidate();
+                sendDispatcher(request, response, "index.jsp");
+            }
             //register
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
