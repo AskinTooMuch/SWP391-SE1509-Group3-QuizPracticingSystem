@@ -22,14 +22,14 @@
             }
         %>
         
-        <form action="UserController" method="POST">
+        <form action="../userController" method="POST">
             <p>User Mail:</p>
             <input type="text" name="userMail">
             <p>Password:</p>
             <input type="text" name="password">
             <input type="hidden" name="service" value="login">
             <br><br>
-            <button type="submit" >Login</button>
+            <button type="submit">Login</button>
         </form>
         
         <button><a href="userController?service=resetPassword"></a></button>

@@ -59,7 +59,7 @@ public class UserController extends HttpServlet {
 
                 }
                 out.print(mess);
-                request.getRequestDispatcher("/index.jsp").include(request, response);
+                request.getRequestDispatcher("index.jsp").include(request, response);
             }
 
             //register
