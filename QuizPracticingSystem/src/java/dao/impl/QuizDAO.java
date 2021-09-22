@@ -7,43 +7,50 @@ package dao.impl;
 
 import bean.Quiz;
 import dao.MyDAO;
+import dao.QuizINT;
 import java.util.ArrayList;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class QuizDAO extends MyDAO{
+public class QuizDAO extends MyDAO implements QuizINT{
+    @Override
     public ArrayList<Quiz> getAllQuiz(){
         ArrayList<Quiz> allQuiz = null;
         
         return allQuiz;
     }
     
+    @Override
     public ArrayList<Quiz> getQuizBySubject(int subjectId){
         ArrayList<Quiz> subjectQuiz = null;
         
         return subjectQuiz;
     } 
     
+    @Override
     public ArrayList<Quiz> getQuizByLesson(int lessonId){
         ArrayList<Quiz> lessonQuiz = null;
         
         return lessonQuiz;
     }
     
+    @Override
     public int editQuiz(int quizId, Quiz quiz){
         int i = 0;
         
         return i;
     }
     
+    @Override
     public int addQuiz(Quiz quiz){
         int i = 0;
         
         return i;
     }
     
+    @Override
     public int deleteQuiz(int quizId){
         int i = 0;
         
