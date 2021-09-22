@@ -47,6 +47,7 @@ public class UserController extends HttpServlet {
                 UserDAO t = new UserDAO();
                 log = t.getUserLogin(userMail, password);
 
+<<<<<<< Updated upstream
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
                     sendDispatcher(request, response, "/login.jsp");
@@ -60,6 +61,28 @@ public class UserController extends HttpServlet {
                 out.print(mess);
                 request.getRequestDispatcher("/index.html").include(request, response);
             }
+=======
+//            String userMail = request.getParameter("userMail");
+//            String mess = "";
+//            String password = request.getParameter("password");
+//            User log = null;
+//            UserDAO t = new UserDAO();
+//            log = t.getUserLogin(userMail, password);
+//
+//            if (log == null) {
+//                mess = "Sorry, username and/or password are/is invalid!";
+//                sendDispatcher(request, response, "/login.html");
+//
+//            } else {
+//                request.getSession().setAttribute("currUser", log);
+//                request.getSession().setAttribute("role", log.getRoleId());
+//                sendDispatcher(request, response, "/Home.jsp");
+//
+//            }
+//            out.print(mess);
+//            request.getRequestDispatcher("/index.html").include(request, response);
+            
+>>>>>>> Stashed changes
             //register
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
@@ -80,7 +103,7 @@ public class UserController extends HttpServlet {
                 }
 
                 String mailRegex = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
-                if (false) {
+                if (!userMobile.matches(mailRegex)) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -132,7 +155,40 @@ public class UserController extends HttpServlet {
                 String userMail = request.getParameter("userMail");
                 User user = ud.getUserByMail(userMail);
                 ud.changeStatus(user.getUserId(), true);
-                System.out.println("Confirmed");
+                out.println("Confirmed");
+                out.println("<a href=" + "userController?service=login" + ">Login</a>");
+            }
+
+            if (service.equalsIgnoreCase("resetPassword")) {
+                String userMail = request.getParameter("userMail");
+                if (ud.getUserByMail(userMail) == null) {
+                    out.println("Email not existed!");
+                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    return;
+                } else {
+                    sendResetMail(userMail);
+                    out.println("An reset password link have been sent to your email address");
+                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    return;
+                }
+            }
+
+            if (service.equalsIgnoreCase("resetPage")) {
+                String userMail = request.getParameter("userMail");
+                String newPass = request.getParameter("newPass");
+                String confirmNewPass = request.getParameter("confirmNewPass");
+                User user = ud.getUserByMail(userMail);
+                if (newPass.equals(confirmNewPass)) {
+                    user.setPassword(newPass);
+                    ud.updateUser(user);
+                    out.println("Your password have been reset");
+//                    out.println("<a>Login</a>");
+                    return;
+                } else {
+                    out.println("The confirm-password is not match with the password!");
+                    return;
+                }
+
             }
         }
     }
@@ -140,9 +196,9 @@ public class UserController extends HttpServlet {
     public void sendResetMail(String userMail) {
         SystemEmail se = new SystemEmail();
         long milis = System.currentTimeMillis();
-        String confirmLink = "http://localhost:8080/QuizPracticingSystem/userController?service=confirmAccount&userMail="
+        String resetPassLink = "http://localhost:8080/QuizPracticingSystem/resetPass.jsp?userMail="
                 + userMail + "&createTime=" + milis;
-        se.sendEmail(userMail, "Confirm Your Account", confirmLink);
+        se.sendEmail(userMail, "Reset password link", resetPassLink);
     }
 
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {

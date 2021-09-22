@@ -6,10 +6,8 @@
 package dao;
 
 import bean.User;
-import dao.impl.DBConnection;
 import dao.impl.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -19,36 +17,37 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
-public class UserDAO extends MyDAO{
+public class UserDAO extends MyDAO {
 
     public ArrayList<User> getUserAllUser() {
         return null;
     }
+
     public User getUserLogin(String userMail, String password) {
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
         try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, userMail);
             ps.setString(2, password);
-            rs=ps.executeQuery();
+            rs = ps.executeQuery();
             if (rs.next()) {
                 return new User(rs.getInt("userId"),
-                            rs.getString("userName"),
-                            rs.getString("password"),
-                            rs.getInt("roleId"),
-                            rs.getString("profilePic"),
-                            rs.getString("userMail"),
-                            rs.getBoolean("gender"),
-                            rs.getString("userMobile"),
-                            rs.getBoolean("status"));
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
-    public User getUserById(int userId){
+
+    public User getUserById(int userId) {
         xSql = "SELECT * FROM [User] WHERE userId = ?";
         User user = null;
         try {
@@ -57,14 +56,14 @@ public class UserDAO extends MyDAO{
             rs = ps.executeQuery();
             while (rs.next()) {
                 user = new User(rs.getInt("userId"),
-                            rs.getString("userName"),
-                            rs.getString("password"),
-                            rs.getInt("roleId"),
-                            rs.getString("profilePic"),
-                            rs.getString("userMail"),
-                            rs.getBoolean("gender"),
-                            rs.getString("userMobile"),
-                            rs.getBoolean("status"));
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status"));
                 return user;
             }
         } catch (SQLException ex) {
@@ -72,8 +71,8 @@ public class UserDAO extends MyDAO{
         }
         return null;
     }
-    
-    public User getUserByMail(String userMail){
+
+    public User getUserByMail(String userMail) {
         xSql = "SELECT * FROM [User] WHERE userMail = ?";
         try {
             ps = conn.prepareStatement(xSql);
@@ -81,23 +80,22 @@ public class UserDAO extends MyDAO{
             rs = ps.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt("userId"),
-                            rs.getString("userName"),
-                            rs.getString("password"),
-                            rs.getInt("roleId"),
-                            rs.getString("profilePic"),
-                            rs.getString("userMail"),
-                            rs.getBoolean("gender"),
-                            rs.getString("userMobile"),
-                            rs.getBoolean("status"));
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
-    
-    public User getUserByMobile(String Moblie){
+
+    public User getUserByMobile(String Moblie) {
         xSql = "SELECT * FROM [User] WHERE userMobile = ?";
         try {
             ps = conn.prepareStatement(xSql);
@@ -105,35 +103,39 @@ public class UserDAO extends MyDAO{
             rs = ps.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt("userId"),
-                            rs.getString("userName"),
-                            rs.getString("password"),
-                            rs.getInt("roleId"),
-                            rs.getString("profilePic"),
-                            rs.getString("userMail"),
-                            rs.getBoolean("gender"),
-                            rs.getString("userMobile"),
-                            rs.getBoolean("status"));
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     public User getUser(String userMail, String password) {
         return null;
     }
-    
-    public int updateUser(User updatedUser){
-        return 0;
-    }
-    
-    public int changeStatus(int userId,boolean newStatus){
-        xSql = " UPDATE [User] set [status] = ? where userId = 6";
+
+    public int updateUser(User updatedUser) {
+        xSql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
         int check = 0;
         try {
             ps = conn.prepareStatement(xSql);
-            ps.setBoolean(1, newStatus);
+            ps.setString(1, updatedUser.getUserName());
+            ps.setString(2, updatedUser.getPassword());
+            ps.setInt(3, updatedUser.getRoleId());
+            ps.setString(4, updatedUser.getProfilePic());
+            ps.setString(5, updatedUser.getUserMail());
+            ps.setBoolean(6, updatedUser.isGender());
+            ps.setString(7, updatedUser.getUserMobile());
+            ps.setBoolean(8, updatedUser.isStatus());
+            ps.setInt(9, updatedUser.getUserId());
             check = ps.executeUpdate();
             return check;
         } catch (SQLException ex) {
@@ -141,10 +143,25 @@ public class UserDAO extends MyDAO{
         }
         return 0;
     }
-    
-    public int addUser(User newUser){
+
+    public int changeStatus(int userId, boolean newStatus) {
+        xSql = "UPDATE [User] set [status] = ? where userId = ?";
+        int check = 0;
+        try {
+            ps = conn.prepareStatement(xSql);
+            ps.setBoolean(1, newStatus);
+            ps.setInt(2, userId);
+            check = ps.executeUpdate();
+            return check;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public int addUser(User newUser) {
         xSql = "INSERT INTO [User](userName,[password],roleId,userMail,gender,userMobile,[status])"
-                        + "values(?,?,?,?,?,?,?)";
+                + "values(?,?,?,?,?,?,?)";
         int check = 0;
         try {
             ps = conn.prepareStatement(xSql);
@@ -159,10 +176,10 @@ public class UserDAO extends MyDAO{
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return check;
     }
-    
+
     public static void main(String[] args) {
         UserDAO ud = new UserDAO();
         User newUser = new User(0, "Duong", "12", 1, null, "duonghoang8801@gmail.com", true, "0852274855", true);
@@ -170,5 +187,5 @@ public class UserDAO extends MyDAO{
 //        User all = ud.getUserByMail("DuongNHHE150328@fpt.edu.vn");
 //        System.out.println(all.getUserName());
     }
-        
+
 }
