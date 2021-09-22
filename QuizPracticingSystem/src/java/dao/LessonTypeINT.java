@@ -5,10 +5,18 @@
  */
 package dao;
 
+import bean.LessonType;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface LessonTypeINT {
+    public ArrayList<LessonType> getAllLessonType();
+    public LessonType getLessonTypeById(int ltId);
+    public int addLessonType(LessonType newLessonType);
+    public int updateLessonType(LessonType updatedLessonType);
+    public int deleteLessonType(int ltId);
     
 }

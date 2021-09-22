@@ -5,10 +5,18 @@
  */
 package dao;
 
+import bean.PricePackage;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface PricePackageINT {
-    
+    public ArrayList<PricePackage> getAllPricePackage();
+    public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId);
+    public PricePackage getPricePackageById(int ppId);
+    public int addPricePackage(PricePackage newPricePackage);
+    public int updatePricePackage(PricePackage updatedPricePackage);
+    public int deletePricePackage(int ppId);
 }
