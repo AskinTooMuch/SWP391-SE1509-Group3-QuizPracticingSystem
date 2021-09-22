@@ -39,26 +39,27 @@ public class UserController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
             UserDAO ud = new UserDAO();
+            if (service.equalsIgnoreCase("login")) {
+                String userMail = request.getParameter("userMail");
+                String mess = "";
+                String password = request.getParameter("password");
+                User log = null;
+                UserDAO t = new UserDAO();
+                log = t.getUserLogin(userMail, password);
 
-//            String userMail = request.getParameter("userMail");
-//            String mess = "";
-//            String password = request.getParameter("password");
-//            User log = null;
-//            UserDAO t = new UserDAO();
-//            log = t.getUserLogin(userMail, password);
-//
-//            if (log == null) {
-//                mess = "Sorry, username and/or password are/is invalid!";
-//                sendDispatcher(request, response, "/login.html");
-//
-//            } else {
-//                request.getSession().setAttribute("currUser", log);
-//                request.getSession().setAttribute("role", log.getRoleId());
-//                sendDispatcher(request, response, "/Home.jsp");
-//
-//            }
-//            out.print(mess);
-//            request.getRequestDispatcher("/index.html").include(request, response);
+                if (log == null) {
+                    mess = "Sorry, username and/or password are/is invalid!";
+                    sendDispatcher(request, response, "/login.jsp");
+
+                } else {
+                    request.getSession().setAttribute("currUser", log);
+                    request.getSession().setAttribute("role", log.getRoleId());
+                    sendDispatcher(request, response, "jsp/Index.jsp");
+
+                }
+                out.print(mess);
+                request.getRequestDispatcher("/index.html").include(request, response);
+            }
             //register
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
@@ -92,8 +93,8 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
-                
-                if(ud.getUserByMobile(userMobile) != null){
+
+                if (ud.getUserByMobile(userMobile) != null) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);

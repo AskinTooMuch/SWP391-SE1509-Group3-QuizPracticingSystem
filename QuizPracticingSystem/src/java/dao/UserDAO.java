@@ -27,7 +27,7 @@ public class UserDAO extends MyDAO{
     public User getUserLogin(String userMail, String password) {
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);
             ps.setString(1, userMail);
             ps.setString(2, password);
             rs=ps.executeQuery();
