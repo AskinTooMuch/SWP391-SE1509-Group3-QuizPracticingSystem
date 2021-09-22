@@ -50,16 +50,16 @@ public class UserController extends HttpServlet {
 
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
-                    sendDispatcher(request, response, "/login.jsp");
+                    sendDispatcher(request, response, "/login/login.jsp");
 
                 } else {
                     request.getSession().setAttribute("currUser", log);
                     request.getSession().setAttribute("role", log.getRoleId());
-                    sendDispatcher(request, response, "jsp/Index.jsp");
+                    sendDispatcher(request, response, "index.jsp");
 
                 }
                 out.print(mess);
-                request.getRequestDispatcher("/index.html").include(request, response);
+                request.getRequestDispatcher("/index.jsp").include(request, response);
             }
 
             //register

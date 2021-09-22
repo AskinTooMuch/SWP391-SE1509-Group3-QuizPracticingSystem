@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Footer Page</title>
-        <link rel="stylesheet" href="../css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
         <script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
         <style>
             p{
@@ -27,7 +27,7 @@
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">GROUP TREE</h6>
-                    <img src="../images/FPT.jpg" style="width:60%">
+                    <img src="images/FPT.jpg" style="width:60%">
                 </div>
                 <!-- Grid column -->
           

@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Header Page</title>
-        <link rel="stylesheet" href="../css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
     </head>
     <body>
@@ -20,11 +20,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand">
-                    <img src="../images/logo-removebg-preview.png" alt="" width="80" height="40"></a>
+                    <img src="images/logo-removebg-preview.png" alt="" width="80" height="40"></a>
                 <div class="collapse navbar-collapse" id="1">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Index.jsp" style="font-weight: bold;">Home</a>
+                            <a class="nav-link active" aria-current="page" href="index.jsp" style="font-weight: bold;">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" style="font-weight: bold;">All Courses</a>
@@ -45,8 +45,8 @@
                         </div>
                     </form>
 
-                    <form class="form-inline">
-                        <a href="#" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
+                    <form class="form-inline" style="float:right">
+                        <a href="login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
                            role="button" aria-pressed="true">Login</a>
                         <a href="#" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
                            role="button" aria-pressed="true">Signup</a>
