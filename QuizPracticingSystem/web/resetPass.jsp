@@ -14,10 +14,11 @@
     <body>
         <%
             String userMail = (String) request.getParameter("userMail");
-            Long createTime = Long.parseLong((String) request.getParameter("createTime"));
-            Long currentTime = System.currentTimeMillis();
-            long timeDiff = (currentTime - createTime) / 1000 / 60;
-            if (timeDiff < 3) {
+            if (userMail != null) {
+                Long createTime = Long.parseLong((String) request.getParameter("createTime"));
+                Long currentTime = System.currentTimeMillis();
+                long timeDiff = (currentTime - createTime) / 1000 / 60;
+                if (timeDiff < 3) {
         %>
         <form action="userController" method="post">
             <p>Enter your new pass</p>
@@ -32,6 +33,16 @@
         } else {
         %>
         <p>Your link have over due</p>
+        <%
+            }
+        } else {
+        %>
+        <form action="userController" method="post">
+            <input type="hidden" name="service" value="resetPassword">
+            <p>Enter your email</p>
+            <input type="text" name="userMail" >
+            <input type="submit" value="Send">
+        </form>
         <%
             }
         %>

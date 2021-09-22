@@ -31,6 +31,8 @@
             <br><br>
             <input type="submit" value="Login">
         </form>
+        
+        <button><a href="userController?service=resetPassword"></a></button>
     
 </html>
 

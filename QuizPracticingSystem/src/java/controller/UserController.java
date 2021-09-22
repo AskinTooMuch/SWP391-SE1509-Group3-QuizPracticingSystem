@@ -82,7 +82,7 @@ public class UserController extends HttpServlet {
                 }
 
                 String mailRegex = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
-                if (!userMobile.matches(mailRegex)) {
+                if (false) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
