@@ -50,7 +50,7 @@ public class UserController extends HttpServlet {
 
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
-                    sendDispatcher(request, response, "jsp/login.jsp");
+                    sendDispatcher(request, response, "/login.jsp");
 
                 } else {
                     request.getSession().setAttribute("currUser", log);
@@ -77,7 +77,7 @@ public class UserController extends HttpServlet {
                 if (!password.equals(confirmPass)) {
                     mess = "The confirm-password is not match with the password!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("jsp/register.jsp").forward(request, response);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
@@ -85,21 +85,21 @@ public class UserController extends HttpServlet {
                 if (false) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("jsp/register.jsp").forward(request, response);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
                 if (ud.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("jsp/register.jsp").forward(request, response);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
                 if (ud.getUserByMobile(userMobile) != null) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("jsp/register.jsp").forward(request, response);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
@@ -107,7 +107,7 @@ public class UserController extends HttpServlet {
                 if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
                     mess = "The phone number is invalid";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("jsp/register.jsp").forward(request, response);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
@@ -142,12 +142,12 @@ public class UserController extends HttpServlet {
                 String userMail = request.getParameter("userMail");
                 if (ud.getUserByMail(userMail) == null) {
                     out.println("Email not existed!");
-                    request.getRequestDispatcher("jsp/resetPass.jsp").include(request, response);
+                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
                     return;
                 } else {
                     sendResetMail(userMail);
                     out.println("An reset password link have been sent to your email address");
-                    request.getRequestDispatcher("jsp/resetPass.jsp").include(request, response);
+                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
                     return;
                 }
             }
