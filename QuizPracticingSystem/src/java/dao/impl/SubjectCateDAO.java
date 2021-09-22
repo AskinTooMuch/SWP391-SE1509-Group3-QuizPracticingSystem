@@ -7,27 +7,63 @@ package dao.impl;
 
 import bean.SubjectCate;
 import dao.MyDAO;
+import dao.SubjectCateINT;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  *
  * @author admin
  */
-public class SubjectCateDAO extends MyDAO{
-    public ArrayList<SubjectCate> getAllSubjectCates(){
-        return null;
+public class SubjectCateDAO extends MyDAO implements SubjectCateINT{
+
+    @Override
+    public ArrayList<SubjectCate> getAllSubjectCates() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public SubjectCate getSubjectCateById(int scId){
-        return null;
+
+    @Override
+    public SubjectCate getSubjectCateById(int scId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public int updateSubjectCate(SubjectCate updatedSubjectCate){
-        return 0;
+
+    @Override
+    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) {
+    /* Getcategory list of the subject */
+        ArrayList<SubjectCate> categories = new ArrayList<>();
+        String sql = "SELECT C.[subjectId]\n" +
+                    "      ,C.[cateId]\n" +
+                    "	   ,S.[status]\n" +
+                    "	   ,S.subjectCateName\n" +
+                    "  FROM [QuizSystem].[dbo].[CategorySubject] C \n" +
+                    "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n" +
+                    "  ON C.cateId = S.subjectCateId WHERE C.subjectId =" + subjectId;
+        try {
+        PreparedStatement pre = conn.prepareStatement(sql);
+        rs = pre.executeQuery();
+        while (rs.next()) {
+            categories.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
+        }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return categories;
     }
-    
-    public int deteleSubjectCate(int scId){
-        return 0;
+
+    @Override
+    public int updateSubjectCate(SubjectCate updatedSubjectCate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public int deteleSubjectCate(int scId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    /* Test DAO */
+//    public static void main(String[] args) {
+//        SubjectCateDAO dao = new SubjectCateDAO();
+//        System.out.println(dao.getSubjectCateBySubject(3).size());
+//    }
 }

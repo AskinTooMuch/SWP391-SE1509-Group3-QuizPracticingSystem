@@ -5,6 +5,8 @@
  */
 package bean;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
@@ -12,27 +14,42 @@ package bean;
 public class Subject {
     private int subjectId;
     private String subjectName;
-    private int cateId;
     private String description;
     private String thumbnail;
     private boolean featuredSubject;
     private boolean status;
-    
+    private ArrayList<Dimension> dimensions;
+    private ArrayList<SubjectCate> categories; 
 
     public Subject() {
     }
 
-    public Subject(int subjectId, String subjectName, int cateId, String description, String thumbnail, boolean featuredSubject, boolean status) {
+    public Subject(int subjectId, String subjectName, String description, String thumbnail, boolean featuredSubject, boolean status, ArrayList<Dimension> dimensions,  ArrayList<SubjectCate> categories) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;
-        this.cateId = cateId;
         this.description = description;
         this.thumbnail = thumbnail;
         this.featuredSubject = featuredSubject;
         this.status = status;
+        this.dimensions = dimensions;
+        this.categories = categories;
     }
 
-    
+    public ArrayList<SubjectCate> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(ArrayList<SubjectCate> categories) {
+        this.categories = categories;
+    }
+
+    public ArrayList<Dimension> getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(ArrayList<Dimension> dimensions) {
+        this.dimensions = dimensions;
+    }
 
     public int getSubjectId() {
         return subjectId;
@@ -40,14 +57,6 @@ public class Subject {
 
     public void setSubjectId(int subjectId) {
         this.subjectId = subjectId;
-    }
-
-    public int getCateId() {
-        return cateId;
-    }
-
-    public void setCateId(int cateId) {
-        this.cateId = cateId;
     }
 
     public boolean isFeaturedSubject() {

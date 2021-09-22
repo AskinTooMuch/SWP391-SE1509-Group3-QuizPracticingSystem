@@ -5,10 +5,21 @@
  */
 package dao;
 
+import bean.SubjectCate;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface SubjectCateINT {
+    public ArrayList<SubjectCate> getAllSubjectCates();
     
+    public SubjectCate getSubjectCateById(int scId);
+    
+    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId);
+    
+    public int updateSubjectCate(SubjectCate updatedSubjectCate);
+    
+    public int deteleSubjectCate(int scId);
 }
