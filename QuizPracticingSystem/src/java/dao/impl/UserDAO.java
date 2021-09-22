@@ -7,6 +7,7 @@ package dao.impl;
 
 import bean.User;
 import dao.MyDAO;
+import dao.UserINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
-public class UserDAO extends MyDAO {
+public class UserDAO extends MyDAO implements UserINT{
 
+    @Override
     public ArrayList<User> getUserAllUser() {
         return null;
     }
 
+    @Override
     public User getUserLogin(String userMail, String password) {
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
         try {
@@ -47,6 +50,7 @@ public class UserDAO extends MyDAO {
         return null;
     }
 
+    @Override
     public User getUserById(int userId) {
         xSql = "SELECT * FROM [User] WHERE userId = ?";
         User user = null;
@@ -72,6 +76,7 @@ public class UserDAO extends MyDAO {
         return null;
     }
 
+    @Override
     public User getUserByMail(String userMail) {
         xSql = "SELECT * FROM [User] WHERE userMail = ?";
         try {
@@ -95,6 +100,7 @@ public class UserDAO extends MyDAO {
         return null;
     }
 
+    @Override
     public User getUserByMobile(String Moblie) {
         xSql = "SELECT * FROM [User] WHERE userMobile = ?";
         try {
@@ -118,10 +124,12 @@ public class UserDAO extends MyDAO {
         return null;
     }
 
+    @Override
     public User getUser(String userMail, String password) {
         return null;
     }
 
+    @Override
     public int updateUser(User updatedUser) {
         xSql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
         int check = 0;
@@ -144,6 +152,7 @@ public class UserDAO extends MyDAO {
         return 0;
     }
 
+    @Override
     public int changeStatus(int userId, boolean newStatus) {
         xSql = "UPDATE [User] set [status] = ? where userId = ?";
         int check = 0;
@@ -159,6 +168,7 @@ public class UserDAO extends MyDAO {
         return 0;
     }
 
+    @Override
     public int addUser(User newUser) {
         xSql = "INSERT INTO [User](userName,[password],roleId,userMail,gender,userMobile,[status])"
                 + "values(?,?,?,?,?,?,?)";

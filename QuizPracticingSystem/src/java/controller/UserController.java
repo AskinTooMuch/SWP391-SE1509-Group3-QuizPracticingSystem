@@ -6,6 +6,7 @@
 package controller;
 
 import bean.*;
+import dao.UserINT;
 import dao.impl.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,7 +38,7 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            UserDAO ud = new UserDAO();
+            UserINT ud = new UserDAO();
             if (service.equalsIgnoreCase("login")) {
                 String userMail = request.getParameter("userMail");
                 String mess = "";
@@ -91,7 +92,7 @@ public class UserController extends HttpServlet {
                     return;
                 }
 
-                if (ud.getUserByMail(userMail) != null) {
+                if ( ud.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);

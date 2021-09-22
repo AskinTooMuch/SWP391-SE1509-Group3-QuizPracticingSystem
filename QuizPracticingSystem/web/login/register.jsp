@@ -19,7 +19,7 @@
         <%
             }
         %>
-        <form action="userController" method="POST">
+        <form action="../userController" method="POST">
             <p>Username:</p>
             <input type="text" name="userName">
             <p>Password:</p>
