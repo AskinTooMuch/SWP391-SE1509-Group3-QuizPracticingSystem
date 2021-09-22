@@ -6,7 +6,8 @@
 package controller;
 
 import bean.*;
-import dao.*;
+import dao.impl.BlogDAO;
+import dao.impl.PostCateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

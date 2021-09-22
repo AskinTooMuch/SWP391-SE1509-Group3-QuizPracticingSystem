@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dao.impl;
 
 import bean.Question;
 import java.util.ArrayList;
-import dao.impl.MyDAO;
+import dao.MyDAO;
 
 /**
  *

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dao.impl;
 
 import bean.Blog;
 import java.util.ArrayList;
 import bean.PostCate;
-import dao.impl.MyDAO;
+import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
