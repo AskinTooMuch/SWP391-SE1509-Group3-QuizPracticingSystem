@@ -47,7 +47,7 @@ public class UserController extends HttpServlet {
                 UserDAO t = new UserDAO();
                 log = t.getUserLogin(userMail, password);
 
-<<<<<<< Updated upstream
+
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
                     sendDispatcher(request, response, "/login.jsp");
@@ -61,28 +61,7 @@ public class UserController extends HttpServlet {
                 out.print(mess);
                 request.getRequestDispatcher("/index.html").include(request, response);
             }
-=======
-//            String userMail = request.getParameter("userMail");
-//            String mess = "";
-//            String password = request.getParameter("password");
-//            User log = null;
-//            UserDAO t = new UserDAO();
-//            log = t.getUserLogin(userMail, password);
-//
-//            if (log == null) {
-//                mess = "Sorry, username and/or password are/is invalid!";
-//                sendDispatcher(request, response, "/login.html");
-//
-//            } else {
-//                request.getSession().setAttribute("currUser", log);
-//                request.getSession().setAttribute("role", log.getRoleId());
-//                sendDispatcher(request, response, "/Home.jsp");
-//
-//            }
-//            out.print(mess);
-//            request.getRequestDispatcher("/index.html").include(request, response);
-            
->>>>>>> Stashed changes
+
             //register
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
