@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.Blog;
+import dao.BlogINT;
 import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
@@ -17,8 +18,9 @@ import java.util.List;
  *
  * @author ChucNVHE150618
  */
-public class BlogDAO extends MyDAO {
+public class BlogDAO extends MyDAO implements BlogINT{
 
+    @Override
     public ArrayList<Blog> getAllBlog() {
         ArrayList<Blog> allBlog = new ArrayList();
 
@@ -43,6 +45,7 @@ public class BlogDAO extends MyDAO {
         return allBlog;
     }
 
+    @Override
     public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) {
         ArrayList<Blog> blogList = new ArrayList();
         int[] cateList = null;
@@ -74,6 +77,7 @@ public class BlogDAO extends MyDAO {
         return blogList;
     }
 
+    @Override
     public ArrayList<Blog> getBlogByUser(int userId) {
         ArrayList<Blog> userBlog = new ArrayList();
         String sql = "SELECT * FROM Blog WHERE author =" + userId;
@@ -96,6 +100,7 @@ public class BlogDAO extends MyDAO {
         return userBlog;
     }
 
+    @Override
     public Blog getBlogById(int blogId) {
 
         String sql = "SELECT * FROM Blog WHERE blogId =" + blogId;
@@ -118,6 +123,7 @@ public class BlogDAO extends MyDAO {
         return null;
     }
 
+    @Override
     public ArrayList<Blog> getBlogByTitle(String title) {
         ArrayList<Blog> titleBlog = new ArrayList();
         String sql = "SELECT * FROM [Blog] WHERE blogTitle like '%" + title + "%'";
@@ -140,6 +146,7 @@ public class BlogDAO extends MyDAO {
         return titleBlog;
     }
 
+    @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
         ArrayList<Blog> blogList = new ArrayList();
         String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE 1=1";
@@ -177,6 +184,7 @@ public class BlogDAO extends MyDAO {
         return blogList;
     }
 
+    @Override
     public int editBlog(int blogId, Blog blog) {
         String sql = "UPDATE [Blog] SET blogTitle =?, created =?, lastEdited =?, author =?, detail =?, thumbnail =?, status =? WHERE blogId =?";
         try {
@@ -195,6 +203,7 @@ public class BlogDAO extends MyDAO {
         return 0;
     }
 
+    @Override
     public int addBlog(Blog blog) {
         String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?,?)";
         try {
@@ -214,6 +223,7 @@ public class BlogDAO extends MyDAO {
         return 0;
     }
 
+    @Override
     public int deleteBlog(int blogId) {
         String sql = "DELETE FROM [Blog] WHERE blogId =" + blogId;
         try {
@@ -225,7 +235,8 @@ public class BlogDAO extends MyDAO {
         return 0;
     }
 
-    public ArrayList<Blog> Paging(int page, List<Blog> list) {
+    @Override
+    public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) {
         int start, end;
         int numberpage = 9;
         start = (page - 1) * numberpage;
@@ -240,5 +251,6 @@ public class BlogDAO extends MyDAO {
         }
         return t;
     }
+
 
 }

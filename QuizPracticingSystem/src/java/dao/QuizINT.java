@@ -5,10 +5,23 @@
  */
 package dao;
 
+import bean.Quiz;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface QuizINT {
+    public ArrayList<Quiz> getAllQuiz();
     
+    public ArrayList<Quiz> getQuizBySubject(int subjectId);
+    
+    public ArrayList<Quiz> getQuizByLesson(int lessonId);
+    
+    public int editQuiz(int quizId, Quiz quiz);
+    
+    public int addQuiz(Quiz quiz);
+    
+    public int deleteQuiz(int quizId);
 }
