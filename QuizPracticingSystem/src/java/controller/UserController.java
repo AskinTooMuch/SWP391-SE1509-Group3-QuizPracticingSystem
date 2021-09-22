@@ -161,7 +161,7 @@ public class UserController extends HttpServlet {
                     user.setPassword(newPass);
                     ud.updateUser(user);
                     out.println("Your password have been reset");
-//                    out.println("<a>Login</a>");
+                    out.println("<a href="+ "jsp/login.jsp" + ">Login</a>");
                     return;
                 } else {
                     out.println("The confirm-password is not match with the password!");
