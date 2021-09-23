@@ -121,15 +121,19 @@
             </div>
             <br><hr>
             <div>
+                <%-- Print course list --%>
                 <h1>Trending Courses</h1>
                 <c:choose>
+                    <%-- Case 1: subjectList is empty --%>
                     <c:when test = "${empty subjectList}">
                         <div class="row">
                             <h5>We currently don't have any course. Feels Knowledgeable? Contact us and add your own course!</h5>
                         </div>
                     </c:when>
+                    <%-- Case 2: subjectList have subject number less than 4 --%>
                     <c:when test = "${subjectList.size()<4}">
                         <div class="row">
+                        <%-- Print available subject --%>
                         <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
                             <div class="col-md-3">
                                 <div class="card h-100">
@@ -143,12 +147,13 @@
                                 </div>
                             </div>
                         </c:forEach>
+                        <%-- Print Subject placeholder card --%>
                         <c:forEach items = "Null" var="subject" begin = "${subjectList.size()-1}" end = "3">
                             <div class="col-md-3">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <h5 class="card-title">Currently Not Available</h5>
-                                        <p class="card-text" style="overflow: hidden"><c:out value= "Feels Knowledgeable? Contact us and add your own course!"/></p>
+                                        <p class="card-text" style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
                                     </div>
                                     <div class="card-footer">
                                     </div>
@@ -157,6 +162,7 @@
                         </c:forEach>
                         </div>
                     </c:when>
+                    <%-- Case 3: subjectList has 4 or more elements --%>
                     <c:otherwise>
                         <div class="row">
                         <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
@@ -164,7 +170,7 @@
                                 <div class="card h-100">
                                     <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
                                     <div class="card-body">
-                                        <h5 class="card-title"><c:out value = "${subject.getSubjectName()}"/></h5>
+                                        <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
                                         <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
                                     </div>
                                     <div class="card-footer">
