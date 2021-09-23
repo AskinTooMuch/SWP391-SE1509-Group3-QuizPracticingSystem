@@ -232,16 +232,17 @@ public class BlogDAO extends MyDAO implements BlogINT {
 
     @Override
     public int addBlog(Blog blog) {
-        String sql = "INSERT INTO Blog(blogTitle,created,lastEdited,author,detail,thumbnail,[status]) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?,?)";
         try {
             ps = conn.prepareStatement(sql);
-            ps.setString(1, blog.getBlogTitle());
-            ps.setDate(2, blog.getCreated());
-            ps.setDate(3, blog.getLastEdited());
-            ps.setInt(4, blog.getAuthor());
-            ps.setString(5, blog.getDetail());
-            ps.setString(6, blog.getThumbnail());
-            ps.setInt(7, blog.getStatus() == true ? 1 : 0);
+            ps.setInt(1, blog.getBlogId());
+            ps.setString(2, blog.getBlogTitle());
+            ps.setDate(3, blog.getCreated());
+            ps.setDate(4, blog.getLastEdited());
+            ps.setInt(5, blog.getAuthor());
+            ps.setString(6, blog.getDetail());
+            ps.setString(7, blog.getThumbnail());
+            ps.setInt(8, blog.getStatus() == true ? 1 : 0);
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
