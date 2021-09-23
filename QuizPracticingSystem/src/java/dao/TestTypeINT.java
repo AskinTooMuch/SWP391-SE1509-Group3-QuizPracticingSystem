@@ -5,10 +5,22 @@
  */
 package dao;
 
+import bean.TestType;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface TestTypeINT {
     
+    public ArrayList<TestType> getAllTestTypes();
+    
+    public TestType getTestTypeById(int ttId);
+    
+    public int updateTestType (TestType updatedTestType);
+    
+    public int deleteTestType(int ttId);
+    
+    public int addTestType(TestType newTestType);
 }

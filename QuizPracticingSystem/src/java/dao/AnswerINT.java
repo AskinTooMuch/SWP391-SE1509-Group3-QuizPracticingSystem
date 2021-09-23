@@ -5,10 +5,24 @@
  */
 package dao;
 
+import bean.Answer;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface AnswerINT {
     
+    public ArrayList<Answer> getAllAnswers();
+    
+    public ArrayList<Answer> getAnswersByQuenstionId(int qId);
+    
+    public int deleteAnswerById(int aId);
+    
+    public int deleteAnswerByQuestionId( int qId);
+    
+    public int updateAnswer(Answer updatedAns);
+    
+    public int addAnswer(Answer newAns);
 }
