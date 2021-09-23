@@ -178,7 +178,7 @@ public class UserController extends HttpServlet {
     public void sendResetMail(String userMail) {
         SystemEmail se = new SystemEmail();
         long milis = System.currentTimeMillis();
-        String resetPassLink = "http://localhost:8080/QuizPracticingSystem/resetPass.jsp?userMail="
+        String resetPassLink = "http://localhost:8080/QuizPracticingSystem/login/resetPass.jsp?userMail="
                 + userMail + "&createTime=" + milis;
         se.sendEmail(userMail, "Reset password link", resetPassLink);
     }

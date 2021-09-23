@@ -52,7 +52,7 @@
                             <div class="form-inline" style="float:right">
                                 <a href="login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
                                    role="button" aria-pressed="true">Login</a>
-                                <a href="#" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
+                                <a href="login/register.jsp" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
                                    role="button" aria-pressed="true">Signup</a>
                             </div>
                     <%  }  else { %>
