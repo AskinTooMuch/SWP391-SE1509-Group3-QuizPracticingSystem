@@ -99,4 +99,15 @@ public class Subject {
         this.thumbnail = thumbnail;
     }
     
+    public String toString(){
+        return ("Id: " + this.subjectId +
+                "/nName: " + this.subjectName +
+                "/nDescription: " + this.description + 
+                "/nThumbnail: " + this.thumbnail + 
+                "/nFeatured: " + featuredSubject + 
+                "/nStatus: " + status +
+                "/nCategory: " + categories.size() +
+                "/nDimension: " + dimensions.size());
+    }
+    
 }

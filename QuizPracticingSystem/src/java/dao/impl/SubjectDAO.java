@@ -6,7 +6,9 @@
 package dao.impl;
 
 import bean.Subject;
+import dao.DimensionINT;
 import dao.MyDAO;
+import dao.SubjectCateINT;
 import dao.SubjectINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,8 +23,8 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
     /* Get all subject in the Subject table */
     public ArrayList<Subject> getAllSubjects(){
         ArrayList<Subject> allSubject = new ArrayList();
-        DimensionDAO dimensionDAO = new DimensionDAO();
-        SubjectCateDAO subjectCateDAO = new SubjectCateDAO();
+        DimensionINT dimensionDAO = new DimensionDAO();
+        SubjectCateINT subjectCateDAO = new SubjectCateDAO();
         
         String sqlSubject = "SELECT * FROM [Subject]";
         
@@ -52,8 +54,8 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
     @Override
     public Subject getSubjectbyId(int subjectId){
         Subject subjectById = null;
-        DimensionDAO dimensionDAO = new DimensionDAO();
-        SubjectCateDAO subjectCateDAO = new SubjectCateDAO();
+        DimensionINT dimensionDAO = new DimensionDAO();
+        SubjectCateINT subjectCateDAO = new SubjectCateDAO();
         
         String sqlSubject = "SELECT * FROM [Subject] WHERE [subjectId] = "+subjectId;
         
@@ -122,13 +124,11 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
     /* Test DAO */
 //    public static void main(String[] args) {
 //        SubjectDAO dao = new SubjectDAO();
-//        ArrayList<Subject> subjectByCate = dao.getSubjectbyCateId(8);
+//        ArrayList<Subject> subjectByCate = dao.getAllSubjects();
 //        for (Subject subject : subjectByCate) {
 //            if (subject==null) System.out.println("null");
 //            else {
-//                System.out.println(subject.getSubjectId());
-//                System.out.println(subject.getCategories().size());
-//                System.out.println(subject.getDimensions().size());
+//                System.out.println(subject.toString());
 //            }
 //        }
 //    }
