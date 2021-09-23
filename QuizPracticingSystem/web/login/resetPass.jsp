@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,39 +13,39 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-            String userMail = (String) request.getParameter("userMail");
-            if (userMail != null) {
-                Long createTime = Long.parseLong((String) request.getParameter("createTime"));
-                Long currentTime = System.currentTimeMillis();
-                long timeDiff = (currentTime - createTime) / 1000 / 60;
-                if (timeDiff < 3) {
-        %>
-        <form action="userController" method="post">
-            <p>Enter your new pass</p>
-            <input type="password" name="newPass">
-            <p>Re-Enter your new pass</p>
-            <input type="password" name="confirmNewPass">
-            <input type="hidden" name="service" value="resetPage">
-            <input type="hidden" name="userMail" value="<%=userMail%>">
-            <input type="submit" value="Confirm">
-        </form>>
-        <%
-        } else {
-        %>
-        <p>Your link have over due</p>
-        <%
-            }
-        } else {
-        %>
-        <form action="userController" method="post">
-            <input type="hidden" name="service" value="resetPassword">
-            <p>Enter your email</p>
-            <input type="text" name="userMail" >
-            <input type="submit" value="Send">
-        </form>
-        <%
-            }
-        %>
+        <c:set var="userMail" value="${ param.userMail }"/>
+        <c:choose >
+            <c:when  test="${ userMail != null }">
+                <c:set var="currentTime" value="${System.currentTimeMillis() }"/>
+                <c:set var="createTime" value="${ param.createTime }"/>
+                <c:choose>
+                    <c:when test = "${ ((currentTim - createTime) / 1000 / 60) < 3 }">
+                        <form action="../userController" method="post">
+                            <p>Enter your new pass</p>
+                            <input type="password" name="newPass">
+                            <p>Re-Enter your new pass</p>
+                            <input type="password" name="confirmNewPass">
+                            <input type="hidden" name="service" value="resetPage">
+                            <input type="hidden" name="userMail" value="<c:out value="${userMail}"></c:out>">
+                                <input type="submit" value="Confirm">
+                            </form>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Your link have over due</p>
+                    </c:otherwise>
+                </c:choose>    
+            </c:when>
+            <c:otherwise>
+                <form action="../userController" method="post">
+                    <input type="hidden" name="service" value="resetPassword">
+                    <p>Enter your email</p>
+                    <input type="text" name="userMail" >
+                    <input type="submit" value="Send">
+                </form>
+            </c:otherwise>
+        </c:choose>
+
+
+        
     </body>
 </html>

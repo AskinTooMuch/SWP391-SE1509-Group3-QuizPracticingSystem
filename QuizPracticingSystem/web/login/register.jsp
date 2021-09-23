@@ -4,6 +4,7 @@
     Author     : Admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,20 +13,17 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% String mess = (String) request.getAttribute("mess");
-            if (mess != null) {
-        %>
-        <p> <%=mess%> </p>
-        <%
-            }
-        %>
+        <c:if test="${mess == null}">
+            <c:out value="${mess}"></c:out>
+        </c:if>
+
         <form action="../userController" method="POST">
             <p>Username:</p>
             <input type="text" name="userName">
             <p>Password:</p>
-            <input type="text" name="password">
+            <input type="password" name="password">
             <p>Confirm your password:</p>
-            <input type="text" name="confirmPass">
+            <input type="password" name="confirmPass">
             <p>Email address:</p>
             <input type="text" name="userMail">
             <p>Phone number:</p>
@@ -37,5 +35,6 @@
             <br>
             <input type="submit" value="Register">
         </form>
+
     </body>
 </html>
