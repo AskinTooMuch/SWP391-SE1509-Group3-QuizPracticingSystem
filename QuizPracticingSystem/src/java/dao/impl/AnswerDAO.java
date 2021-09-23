@@ -7,6 +7,8 @@ package dao.impl;
 import bean.*;
 import dao.AnswerINT;
 import dao.MyDAO;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 /**
  *
@@ -20,8 +22,23 @@ public class AnswerDAO extends MyDAO implements AnswerINT{
     }
     
     @Override
-    public ArrayList<Answer> getAnswersByQuenstionId(int qId){
-        return null;
+    public ArrayList<Answer> getAnswersByQuenstionId(int questionId){
+        ArrayList<Answer> answerList = new ArrayList();
+        String sql="SELECT * FROM Answer WHERE questionId="+questionId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                answerList.add(new Answer(rs.getInt("answerId"),
+                rs.getInt("questionId"),
+                rs.getString("answerContent"),
+                rs.getBoolean("isCorrect"),
+                rs.getBoolean("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return answerList;
     }
     
     @Override
@@ -43,4 +60,5 @@ public class AnswerDAO extends MyDAO implements AnswerINT{
     public int addAnswer(Answer newAns){
         return 0;
     }
+    
 }
