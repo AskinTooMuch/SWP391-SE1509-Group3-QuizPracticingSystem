@@ -5,10 +5,21 @@
  */
 package dao;
 
+import bean.PostCate;
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
  */
 public interface PostCateINT {
-    
+     public ArrayList<PostCate> getAllPostCates();
+     
+     public PostCate getPostCateById(int pcId);
+     
+     public int updatePostCate(PostCate updatedPostCate);
+     
+     public int deletePostCate(int pcId);
+     
+     public int addPostCate(PostCate newPostCate);
 }

@@ -6,6 +6,8 @@
 package dao.impl;
 
 import bean.Blog;
+import bean.PostCate;
+import bean.User;
 import dao.BlogINT;
 import java.util.ArrayList;
 import dao.MyDAO;
@@ -18,7 +20,7 @@ import java.util.List;
  *
  * @author ChucNVHE150618
  */
-public class BlogDAO extends MyDAO implements BlogINT{
+public class BlogDAO extends MyDAO implements BlogINT {
 
     @Override
     public ArrayList<Blog> getAllBlog() {
@@ -145,26 +147,51 @@ public class BlogDAO extends MyDAO implements BlogINT{
         }
         return titleBlog;
     }
+@Override
+    public ArrayList<Blog> getAllTrueBlog() {
+        ArrayList<Blog> allTrueBlog = new ArrayList();
+
+        String sql = "SELECT * FROM [Blog] where status = 1 ORDER BY created DESC";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                allTrueBlog.add(new Blog(rs.getInt("blogId"),
+                        rs.getString("blogTitle"),
+                        rs.getDate("created"),
+                        rs.getDate("lastEdited"),
+                        rs.getInt("author"),
+                        rs.getString("detail"),
+                        rs.getString("thumbnail"),
+                        rs.getBoolean("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return allTrueBlog;
+    }
 
     @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
         ArrayList<Blog> blogList = new ArrayList();
-        String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE 1=1";
+        String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE a.status = 1";
         if (postCateIdList != null) {
-            int[] cateList = null;
+            int[] cateList = new int[postCateIdList.length];
             for (int i = 0; i < postCateIdList.length; i++) {
                 cateList[i] = Integer.parseInt(postCateIdList[i]);
             }
             sql += " AND b.postCateId in (";
             for (int i = 0; i < cateList.length; i++) {
-                sql += "," + cateList[i];
+                sql += cateList[i] + ",";
             }
+            sql += cateList[postCateIdList.length - 1];
             sql += ")";
         }
         if (search != null) {
             sql += " AND a.blogTitle like '%" + search + "%'";
         }
-        sql += "ORDER BY created DESC";
+        sql += " ORDER BY created DESC";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
@@ -236,6 +263,48 @@ public class BlogDAO extends MyDAO implements BlogINT{
     }
 
     @Override
+    public User getAuthor(int blogId) {
+
+        String sql = "SELECT b.userId,b.userName,b.password,b.roleId,b.profilePic,b.userMail,b.gender,b.userMobile,b.status "
+                + "FROM Blog as a right join [User] as b on a.author=b.userId WHERE a.blogId=" + blogId;
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    @Override
+    public PostCate getBlogCategory(int blogId) {
+        String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new PostCate(rs.getInt("postCateId"),
+                        rs.getString("postCateName"),
+                        rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    @Override
     public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) {
         int start, end;
         int numberpage = 9;
@@ -252,5 +321,13 @@ public class BlogDAO extends MyDAO implements BlogINT{
         return t;
     }
 
+    public static void main(String[] args) {
+        BlogDAO dao = new BlogDAO();
+        String[] a = {"1", "2"};
+        List<Blog> list = dao.getBlogByCategoryAndTitle(null, "A");
+        for (Blog o : list) {
+            System.out.println(o);
+        }
+    }
 
 }

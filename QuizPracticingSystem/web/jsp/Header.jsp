@@ -31,7 +31,7 @@
                             <a class="nav-link" href="#" style="font-weight: bold;">All Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-weight: bold;">Blog</a>
+                            <a class="nav-link" href="marketingController?service=blogList" style="font-weight: bold;">Blog</a>
                         </li>
 
                     </ul>

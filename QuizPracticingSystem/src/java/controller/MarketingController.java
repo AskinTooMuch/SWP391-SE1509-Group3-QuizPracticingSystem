@@ -6,6 +6,8 @@
 package controller;
 
 import bean.*;
+import dao.BlogINT;
+import dao.PostCateINT;
 import dao.impl.BlogDAO;
 import dao.impl.PostCateDAO;
 import java.io.IOException;
@@ -31,8 +33,8 @@ public class MarketingController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    BlogDAO blogDAO = new BlogDAO();
-    PostCateDAO postCateDAO = new PostCateDAO();
+    BlogINT blogDAO = new BlogDAO();
+    PostCateINT postCateDAO = new PostCateDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,39 +44,49 @@ public class MarketingController extends HttpServlet {
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("blogList")) {
+                ArrayList<Blog> blogList = blogDAO.getAllTrueBlog();
+                //Tim kiem theo category va search
                 String[] cate = request.getParameterValues("category");
-                String page_raw = request.getParameter("page");
-                String search = request.getParameter("search");
+                String searchString = request.getParameter("search");
+                if ((cate != null) || (searchString != null)) {
+                    blogList = blogDAO.getBlogByCategoryAndTitle(cate, searchString);
+                    //phan trang
+                    String pagingUrl = "";
+                    if (cate != null) {
+                        for (String category : cate) {
+                            pagingUrl += "&category=" + category;
+                        }
+                    }
+                    if (searchString != null) {
+                        pagingUrl += "&search=" + searchString;
+                    }
+                    request.setAttribute("pagingUrl", pagingUrl);
+                }
+                String pageRaw = request.getParameter("page");
                 int page;
-                if (page_raw == null) page = 1;
-                else page = Integer.parseInt(page_raw);
-                ArrayList<Blog> blogList;
-                blogList = blogDAO.getAllBlog();
-                if (search != null || cate != null) {
-                    blogList = blogDAO.getBlogByCategoryAndTitle(cate, search);
+                if (pageRaw == null) {
+                    page = 1;
+                } else {
+                    page = Integer.parseInt(pageRaw);
                 }
-                int size = blogList.size();
-                int pagenum = (size % 9 == 0) ? (size / 9) : (size / 9 + 1);
-                String alterUrl = "";
-                for (String c : cate) {
-                    alterUrl += "&category=" + c;
-                }
-                alterUrl += "%search=" + search;
+                int listSize = blogList.size();
+                int pageNumber = (listSize % 9 == 0) ? (listSize / 9) : (listSize / 9 + 1);
                 ArrayList<Blog> paginatedBlogList = blogDAO.Paging(page, blogList);
                 ArrayList<PostCate> postCateList = postCateDAO.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
                 request.setAttribute("blogList", paginatedBlogList);
-                request.setAttribute("alterUrl", alterUrl);
-                request.setAttribute("pagenum", pagenum);
+                request.setAttribute("pagenum", pageNumber);
                 request.setAttribute("page", page);
-                request.getRequestDispatcher("blogList.jsp").forward(request, response);
+                request.getRequestDispatcher("jsp/blogList.jsp").forward(request, response);
             }
 
             if (service.equalsIgnoreCase("blogDetail")) {
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
                 Blog blog = blogDAO.getBlogById(blogId);
                 request.setAttribute("blog", blog);
-                request.getRequestDispatcher("blogDetail.jsp").forward(request, response);
+                ArrayList<PostCate> postCateList = postCateDAO.getAllPostCates();
+                request.setAttribute("postCateList", postCateList);
+                request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
         }
     }
@@ -91,7 +103,9 @@ public class MarketingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         processRequest(request, response);
+
     }
 
     /**

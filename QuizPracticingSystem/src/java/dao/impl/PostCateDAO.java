@@ -9,15 +9,19 @@ import bean.Blog;
 import java.util.ArrayList;
 import bean.PostCate;
 import dao.MyDAO;
+import dao.PostCateINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author duong
  */
-public class PostCateDAO extends MyDAO{
-    public ArrayList<PostCate> getAllPostCates(){
+public class PostCateDAO extends MyDAO implements PostCateINT {
+
+    @Override
+    public ArrayList<PostCate> getAllPostCates() {
         ArrayList<PostCate> allPostCate = new ArrayList();
         String sql = "SELECT * FROM [PostCate] ";
         try {
@@ -33,9 +37,9 @@ public class PostCateDAO extends MyDAO{
         }
         return allPostCate;
     }
-    
-    
-    public PostCate getPostCateById(int pcId){
+
+    @Override
+    public PostCate getPostCateById(int pcId) {
         String sql = "SELECT * FROM Blog [PostCate] WHERE postCateId =" + pcId;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -50,16 +54,19 @@ public class PostCateDAO extends MyDAO{
         }
         return null;
     }
-    
-    public int updatePostCate(PostCate updatedPostCate){
+
+    @Override
+    public int updatePostCate(PostCate updatedPostCate) {
         return 0;
     }
-    
-    public int deletePostCate(int pcId){
+
+    @Override
+    public int deletePostCate(int pcId) {
         return 0;
     }
-    
-    public int addPostCate(PostCate newPostCate){
+
+    @Override
+    public int addPostCate(PostCate newPostCate) {
         return 0;
     }
 }
