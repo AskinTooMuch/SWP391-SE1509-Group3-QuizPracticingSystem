@@ -4,7 +4,10 @@
     Author     : tuan
 --%>
 
+<%@page import="bean.Subject"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,6 +22,10 @@
           <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
+        
+        <c:if test = "${subjectList == null}">
+            <c:redirect url="homeController"/>
+        </c:if>
         <div class="wrap">
             <jsp:include page="jsp/Header.jsp"/>
             <div class="main">

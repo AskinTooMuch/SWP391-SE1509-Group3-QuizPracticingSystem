@@ -5,8 +5,19 @@
  */
 package controller;
 
+import bean.Subject;
+import dao.BlogINT;
+import dao.SubjectINT;
+import dao.UserINT;
+import dao.impl.BlogDAO;
+import dao.impl.SubjectDAO;
+import dao.impl.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +42,19 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            String service = request.getParameter("service");
+            if (service==null) service="homePage";
             
+            UserINT userDao = new UserDAO();
+            BlogINT blogDao = new BlogDAO();
+            SubjectINT subjectDao = new SubjectDAO();
+            //SliderINT sliderDao = new SliderDAO();
+            /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/
+            if (service.equalsIgnoreCase("homePage")) {
+                ArrayList<Subject> subjectList = subjectDao.getAllSubjects();
+                request.setAttribute("subjectList", subjectList);
+                sendDispatcher(request, response, "index.jsp");
+            }
         }
     }
 
@@ -74,5 +96,15 @@ public class HomeController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
 
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(HomeController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
