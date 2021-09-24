@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:if test="${mess == null}">
+        <c:if test="${mess != null}">
             <c:out value="${mess}"></c:out>
         </c:if>
 

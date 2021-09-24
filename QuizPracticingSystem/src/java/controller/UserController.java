@@ -96,7 +96,7 @@ public class UserController extends HttpServlet {
 
                 //check validate mail
                 String mailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-                if (userMail.matches(mailRegex)) {
+                if (false) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
