@@ -47,7 +47,6 @@ public class UserController extends HttpServlet {
                 UserDAO t = new UserDAO();
                 log = t.getUserLogin(userMail, password);
 
-
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
                     sendDispatcher(request, response, "/login/login.jsp");
@@ -65,18 +64,27 @@ public class UserController extends HttpServlet {
                 request.getSession().invalidate();
                 sendDispatcher(request, response, "index.jsp");
             }
-            //register
+
+            //get all atribute from page then check validate and save to database
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
-                String userName = request.getParameter("userName");
-                String password = request.getParameter("password");
-                String confirmPass = request.getParameter("confirmPass");
-                String userMail = request.getParameter("userMail");
-                String userMobile = request.getParameter("userMobile");
-                String txtGender = request.getParameter("gender");
+                String userName = request.getParameter("userName").trim();
+                String password = request.getParameter("password").trim();
+                String confirmPass = request.getParameter("confirmPass").trim();
+                String userMail = request.getParameter("userMail").trim();
+                String userMobile = request.getParameter("userMobile").trim();
+                String txtGender = request.getParameter("gender").trim();
                 boolean gender;
                 User addUser = new User();
 
+                if (userName == null || password == null || confirmPass == null || userMail == null || userMobile == null || txtGender == null) {
+                    mess = "You have to input all information!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    return;
+                }
+
+                //check if comfirm pass is the same as pass
                 if (!password.equals(confirmPass)) {
                     mess = "The confirm-password is not match with the password!";
                     request.setAttribute("mess", mess);
@@ -84,21 +92,24 @@ public class UserController extends HttpServlet {
                     return;
                 }
 
-                String mailRegex = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
-                if (false) {
+                //check validate mail
+                String mailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+                if (userMail.matches(mailRegex)) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
-                if ( ud.getUserByMail(userMail) != null) {
+                //check if this email already existed in the system
+                if (ud.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                     return;
                 }
 
+                //check if this Moblie already existed in the system
                 if (ud.getUserByMobile(userMobile) != null) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
@@ -106,6 +117,7 @@ public class UserController extends HttpServlet {
                     return;
                 }
 
+                //check if the moblie is in right fomat and length
                 String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";
                 if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
                     mess = "The phone number is invalid";
@@ -114,6 +126,7 @@ public class UserController extends HttpServlet {
                     return;
                 }
 
+                //convert gender to booolean type
                 if (txtGender.equalsIgnoreCase("Male")) {
                     gender = true;
                 } else {
@@ -133,6 +146,7 @@ public class UserController extends HttpServlet {
                 out.println("<p>An confirm mail have been sent to your email address!</p>");
             }
 
+            //change status for user account
             if (service.equalsIgnoreCase("confirmAccount")) {
                 String userMail = request.getParameter("userMail");
                 User user = ud.getUserByMail(userMail);
@@ -141,9 +155,14 @@ public class UserController extends HttpServlet {
                 out.println("<a href=" + "userController?service=login" + ">Login</a>");
             }
 
+            //get email from page and send a resetPass mail to the address
             if (service.equalsIgnoreCase("resetPassword")) {
-                String userMail = request.getParameter("userMail");
-                if (ud.getUserByMail(userMail) == null) {
+                String userMail = request.getParameter("userMail").trim();
+                if (userMail.length() == 0) {
+                    out.println("You have to input your email");
+                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    return;
+                } else if (ud.getUserByMail(userMail) == null) {
                     out.println("Email not existed!");
                     request.getRequestDispatcher("resetPass.jsp").include(request, response);
                     return;
@@ -164,7 +183,7 @@ public class UserController extends HttpServlet {
                     user.setPassword(newPass);
                     ud.updateUser(user);
                     out.println("Your password have been reset");
-                    out.println("<a href="+ "jsp/login.jsp" + ">Login</a>");
+                    out.println("<a href=" + "jsp/login.jsp" + ">Login</a>");
                     return;
                 } else {
                     out.println("The confirm-password is not match with the password!");
@@ -172,16 +191,16 @@ public class UserController extends HttpServlet {
                 }
 
             }
-            
+
             if (service.equalsIgnoreCase("changePassword")) {
                 String password = request.getParameter("oldPassword");
                 String newPassword = request.getParameter("newPassword");
                 User currUser = (User) request.getSession().getAttribute("currUser");
-                
-                if (currUser.getPassword().equals(password)){
+
+                if (currUser.getPassword().equals(password)) {
                     currUser.setPassword(newPassword);
                     int i = ud.updateUser(currUser);
-                    if (i!=0) {
+                    if (i != 0) {
                         request.setAttribute("message", "Password changed successfully.");
                         request.setAttribute("color", "green");
                         sendDispatcher(request, response, "login/changePassword.jsp");
