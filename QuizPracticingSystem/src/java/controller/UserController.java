@@ -64,7 +64,7 @@ public class UserController extends HttpServlet {
                 request.getSession().invalidate();
                 sendDispatcher(request, response, "index.jsp");
             }
-
+            
             //get all atribute from page then check validate and save to database
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
@@ -77,7 +77,9 @@ public class UserController extends HttpServlet {
                 boolean gender;
                 User addUser = new User();
 
-                if (userName == null || password == null || confirmPass == null || userMail == null || userMobile == null || txtGender == null) {
+                if (userName == null || password == null || confirmPass == null 
+                        || userMail == null || userMobile == null 
+                        || txtGender == null) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -141,7 +143,9 @@ public class UserController extends HttpServlet {
                 userInterface.addUser(addUser);
 
                 SystemEmail se = new SystemEmail();
-                String confirmLink = "http://localhost:8080/QuizPracticingSystem/userController?service=confirmAccount&userMail=" + userMail;
+                String confirmLink = "http://localhost:8080/QuizPracticingSystem"
+                        + "/userController?service=confirmAccount&userMail=" 
+                        + userMail;
                 se.sendEmail(userMail, "Confirm Your Account", confirmLink);
                 out.println("<p>An confirm mail have been sent to your email address!</p>");
             }
@@ -152,7 +156,8 @@ public class UserController extends HttpServlet {
                 User user = userInterface.getUserByMail(userMail);
                 userInterface.changeStatus(user.getUserId(), true);
                 out.println("Confirmed");
-                out.println("<a href=" + "userController?service=login" + ">Login</a>");
+                out.println("<a href=" + "userController?service=login" 
+                        + ">Login</a>");
             }
 
             //get email from page and send a resetPass mail to the address
@@ -281,5 +286,5 @@ public class UserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+                                                                                
 }
