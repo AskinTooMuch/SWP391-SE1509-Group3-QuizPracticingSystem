@@ -49,7 +49,7 @@ public class UserController extends HttpServlet {
 
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
-                    sendDispatcher(request, response, "/login/login.jsp");
+                    sendDispatcher(request, response, "login/login.jsp");
                     return;
 
                 } else {
@@ -82,7 +82,7 @@ public class UserController extends HttpServlet {
                         || txtGender == null) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -90,7 +90,7 @@ public class UserController extends HttpServlet {
                 if (!password.equals(confirmPass)) {
                     mess = "The confirm-password is not match with the password!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -99,7 +99,7 @@ public class UserController extends HttpServlet {
                 if (userMail.matches(mailRegex)) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -107,7 +107,7 @@ public class UserController extends HttpServlet {
                 if (userInterface.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -115,7 +115,7 @@ public class UserController extends HttpServlet {
                 if (userInterface.getUserByMobile(userMobile) != null) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -124,7 +124,7 @@ public class UserController extends HttpServlet {
                 if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
                     mess = "The phone number is invalid";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
 
@@ -167,16 +167,16 @@ public class UserController extends HttpServlet {
                 //check email if it is true
                 if (userMail.length() == 0  || userMail == null) {
                     out.println("You have to input your email");
-                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
                     return;
                 } else if (userInterface.getUserByMail(userMail) == null) {
                     out.println("Email not existed!");
-                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
                     return;
                 } else {
                     sendResetMail(userMail);
                     out.println("An reset password link have been sent to your email address");
-                    request.getRequestDispatcher("resetPass.jsp").include(request, response);
+                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
                     return;
                 }
             }
