@@ -38,7 +38,7 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            UserINT ud = new UserDAO();
+            UserINT userInterface = new UserDAO();
             if (service.equalsIgnoreCase("login")) {
                 String userMail = request.getParameter("userMail");
                 String mess = "";
@@ -102,7 +102,7 @@ public class UserController extends HttpServlet {
                 }
 
                 //check if this email already existed in the system
-                if (ud.getUserByMail(userMail) != null) {
+                if (userInterface.getUserByMail(userMail) != null) {
                     mess = "This email have already been used!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -110,7 +110,7 @@ public class UserController extends HttpServlet {
                 }
 
                 //check if this Moblie already existed in the system
-                if (ud.getUserByMobile(userMobile) != null) {
+                if (userInterface.getUserByMobile(userMobile) != null) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -138,7 +138,7 @@ public class UserController extends HttpServlet {
                 addUser.setUserMobile(userMobile);
                 addUser.setUserMail(userMail);
                 addUser.setGender(gender);
-                ud.addUser(addUser);
+                userInterface.addUser(addUser);
 
                 SystemEmail se = new SystemEmail();
                 String confirmLink = "http://localhost:8080/QuizPracticingSystem/userController?service=confirmAccount&userMail=" + userMail;
@@ -149,8 +149,8 @@ public class UserController extends HttpServlet {
             //change status for user account
             if (service.equalsIgnoreCase("confirmAccount")) {
                 String userMail = request.getParameter("userMail");
-                User user = ud.getUserByMail(userMail);
-                ud.changeStatus(user.getUserId(), true);
+                User user = userInterface.getUserByMail(userMail);
+                userInterface.changeStatus(user.getUserId(), true);
                 out.println("Confirmed");
                 out.println("<a href=" + "userController?service=login" + ">Login</a>");
             }
@@ -158,11 +158,13 @@ public class UserController extends HttpServlet {
             //get email from page and send a resetPass mail to the address
             if (service.equalsIgnoreCase("resetPassword")) {
                 String userMail = request.getParameter("userMail").trim();
-                if (userMail.length() == 0) {
+                
+                //check email if it is true
+                if (userMail.length() == 0  || userMail == null) {
                     out.println("You have to input your email");
                     request.getRequestDispatcher("resetPass.jsp").include(request, response);
                     return;
-                } else if (ud.getUserByMail(userMail) == null) {
+                } else if (userInterface.getUserByMail(userMail) == null) {
                     out.println("Email not existed!");
                     request.getRequestDispatcher("resetPass.jsp").include(request, response);
                     return;
@@ -174,14 +176,16 @@ public class UserController extends HttpServlet {
                 }
             }
 
+            
+            //get new pass and svae to the database
             if (service.equalsIgnoreCase("resetPage")) {
                 String userMail = request.getParameter("userMail");
                 String newPass = request.getParameter("newPass");
                 String confirmNewPass = request.getParameter("confirmNewPass");
-                User user = ud.getUserByMail(userMail);
+                User user = userInterface.getUserByMail(userMail);
                 if (newPass.equals(confirmNewPass)) {
                     user.setPassword(newPass);
-                    ud.updateUser(user);
+                    userInterface.updateUser(user);
                     out.println("Your password have been reset");
                     out.println("<a href=" + "jsp/login.jsp" + ">Login</a>");
                     return;
@@ -199,7 +203,7 @@ public class UserController extends HttpServlet {
 
                 if (currUser.getPassword().equals(password)) {
                     currUser.setPassword(newPassword);
-                    int i = ud.updateUser(currUser);
+                    int i = userInterface.updateUser(currUser);
                     if (i != 0) {
                         request.setAttribute("message", "Password changed successfully.");
                         request.setAttribute("color", "green");
@@ -218,7 +222,8 @@ public class UserController extends HttpServlet {
             }
         }
     }
-
+    
+    //create reset password link and send to the email address
     public void sendResetMail(String userMail) {
         SystemEmail se = new SystemEmail();
         long milis = System.currentTimeMillis();
