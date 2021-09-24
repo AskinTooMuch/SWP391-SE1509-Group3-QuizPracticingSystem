@@ -10,20 +10,25 @@ package bean;
  * @author duong
  */
 public class Answer {
-    private int answeId,questionId;
+    private int answerId,questionId;
     private String answerContent;
     private boolean isCorrect,status;
 
-    public Answer(int answeId, int questionId, String answerContent, boolean isCorrect, boolean status) {
-        this.answeId = answeId;
+    public Answer() {
+    }
+
+    public Answer(int answerId, int questionId, String answerContent, boolean isCorrect, boolean status) {
+        this.answerId = answerId;
         this.questionId = questionId;
         this.answerContent = answerContent;
         this.isCorrect = isCorrect;
         this.status = status;
     }
 
-    public int getAnsweId() {
-        return answeId;
+
+
+    public int getAnswerId() {
+        return answerId;
     }
 
     public int getQuestionId() {
@@ -42,8 +47,8 @@ public class Answer {
         return status;
     }
 
-    public void setAnsweId(int answeId) {
-        this.answeId = answeId;
+    public void setAnswerId(int answeId) {
+        this.answerId = answeId;
     }
 
     public void setQuestionId(int questionId) {

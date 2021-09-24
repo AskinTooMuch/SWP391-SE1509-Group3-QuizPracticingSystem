@@ -15,24 +15,38 @@ public class QuestionQuizHandle {
 
     private Question question;
     private ArrayList<Answer> answerList;
-    private boolean checked;
+    private int answeredId;
+    private boolean marked;
 
     public QuestionQuizHandle() {
     }
 
-    public QuestionQuizHandle(Question question, ArrayList<Answer> answerList, boolean checked) {
+    public QuestionQuizHandle(Question question, ArrayList<Answer> answerList, int answeredId, boolean marked) {
         this.question = question;
         this.answerList = answerList;
-        this.checked = checked;
+        this.answeredId = answeredId;
+        this.marked = marked;
     }
 
-    public boolean isChecked() {
-        return checked;
+   
+
+    public boolean isMarked() {
+        return marked;
     }
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public void setMarked(boolean marked) {
+        this.marked = marked;
     }
+
+    public int getAnsweredId() {
+        return answeredId;
+    }
+
+    public void setAnsweredId(int answeredId) {
+        this.answeredId = answeredId;
+    }
+
+   
     
     public Question getQuestion() {
         return question;

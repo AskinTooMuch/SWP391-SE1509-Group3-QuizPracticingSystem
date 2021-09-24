@@ -23,6 +23,6 @@ public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
         AnswerDAO answerDAO = new AnswerDAO();
         Question question = questionDAO.getQuestionById(questionId);
         ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);
-        return new QuestionQuizHandle(question, answers, false);
+        return new QuestionQuizHandle(question, answers, 0,false);
     }
 }

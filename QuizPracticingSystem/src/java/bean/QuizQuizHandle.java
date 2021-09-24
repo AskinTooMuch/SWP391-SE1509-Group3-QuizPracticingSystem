@@ -30,6 +30,9 @@ public class QuizQuizHandle {
     public void setQuestions(ArrayList<QuestionQuizHandle> questions) {
         this.questions = questions;
     }
+    public QuestionQuizHandle getQuestionByNumber(int questionNumber){
+        return questions.get(questionNumber-1);
+    }
 
     public void addQuestion(QuestionQuizHandle question) {
         questions.add(question);

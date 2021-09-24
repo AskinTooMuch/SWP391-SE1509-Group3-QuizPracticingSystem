@@ -373,10 +373,58 @@ INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],
 ----------dbo.[PricePackage]---------------
 
 ----------dbo.[Question]-------------------
-
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Watashi',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Neko',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Ohayo',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Anata',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Konbanwa',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Arigatou gozaimasu',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Mijikai',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Tokei',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Ashi',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Kami',NULL,'nihongo',1)
 -------------------------------------------
 ----------dbo.[Answer]---------------------
-
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(1,'I',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(1,'You',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(1,'Friend',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(1,'Foe',0,1)--1
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(2,'Cat',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(2,'Dog',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(2,'Ant',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(2,'Elephant',0,1)--2
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(3,'Good Morning',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(3,'Ring',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(3,'Television',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(3,'Work',0,1)--3
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(4,'You',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(4,'Snake',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(4,'Dice',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(4,'Brain',0,1)--4
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(5,'Good Night',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(5,'Ten',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(5,'Sky',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(5,'Castle',0,1)--5
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(6,'Thank you',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(6,'Sorry',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(6,'Angry',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(6,'Happy',0,1)--6
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(7,'Short',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(7,'Long',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(7,'Straight',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(7,'Curved',0,1)--7
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(8,'Clock',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(8,'Dishes',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(8,'Meet',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(8,'Chicken',0,1)--8
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(9,'Leg',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(9,'Face',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(9,'Ear',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(9,'Eye',0,1)--9
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Hair',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Finger',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foot',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Food',0,1)--10
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
 
@@ -432,3 +480,4 @@ insert into BlogCate values('11','4','1')
 ----------dbo.[Slider]---------------------
 
 -------------------------------------------
+select * from Question
