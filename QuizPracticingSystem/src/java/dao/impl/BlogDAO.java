@@ -147,7 +147,8 @@ public class BlogDAO extends MyDAO implements BlogINT {
         }
         return titleBlog;
     }
-@Override
+
+    @Override
     public ArrayList<Blog> getAllTrueBlog() {
         ArrayList<Blog> allTrueBlog = new ArrayList();
 
@@ -287,6 +288,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
         }
         return null;
     }
+
     @Override
     public PostCate getBlogCategory(int blogId) {
         String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;

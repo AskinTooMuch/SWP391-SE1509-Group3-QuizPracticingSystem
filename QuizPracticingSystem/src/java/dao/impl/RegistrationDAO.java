@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class RegistrationDAO extends MyDAO {
 
-    public ArrayList<Registration> getRegistration(String email, String validFrom, String validTo, boolean status, int sort) {
+    public ArrayList<Registration> getAllRegistration() {
         return null;
     }
 
