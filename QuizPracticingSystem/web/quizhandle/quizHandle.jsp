@@ -11,65 +11,102 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Quiz Handle</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/quizhandle.css">
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="header">
-                <div class="container-fluid">
-                    <div class="row" style="border-bottom: 1px black solid; border-top: 1px black solid;height:40px;margin-top: 30px; width: 103%;">
-                        <div class="col-9">                 
-                        </div>
-                        <div class="col-3" style="display:contents; ">
-                            <img style="height:25px;margin-top: 6px;" src="images/question.png"> <h3 style="margin-right:10px;">${questionNumber}/${quizSize}</h3>  <img src="images/timer.png" style="height:25px;margin-top: 6px;"> <h3><label id="hours">00</label>:<label id="minutes">00</label>:<label id="seconds">00</label></h3>
-                        </div>  
-                    </div>
-                    <div class="row" style="background-color: buttonface; height:30px;width: 103%;">
-                        <div class="col-9">
-                            <h6 style='margin-top: 3px;'>${questionNumber})</h6>
-                        </div>
-                        <div class="col-3">
-                            <h6 style='margin-top: 3px;margin-left: 110px;'>Question ID: ${questionId}</h6>
+        <jsp:include page="/jsp/Header.jsp"></jsp:include>
+            <div class="container-fluid">
+                <!--start header-->
+                <div class="infomation">
+                    <div class="info row" style="">
+
+                        <div class="col-12">    
+                            <div class="detail">
+                                <div class="detail1">
+                                    <img id="questionImage" src="images/question.png"> <label for="questionImage">
+                                        <h3 style="">${questionNumber}/${quizSize}</h3> </label>
+                            </div>
+                            <div class="detail1">
+                                <img id="clockImage" src="images/timer.png"> <label for="clockImage">
+                                    <h3><label id="hours">--</label>:<label id="minutes">--</label>:<label id="seconds">--</label></h3>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>      
+            </div>
+            <div class="row infomation1">
+                <div class="col-1">
+                    <h6 >${questionNumber})</h6>
+                </div>
+                <div class="col-11">
+                    <h6 style=float:right;'>Question ID: ${questionId}</h6>
+                </div>
+            </div>
+            <!--end header-->
             <style>
                 ul li::marker {
                     font-weight: bold;
                 }
             </style>
             <div class="mainContent">
-                <div class="row" style='margin-left:50px;'>
-                    ${questionContent}
+                <div class="row question">
+                    <div class="col-1"></div>
+                    <div class="col-11">
+                        <h4>${questionContent}</h4>
+                    </div>
                 </div>
-                <div class="row">
-                    <form id='questionForm' action='quizhandle' method='POST'>
-                        <ul>
-                            <c:forEach items="${answerList}" var="answer">
+                <c:set var="answered" value="${requestScope.answered}"/>
+                <div class="row answers">
+                    <div class="col-1"></div>
+                    <div class="col-11">
+                        <form id='questionForm' action='quizController?service=quizHandle&questionNumber=${questionNumber}' method='POST'>
+                            <ul>
+                                <input hidden name="questionTakenNumber" value="${questionNumber}">
+                                <c:forEach items="${answerList}" var="answer">
 
-                                <div class="checkbox-inline" style="display: -webkit-inline-box;">
-                                    <input onclick="" type="checkbox" name="answertake" value="${answer.getAnswerId()}" id="answertake">
-                                    <li  style='list-style: upper-alpha; margin-left: 50px;'>
-                                        ${answer.getAnswerContent()}             
-                                    </li>
-                                </div>
-                                <br/>
-                            </c:forEach>
-                        </ul>
-                    </form>    
+                                    <div class="checkbox-inline" style="display: -webkit-inline-box;">
+
+
+                                        <label class="labelA" for="${answer.getAnswerId()}">
+                                            <li>
+                                                ${answer.getAnswerContent()} 
+                                            </li>
+                                            <input onclick="" type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":""} id="answertake">
+
+                                            <span class="checkmark"></span>
+                                        </label>
+
+                                    </div>
+                                    <br/>
+                                </c:forEach>
+                            </ul>
+                        </form>    
+                    </div>
+                    
+                    <div class="col-1"></div>
                 </div>
             </div>
-            <div class="button fixed-bottom" style="margin-bottom: 100px;margin-right: 30px;"> 
-                <div class='row' style="float:right;">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
-                    <form id="markForm" action="quizController?service=quizHandle&questionNumber=${questionNumber}" method="POST">
-                        <button onclick="this.form.submit()">Mark For Review</button>
-                        <input hidden name="marked" value="yes">
-                    </form>
+            <!--                           end mainContent-->
+            <!--            peek and mark question-->
+
+            <div class="funtion fixed-bottom" style="margin-bottom: 100px;margin-right: 30px;"> 
+                <div class='row'>
+                    <div class="col-9">                   
+                    </div>
+                    <div class="col-3">
+                        <div style="float:right; display:flex;">
+                            <button style="margin-right: 3px; border:1px solid black; background-color: white; color: black;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
+                            <form id="markForm" action="quizController?service=quizHandle&questionNumber=${questionNumber}" method="POST">
+                                <button class="btn " onclick="this.form.submit()">Mark For Review</button>
+                                <input hidden name="marked" value="yes">
+                            </form>
+                        </div>                       
+                    </div>
                 </div>
             </div>
+            <!--                        peek modal-->
             <div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -86,19 +123,29 @@
                     </div>
                 </div>
             </div>
-            <div class="funtionBar fixed-bottom" style='height:70px; background-color: #99ff99;'>
-                <div style="margin-top:20px;">
+            <!--                        end peek modal-->
+            <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
+                <div style="margin-top:20px;margin-right: 20px;">
                     <div style="float:right;">                    
-                        <input type="submit" name='action' value='Previous' form='questionForm'>
-                        <input type='submit' name='action' value='Next' form="questionForm">
+                        <c:if test="${questionNumber!=1}">
+                            <input class="btn" type="submit" name='action' value='Previous Question' form='questionForm'>
+                        </c:if>
+                        <c:if test="${questionNumber!=quizSize}">
+                            <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
+                        </c:if>
+                        <c:if test="${questionNumber==quizSize}">
+                            <input class="btn" type='submit' name='action' value='Score Exam' form="questionForm">
+                        </c:if>
                     </div>
                     <div >
-                        <button style='margin-left: 10px;' type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                  
+                        <button  type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                  
                     </div>
                 </div>
             </div>
             <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <style>
 
+                </style>
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -113,17 +160,19 @@
 
                         </div>
                         <div class="modal-body">
-                            <img src ='images/guide.png' style="width: 30%;height:auto;"> <button style='float:right;'>Score Exam Now</button><br/><br/>
+                            <img src ='images/guide.png' style="width: 30%;height:auto;">
+                            <form id="quizsubmit"> 
+                                <input hidden id="time" value="" name="time">
+                                <button onclick="return submitConfirm()" style='float:right;'>Score Exam Now</button>
+                            </form><br/><br/>
                             <div style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quiz}" var="question">
                                     <a href="#" class="btn ${question.getAnsweredId()!=0?"btn-secondary":"btn btn-light"} btn-lg active" id="${question.isMarked()==true?"marked":""}" role="button" aria-pressed="true">${quiz.indexOf(question)+1}</a>
                                 </c:forEach>                             
                             </div>
                             <style>
-
                                 #marked{
                                     border:red 1px solid;
-
                                 }
                             </style>
                         </div>
@@ -135,17 +184,25 @@
             var minutesLabel = document.getElementById("minutes");
             var secondsLabel = document.getElementById("seconds");
             var hoursLabel = document.getElementById("hours");
-            var totalSeconds = 0;
-            var totalMinutes = 0;
-            setInterval(setTime, 1000);
+            var today = new Date();
+            var startMilisecond;
 
+            if (localStorage.getItem("miliSeconds") != null) {
+                startMilisecond = localStorage.getItem("seconds");
+            } else {
+                startMilisecond = today.getTime();
+            }
+            localStorage.setItem('miliSeconds', startMilisecond);
+            setInterval(setTime, 100);
             function setTime() {
-                ++totalSeconds;
-                secondsLabel.innerHTML = pad(totalSeconds % 60);
-                minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-
-
-
+                var today2 = new Date();
+                var presentMilisecond = today2.getTime();
+                var totalSecond = (presentMilisecond - startMilisecond) / 1000;
+                var totalMinute = (totalSecond / 60) % 60;
+                var totalHour = totalSecond / 60 / 60;
+                secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));
+                minutesLabel.innerHTML = pad(parseInt(totalMinute));
+                hoursLabel.innerHTML = pad(parseInt(totalHour));
             }
 
             function pad(val) {
@@ -158,6 +215,8 @@
             }
 
 
+
+
         </script>
 
 
@@ -166,5 +225,5 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
 </html>
