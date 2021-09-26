@@ -428,7 +428,7 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foo
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Food',0,1)--10
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
-
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'First Quiz',3,30,NULL,2,NULL,10,2,1)
 -------------------------------------------
 ----------dbo.[QuizQuestion]---------------
 
