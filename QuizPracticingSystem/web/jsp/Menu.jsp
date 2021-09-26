@@ -27,7 +27,7 @@
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                         <%-- Indicators --%>  
                         <%-- Wrapper for slides --%>
-                            <div class="carousel-inner" role="listbox">
+                            
                             <c:choose>
                                     <%-- subjectList is empty --%>
                                     <c:when test = "${empty sliderList}">
@@ -36,15 +36,22 @@
                                         </div>
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="item active">
-                                            <c:forEach items = "${sliderList}" var="slider" begin = "0" end = "${sliderList.size()-1}">
-                                            <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
-                                            <br>
-                                            </c:forEach>
-                                        </div>                            
+                                        <div class="carousel-inner" role="listbox">
+                                            <div class="item active">
+                                                <c:forEach items = "${sliderList}" var="slider" begin = "0" end = "0">
+                                                   <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
+                                                   <br>
+                                                </c:forEach>   
+                                            </div>
+                                            <div class="item">
+                                                <c:forEach items = "${sliderList}" var="slider" begin = "1" end = "${sliderList.size()-1}">
+                                                   <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
+                                                   <br>
+                                                </c:forEach>   
+                                            </div>
+                                        </div>
                                     </c:otherwise>
                             </c:choose>
-                            </div>
                         <%-- Controls --%>
                             <div class="control">
                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">

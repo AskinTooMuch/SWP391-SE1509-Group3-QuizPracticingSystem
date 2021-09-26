@@ -479,6 +479,6 @@ insert into BlogCate values('9','3','1')
 insert into BlogCate values('10','3','1')
 insert into BlogCate values('11','4','1')
 ----------dbo.[Slider]---------------------
-insert into Slider(sliderTitle,image,link,note,status) values ('OOP with Java','','1','iidesune','1')
+insert into Slider(sliderTitle,image,link,note,status) values ('OOP with Java','oopJavaSlider.png','1','iidesune','1');
+insert into Slider(sliderTitle,image,link,note,status) values ('NiHongo 101','japanese101Slider.png','2','iidesune','1');
 -------------------------------------------
-select * from Question
