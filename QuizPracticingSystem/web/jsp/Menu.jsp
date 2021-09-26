@@ -26,32 +26,25 @@
                         <!--Bắt đầu slider-->
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <!-- Indicators -->    
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-
-                                    <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/1.jpg" alt=""></a>
-                                    <br>
-                                </div>                            
-
-                                <div class="item">
-                                    <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/2.jpg" alt=""></a>
-                                    <br>
+                            <c:choose>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <%-- subjectList is empty --%>
+                                    <c:when test = "${empty sliderList}">
+                                        <div class="row">
+                                            <h5>No Slide available!</h5>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="item active">
+                                            <c:forEach items = "${sliderList}" var="slider" begin = "0" end = "${sliderList.size()-1}">
+                                            <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
+                                            <br>
+                                            </c:forEach>
+                                        </div>                            
+                                    </c:otherwise>>
                                 </div>
-
-                                <div class="item">
-                                    <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/3.jpg" alt=""></a>
-                                    <br>
-                                </div>
-
-                                <div class="item">
-                                    <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/4.jpg" alt=""></a>
-                                    <br>
-                                </div>
-
-                            </div>
-
+                            </c:choose>
                             <!-- Controls -->
                             <div class="control">
                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -133,56 +126,56 @@
                     <%-- Case 2: subjectList have subject number less than 4 --%>
                     <c:when test = "${subjectList.size()<4}">
                         <div class="row">
-                        <%-- Print available subject --%>
-                        <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
-                            <div class="col-md-3">
-                                <div class="card h-100">
-                                    <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><c:out value = "${subject.getSubjectName()}"/></h5>
-                                        <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
-                                    </div>
-                                    <div class="card-footer">
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
-                        <%-- Print Subject placeholder card --%>
-                        <c:forEach items = "Null" var="subject" begin = "${subjectList.size()-1}" end = "3">
-                            <div class="col-md-3">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Currently Not Available</h5>
-                                        <p class="card-text" style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
-                                    </div>
-                                    <div class="card-footer">
+                            <%-- Print available subject --%>
+                            <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
+                                <div class="col-md-3">
+                                    <div class="card h-100">
+                                        <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><c:out value = "${subject.getSubjectName()}"/></h5>
+                                            <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
+                            <%-- Print Subject placeholder card --%>
+                            <c:forEach items = "Null" var="subject" begin = "${subjectList.size()-1}" end = "3">
+                                <div class="col-md-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Currently Not Available</h5>
+                                            <p class="card-text" style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
                     </c:when>
                     <%-- Case 3: subjectList has 4 or more elements --%>
                     <c:otherwise>
                         <div class="row">
-                        <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
-                            <div class="col-md-3">
-                                <div class="card h-100">
-                                    <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
-                                        <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
-                                    </div>
-                                    <div class="card-footer">
+                            <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
+                                <div class="col-md-3">
+                                    <div class="card h-100">
+                                        <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
+                                            <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
                         </div>
                     </c:otherwise>
                 </c:choose>
-                
-                
+
+
                 <div>
                     <button type="submit" class="btn btn-default" style="margin: 50px;position: relative;left:43%;border:solid 2px;border-radius: 50px">
                         LOAD MORE</button>  

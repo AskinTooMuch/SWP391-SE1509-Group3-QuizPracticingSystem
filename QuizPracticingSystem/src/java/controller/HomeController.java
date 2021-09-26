@@ -5,11 +5,14 @@
  */
 package controller;
 
+import bean.Slider;
 import bean.Subject;
 import dao.BlogINT;
+import dao.SliderINT;
 import dao.SubjectINT;
 import dao.UserINT;
 import dao.impl.BlogDAO;
+import dao.impl.SliderDAO;
 import dao.impl.SubjectDAO;
 import dao.impl.UserDAO;
 import java.io.IOException;
@@ -45,14 +48,16 @@ public class HomeController extends HttpServlet {
             String service = request.getParameter("service");
             if (service==null) service="homePage";
             
-            UserINT userDao = new UserDAO();
-            BlogINT blogDao = new BlogDAO();
-            SubjectINT subjectDao = new SubjectDAO();
-            //SliderINT sliderDao = new SliderDAO();
+            UserINT userInterface = new UserDAO();
+            BlogINT blogInterface = new BlogDAO();
+            SubjectINT subjectInterface = new SubjectDAO();
+            SliderINT sliderInterface = new SliderDAO();
             /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/
             if (service.equalsIgnoreCase("homePage")) {
-                ArrayList<Subject> subjectList = subjectDao.getAllSubjects();
+                ArrayList<Subject> subjectList = subjectInterface.getAllSubjects();
                 request.setAttribute("subjectList", subjectList);
+                ArrayList<Slider> sliderList = sliderInterface.getSlider();
+                request.setAttribute("sliderList", sliderList);
                 sendDispatcher(request, response, "index.jsp");
             }
         }
