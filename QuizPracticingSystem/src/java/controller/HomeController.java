@@ -8,6 +8,7 @@
  *  Date        Version     Author          Description
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
  *  24/9/21     1.0         ChucNVHE150618  Add homepage service
+ *  26/9/21     1/0         ChucNVHE150618  Add Subject list service
 */
 package controller;
 
@@ -65,6 +66,12 @@ public class HomeController extends HttpServlet {
                 ArrayList<Slider> sliderList = sliderInterface.getSlider();
                 request.setAttribute("sliderList", sliderList);
                 sendDispatcher(request, response, "index.jsp");
+            }
+            /*Service: subjectList. Load subjectList and redirect user.*/
+            if (service.equalsIgnoreCase("subjectList")) {
+                ArrayList<Subject> subjectList = subjectInterface.getAllSubjects();
+                request.setAttribute("subjectList", subjectList);
+                sendDispatcher(request, response, "jsp/subjectList.jsp");
             }
         }
     }
