@@ -7,7 +7,9 @@ package controller;
 
 import bean.*;
 import dao.UserINT;
+import dao.UserRoleINT;
 import dao.impl.UserDAO;
+import dao.impl.UserRoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -45,6 +47,8 @@ public class UserController extends HttpServlet {
                 String password = request.getParameter("password");
                 User log = null;
                 UserDAO t = new UserDAO();
+                UserRoleINT userRoleDAO = new UserRoleDAO();
+                
                 log = t.getUserLogin(userMail, password);
 
                 if (log == null) {
@@ -54,12 +58,12 @@ public class UserController extends HttpServlet {
 
                 } else {
                     request.getSession().setAttribute("currUser", log);
-                    request.getSession().setAttribute("role", log.getRoleId());
-
+                    request.getSession().setAttribute("role", userRoleDAO.getUserRoleById(log.getRoleId()));
                 }
                 out.print(mess);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
+            
             if (service.equalsIgnoreCase("logout")) {
                 request.getSession().invalidate();
                 sendDispatcher(request, response, "index.jsp");
@@ -135,6 +139,7 @@ public class UserController extends HttpServlet {
                     gender = false;
                 }
 
+                //setup information and add to the database
                 addUser.setUserName(userName);
                 addUser.setPassword(password);
                 addUser.setUserMobile(userMobile);
@@ -156,7 +161,7 @@ public class UserController extends HttpServlet {
                 User user = userInterface.getUserByMail(userMail);
                 userInterface.changeStatus(user.getUserId(), true);
                 out.println("Confirmed");
-                out.println("<a href=" + "userController?service=login" 
+                out.println("<a href=" + "login/login.jsp" 
                         + ">Login</a>");
             }
 

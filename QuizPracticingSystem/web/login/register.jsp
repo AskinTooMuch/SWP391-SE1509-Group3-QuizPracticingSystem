@@ -7,6 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,7 +19,7 @@
             <c:out value="${mess}"></c:out>
         </c:if>
 
-        <form action="/QuizPracticingSystem/userController" method="POST">
+        <form action="${contextPath}/userController" method="POST">
             <p>Username:</p>
             <input type="text" name="userName">
             <p>Password:</p>

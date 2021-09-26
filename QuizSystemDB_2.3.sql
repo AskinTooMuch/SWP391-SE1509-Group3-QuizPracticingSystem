@@ -239,9 +239,10 @@ CREATE TABLE dbo.[Slider](
 	sliderId	int				NOT NULL identity(1,1) PRIMARY KEY,
 	sliderTitle nvarchar(255)	NOT NULL,
 	[image]		nvarchar(255),
-	[link]		nvarchar(255),
+	[link]		int,
 	note		nvarchar(255),
 	[status]	bit,
+	FOREIGN KEY (link) REFERENCES dbo.[Subject](subjectId),
 )
 ----------Insert Data----------------------
 ----------dbo.[UserRole]-------------------
@@ -478,6 +479,6 @@ insert into BlogCate values('9','3','1')
 insert into BlogCate values('10','3','1')
 insert into BlogCate values('11','4','1')
 ----------dbo.[Slider]---------------------
-
+insert into Slider(sliderTitle,image,link,note,status) values ('OOP with Java','','1','iidesune','1')
 -------------------------------------------
 select * from Question
