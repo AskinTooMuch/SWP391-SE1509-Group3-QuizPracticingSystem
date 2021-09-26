@@ -5,13 +5,19 @@
  */
 package dao;
 
+import bean.Answer;
 import bean.QuestionQuizHandle;
+import bean.QuizQuizHandle;
 
 /**
  *
  * @author ADMN
  */
 public interface QuestionQuizHandleINT {
+
     public QuestionQuizHandle generateQuestionById(int questionId);
-    
+
+    public void markQuestion(QuestionQuizHandle question);
+
+    public Answer getRightAnswer(QuestionQuizHandle question);
 }

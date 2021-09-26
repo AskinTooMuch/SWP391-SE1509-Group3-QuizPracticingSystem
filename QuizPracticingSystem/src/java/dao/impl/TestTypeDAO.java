@@ -8,35 +8,49 @@ package dao.impl;
 import bean.TestType;
 import dao.MyDAO;
 import dao.TestTypeINT;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  *
  * @author duong
  */
-public class TestTypeDAO extends MyDAO implements TestTypeINT{
+public class TestTypeDAO extends MyDAO implements TestTypeINT {
+
     @Override
-    public ArrayList<TestType> getAllTestTypes(){
+    public ArrayList<TestType> getAllTestTypes() {
         return null;
     }
-    
+
     @Override
-    public TestType getTestTypeById(int ttId){
+    public TestType getTestTypeById(int testTypeId) {
+        String sql = "SELECT * FROM [TestType] WHERE testTypeId =" + testTypeId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new TestType(rs.getInt("testTypeId"),
+                        rs.getString("testTypeName"),
+                        rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+        }
         return null;
     }
-    
+
     @Override
-    public int updateTestType (TestType updatedTestType){
+    public int updateTestType(TestType updatedTestType) {
         return 0;
     }
-    
+
     @Override
-    public int deleteTestType(int ttId){
+    public int deleteTestType(int testTypeId) {
         return 0;
     }
-    
+
     @Override
-    public int addTestType(TestType newTestType){
+    public int addTestType(TestType newTestType) {
         return 0;
     }
 }

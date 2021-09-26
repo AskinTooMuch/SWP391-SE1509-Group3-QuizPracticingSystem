@@ -31,12 +31,12 @@ public class QuizLevel {
         this.quizLevelId = quizLevelId;
     }
 
-    public String getQuizLevel() {
+    public String getQuizLevelName() {
         return quizLevelName;
     }
 
-    public void setQuizLevel(String quizLevel) {
-        this.quizLevelName = quizLevel;
+    public void setQuizLevelName(String quizLevelName) {
+        this.quizLevelName = quizLevelName;
     }
 
     public boolean isStatus() {
@@ -46,5 +46,5 @@ public class QuizLevel {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
 }

@@ -6,6 +6,7 @@
 package dao;
 
 import bean.Question;
+import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
 import java.util.ArrayList;
 
@@ -14,5 +15,9 @@ import java.util.ArrayList;
  * @author ADMN
  */
 public interface QuizQuizHandleINT {
+
     public QuizQuizHandle generateQuiz(ArrayList<Question> questionList);
+
+   public double calculateScore(QuizQuizHandle quiz);
+   public int getAnsweredQuestion(QuizQuizHandle quiz);
 }

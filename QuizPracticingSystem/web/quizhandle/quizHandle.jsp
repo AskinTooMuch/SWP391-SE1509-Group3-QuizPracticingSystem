@@ -11,22 +11,26 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Quiz Handle</title>
-           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="css/quizhandle.css">
     </head>
     <body>
-        <jsp:include page="/jsp/Header.jsp"></jsp:include>
-            <div class="container-fluid">
-                <!--start header-->
-                <div class="infomation">
-                    <div class="info row" style="">
 
-                        <div class="col-12">    
-                            <div class="detail">
-                                <div class="detail1">
-                                    <img id="questionImage" src="images/question.png"> <label for="questionImage">
-                                        <h3 style="">${questionNumber}/${quizSize}</h3> </label>
+        <div class="container-fluid">
+            <!--start header-->
+            <div class="infomation">
+                <div class="info row" style="">
+                    <div col-1>
+                        ${requestScope.score}
+                        <button class="goBack" type="button" class="btn" style=""> Go Back</button>
+                    </div>
+                    <div class="col-11">    
+                        <div class="detail">
+                            <div class="detail1">
+                                <img id="questionImage" src="images/question.png"> <label for="questionImage">
+                                    <h3 style="">${questionNumber}/${quizSize}</h3> </label>
                             </div>
+
                             <div class="detail1">
                                 <img id="clockImage" src="images/timer.png"> <label for="clockImage">
                                     <h3><label id="hours">--</label>:<label id="minutes">--</label>:<label id="seconds">--</label></h3>
@@ -58,23 +62,19 @@
                     </div>
                 </div>
                 <c:set var="answered" value="${requestScope.answered}"/>
-                <div class="row answers">
+                <div class="row answers" style="margin-top:10px;">
                     <div class="col-1"></div>
                     <div class="col-11">
-                        <form id='questionForm' action='quizController?service=quizHandle&questionNumber=${questionNumber}' method='POST'>
+                        <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'">
                             <ul>
                                 <input hidden name="questionTakenNumber" value="${questionNumber}">
                                 <c:forEach items="${answerList}" var="answer">
-
                                     <div class="checkbox-inline" style="display: -webkit-inline-box;">
-
-
                                         <label class="labelA" for="${answer.getAnswerId()}">
                                             <li>
                                                 ${answer.getAnswerContent()} 
                                             </li>
                                             <input onclick="" type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":""} id="answertake">
-
                                             <span class="checkmark"></span>
                                         </label>
 
@@ -82,9 +82,12 @@
                                     <br/>
                                 </c:forEach>
                             </ul>
+                            <!--                                userid-->
+                            <input hidden name="userId" value="2" form="questionForm">
+                            <input hidden id="time" value="" name="time" form="questionForm">
                         </form>    
                     </div>
-                    
+
                     <div class="col-1"></div>
                 </div>
             </div>
@@ -97,8 +100,8 @@
                     </div>
                     <div class="col-3">
                         <div style="float:right; display:flex;">
-                            <button style="margin-right: 3px; border:1px solid black; background-color: white; color: black;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
-                            <form id="markForm" action="quizController?service=quizHandle&questionNumber=${questionNumber}" method="POST">
+                            <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
+                            <form id="markForm" action="quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">
                             </form>
@@ -134,11 +137,12 @@
                             <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
                         </c:if>
                         <c:if test="${questionNumber==quizSize}">
-                            <input class="btn" type='submit' name='action' value='Score Exam' form="questionForm">
+
+                            <button type="button" class="btn" data-toggle="modal" data-target=".submit" >Score Exam</button>
                         </c:if>
                     </div>
                     <div >
-                        <button  type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                  
+                        <button  type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                      
                     </div>
                 </div>
             </div>
@@ -160,21 +164,72 @@
 
                         </div>
                         <div class="modal-body">
-                            <img src ='images/guide.png' style="width: 30%;height:auto;">
-                            <form id="quizsubmit"> 
-                                <input hidden id="time" value="" name="time">
-                                <button onclick="return submitConfirm()" style='float:right;'>Score Exam Now</button>
-                            </form><br/><br/>
-                            <div style='margin-left:20px'>
+                            <div>
+                                <input type="image" id="unansweredbutton"  src="images/unanswered.png" alt="Submit Form" />
+                                <input type="image" id="markedbutton" src="images/marked.png " alt="Submit Form" />
+                                <input type="image" id="answeredbutton" src="images/answered.png" alt="Submit Form" />
+                                <input type="image" id="allquestionsbutton" src="images/allquestions.png" alt="Submit Form" />
+                   
+                            <button type="button" class="btn scorereview" data-toggle="modal" data-target=".submit" style="float:right;background-color: #4472c4;border: 1px white solid; color:white;">Score Exam</button>
+                            </div>
+                            <br/><br/>
+                            <div class="holder" style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quiz}" var="question">
-                                    <a href="#" class="btn ${question.getAnsweredId()!=0?"btn-secondary":"btn btn-light"} btn-lg active" id="${question.isMarked()==true?"marked":""}" role="button" aria-pressed="true">${quiz.indexOf(question)+1}</a>
+                                    <a href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=${quiz.indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" aria-pressed="true">${quiz.indexOf(question)+1}</a>
                                 </c:forEach>                             
                             </div>
                             <style>
                                 #marked{
-                                    border:red 1px solid;
+                                    border:red 3px solid;                                  
+                                }
+                                #reviewSubmit{
+                                    background-color: #4472c4;border: 1px white solid; color:white;
                                 }
                             </style>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            score exam modal-->
+            <div class="modal fade submit" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <c:if test="${answeredNumber == quizSize || (answeredNumber < quizSize && answeredNumber!=0)}">
+                                <h5 class="modal-title" id="exampleModalLabel">Score Exam?</h5>
+                            </c:if>
+                            <c:if test="${answeredNumber ==0}">
+                                <h5 class="modal-title" id="exampleModalLabel">Exit Exam?</h5>
+                            </c:if>
+                        </div>
+                        <div class="modal-body">
+                            <c:if test="${answeredNumber == quizSize}">
+                                By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
+                                be able to change any answers after this point
+                            </c:if>
+
+                            <c:if test="${answeredNumber < quizSize && answeredNumber > 0 }">
+                                <p style="color:red;">${answeredNumber} of ${quizSize} Questions Answered</p>  
+                                By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
+                                be able to change any answers after this point
+                            </c:if>
+                            <c:if test="${answeredNumber ==0}">
+                                You have not answered any question.By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
+                                be able to change any answers after this point
+                            </c:if>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+
+                            <c:choose>
+                                <c:when test="${answeredNumber ==0}">
+                                    <input onclick="resetTime()" id="reviewSubmit" class="btn" type="submit" name="action" value="Exit" form="questionForm">
+                                </c:when>
+                                <c:otherwise>
+
+                                    <input onclick="resetTime()" id="reviewSubmit" class="btn" type="submit" name="action" value="Score Exam" form="questionForm">
+                                </c:otherwise>
+                            </c:choose>                         
                         </div>
                     </div>
                 </div>
@@ -184,11 +239,12 @@
             var minutesLabel = document.getElementById("minutes");
             var secondsLabel = document.getElementById("seconds");
             var hoursLabel = document.getElementById("hours");
+            var totalSecond;
             var today = new Date();
             var startMilisecond;
 
             if (localStorage.getItem("miliSeconds") != null) {
-                startMilisecond = localStorage.getItem("seconds");
+                startMilisecond = localStorage.getItem("miliSeconds");
             } else {
                 startMilisecond = today.getTime();
             }
@@ -197,13 +253,17 @@
             function setTime() {
                 var today2 = new Date();
                 var presentMilisecond = today2.getTime();
-                var totalSecond = (presentMilisecond - startMilisecond) / 1000;
+                totalSecond = (presentMilisecond - startMilisecond) / 1000;
                 var totalMinute = (totalSecond / 60) % 60;
                 var totalHour = totalSecond / 60 / 60;
                 secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));
                 minutesLabel.innerHTML = pad(parseInt(totalMinute));
                 hoursLabel.innerHTML = pad(parseInt(totalHour));
+
             }
+function resetTime(){
+    localStorage.clear();
+}
 
             function pad(val) {
                 var valString = val + "";
@@ -213,6 +273,55 @@
                     return valString;
                 }
             }
+
+            const unanswered = document.getElementById('unansweredbutton');
+            const marked = document.getElementById('markedbutton');
+            const answered = document.getElementById('answeredbutton');
+            const allquestions = document.getElementById('allquestionsbutton');
+            unanswered.addEventListener("click", () => {
+                var y = document.getElementsByClassName("allquestions");
+                var i;
+                for (i = 0; i < y.length; i++) {
+                    y[i].style.display = 'line-flex';
+                }
+                var x = document.getElementsByClassName("answered");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = 'none';
+                }
+            });
+            marked.addEventListener("click", () => {
+                var y = document.getElementsByClassName("allquestions");
+                var i;
+                for (i = 0; i < y.length; i++) {
+                    y[i].style.display = 'inline-flex';
+                }
+                var x = document.getElementsByClassName("unmarked");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = 'none';
+                }
+            });
+            answered.addEventListener("click", () => {
+                var y = document.getElementsByClassName("allquestions");
+                var i;
+                for (i = 0; i < y.length; i++) {
+                    y[i].style.display = 'inline-flex';
+                }
+                var x = document.getElementsByClassName("unanswered");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = 'none';
+                }
+            });
+            allquestions.addEventListener("click", () => {
+               var y = document.getElementsByClassName("allquestions");
+                var i;
+                for (i = 0; i < y.length; i++) {
+                    y[i].style.display = 'inline-flex';
+                }
+            });
+
 
 
 

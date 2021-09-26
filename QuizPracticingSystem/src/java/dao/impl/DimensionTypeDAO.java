@@ -8,6 +8,8 @@ package dao.impl;
 import bean.DimensionType;
 import dao.DimensionTypeINT;
 import dao.MyDAO;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,19 @@ public class DimensionTypeDAO extends MyDAO implements DimensionTypeINT{
     }
     
     @Override
-    public DimensionType getDimensionTypeById(int dtId){
+    public DimensionType getDimensionTypeById(int dimensionTypeId){
+        String sql="SELECT * FROM [DimensionType] WHERE dimensionTypeId="+dimensionTypeId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+               return new DimensionType(rs.getInt("dimensionTypeId"),
+               rs.getString("dimensionTypeName"),
+               rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         return null;
     }
     

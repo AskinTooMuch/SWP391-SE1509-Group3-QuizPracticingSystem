@@ -6,54 +6,117 @@
 package dao.impl;
 
 import bean.CustomerQuiz;
+import bean.QuestionQuizHandle;
+import bean.QuizQuizHandle;
 import dao.CustomerQuizINT;
 import dao.MyDAO;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT{
+public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
+
     @Override
-    public ArrayList<CustomerQuiz> getAllCustomerQuiz(){
+    public ArrayList<CustomerQuiz> getAllCustomerQuiz() {
         ArrayList<CustomerQuiz> allCustomerQuiz = null;
-        
+
         return allCustomerQuiz;
     }
-    
+
     @Override
-    public ArrayList<CustomerQuiz> getQuizByUser(int userId){
+    public ArrayList<CustomerQuiz> getQuizByUser(int userId) {
         ArrayList<CustomerQuiz> customerQuiz = null;
-        
+
         return customerQuiz;
     }
-    
+
     @Override
-    public CustomerQuiz getQuizById(int quizId){
+    public CustomerQuiz getQuizById(int quizId) {
         CustomerQuiz customerQuiz = null;
-        
+
         return customerQuiz;
     }
-    
+
     @Override
-    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz){
+    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) {
         int i = 0;
-        
+
         return i;
     }
-    
+
     @Override
-    public int addCustomerQuiz(CustomerQuiz customerQuiz){
+    public int addCustomerQuiz(CustomerQuiz customerQuiz) {
+        String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,startedAt,[status]) VALUES(?,?,?,?,?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, customerQuiz.getQuizId());
+            pre.setInt(2, customerQuiz.getUserId());
+            pre.setInt(3, customerQuiz.getScore());
+            pre.setDate(4, customerQuiz.getStartedAt());
+            pre.setBoolean(5, true);
+            return pre.executeUpdate();
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+        return 0;
+    }
+
+    public CustomerQuiz getLastAddedCustomerQuiz() {
+        String sql = "SELECT TOP 1 * FROM [CustomerQuiz] ORDER BY quizTakeId DESC";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new CustomerQuiz(rs.getInt("quizTakeId"),
+                        rs.getInt("quizId"),
+                        rs.getInt("userId"),
+                        rs.getInt("score"),
+                        rs.getDate("startedAt"),
+                        rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+        return null;
+    }
+
+    @Override
+    public int deleteCustomerQuiz(int customerQuizId) {
         int i = 0;
-        
+
         return i;
     }
-    
+
     @Override
-    public int deleteCustomerQuiz(int customerQuizId){
-        int i = 0;
-        
-        return i;
+    public int addTakeAnswer(QuizQuizHandle quiz) {
+        int change=0;
+        ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
+        int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
+        for (QuestionQuizHandle question : questionList) {
+            String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
+            try {
+                PreparedStatement pre = conn.prepareStatement(sql);
+                pre.setInt(1, quizTakeId);
+                pre.setInt(2, question.getQuestion().getQuestionId());
+                pre.setInt(3, question.getAnsweredId());
+                pre.setBoolean(4, true);
+                pre.executeUpdate();
+                change++;
+            } catch (SQLException e) {
+                System.out.print(e);
+            }
+        }
+        return change;
+    }
+
+    public static void main(String[] args) {
+        CustomerQuizDAO dao = new CustomerQuizDAO();
+        String[] a = {"1", "2"};
+        CustomerQuiz list = dao.getLastAddedCustomerQuiz();
+        System.out.print(list.getQuizTakeId());
     }
 }

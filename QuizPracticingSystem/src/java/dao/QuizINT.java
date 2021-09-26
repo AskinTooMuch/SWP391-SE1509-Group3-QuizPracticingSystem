@@ -15,6 +15,10 @@ import java.util.ArrayList;
 public interface QuizINT {
     public ArrayList<Quiz> getAllQuiz();
     
+    public Quiz getQuizById(int quizId);
+    
+    
+            
     public ArrayList<Quiz> getQuizBySubject(int subjectId);
     
     public ArrayList<Quiz> getQuizByLesson(int lessonId);

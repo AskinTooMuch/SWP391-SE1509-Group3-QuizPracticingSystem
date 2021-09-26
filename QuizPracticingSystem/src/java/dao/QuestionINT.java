@@ -17,6 +17,8 @@ public interface QuestionINT {
     ArrayList<Question> getAllQuestion();
 
     public Question getQuestionById(int questionId);
+    
+    public ArrayList<Question> getQuestionByQuizId(int quizId);
 
     public int addQuestion(Question newQuestion);
 

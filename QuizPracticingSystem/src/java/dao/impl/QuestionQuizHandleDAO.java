@@ -25,4 +25,22 @@ public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
         ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);
         return new QuestionQuizHandle(question, answers, 0,false);
     }
+    
+    @Override
+    public void markQuestion(QuestionQuizHandle question){
+        if(question.isMarked()){
+            question.setMarked(false);
+        }else{
+            question.setMarked(true);
+        }
+    }
+    public Answer getRightAnswer(QuestionQuizHandle question){
+        ArrayList<Answer> answerList = question.getAnswerList();
+        for (Answer answer : answerList) {//peek at answer
+                    if (answer.isIsCorrect()) {
+                        return answer;
+                    }
+                }
+        return null;
+    }
 }
