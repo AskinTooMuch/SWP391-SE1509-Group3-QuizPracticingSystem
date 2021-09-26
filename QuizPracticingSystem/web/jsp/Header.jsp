@@ -7,12 +7,14 @@
 <%@page import="bean.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Header Page</title>
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="${contextPath}/css/bootstrap.css">
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
     </head>
     <body>
@@ -22,17 +24,17 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand">
-                    <img src="images/logo-removebg-preview.png" alt="" width="80" height="40"></a>
+                    <img src="${contextPath}/images/logo-removebg-preview.png" alt="" width="80" height="40"></a>
                 <div class="collapse navbar-collapse" id="1">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.jsp" style="font-weight: bold;">Home</a>
+                            <a class="nav-link active" aria-current="page" href="${contextPath}/index.jsp" style="font-weight: bold;">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" style="font-weight: bold;">All Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="marketingController?service=blogList" style="font-weight: bold;">Blog</a>
+                            <a class="nav-link" href="${contextPath}/marketingController?service=blogList" style="font-weight: bold;">Blog</a>
                         </li>
 
                     </ul>
@@ -46,23 +48,38 @@
                             </span>
                         </div>
                     </form>
-                    
-                    <% User currUser = (User)request.getSession().getAttribute("currUser");
-                        if (currUser==null) {%>
+                        
+                    <c:choose>    
+                        <%--When the user is not logged in--%>
+                        <c:when test="${sessionScope['currUser'] == null}">
                             <div class="form-inline" style="float:right">
-                                <a href="login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
+                                <a href="${contextPath}/login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
                                    role="button" aria-pressed="true">Login</a>
-                                <a href="login/register.jsp" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
-                                   role="button" aria-pressed="true">Signup</a>
+                                <a href="${contextPath}/login/register.jsp" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
+                                   role="button" aria-pressed="true">Sign Up</a>
                             </div>
-                    <%  }  else { %>
-                        <div class="form-inline" style="float:right">
-                                <a href="#" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
-                                   role="button" aria-pressed="true">Profile</a>
-                                <a href="userController?service=logout" class="btn btn-default " style="background-color:#5BC0DE;color:white;font-weight: bold;"
-                                   role="button" aria-pressed="true">Logout</a>
-                        </div>
-                    <% } %>
+                        </c:when>
+                        <%--When the user logged in--%>
+                        <c:otherwise>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-th-list"></span> Profile</a>
+                                <div class="dropdown-menu">
+                                <a href="${contextPath}/login/changePassword.jsp"><span class="glyphicon glyphicon-log-in"></span> Change Password</a>
+                                <!-- If role is admin or owner-->
+                                <c:if test="${sessionScope['currUser'] != null && fn.toLowerCase(sessionScope['role']) == admin}">
+                                    <a href="#"><span class="glyphicon glyphicon-log-in"></span> Admin Page</a>
+                                </c:if>
+                                <hr>
+                                <a href="${contextPath}/userController?service=logout"><span class="glyphicon glyphicon-log-in"></span>Log Out</a>
+                            </li>
+                        </c:otherwise>  
+                    </c:choose>    
+                    
+                    
+                        
+                    
+                    
                 </div>
             </div>
         </nav>

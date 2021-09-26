@@ -17,18 +17,18 @@
     </head>
     <body>
         <div class="container">
-            <!--Slide starts here-->	
+            <%--Slide starts here --%>	
             <div class="container-fluid">
-                <!--Slide starts here-->
+            <%--Slide starts here --%>
                 <div class="row">
                     <div class="col-md-12 nopadding">
 
-                        <!--Bắt đầu slider-->
+                <%--Bắt đầu slider--%>
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                            <!-- Indicators -->    
-                            <c:choose>
-                                <!-- Wrapper for slides -->
+                        <%-- Indicators --%>  
+                        <%-- Wrapper for slides --%>
                                 <div class="carousel-inner" role="listbox">
+                            <c:choose>
                                     <%-- subjectList is empty --%>
                                     <c:when test = "${empty sliderList}">
                                         <div class="row">
@@ -42,10 +42,10 @@
                                             <br>
                                             </c:forEach>
                                         </div>                            
-                                    </c:otherwise>>
-                                </div>
+                                    </c:otherwise>
                             </c:choose>
-                            <!-- Controls -->
+                            </div>
+                        <%-- Controls --%>
                             <div class="control">
                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                                     <span class="" aria-hidden="true"></span>
