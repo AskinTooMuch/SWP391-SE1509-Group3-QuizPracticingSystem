@@ -1,8 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  23/9/21     1.0         ChucNVHE150618  First Deploy
+ *  24/9/21     1.0         ChucNVHE150618  Add changePassword service
+*/
 package controller;
 
 import bean.*;
@@ -20,10 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author admin
- */
 public class UserController extends HttpServlet {
 
     /**
@@ -46,7 +48,7 @@ public class UserController extends HttpServlet {
                 String mess = "";
                 String password = request.getParameter("password");
                 User log = null;
-                UserDAO t = new UserDAO();
+                UserINT t = new UserDAO();
                 UserRoleINT userRoleDAO = new UserRoleDAO();
                 
                 log = t.getUserLogin(userMail, password);

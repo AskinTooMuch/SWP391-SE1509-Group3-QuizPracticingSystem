@@ -1,7 +1,12 @@
 <%-- 
-    Document   : changePassword
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 23, 2021, 10:08:58 PM
-    Author     : ChucNVHE150618
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    23/9/21     1.0         ChucNVHE150618  First Deploy
+    26/9/21     1.0         ChucNVHE150618  Update frontend, add header and footer
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,7 +25,7 @@
         <link href="css/font-awesome.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-          <script src="js/bootstrap.min.js"></script>    
+        <script src="js/bootstrap.min.js"></script>    
     </head>
     
     <body>
@@ -43,7 +48,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span></span>
-                                <input type="text" class="form-control" name="oldPassword" placeholder="">
+                                <input type="password" class="form-control" name="oldPassword" placeholder="">
                             </div>
                             <label class="label control-label">New Password</label>
                             <div class="input-group">

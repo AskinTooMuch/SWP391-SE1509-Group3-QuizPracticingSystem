@@ -27,7 +27,7 @@
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                         <%-- Indicators --%>  
                         <%-- Wrapper for slides --%>
-                                <div class="carousel-inner" role="listbox">
+                            <div class="carousel-inner" role="listbox">
                             <c:choose>
                                     <%-- subjectList is empty --%>
                                     <c:when test = "${empty sliderList}">
