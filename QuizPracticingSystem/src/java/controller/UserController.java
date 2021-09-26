@@ -135,6 +135,7 @@ public class UserController extends HttpServlet {
                     gender = false;
                 }
 
+                //setup information and add to the database
                 addUser.setUserName(userName);
                 addUser.setPassword(password);
                 addUser.setUserMobile(userMobile);
@@ -156,7 +157,7 @@ public class UserController extends HttpServlet {
                 User user = userInterface.getUserByMail(userMail);
                 userInterface.changeStatus(user.getUserId(), true);
                 out.println("Confirmed");
-                out.println("<a href=" + "userController?service=login" 
+                out.println("<a href=" + "login/login.jsp" 
                         + ">Login</a>");
             }
 

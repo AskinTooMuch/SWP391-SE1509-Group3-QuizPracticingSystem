@@ -6,6 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,10 +19,10 @@
     <body>
         <%--  --%>
         <c:if test="${sessionScope.currUser == null}">
-            <c:redirect url="../index.jsp"/>
+            <c:redirect url="${contextPath}/index.jsp"/>
         </c:if>
         <div class="container" style="align-self: center">
-            <form action="../userController" method="POST" name="changePassword" id="changePassword">
+            <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
                 <div class="row">
                     <div class="col-md-5">
                         <label class="label control-label">Old Password</label>
