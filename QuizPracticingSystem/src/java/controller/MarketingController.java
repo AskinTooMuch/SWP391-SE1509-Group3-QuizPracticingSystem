@@ -44,24 +44,30 @@ public class MarketingController extends HttpServlet {
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("blogList")) {
+
                 ArrayList<Blog> blogList = blogINT.getAllTrueBlog();
-                //Tim kiem theo category va search
+                //neu tim kiem theo category hoac string
                 String[] cate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
+
                 if ((cate != null) || (searchString != null)) {
-                    blogList = blogINT.getBlogByCategoryAndTitle(cate, searchString);
-                    //phan trang
-                    String pagingUrl = "";
+                    blogList = blogINT.getBlogByCategoryAndTitle(cate, searchString);       //searched blogList 
+                    //phan trang sau khi tim kiem theo category
+                    String pagingUrl = "";                                                  //url conncet to ...?page=          
                     if (cate != null) {
                         for (String category : cate) {
-                            pagingUrl += "&category=" + category;
+                            pagingUrl += "&category=" + category;                           //Add category parameter
                         }
                     }
                     if (searchString != null) {
-                        pagingUrl += "&search=" + searchString;
+                        pagingUrl += "&search=" + searchString;                             //Add search parameter
                     }
                     request.setAttribute("pagingUrl", pagingUrl);
                 }
+
+                //xu li phan trang
+                int listSize = blogList.size();                                             //Number of blogs
+                int pageNumber = (listSize % 9 == 0) ? (listSize / 9) : (listSize / 9 + 1); //Number of pages needed 
                 String pageRaw = request.getParameter("page");
                 int page;
                 if (pageRaw == null) {
@@ -69,23 +75,31 @@ public class MarketingController extends HttpServlet {
                 } else {
                     page = Integer.parseInt(pageRaw);
                 }
-                int listSize = blogList.size();
-                int pageNumber = (listSize % 9 == 0) ? (listSize / 9) : (listSize / 9 + 1);
-                ArrayList<Blog> paginatedBlogList = blogINT.Paging(page, blogList);
-                ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
-                request.setAttribute("postCateList", postCateList);
-                request.setAttribute("blogList", paginatedBlogList);
                 request.setAttribute("pagenum", pageNumber);
                 request.setAttribute("page", page);
+                                
+                ArrayList<Blog> paginatedBlogList = blogINT.Paging(page, blogList);
+                request.setAttribute("blogList", paginatedBlogList);
+                //Send blog category list
+                ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
+                request.setAttribute("postCateList", postCateList);
+                //Send last blogs
+                ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();
+                request.setAttribute("lastBlogs", lastBlogs);
+               
                 request.getRequestDispatcher("jsp/blogList.jsp").forward(request, response);
             }
 
             if (service.equalsIgnoreCase("blogDetail")) {
+                
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
                 Blog blog = blogINT.getBlogById(blogId);
                 request.setAttribute("blog", blog);
+                
                 ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
+                ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();
+                request.setAttribute("lastBlogs", lastBlogs);
                 request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
         }

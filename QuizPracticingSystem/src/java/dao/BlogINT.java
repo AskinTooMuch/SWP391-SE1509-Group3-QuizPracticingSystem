@@ -35,6 +35,8 @@ public interface BlogINT {
     
     public int deleteBlog(int blogId);
     
+    public ArrayList<Blog> getLastBlogs();
+    
     public User getAuthor(int blogId);
     
     public PostCate getBlogCategory(int blogId);

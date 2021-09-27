@@ -4,6 +4,8 @@
     Author     : ADMN
 --%>
 
+<%@page import="java.sql.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="bean.Blog"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,9 +22,9 @@
     <body>
         <jsp:include page="Header.jsp"/>
 
-        <div class="container-fluid" style="height:500px">
+        <div class="container-fluid" style="border-top: 1px black solid;">
             <div class="row">
-                <div class="left col-3" style="margin-top:42px;">
+                <div class="left col-3" style="margin-top:42px; border-right: 1px black solid;">
                     <div>
                         <form action="marketingController" method="">
                             <div class="filter" style="">      
@@ -39,36 +41,66 @@
                                         </div>
                                     </c:forEach>
                                 </div>
-                                <input type="submit" value="Search"/>
+                                <input class="btn btn-primary" type="submit" value="Search"/>
                                 <input hidden name="service" value="blogList"/>
                             </div>
                         </form>
                     </div>
+
+                    <div style="margin-top: 20px;">
+                        <a href="marketingController?service=blogList"><h5>Lastest Posts</h5></a>
+                        <% BlogINT blogDAO = new BlogDAO();
+                            ArrayList<Blog> lastBlogs = (ArrayList<Blog>) request.getAttribute("lastBlogs");
+                            for (Blog blog : lastBlogs) {
+                        %>
+                        <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
+                            <div style="width: 104px;border-right:#bccafd 1px solid;">
+                                <img src="<%=blog.getThumbnail()%>" style="height: 70px;width: auto; ">
+                            </div>
+                            <div>
+                                <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=<%=blog.getBlogId()%>"><h6><%=blog.getBlogTitle()%></h6></a>
+                            </div>
+                        </div>
+                        <%}%>
+                    </div>
                 </div>
+
                 <div class="right col-9">
-                    <% BlogINT blogDAO = new BlogDAO();
+                    <%
                         Blog blog = (Blog) request.getAttribute("blog");
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        Date date = blog.getLastEdited();
+                        
                     %>
                     <div class="info row">
                         <div class="cate col-9"><%=blogDAO.getBlogCategory(blog.getBlogId()).getPostCateName()%></div>
-                        <div class="date col-3">Last Edited: <%=blog.getLastEdited()%></div>
+                        <div class="date col-3"><div style="float:right;">Last Edited: <%=df.format(date)%></div></div>
                     </div>        
                     <div class="title row">
                         <h4>${blog.getBlogTitle()}</h4>
                     </div>
                     <hr>
-                    <div class="content row">
+                    <div class="content row" style="text-align: justify;">
                         <p><%=blog.getDetail()%></p>
                     </div>
-                    <div class="author row" style="float:right;">Author<span><h5><%=blogDAO.getAuthor(blog.getBlogId()).getUserName()%></h5></span></div>
+                    <div class="author row" style="float:right;">
+                        <div>
+                            <div style="float:right;">Author</div>                        
+                        </div>
+                        <div>
+                            <div style="float:right;">
+                                <h5><%=blogDAO.getAuthor(blog.getBlogId()).getUserName()%></h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-                </div>
+        </div>
 
     </body>
     <jsp:include page="Footer.jsp"/>
-    
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>

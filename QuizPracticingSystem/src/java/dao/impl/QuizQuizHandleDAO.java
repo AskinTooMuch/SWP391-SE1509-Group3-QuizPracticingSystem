@@ -19,22 +19,24 @@ import java.util.ArrayList;
 public class QuizQuizHandleDAO implements QuizQuizHandleINT {
 
     @Override
+    //turn a list of question into list of question quiz handle
     public QuizQuizHandle generateQuiz(ArrayList<Question> questionList) {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAO questionQuizzHandleDAO = new QuestionQuizHandleDAO();
-
+        
         for (Question question : questionList) {
             int questionId = question.getQuestionId();
-            QuestionQuizHandle questionQH = questionQuizzHandleDAO.generateQuestionById(questionId);
-            quiz.addQuestion(questionQH);
+            QuestionQuizHandle questionQH = questionQuizzHandleDAO.generateQuestionById(questionId);//turn a question into question quiz handle
+            quiz.addQuestion(questionQH);                                                           //add question to list 
         }
         return quiz;
     }
     @Override
+    //calculaet score of the quiz
     public double calculateScore(QuizQuizHandle quiz) {
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
-        ArrayList<Integer> rightAnswerList = new ArrayList();
-        double rightAnsweredCount = 0;
+        ArrayList<Integer> rightAnswerList = new ArrayList();                       //An array of right answerid only 
+        double rightAnsweredCount = 0;                              
         for (QuestionQuizHandle question : questionList) {
             for (Answer answer : question.getAnswerList()) {
                 if (answer.isIsCorrect()) {
@@ -45,8 +47,8 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
         int questionNo = 0;
         for (QuestionQuizHandle question : questionList) {
 
-            if (question.getAnsweredId() == rightAnswerList.get(questionNo)) {
-                rightAnsweredCount++;
+            if (question.getAnsweredId() == rightAnswerList.get(questionNo)) {      //for each question, compare question's answeredId with the same index
+                rightAnsweredCount++;                                               //of the array of the right answerId
             }
             questionNo += 1;
         }
@@ -55,6 +57,7 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
     }
     
     @Override
+    //get number of answered question (submit quiz)
     public int getAnsweredQuestion(QuizQuizHandle quiz){
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int count=0;
