@@ -16,15 +16,26 @@ import dao.UserINT;
 import dao.UserRoleINT;
 import dao.impl.UserDAO;
 import dao.impl.UserRoleDAO;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class UserController extends HttpServlet {
 
@@ -55,6 +66,7 @@ public class UserController extends HttpServlet {
 
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
+                    request.setAttribute("mess", mess);
                     sendDispatcher(request, response, "login/login.jsp");
                     return;
 
@@ -83,9 +95,10 @@ public class UserController extends HttpServlet {
                 boolean gender;
                 User addUser = new User();
 
-                if (userName == null || password == null || confirmPass == null 
-                        || userMail == null || userMobile == null 
-                        || txtGender == null) {
+                if (userName.length() == 0 || password.length() == 0 
+                        || confirmPass.length() == 0 
+                        || userMail.length() == 0 || userMobile.length() == 0 
+                        || txtGender.length() == 0) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
@@ -199,7 +212,7 @@ public class UserController extends HttpServlet {
                     user.setPassword(newPass);
                     userInterface.updateUser(user);
                     out.println("Your password have been reset");
-                    out.println("<a href=" + "jsp/login.jsp" + ">Login</a>");
+                    out.println("<a href=" + "login/login.jsp" + ">Login</a>");
                     return;
                 } else {
                     out.println("The confirm-password is not match with the password!");
@@ -231,6 +244,86 @@ public class UserController extends HttpServlet {
                     sendDispatcher(request, response, "login/changePassword.jsp");
                 }
 
+            }
+            
+            if(service.equalsIgnoreCase("editProfile")){
+                String mess = "";
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                String userName = request.getParameter("userName").trim();
+                String userMobile = request.getParameter("userMobile").trim();
+                String txtGender = request.getParameter("gender").trim();
+                boolean gender;
+
+                if (userName.length() == 0 || userMobile.length() == 0 
+                        || txtGender.length() == 0) {
+                    mess = "You have to input all information!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    return;
+                }
+
+                //check if the moblie is in right fomat and length
+                String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";
+                if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
+                    mess = "The phone number is invalid";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    return;
+                }
+
+                //convert gender to booolean type
+                if (txtGender.equalsIgnoreCase("Male")) {
+                    gender = true;
+                } else {
+                    gender = false;
+                }               
+            }
+            
+            if(service.equalsIgnoreCase("test")){
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                String filename = null;
+                // Create a factory for disk-based file items
+                try {
+                    DiskFileItemFactory factory = new DiskFileItemFactory();
+                    ServletContext servletContext = this.getServletConfig().getServletContext();
+//                    out.println(servletContext);
+                    out.println(servletContext.getRealPath("/upload"));
+                    File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+                    factory.setRepository(repository);
+                    ServletFileUpload upload = new ServletFileUpload(factory);
+                    List<FileItem> items = upload.parseRequest(request);
+                    // Process the uploaded items
+                    Iterator<FileItem> iter = items.iterator();
+                    HashMap<String, String> fields = new HashMap<>();
+                    while (iter.hasNext()) {
+                        FileItem item = iter.next();
+                        if (item.isFormField()) {
+                            fields.put(item.getFieldName(), item.getString());
+                            String name = item.getFieldName();
+                            String value = item.getString();
+                            System.out.println(name + " " + value);
+                        } else {
+                            filename = item.getName();
+                            if (filename == null || filename.equals("")) {
+                                break;
+                            } else {
+                                Path path = Paths.get(filename);
+                                String storePath = servletContext.getRealPath("/upload");
+                                File uploadFile = new File(storePath + "/" + path.getFileName());
+                                if(uploadFile.canRead()){uploadFile.delete();}
+                                item.write(uploadFile);
+                            }
+                            out.println(filename);
+                        }
+                    }
+                } catch (FileUploadException ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                currUser.setProfilePic(filename);
+                userInterface.updateUser(currUser);
+                request.getSession().setAttribute("currUser", userInterface.getUserById(currUser.getUserId()));
             }
         }
     }

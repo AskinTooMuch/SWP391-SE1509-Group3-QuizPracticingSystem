@@ -34,7 +34,7 @@
                     <c:otherwise>
                         <p>Your link have over due</p>
                     </c:otherwise>
-                </c:choose>    
+                </c:choose>
             </c:when>
             <c:otherwise>
                 <form action="${contextPath}/userController" method="post">
