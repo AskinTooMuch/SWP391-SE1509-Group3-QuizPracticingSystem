@@ -26,12 +26,18 @@
             <c:if test="${mess != null}">
                 <c:out value="${mess}"></c:out>
             </c:if>
-            <form action="${contextPath}/userController?service=test" enctype="multipart/form-data">
-                
-                <p>Profile Picture </p>
-                <input type="file" name="profilePic">
+            <form action="${contextPath}/userController?service=editProfile" enctype="multipart/form-data">
+
+                <p>Enter your user name:</p>
+                <input type="text" value="${currUser.getUserName()}"  name="userName" required>
+                <p>Enter your phone:</p>
+                <input type="text" value="${currUser.getUserMobile()}"  name="userMobile" required>
+                <p>Gender:</p>
+                <input type="radio" name="gender" value="Male"> Male
                 <br>
-                <input type="submit" value="Register">
+                <input type="radio" name="gender" value="Female"> Female
+                <br>
+                <input type="submit" value="Submit">
             </form>
         </div>
         <div class="col-xs-1"></div>
