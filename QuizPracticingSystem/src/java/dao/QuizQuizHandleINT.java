@@ -18,6 +18,9 @@ public interface QuizQuizHandleINT {
 
     public QuizQuizHandle generateQuiz(ArrayList<Question> questionList);
 
-   public double calculateScore(QuizQuizHandle quiz);
-   public int getAnsweredQuestion(QuizQuizHandle quiz);
+    public double calculateScore(QuizQuizHandle quiz);
+
+    public int getAnsweredQuestion(QuizQuizHandle quiz);
+
+    public QuizQuizHandle getReviewQuiz(int quizTakeId);
 }

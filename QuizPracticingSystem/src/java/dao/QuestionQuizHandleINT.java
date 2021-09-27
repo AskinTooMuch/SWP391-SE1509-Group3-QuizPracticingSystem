@@ -8,6 +8,7 @@ package dao;
 import bean.Answer;
 import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,4 +21,6 @@ public interface QuestionQuizHandleINT {
     public void markQuestion(QuestionQuizHandle question);
 
     public Answer getRightAnswer(QuestionQuizHandle question);
+
+    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId);
 }

@@ -169,14 +169,14 @@
                                 <input type="image" id="markedbutton" src="images/marked.png " alt="Submit Form" />
                                 <input type="image" id="answeredbutton" src="images/answered.png" alt="Submit Form" />
                                 <input type="image" id="allquestionsbutton" src="images/allquestions.png" alt="Submit Form" />
-                   
-                            <button type="button" class="btn scorereview" data-toggle="modal" data-target=".submit" style="float:right;background-color: #4472c4;border: 1px white solid; color:white;">Score Exam</button>
+
+                                <button type="button" class="btn scorereview" data-toggle="modal" data-target=".submit" style="float:right;background-color: #4472c4;border: 1px white solid; color:white;">Score Exam</button>
                             </div>
                             <br/><br/>
                             <div class="holder" style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quiz}" var="question">
-             
-                                 
+
+
                                     <input type="submit" name="action" form="questionForm" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" value="${quiz.indexOf(question)+1}">
                                 </c:forEach>                             
                             </div>
@@ -263,9 +263,9 @@
                 hoursLabel.innerHTML = pad(parseInt(totalHour));
 
             }
-function resetTime(){
-    localStorage.clear();
-}
+            function resetTime() {
+                localStorage.clear();
+            }
 
             function pad(val) {
                 var valString = val + "";
@@ -280,14 +280,15 @@ function resetTime(){
             const marked = document.getElementById('markedbutton');
             const answered = document.getElementById('answeredbutton');
             const allquestions = document.getElementById('allquestionsbutton');
+
             unanswered.addEventListener("click", () => {
                 var y = document.getElementsByClassName("allquestions");
                 var i;
                 for (i = 0; i < y.length; i++) {
-                    y[i].style.display = 'line-flex';
+                    y[i].style.display = 'inline-flex';
                 }
                 var x = document.getElementsByClassName("answered");
-                var i;
+
                 for (i = 0; i < x.length; i++) {
                     x[i].style.display = 'none';
                 }
@@ -299,7 +300,7 @@ function resetTime(){
                     y[i].style.display = 'inline-flex';
                 }
                 var x = document.getElementsByClassName("unmarked");
-                var i;
+
                 for (i = 0; i < x.length; i++) {
                     x[i].style.display = 'none';
                 }
@@ -311,13 +312,13 @@ function resetTime(){
                     y[i].style.display = 'inline-flex';
                 }
                 var x = document.getElementsByClassName("unanswered");
-                var i;
+
                 for (i = 0; i < x.length; i++) {
                     x[i].style.display = 'none';
                 }
             });
             allquestions.addEventListener("click", () => {
-               var y = document.getElementsByClassName("allquestions");
+                var y = document.getElementsByClassName("allquestions");
                 var i;
                 for (i = 0; i < y.length; i++) {
                     y[i].style.display = 'inline-flex';

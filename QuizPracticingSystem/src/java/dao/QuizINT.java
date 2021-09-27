@@ -17,7 +17,7 @@ public interface QuizINT {
     
     public Quiz getQuizById(int quizId);
     
-    
+    public Quiz getQuizByQuizTakeId(int quizTakeId);
             
     public ArrayList<Quiz> getQuizBySubject(int subjectId);
     
