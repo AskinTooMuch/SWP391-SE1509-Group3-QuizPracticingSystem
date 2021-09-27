@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,9 @@
     </head>
     <body>
         <c:out value="${currUser.getProfilePic()}" ></c:out>
-        <img src="/web/upload/${currUser.getProfilePic()}">
+        <img src="${contextPath}/upload/${currUser.getProfilePic()}">
+        <object style="border: solid #f0f2f5 white; border-radius: 15px; " class="avatar_lagre"
+                                    data="${contextPath}/upload/${currUser.getProfilePic()}" 
+                                    alt="" width="190" height="190"></object>
     </body>
 </html>

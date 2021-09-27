@@ -27,7 +27,6 @@
                 <c:out value="${mess}"></c:out>
             </c:if>
             <form action="${contextPath}/userController?service=editProfile" enctype="multipart/form-data">
-
                 <p>Enter your user name:</p>
                 <input type="text" value="${currUser.getUserName()}"  name="userName" required>
                 <p>Enter your phone:</p>
