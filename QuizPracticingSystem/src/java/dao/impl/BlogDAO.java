@@ -172,6 +172,30 @@ public class BlogDAO extends MyDAO implements BlogINT {
         }
         return allTrueBlog;
     }
+    
+@Override
+    public ArrayList<Blog> getLastBlogs() {
+        ArrayList<Blog> lastBlog = new ArrayList();
+        String sql = "SELECT TOP 3 * FROM [Blog] where status = 1 ORDER BY created DESC";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                lastBlog.add(new Blog(rs.getInt("blogId"),
+                        rs.getString("blogTitle"),
+                        rs.getDate("created"),
+                        rs.getDate("lastEdited"),
+                        rs.getInt("author"),
+                        rs.getString("detail"),
+                        rs.getString("thumbnail"),
+                        rs.getBoolean("status")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return lastBlog;
+    }
 
     @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
@@ -326,7 +350,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
         String[] a = {"1", "2"};
-        List<Blog> list = dao.getBlogByCategoryAndTitle(null, "A");
+        List<Blog> list = dao.getLastBlogs();
         for (Blog o : list) {
             System.out.println(o);
         }
