@@ -72,10 +72,9 @@
     <style>
         .subjectCard {
             margin: auto;
-            width: 80vw;
+            width: 65vw;
             height: 20vh;
             border: 3px solid #73AD21;
-            padding: 10px;
             overflow: hidden;
             margin-top: 1vh;
             margin-bottom: 1vh;
@@ -89,6 +88,7 @@
         
         .cardBody {
             display: inline-block;
+            margin-left: 1vw;
         }
         
         .thumbNailImg{
