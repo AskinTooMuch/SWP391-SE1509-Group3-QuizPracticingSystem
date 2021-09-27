@@ -97,9 +97,10 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                        </c:otherwise>                
+                    </c:choose>
+                </div>
+
                 <div>
                     <button class="btn btn-default" style="position: relative;left:45%;border:solid 2px;border-radius: 50px"><a href="">BROWSE ALL POST</a></button>  
                 </div>
