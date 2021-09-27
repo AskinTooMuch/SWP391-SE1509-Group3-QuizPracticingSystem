@@ -258,7 +258,8 @@ public class UserController extends HttpServlet {
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/editProfile.jsp")
+                            .forward(request, response);
                     return;
                 }
 
@@ -267,7 +268,8 @@ public class UserController extends HttpServlet {
                 if (!userMobile.matches(moblieRegex) || userMobile.length() != 10) {
                     mess = "The phone number is invalid";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/editProfile.jsp")
+                            .forward(request, response);
                     return;
                 }
 
@@ -276,7 +278,15 @@ public class UserController extends HttpServlet {
                     gender = true;
                 } else {
                     gender = false;
-                }               
+                }
+                currUser.setUserName(userName);
+                currUser.setUserMobile(userMobile);
+                currUser.setGender(gender);
+                userInterface.updateUser(currUser);
+                request.setAttribute("currUser", 
+                        userInterface.getUserById(currUser.getUserId()));
+                request.getRequestDispatcher("index.jsp").
+                        forward(request, response);
             }
             
             if(service.equalsIgnoreCase("test")){
