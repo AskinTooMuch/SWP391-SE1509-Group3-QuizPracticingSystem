@@ -18,29 +18,34 @@ import java.util.ArrayList;
 public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
 
     @Override
+    //Turn a Question into QuestionQuizHandle
     public QuestionQuizHandle generateQuestionById(int questionId) {
         QuestionDAO questionDAO = new QuestionDAO();
         AnswerDAO answerDAO = new AnswerDAO();
-        Question question = questionDAO.getQuestionById(questionId);
-        ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);
-        return new QuestionQuizHandle(question, answers, 0,false);
+        Question question = questionDAO.getQuestionById(questionId);                        //get question
+        ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);          //get question's answer list
+        return new QuestionQuizHandle(question, answers, 0, false);                         //constructor(question,question's answers list, user's answerd id,marked)
     }
-    
+
     @Override
-    public void markQuestion(QuestionQuizHandle question){
-        if(question.isMarked()){
+    //mark and unmark question
+    public void markQuestion(QuestionQuizHandle question) {
+        if (question.isMarked()) {
             question.setMarked(false);
-        }else{
+        } else {
             question.setMarked(true);
         }
     }
-    public Answer getRightAnswer(QuestionQuizHandle question){
+    
+    @Override
+    //get the right answer of question (peek at answer)
+    public Answer getRightAnswer(QuestionQuizHandle question) {
         ArrayList<Answer> answerList = question.getAnswerList();
-        for (Answer answer : answerList) {//peek at answer
-                    if (answer.isIsCorrect()) {
-                        return answer;
-                    }
-                }
+        for (Answer answer : answerList) {
+            if (answer.isIsCorrect()) {
+                return answer;
+            }
+        }
         return null;
     }
 }

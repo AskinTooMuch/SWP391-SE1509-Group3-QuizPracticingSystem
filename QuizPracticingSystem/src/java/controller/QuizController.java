@@ -53,19 +53,23 @@ public class QuizController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
+
             if (service.equalsIgnoreCase("quizHandle")) {
-                int quizId = Integer.parseInt(request.getParameter("quizId"));
-                request.setAttribute("quizId", quizId);
+                //get quiz from session or generate new quiz (not yet have userId)
                 HttpSession session = request.getSession(true);
                 QuizQuizHandle questionArray = (QuizQuizHandle) session.getAttribute("questionArray");
+                int quizId = Integer.parseInt(request.getParameter("quizId"));
+                request.setAttribute("quizId", quizId);
                 if (questionArray == null) {
                     ArrayList<Question> questionList = questionINT.getQuestionByQuizId(quizId);
                     questionArray = quizQHINT.generateQuiz(questionList);
                 }
+                session.setAttribute("questionArray", questionArray);
+                session.setMaxInactiveInterval(3600);
                 ArrayList<QuestionQuizHandle> quiz = questionArray.getQuestions();
-                session.setAttribute("questionArray", questionArray);//Toan bo cau hoi
                 request.setAttribute("quiz", quiz);
 
+                //get question id
                 int questionNumber;
                 if (request.getParameter("questionNumber") == null) {
                     questionNumber = 1;
@@ -73,63 +77,95 @@ public class QuizController extends HttpServlet {
                     questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
                 }
                 QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
+
+                //send taken question information
                 if (questionQH.getAnsweredId() != 0) {
                     request.setAttribute("answered", questionQH.getAnsweredId());
                 }
-                request.setAttribute("questionQH", questionQH);//cau hoi  
-
+                request.setAttribute("questionQH", questionQH);
                 String questionContent = questionQH.getQuestion().getContent();
-                request.setAttribute("questionContent", questionContent);//noi dung cau hoi
-                //xu li marked question
+                request.setAttribute("questionContent", questionContent);
+                //answer List of question
+                ArrayList<Answer> answerList = questionQH.getAnswerList();
+                request.setAttribute("answerList", answerList);
+                //true answer of question
+                Answer trueAnswer = questionQHINT.getRightAnswer(questionQH);
+                request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
+                //number of question in this quiz
+                request.setAttribute("questionNumber", questionNumber);
+                //question id in database
+                request.setAttribute("questionId", questionQH.getQuestion()
+                        .getQuestionId());
+                //explanation of this question
+                request.setAttribute("explanation", questionQH.getQuestion()
+                        .getExplanation());
+                //Mark this question 
                 String marked = request.getParameter("marked");
                 if (marked != null && marked.equalsIgnoreCase("yes")) {
                     questionQHINT.markQuestion(questionQH);
                 }
-     
+
+                //send quiz infomation
+                //Number of answered question in quiz
                 int answeredQuestionNumber = quizQHINT.getAnsweredQuestion(questionArray);
                 request.setAttribute("answeredNumber", answeredQuestionNumber);
-                ArrayList<Answer> answerList = questionQH.getAnswerList();
-                Answer rightAnswer = questionQHINT.getRightAnswer(questionQH);
-                request.setAttribute("trueAnswer", rightAnswer.getAnswerContent());
-                request.setAttribute("answerList", answerList);//danh sach dap an cua cau hoi  
-                request.setAttribute("questionNumber", questionNumber);//so thu tu cua cau hoi
-                request.setAttribute("quizSize", questionArray.getQuestions().size());//do dai bai quiz
-                request.setAttribute("questionId", questionQH.getQuestion().getQuestionId());//id cau hoi trong database
-                request.setAttribute("explanation", questionQH.getQuestion().getExplanation());
-                String action = request.getParameter("action");
-                //Next quiz, Previous quiz, Score Exams
+                //length of this quiz
+                request.setAttribute("quizSize", questionArray.getQuestions()
+                        .size());
 
+                //Next quiz, Previous quiz, Score Exams handle
+                String action = request.getParameter("action");
                 if (action != null) {
+                    //information of recently submit question include questionNumber in this quiz and answer id in database
                     String answerTakenIdRaw = request.getParameter("answerTakenId");
                     String questionTakenNumberRaw = request.getParameter("questionTakenNumber");
 
+                    //set answerId of this question
                     if (answerTakenIdRaw != null && questionTakenNumberRaw != null) {
                         int answerTakenId = Integer.parseInt(answerTakenIdRaw);
                         questionQH.setAnsweredId(answerTakenId);
                     }
+
+                    //prepare for next action
                     int newQuestionNumber = 0;
+
+                    //previous question
                     if (action.equalsIgnoreCase("Previous Question")) {
                         newQuestionNumber = --questionNumber;
                         response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+
+                        //next question    
                     } else if (action.equalsIgnoreCase("Next Question")) {
                         newQuestionNumber = ++questionNumber;
                         response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+
+                        //score exam
+                    } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
+                                             && (action.charAt(0) != 'S')) {
+                        
+                        response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
                     } else if (action.equalsIgnoreCase("Score Exam")) {
+                        session.removeAttribute("questionArray");
+                        //Score of this quiz    
                         double score = quizQHINT.calculateScore(questionArray);
+                        //Date of this quiz
                         long millis = System.currentTimeMillis();
                         java.sql.Date date = new java.sql.Date(millis);
+                        //Insert into CustomerQuiz table in database
                         int userId = Integer.parseInt(request.getParameter("userId"));
                         CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, userId, (int) score, date, true);
                         CustomerQuizINT customerQuizINT = new CustomerQuizDAO();
                         customerQuizINT.addCustomerQuiz(customerQuiz);
+                        //Insert into TakeAnswer table in database;
                         customerQuizINT.addTakeAnswer(questionArray);
+                        //redirect user to review quiz page
                         response.sendRedirect("homeController");
                     }
-
                 } else {
                     request.getRequestDispatcher("quizhandle/quizHandle.jsp").forward(request, response);
                 }
             }
+
         }
     }
 

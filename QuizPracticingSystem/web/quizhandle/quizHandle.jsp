@@ -175,7 +175,9 @@
                             <br/><br/>
                             <div class="holder" style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quiz}" var="question">
-                                    <a href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=${quiz.indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" aria-pressed="true">${quiz.indexOf(question)+1}</a>
+             
+                                 
+                                    <input type="submit" name="action" form="questionForm" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" value="${quiz.indexOf(question)+1}">
                                 </c:forEach>                             
                             </div>
                             <style>

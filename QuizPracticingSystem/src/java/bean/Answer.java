@@ -10,7 +10,8 @@ package bean;
  * @author duong
  */
 public class Answer {
-    private int answerId,questionId;
+    private int answerId;
+    private int questionId;
     private String answerContent;
     private boolean isCorrect,status;
 
