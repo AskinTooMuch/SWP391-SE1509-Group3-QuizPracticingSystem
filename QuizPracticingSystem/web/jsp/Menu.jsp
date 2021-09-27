@@ -1,14 +1,7 @@
 <%-- 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Document   : Home
     Created on : Sep 20, 2021, 9:19:14 PM
-    Menu of Homepage
-    Quiz practicing system
-
-    Record of change:
-    Date        Version     Author          Description
-    20/9/21     1.0         TuanPAHE150543  First Deploy
-    22/9/21     1.0         TuanPAHE150543  Add link css,js,design form
-    27/9/21     1.0         TuanPAHE150543  Complete Home function
+    Author     : tuan
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,37 +19,40 @@
         <div class="container">
             <%--Slide starts here --%>	
             <div class="container-fluid">
+            <%--Slide starts here --%>
                 <div class="row">
                     <div class="col-md-12 nopadding">
+
+                <%--Bắt đầu slider--%>
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                            <%-- Indicators --%>  
-                            <%-- Wrapper for slides --%>
+                        <%-- Indicators --%>  
+                        <%-- Wrapper for slides --%>
+                            
                             <c:choose>
-                                <%-- sliderList is empty --%>
-                                <c:when test = "${empty sliderList}">
-                                    <div class="row">
-                                        <h5>No Slide available!</h5>
-                                    </div>
-                                </c:when>
-                                <%-- sliderList not empty --%>
-                                <c:otherwise>
-                                    <div class="carousel-inner" role="listbox">
-                                        <div class="item active">
-                                            <c:forEach items = "${sliderList}" var="slider" begin = "0" end = "0">
-                                                <a href=""><img style="width: 1500px; height: 800px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
-                                                <br>
-                                            </c:forEach>   
+                                    <%-- subjectList is empty --%>
+                                    <c:when test = "${empty sliderList}">
+                                        <div class="row">
+                                            <h5>No Slide available!</h5>
                                         </div>
-                                        <c:forEach items = "${sliderList}" var="slider" begin = "1" end = "${sliderList.size()-1}">
-                                            <div class="item">
-                                                <a href=""><img style="width: 1500px; height: 800px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
-                                                <br>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="carousel-inner" role="listbox">
+                                            <div class="item active">
+                                                <c:forEach items = "${sliderList}" var="slider" begin = "0" end = "0">
+                                                   <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
+                                                   <br>
+                                                </c:forEach>   
                                             </div>
-                                        </c:forEach> 
-                                    </div>
-                                </c:otherwise>
+                                            <div class="item">
+                                                <c:forEach items = "${sliderList}" var="slider" begin = "1" end = "${sliderList.size()-1}">
+                                                   <a href=""><img style="width: 1500px; height: 600px; object-fit:cover" src="images/${slider.getImage()}" alt=""></a>
+                                                   <br>
+                                                </c:forEach>   
+                                            </div>
+                                        </div>
+                                    </c:otherwise>
                             </c:choose>
-                            <%-- Controls --%>
+                        <%-- Controls --%>
                             <div class="control">
                                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                                     <span class="" aria-hidden="true"></span>
@@ -74,36 +70,54 @@
             <br><hr>
             <div class="post">
                 <h1>Latest Post</h1>
+                <div class="card mb-3" >
+                    <div class="row">
 
-                <div class="card mb-3">
-                    <c:choose>
-                        <%-- blogList is empty --%>
-                        <c:when test = "${blogList==null}">
-                            <div class="row">
-                                <h5>No Blog available!</h5>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="row">
-                                <c:forEach items = "${blogList}" var="blog" begin = "0" end = "2">
-                                    <div class="col-md-4">
-                                        <img src="${blog.getThumbnail()}" class="img-fluid rounded-start" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${blog.getBlogTitle()}</h5>                               
-                                            <p class="card-text"><small class="text-muted">${blog.getCreated()}</small></p>
-                                        </div>
-                                    </div>
-                                </c:forEach>
+                        <div class="col-md-4">
+                            <img src="..." class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                             </div>
                         </div>
-                    </c:otherwise>
-                </c:choose>
-                <div>
-                    <button class="btn btn-default" style="position: relative;left:45%;border:solid 2px;border-radius: 50px"><a href="">BROWSE ALL POST</a></button>  
+
+                    </div>
+                </div>
+                <div class="card mb-3" >
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="..." class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3" >
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="..." class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <div>
+                    <button type="submit" class="btn btn-default" style="position: relative;left:45%;border:solid 2px;border-radius: 50px">BROWSE ALL POST</button>  
+                </div>
             </div>
             <br><hr>
             <div>
@@ -173,10 +187,10 @@
                     <form action="homeController" method="POST">
                         <input type="hidden" name="service" value="subjectList">
                         <button type="submit" class="btn btn-default" style="margin: 50px;position: relative;left:43%;border:solid 2px;border-radius: 50px">
-                            LOAD MORE</button>
-
+                        LOAD MORE</button>
+                        
                     </form>
-
+                      
                 </div>
             </div>
 
