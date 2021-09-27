@@ -12,6 +12,7 @@
 */
 package controller;
 
+import bean.Blog;
 import bean.Slider;
 import bean.Subject;
 import dao.BlogINT;
@@ -65,6 +66,8 @@ public class HomeController extends HttpServlet {
                 request.setAttribute("subjectList", subjectList);
                 ArrayList<Slider> sliderList = sliderInterface.getSlider();
                 request.setAttribute("sliderList", sliderList);
+                ArrayList<Blog> blogList = blogInterface.getAllBlog();
+                request.setAttribute("blogList", blogList);
                 sendDispatcher(request, response, "index.jsp");
             }
             /*Service: subjectList. Load subjectList and redirect user.*/
@@ -73,6 +76,8 @@ public class HomeController extends HttpServlet {
                 request.setAttribute("subjectList", subjectList);
                 sendDispatcher(request, response, "jsp/subjectList.jsp");
             }
+            
+            
         }
     }
 
