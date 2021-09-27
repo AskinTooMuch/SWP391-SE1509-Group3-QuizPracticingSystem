@@ -481,4 +481,6 @@ insert into BlogCate values('11','4','1')
 ----------dbo.[Slider]---------------------
 insert into Slider(sliderTitle,image,link,note,status) values ('OOP with Java','oopJavaSlider.png','1','iidesune','1');
 insert into Slider(sliderTitle,image,link,note,status) values ('NiHongo 101','japanese101Slider.png','2','iidesune','1');
+insert into Slider(sliderTitle,image,link,note,status) values ('Physic in Programming','physicInProgramming.png','3','iidesune','1');
+insert into Slider(sliderTitle,image,link,note,status) values ('Photoshop 101','photoshop101Slider.png','4','iidesune','1');
 -------------------------------------------
