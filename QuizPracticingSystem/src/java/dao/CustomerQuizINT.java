@@ -28,4 +28,6 @@ public interface CustomerQuizINT {
     public int addTakeAnswer(QuizQuizHandle quiz);
 
     public int deleteCustomerQuiz(int customerQuizId);
+    
+    public int addMarkQuestion(QuizQuizHandle quiz);
 }

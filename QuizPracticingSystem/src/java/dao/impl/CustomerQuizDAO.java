@@ -93,17 +93,40 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
 
     @Override
     public int addTakeAnswer(QuizQuizHandle quiz) {
-        int change=0;
+        int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
-            String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
+            if (question.getAnsweredId() != 0) {
+                String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
+                try {
+                    PreparedStatement pre = conn.prepareStatement(sql);
+                    pre.setInt(1, quizTakeId);
+                    pre.setInt(2, question.getQuestion().getQuestionId());
+                    pre.setInt(3, question.getAnsweredId());
+                    pre.setBoolean(4, true);
+                    pre.executeUpdate();
+                    change++;
+                } catch (SQLException e) {
+                    System.out.print(e);
+                }
+            }
+        }
+        return change;
+    }
+
+    @Override
+    public int addMarkQuestion(QuizQuizHandle quiz) {
+        int change = 0;
+        ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
+        int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
+        for (QuestionQuizHandle question : questionList) {
+            String sql = "INSERT INTO [MarkQuestion](quizTakeId,questionId,[status]) VALUES(?,?,?)";
             try {
                 PreparedStatement pre = conn.prepareStatement(sql);
                 pre.setInt(1, quizTakeId);
                 pre.setInt(2, question.getQuestion().getQuestionId());
-                pre.setInt(3, question.getAnsweredId());
-                pre.setBoolean(4, true);
+                pre.setBoolean(3, question.isMarked());
                 pre.executeUpdate();
                 change++;
             } catch (SQLException e) {

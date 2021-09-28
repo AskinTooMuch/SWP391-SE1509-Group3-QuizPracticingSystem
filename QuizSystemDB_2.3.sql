@@ -244,6 +244,15 @@ CREATE TABLE dbo.[Slider](
 	[status]	bit,
 	FOREIGN KEY (link) REFERENCES dbo.[Subject](subjectId),
 )
+
+CREATE TABLE dbo.[MarkQuestion](
+	quizTakeId		int	NOT NULL,
+	questionId		int	NOT NULL,
+	[status]		bit,
+	FOREIGN KEY (quizTakeId)	REFERENCES dbo.[CustomerQuiz](quizTakeId),
+	FOREIGN KEY (questionId)	REFERENCES dbo.[Question](questionId),
+)
+
 ----------Insert Data----------------------
 ----------dbo.[UserRole]-------------------
 INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Customer',1);
@@ -428,10 +437,31 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foo
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Food',0,1)--10
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
-INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'First Quiz',3,30,NULL,2,NULL,10,2,1)
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,30,NULL,2,NULL,10,2,1)
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Exam Quiz',3,30,NULL,1,NULL,10,2,1)
+
 -------------------------------------------
 ----------dbo.[QuizQuestion]---------------
-
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,1,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,2,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,3,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,4,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,5,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,6,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,7,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,8,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,9,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,10,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,1,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,2,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,3,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,4,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,5,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,6,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,7,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,8,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,9,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,10,1)
 -------------------------------------------
 ----------dbo.[CustomerQuiz]---------------
 

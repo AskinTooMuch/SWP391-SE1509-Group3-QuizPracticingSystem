@@ -51,11 +51,29 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
         }
         return null;
     }
+
+    @Override
+    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) {
+        ArrayList<Boolean> markQuestionList = new ArrayList();
+        String sql = "SELECT * FROM [MarkQuestion] WHERE quizTakeId =" + quizTakeId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                markQuestionList.add(rs.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+        }
+        return markQuestionList;
+    }
+
     @Override
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
-        ArrayList<QuestionQuizHandle> questionList = new ArrayList();
+        QuestionQuizHandleDAO questionQuizHandleDAO = new QuestionQuizHandleDAO();
         QuestionDAO questionDAO = new QuestionDAO();
         AnswerDAO answerDAO = new AnswerDAO();
+        ArrayList<QuestionQuizHandle> questionList = new ArrayList();
+       
         String sql = "SELECT * FROM [TakeAnswer] WHERE quizTakeId=" + quizTakeId;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -67,20 +85,22 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
                         answers,
                         rs.getInt("answerId"),
                         false));
+              
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
+        
+        
         return questionList;
     }
+
     public static void main(String[] args) {
         QuestionQuizHandleDAO dao = new QuestionQuizHandleDAO();
         QuestionDAO qdao = new QuestionDAO();
-        ArrayList<QuestionQuizHandle> s = dao.getReviewQuestion(9);
-
-        
-        for(QuestionQuizHandle q:s){
-        System.out.println(q.getAnsweredId());
+        ArrayList<Boolean> s = dao.getMarkQuestionList(11);
+        for (boolean a : s) {
+            System.out.println(a);
         }
     }
 }

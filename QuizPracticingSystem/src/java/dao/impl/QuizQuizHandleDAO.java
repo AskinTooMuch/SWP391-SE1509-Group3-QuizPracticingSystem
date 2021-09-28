@@ -80,7 +80,7 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
         Quiz quiz = quizDAO.getQuizByQuizTakeId(quizTakeId);
         ArrayList<QuestionQuizHandle> reviewQuestionList = questionQuizHandleDAO.getReviewQuestion(quizTakeId);     //Questions answered
         ArrayList<Question> questionList = questionDAO.getQuestionByQuizId(quiz.getQuizId());                             //All question of quiz
-
+        ArrayList<Boolean> markQuestionList = questionQuizHandleDAO.getMarkQuestionList(quizTakeId);
         for (int i = 0; i < questionList.size(); i++) {
             Question question = questionList.get(i);
             int questionId = question.getQuestionId();
@@ -97,10 +97,14 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
             if(!skip){
             QuestionQuizHandle emptyReviewQuestion = questionQuizHandleDAO.generateQuestionById(questionId);
             emptyReviewQuestion.setAnsweredId(0);
-            reviewQuiz.addQuestion(emptyReviewQuestion);}
-            
+            reviewQuiz.addQuestion(emptyReviewQuestion);} 
         }
         
+         for(QuestionQuizHandle question: reviewQuiz.getQuestions()){
+            question.setMarked(markQuestionList.get(reviewQuiz
+                                            .getQuestions()
+                                            .indexOf(question)));
+        }
         return reviewQuiz;
     }
     
@@ -109,7 +113,7 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
         QuestionDAO qdao = new QuestionDAO();
         ArrayList<Question> s = qdao.getAllQuestion();
         
-        QuizQuizHandle list = dao.getReviewQuiz(9);
+        QuizQuizHandle list = dao.getReviewQuiz(11);
         for (QuestionQuizHandle q : list.getQuestions()) {
             System.out.println(q.getAnsweredId());
         }

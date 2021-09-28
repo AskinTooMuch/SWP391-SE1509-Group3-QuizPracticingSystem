@@ -63,6 +63,8 @@ public class QuizController extends HttpServlet {
                 HttpSession session = request.getSession(true);
                 QuizQuizHandle questionArray = (QuizQuizHandle) session.getAttribute("questionArray");
                 int quizId = Integer.parseInt(request.getParameter("quizId"));
+                Quiz quizInDatabse = quizINT.getQuizById(quizId);
+                request.setAttribute("quizType", quizInDatabse.getTestTypeId());
                 request.setAttribute("quizId", quizId);
                 if (questionArray == null) {
                     ArrayList<Question> questionList = questionINT.getQuestionByQuizId(quizId);
@@ -72,7 +74,7 @@ public class QuizController extends HttpServlet {
                 
                 ArrayList<QuestionQuizHandle> quiz = questionArray.getQuestions();
                 request.setAttribute("quiz", quiz);
-
+                
                 //get question id
                 int questionNumber;
                 if (request.getParameter("questionNumber") == null) {
@@ -83,9 +85,9 @@ public class QuizController extends HttpServlet {
                 QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
 
                 //send being taking question's information
-                if (questionQH.getAnsweredId() != 0) {
-                    request.setAttribute("answered", questionQH.getAnsweredId());
-                }
+                
+                request.setAttribute("answered", questionQH.getAnsweredId());
+                
                 request.setAttribute("questionQH", questionQH);
                 String questionContent = questionQH.getQuestion().getContent();
                 request.setAttribute("questionContent", questionContent);
@@ -144,10 +146,10 @@ public class QuizController extends HttpServlet {
 
                         //score exam
                     } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
-                            && (action.charAt(0) != 'S')) {
+                            && (action.charAt(0) != 'S') && (action.charAt(0) != 'E')) {
 
                         response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
-                    } else if (action.equalsIgnoreCase("Score Exam")) {
+                    } else if (action.equalsIgnoreCase("Score Exam") || action.equalsIgnoreCase("Exit")) {
                         //Score of this quiz    
                         double score = quizQHINT.calculateScore(questionArray);
                         //Date of this quiz
@@ -160,6 +162,8 @@ public class QuizController extends HttpServlet {
                         customerQuizINT.addCustomerQuiz(customerQuiz);
                         //Insert into TakeAnswer table in database;
                         customerQuizINT.addTakeAnswer(questionArray);
+                        //Inser into MarkQuestion table in database;
+                        customerQuizINT.addMarkQuestion(questionArray);
                         //redirect user to review quiz page
                         session.removeAttribute("questionArray");
                         response.sendRedirect("homeController");

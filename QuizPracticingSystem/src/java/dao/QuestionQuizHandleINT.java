@@ -22,5 +22,7 @@ public interface QuestionQuizHandleINT {
 
     public Answer getRightAnswer(QuestionQuizHandle question);
 
+    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId);
+
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId);
 }
