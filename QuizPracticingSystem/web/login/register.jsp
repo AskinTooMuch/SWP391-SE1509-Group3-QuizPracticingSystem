@@ -17,7 +17,8 @@
         <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
 
     </head>
-    <body class="u-body"><header class="u-align-left u-clearfix u-header u-header" id="sec-ad7d"><div class="u-clearfix u-sheet u-sheet-1">
+    <body class="u-body">
+        <div class="u-clearfix u-sheet u-sheet-1">
                 <c:if test="${mess != null}">
                     <c:out value="${mess}"></c:out>
                 </c:if>
@@ -62,5 +63,6 @@
                         </div>
                     </form>
                 </div>
-                </body>
-                </html>
+            </div>
+    </body>
+</html>

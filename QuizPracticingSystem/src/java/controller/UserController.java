@@ -262,6 +262,15 @@ public class UserController extends HttpServlet {
                             .forward(request, response);
                     return;
                 }
+                
+                //check if this Moblie already existed in the system
+                if (userInterface.getUserByMobile(userMobile) != null 
+                        && !userMobile.equals(userInterface.getUserById(currUser.getUserId()).getUserMobile())) {
+                    mess = "The phone number is already been used";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    return;
+                }                
 
                 //check if the moblie is in right fomat and length
                 String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";

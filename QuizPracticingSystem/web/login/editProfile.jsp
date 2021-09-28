@@ -13,32 +13,54 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/bootstrapp.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="${contextPath}/css/stylelogin.css" media="screen">
+
         <title>JSP Page</title>
+        <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+
     </head>
-    <body>
-        <div class="col-xs-1"></div>
-        <div class="col-xs-10">
-            <c:if test="${currUser == null}">
-                <c:redirect url="/login/login.jsp"></c:redirect>
-            </c:if>
-            <c:if test="${mess != null}">
-                <c:out value="${mess}"></c:out>
-            </c:if>
-            <form action="${contextPath}/userController?service=editProfile" enctype="multipart/form-data">
-                <p>Enter your user name:</p>
-                <input type="text" value="${currUser.getUserName()}"  name="userName" required>
-                <p>Enter your phone:</p>
-                <input type="text" value="${currUser.getUserMobile()}"  name="userMobile" required>
-                <p>Gender:</p>
-                <input type="radio" name="gender" value="Male"> Male
-                <br>
-                <input type="radio" name="gender" value="Female"> Female
-                <br>
-                <input type="submit" value="Submit">
-            </form>
+    <body class="u-body">
+        <c:if test="${currUser == null}">
+            <c:redirect url="/login/login.jsp"></c:redirect>
+        </c:if>
+        <c:if test="${mess != null}">
+            <c:out value="${mess}"></c:out>
+        </c:if>
+        <header class="u-align-left u-clearfix u-header u-header" id="sec-ad7d"></header>
+        <div class="u-clearfix u-sheet u-sheet-1">
+            <img class="u-image u-image-default u-preserve-proportions u-image-1" src="${contextPath}/images/login/logologin2.png" alt="" data-image-width="210" data-image-height="92">
+            <img class="u-image u-image-default u-image-2" src="${contextPath}/images/login/logo-login.png" alt="" data-image-width="492" data-image-height="93">
+
+            <div class="u-form u-form-1">
+                <form action="${contextPath}/userController?service=editProfile" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
+
+                    <div class="u-form-group u-form-name">
+                        <p>Enter your user name:</p>
+                        <input type="text" value="${currUser.getUserName()}"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                    </div>
+                    <div class="u-form-group u-form-name">
+                        <p>Enter your phone:</p>
+                        <input type="text" value="${currUser.getUserMobile()}"  name="userMobile" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                    </div>
+                    <div class="u-form-group u-form-name">
+                        <c:if test="${currUser.isGender()}">
+                            <p>Gender:</p>
+                            <input type="radio" name="gender" value="Male" checked> Male
+                            <br>
+                            <input type="radio" name="gender" value="Female"> Female
+                        </c:if>
+                        <c:if test="${!currUser.isGender()}">
+                            <p>Gender:</p>
+                            <input type="radio" name="gender" value="Male" > Male
+                            <br>
+                            <input type="radio" name="gender" value="Female" checked> Female
+                        </c:if>                        
+                    </div>
+                    <div class="u-align-center u-form-group u-form-submit">
+                        <button class="u-btn u-btn-submit u-button-style" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="col-xs-1"></div>
     </body>
 </html>

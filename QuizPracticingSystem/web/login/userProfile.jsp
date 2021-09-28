@@ -15,10 +15,20 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <c:out value="${currUser.getProfilePic()}" ></c:out>
-        <img src="${contextPath}/upload/${currUser.getProfilePic()}">
+        <jsp:include page="/jsp/Header.jsp"/>
+
         <object style="border: solid #f0f2f5 white; border-radius: 15px; " class="avatar_lagre"
-                                    data="${contextPath}/upload/${currUser.getProfilePic()}" 
-                                    alt="" width="190" height="190"></object>
+                data="${contextPath}/upload/${ currUser.getProfilePic() }" 
+                alt="" width="190" height="190"></object>
+        <p>Name: <c:out value="${ currUser.getUserName()}"/></p>
+        <p>Mail: <c:out value="${ currUser.getUserMail()}"/></p>
+        <p>Mobile: <c:out value="${ currUser.getUserMobile()}"/></p>
+        <c:if test="${currUser.isGender()}">
+            <p>Gender: Male</p>
+        </c:if>
+        <c:if test="${!currUser.isGender()}">
+            <p>Gender: Female</p>
+        </c:if>
+        <jsp:include page="/jsp/Footer.jsp"/>
     </body>
 </html>
