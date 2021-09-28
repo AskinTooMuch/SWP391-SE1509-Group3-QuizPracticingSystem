@@ -15,6 +15,10 @@ import java.util.ArrayList;
 public interface SubjectINT {
     public ArrayList<Subject> getAllSubjects();
     
+    public ArrayList<Subject> getFeaturedSubjects();
+    
+    public ArrayList<Subject> getSubjectsAssigned(int userId);
+    
     public Subject getSubjectbyId(int subjectId);
     
     public ArrayList<Subject> getSubjectbyCateId(int cateId);

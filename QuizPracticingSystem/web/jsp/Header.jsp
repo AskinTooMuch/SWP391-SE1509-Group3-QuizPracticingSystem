@@ -31,7 +31,7 @@
                             <a class="nav-link active" aria-current="page" href="${contextPath}/index.jsp" style="font-weight: bold;">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-weight: bold;">All Courses</a>
+                            <a class="nav-link" href="${contextPath}/homeController?service=subjectList" style="font-weight: bold;">All Courses</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="${contextPath}/marketingController?service=blogList" style="font-weight: bold;">Blog</a>

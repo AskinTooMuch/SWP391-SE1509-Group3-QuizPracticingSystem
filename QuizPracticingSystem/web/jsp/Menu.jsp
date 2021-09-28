@@ -125,8 +125,8 @@
                                 <div class="col-md-3">
                                     <div class="card h-100">
                                         <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><c:out value = "${subject.getSubjectName()}"/></h5>
+                                        <div class="card-body" style="float: bottom">
+                                            <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
                                             <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
                                         </div>
                                         <div class="card-footer">
@@ -135,9 +135,9 @@
                                 </div>
                             </c:forEach>
                             <%-- Print Subject placeholder card --%>
-                            <c:forEach items = "Null" var="subject" begin = "${subjectList.size()-1}" end = "3">
+                            <c:forEach begin = "${subjectList.size()}" end = "3">
                                 <div class="col-md-3">
-                                    <div class="card h-100">
+                                    <div class="card h-100" style="padding: auto">
                                         <div class="card-body">
                                             <h5 class="card-title">Currently Not Available</h5>
                                             <p class="card-text" style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>

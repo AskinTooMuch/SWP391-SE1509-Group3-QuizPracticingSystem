@@ -8,14 +8,17 @@ package dao.impl;
 import bean.Answer;
 import bean.Question;
 import bean.QuestionQuizHandle;
+import dao.MyDAO;
 import dao.QuestionQuizHandleINT;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
  *
  * @author ADMN
  */
-public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
+public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleINT {
 
     @Override
     //Turn a Question into QuestionQuizHandle
@@ -36,7 +39,7 @@ public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
             question.setMarked(true);
         }
     }
-    
+
     @Override
     //get the right answer of question (peek at answer)
     public Answer getRightAnswer(QuestionQuizHandle question) {
@@ -47,5 +50,37 @@ public class QuestionQuizHandleDAO implements QuestionQuizHandleINT {
             }
         }
         return null;
+    }
+    @Override
+    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
+        ArrayList<QuestionQuizHandle> questionList = new ArrayList();
+        QuestionDAO questionDAO = new QuestionDAO();
+        AnswerDAO answerDAO = new AnswerDAO();
+        String sql = "SELECT * FROM [TakeAnswer] WHERE quizTakeId=" + quizTakeId;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Question question = questionDAO.getQuestionById(rs.getInt("questionId"));
+                ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(rs.getInt("questionId"));
+                questionList.add(new QuestionQuizHandle(question,
+                        answers,
+                        rs.getInt("answerId"),
+                        false));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return questionList;
+    }
+    public static void main(String[] args) {
+        QuestionQuizHandleDAO dao = new QuestionQuizHandleDAO();
+        QuestionDAO qdao = new QuestionDAO();
+        ArrayList<QuestionQuizHandle> s = dao.getReviewQuestion(9);
+
+        
+        for(QuestionQuizHandle q:s){
+        System.out.println(q.getAnsweredId());
+        }
     }
 }

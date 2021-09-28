@@ -1,31 +1,19 @@
 /*
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Sep 23, 2021
- *  HomeController map
+ *  SubjectController map
  *  Quiz practicing system
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  23/9/21     1.0         ChucNVHE150618  First Deploy
- *  24/9/21     1.0         ChucNVHE150618  Add homepage service
- *  26/9/21     1/0         ChucNVHE150618  Add Subject list service
+ *  27/9/21     1.0         ChucNVHE150618  First Deploy
 */
 package controller;
 
-import bean.Blog;
-import bean.Slider;
-import bean.Subject;
-import dao.BlogINT;
-import dao.SliderINT;
 import dao.SubjectINT;
-import dao.UserINT;
-import dao.impl.BlogDAO;
-import dao.impl.SliderDAO;
 import dao.impl.SubjectDAO;
-import dao.impl.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -36,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author tuan
+ * @author admin
  */
-public class HomeController extends HttpServlet {
+public class SubjectController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,30 +42,22 @@ public class HomeController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            if (service==null) service="homePage";
-            
-            UserINT userInterface = new UserDAO();
-            BlogINT blogInterface = new BlogDAO();
             SubjectINT subjectInterface = new SubjectDAO();
-            SliderINT sliderInterface = new SliderDAO();
-            /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/
-            if (service.equalsIgnoreCase("homePage")) {
-                ArrayList<Subject> featuredSubjectList = subjectInterface.getFeaturedSubjects();
-                request.setAttribute("subjectList", featuredSubjectList);
-                ArrayList<Slider> sliderList = sliderInterface.getSlider();
-                request.setAttribute("sliderList", sliderList);
-                ArrayList<Blog> blogList = blogInterface.getAllBlog();
-                request.setAttribute("blogList", blogList);
-                sendDispatcher(request, response, "index.jsp");
-            }
-            /*Service: subjectList. Load subjectList and redirect user.*/
-            if (service.equalsIgnoreCase("subjectList")) {
-                ArrayList<Subject> subjectList = subjectInterface.getAllSubjects();
-                request.setAttribute("subjectList", subjectList);
-                sendDispatcher(request, response, "jsp/subjectList.jsp");
-            }
             
-            
+            if (service.equalsIgnoreCase("login")) {
+                
+            }
+        }
+    }
+    
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(SubjectController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -119,15 +99,5 @@ public class HomeController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
-        try {
-            RequestDispatcher rd = request.getRequestDispatcher(path);
-            rd.forward(request, response);
 
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(HomeController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

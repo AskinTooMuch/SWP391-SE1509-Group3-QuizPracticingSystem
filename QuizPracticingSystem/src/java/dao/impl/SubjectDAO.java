@@ -1,8 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  23/9/21     1.0         ChucNVHE150618  First Deploy
+ *  24/9/21     1.0         ChucNVHE150618  Add methods: getAllSubjects, getSubjectById, getSubjectByCateId, update-add-delete subject
+ *  27/9/21     1.0         ChucNVHE150618  Add methods: getFeaturedSubjects, getAssignedSubject
+*/
 package dao.impl;
 
 import bean.Subject;
@@ -37,11 +44,11 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
                 String subjectName = rs.getString("subjectName");
                 String description = rs.getString("description");
                 String thumbnail = rs.getString("thumbnail");
-                Boolean featuredSubject = rs.getBoolean("featuredSubject");
+                Boolean featured = rs.getBoolean("featuredSubject");
                 Boolean status = rs.getBoolean("status");
                 
                 allSubject.add(new Subject(subjectId, subjectName, description, 
-                        thumbnail, featuredSubject, status, 
+                        thumbnail, featured, status, 
                         dimensionDAO.getDimensionBySubject(subjectId), 
                         subjectCateDAO.getSubjectCateBySubject(subjectId)));
             }
@@ -49,6 +56,70 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
             System.out.println(e);
         }
         return allSubject;
+    }
+    
+    @Override
+    public ArrayList<Subject> getFeaturedSubjects() {
+        ArrayList<Subject> featuredSubjects = new ArrayList();
+        DimensionINT dimensionDAO = new DimensionDAO();
+        SubjectCateINT subjectCateDAO = new SubjectCateDAO();
+        
+        String sqlSubject = "SELECT * FROM [Subject] WHERE featuredSubject = 1";
+        
+        try {
+            /* Get the subject */
+            PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
+            rs = preSubject.executeQuery();
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+                
+                featuredSubjects.add(new Subject(subjectId, subjectName, description, 
+                        thumbnail, featured, status, 
+                        dimensionDAO.getDimensionBySubject(subjectId), 
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return featuredSubjects;
+    }
+    /* Get subjects assigned by certain expert */
+    @Override
+    public ArrayList<Subject> getSubjectsAssigned(int userId) {
+        ArrayList<Subject> assignedSubjects = new ArrayList();
+        DimensionINT dimensionDAO = new DimensionDAO();
+        SubjectCateINT subjectCateDAO = new SubjectCateDAO();
+        
+        String sqlSubject = "SELECT S.[subjectId],[subjectName],[description],[thumbnail],[featuredSubject],S.[status],SE.[userId]\n" +
+                            "  FROM [QuizSystem].[dbo].[Subject] S INNER JOIN [QuizSystem].dbo.[SubjectExpert] SE\n" +
+                            "  ON S.subjectId = SE.subjectId WHERE SE.userId = " + userId;
+        
+        try {
+            /* Get the subject */
+            PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
+            rs = preSubject.executeQuery();
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+                
+                assignedSubjects.add(new Subject(subjectId, subjectName, description, 
+                        thumbnail, featured, status, 
+                        dimensionDAO.getDimensionBySubject(subjectId), 
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return assignedSubjects;
     }
     
     @Override
@@ -124,7 +195,7 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
     /* Test DAO */
 //    public static void main(String[] args) {
 //        SubjectDAO dao = new SubjectDAO();
-//        ArrayList<Subject> subjectByCate = dao.getAllSubjects();
+//        ArrayList<Subject> subjectByCate = dao.getSubjectsAssigned(7);
 //        for (Subject subject : subjectByCate) {
 //            if (subject==null) System.out.println("null");
 //            else {
@@ -132,4 +203,5 @@ public class SubjectDAO extends MyDAO implements SubjectINT{
 //            }
 //        }
 //    }
+
 }

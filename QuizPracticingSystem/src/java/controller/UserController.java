@@ -77,7 +77,7 @@ public class UserController extends HttpServlet {
                 out.print(mess);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
-            
+            /* Log out */
             if (service.equalsIgnoreCase("logout")) {
                 request.getSession().invalidate();
                 sendDispatcher(request, response, "index.jsp");
