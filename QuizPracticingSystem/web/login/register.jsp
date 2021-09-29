@@ -1,7 +1,12 @@
 <%-- 
-    Document   : register
-    Created on : Sep 21, 2021, 10:25:35 AM
-    Author     : Admin
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 21, 2021, 10:19:14 PM
+    Menu of Homepage
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author           Description
+    21/9/21     1.0         DuongNHHE150328  First Deploy
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

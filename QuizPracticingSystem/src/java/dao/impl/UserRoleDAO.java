@@ -22,12 +22,14 @@ public class UserRoleDAO extends MyDAO implements UserRoleINT{
     @Override
     public ArrayList<UserRole> getAllUserRole() {
         xSql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole]";
-        ArrayList<UserRole> allUserRole = null;
+        ArrayList<UserRole> allUserRole = new ArrayList<>();
+        UserRole add = null;
         try {
             ps = conn.prepareStatement(xSql);
             rs = ps.executeQuery();
             while (rs.next()){
-                allUserRole.add(new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status")));
+                add = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
+                allUserRole.add(add);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,14 +54,14 @@ public class UserRoleDAO extends MyDAO implements UserRoleINT{
     }
 
     @Override
-    public int editRole(int roleId, UserRole userRole) {
-        xSql = "UPDATE [UserRole] SET userRoleId = ?, userRoleName = ?,[status] = ? WHERE userRoleId = ?";
+    public int editRole(UserRole userRole) {
+        xSql = "UPDATE [UserRole] SET userRoleName = ?,[status] = ? WHERE userRoleId = ?";
         int i = 0;
         try {
             ps = conn.prepareStatement(xSql);
-            ps.setInt(1, userRole.getUserRoleId());
-            ps.setString(2, userRole.getUserRoleName());
-            ps.setBoolean(3, userRole.isStatus());
+            ps.setString(1, userRole.getUserRoleName());
+            ps.setBoolean(2, userRole.isStatus());
+            ps.setInt(3, userRole.getUserRoleId());
             i = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,13 +71,12 @@ public class UserRoleDAO extends MyDAO implements UserRoleINT{
 
     @Override
     public int addRole(UserRole userRole) {
-        xSql = "INSERT INTO [UserRole](userRoleId,userRoleName,status) VAULES(?,?,?)";
+        xSql = "INSERT INTO [UserRole](userRoleName,status) VALUES(?,?)";
         int i = 0;
         try {
             ps = conn.prepareStatement(xSql);
-            ps.setInt(1, userRole.getUserRoleId());
-            ps.setString(2, userRole.getUserRoleName());
-            ps.setBoolean(3, userRole.isStatus());
+            ps.setString(1, userRole.getUserRoleName());
+            ps.setBoolean(2, userRole.isStatus());
             i = ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

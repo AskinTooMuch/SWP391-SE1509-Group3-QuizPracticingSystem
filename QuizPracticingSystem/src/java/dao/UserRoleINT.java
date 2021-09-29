@@ -17,7 +17,7 @@ public interface UserRoleINT {
     
     public UserRole getUserRoleById(int roleId);
     
-    public int editRole(int roleId, UserRole userRole);
+    public int editRole(UserRole userRole);
     
     public int addRole(UserRole userRole);
     

@@ -7,7 +7,10 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
+ *  23/9/21     1.0         DuongNHHE150328 Add register
  *  24/9/21     1.0         ChucNVHE150618  Add changePassword service
+ *  24/9/21     1.0         DuongNHHE150328 Add reset password function 
+ *  27/9/21     1.0         DuongNHHE150328 Add edit profile function, upload image  
  */
 package controller;
 

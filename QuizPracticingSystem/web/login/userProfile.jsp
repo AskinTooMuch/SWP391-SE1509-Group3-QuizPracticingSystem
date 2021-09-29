@@ -1,9 +1,13 @@
 <%-- 
-    Document   : userProfile
-    Created on : Sep 26, 2021, 2:40:11 PM
-    Author     : Admin
---%>
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 26, 2021, 10:19:14 AM
+    Menu of Homepage
+    Quiz practicing system
 
+    Record of change:
+    Date        Version     Author          Description
+    26/9/21     1.0         DuongNHHE150328 First Deploy
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />

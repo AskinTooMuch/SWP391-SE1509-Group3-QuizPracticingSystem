@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
-public class UserDAO extends MyDAO implements UserINT{
+public class UserDAO extends MyDAO implements UserINT {
 
     @Override
     public ArrayList<User> getUserAllUser() {
@@ -124,11 +124,6 @@ public class UserDAO extends MyDAO implements UserINT{
     }
 
     @Override
-    public User getUser(String userMail, String password) {
-        return null;
-    }
-
-    @Override
     public int updateUser(User updatedUser) {
         xSql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
         int check = 0;
@@ -190,11 +185,10 @@ public class UserDAO extends MyDAO implements UserINT{
     }
 
     public static void main(String[] args) {
-        UserDAO ud = new UserDAO();
-        User newUser = new User(0, "Duong", "12", 1, null, "duonghoang8801@gmail.com", true, "0852274855", true);
-        ud.addUser(newUser);
-//        User all = ud.getUserByMail("DuongNHHE150328@fpt.edu.vn");
-//        System.out.println(all.getUserName());
+//        UserDAO ud = new UserDAO();
+//        User newUser = new User(0, "Duong", "12", 1, null, "duonghoang8801@gmail.com", true, "0852274855", true);
+//        ud.addUser(newUser);
+
     }
 
 }

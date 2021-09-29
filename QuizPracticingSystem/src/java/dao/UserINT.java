@@ -23,9 +23,7 @@ public interface UserINT {
     public User getUserByMail(String userMail);
     
     public User getUserByMobile(String Moblie);
-    
-    public User getUser(String userMail, String password);
-    
+        
     public int updateUser(User updatedUser);
     
     public int changeStatus(int userId, boolean newStatus);

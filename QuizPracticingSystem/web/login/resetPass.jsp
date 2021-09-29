@@ -1,7 +1,13 @@
 <%-- 
-    Document   : resetPass
-    Created on : Sep 22, 2021, 8:51:19 AM
-    Author     : Admin
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 22, 2021, 9:19:14 PM
+    Menu of Homepage
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    22/9/21     1.0         DuongNHHE150328 First Deploy
+    23/9/21     1.0         DuongNHHE150328 Update using jstl instead
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

@@ -1,7 +1,12 @@
 <%-- 
-    Document   : uploadImage
-    Created on : Jul 5, 2021, 4:15:24 PM
-    Author     : Admin
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 27, 2021, 9:19:14 PM
+    Menu of Homepage
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    27/9/21     1.0         DuongNHHE150328 First Deploy
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
