@@ -10,12 +10,17 @@
 */
 package controller;
 
+import bean.Subject;
+import bean.User;
+import bean.UserRole;
 import dao.SubjectINT;
 import dao.impl.SubjectDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.management.relation.Role;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +49,23 @@ public class SubjectController extends HttpServlet {
             String service = request.getParameter("service");
             SubjectINT subjectInterface = new SubjectDAO();
             
-            if (service.equalsIgnoreCase("login")) {
+            if (service.equalsIgnoreCase("courseContentList")) {
+                User currUser = (User)request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                /* If user is not logged in, redirect to index */
+                if ((currUser == null) || (currRole == null)){
+                    sendDispatcher(request, response, "index.jsp");
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
+                    ArrayList<Subject> featuredSubjectList = subjectInterface.getSubjectsAssigned(currUser.getUserId());
+                    request.setAttribute("subjectList", featuredSubjectList);
+                    sendDispatcher(request, response, "jsp/subjectList.jsp");
+                }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
+                    ArrayList<Subject> allSubject = subjectInterface.getAllSubjects();
+                    request.setAttribute("subjectList", allSubject);
+                    sendDispatcher(request, response, "jsp/subjectList.jsp");
+                }   else {
+                    sendDispatcher(request, response, "index.jsp");
+                }
                 
             }
         }
