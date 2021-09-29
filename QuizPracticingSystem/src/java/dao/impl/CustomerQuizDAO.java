@@ -50,14 +50,15 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
 
     @Override
     public int addCustomerQuiz(CustomerQuiz customerQuiz) {
-        String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,startedAt,[status]) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, customerQuiz.getQuizId());
             pre.setInt(2, customerQuiz.getUserId());
             pre.setInt(3, customerQuiz.getScore());
-            pre.setDate(4, customerQuiz.getStartedAt());
-            pre.setBoolean(5, true);
+            pre.setInt(4, customerQuiz.getTime());
+            pre.setDate(5, customerQuiz.getStartedAt());
+            pre.setBoolean(6, true);
             return pre.executeUpdate();
         } catch (SQLException e) {
             System.out.print(e);
@@ -75,6 +76,7 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
                         rs.getInt("quizId"),
                         rs.getInt("userId"),
                         rs.getInt("score"),
+                        rs.getInt("time"),
                         rs.getDate("startedAt"),
                         rs.getBoolean("status"));
             }

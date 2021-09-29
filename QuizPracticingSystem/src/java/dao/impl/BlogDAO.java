@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
+  quan tới bảng Blog,CateBlog, phục vụ cho các chức năng liên quan tới Blog của 
+  dự án
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -12,7 +13,6 @@ import dao.BlogINT;
 import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -214,7 +214,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             sql += ")";
         }
         if (search != null) {
-            sql += " AND a.blogTitle like '%" + search + "%'";
+            sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";
         try {

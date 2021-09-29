@@ -77,7 +77,7 @@
                                                 ${answer.getAnswerContent()} 
                                             </li>
 
-                                            <input onclick="countThis()" type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":""} class="radioAnswer">
+                                            <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":""} class="radioAnswer">
                                             <span class="checkmark"></span>
                                         </label>
 
@@ -140,8 +140,7 @@
                             <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
                         </c:if>
                         <c:if test="${questionNumber==quizSize}">
-
-                            <button type="button" class="btn" data-toggle="modal" data-target=".submit" >Score Exam</button>
+                            <input type="submit" class="btn" name="action" value="Finish Exam" form="questionForm" >
                         </c:if>
                     </div>
                     <div >
@@ -173,13 +172,11 @@
                                 <input type="image" id="answeredbutton" src="images/answered.png" alt="Submit Form" />
                                 <input type="image" id="allquestionsbutton" src="images/allquestions.png" alt="Submit Form" />
 
-                                <button type="button" class="btn scorereview" data-toggle="modal" data-target=".submit" style="float:right;background-color: #4472c4;border: 1px white solid; color:white;">Score Exam</button>
+                                <input type="submit" class="btn scorereview" name='action' value='Finish Exam' style="float:right;background-color: #4472c4;border: 1px white solid; color:white" form='questionForm'>
                             </div>
                             <br/><br/>
                             <div class="holder" style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quiz}" var="question">
-
-
                                     <input type="submit" name="action" form="questionForm" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" value="${quiz.indexOf(question)+1}">
                                 </c:forEach>                             
                             </div>
@@ -195,93 +192,48 @@
                     </div>
                 </div>
             </div>
-            <!--            score exam modal-->
-            <div class="modal fade submit" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <% int quizSize = (int) request.getAttribute("quizSize");%>
-
-                            <%if ((answeredNumber == quizSize) || (answeredNumber < quizSize && answeredNumber != 0)) {  %>   
-                            <h5 class="modal-title" id="exampleModalLabel">Score Exam?</h5>
-                            <%}%>
-                            <%if (answeredNumber == 0) { %>
-                            <h5 class="modal-title" id="exampleModalLabel">Exit Exam?</h5>
-                            <% } %>
-                        </div>
-                        <div class="modal-body">
-                            <% if (answeredNumber == quizSize) { %>
-                            By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
-                            be able to change any answers after this point
-                            <%}%>
-                            <% if (answeredNumber < quizSize && answeredNumber > 0) {%>
-                            <div style="display: flex;">
-                                <p style="color:red;" id="numberOfAnswer"><%=answeredNumber%></p><p style="color:red;">&nbsp;of <%=quizSize%> Questions Answered</p>  
-                            </div>
-                            By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
-                            be able to change any answers after this point
-                            <% } %>
-                            <% if (answeredNumber == 0) {%>
-                            You have not answered any question.By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
-                            be able to change any answers after this point
-                            <% } %>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-
-                            <c:choose>
-                                <c:when test="${answeredNumber ==0}">
-                                    <input onclick="resetTime()" id="reviewSubmit" class="btn" type="submit" name="action" value="Exit" form="questionForm">
-                                </c:when>
-                                <c:otherwise>
-
-                                    <input onclick="resetTime()" id="reviewSubmit" class="btn" type="submit" name="action" value="Score Exam" form="questionForm">
-                                </c:otherwise>
-                            </c:choose>                         
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
         </div>
         <script>
 
             var minutesLabel = document.getElementById("minutes");
             var secondsLabel = document.getElementById("seconds");
             var hoursLabel = document.getElementById("hours");
-            var totalSecond ;
+            var totalSecond;
             var today = new Date();
             <%int quizType = (int) request.getAttribute("quizType");%>
-            <%if(quizType==1){ %>
+            <%if (quizType == 1) { %>
             var endMilisecond;
             if (localStorage.getItem("endMiliseconds") != null) {
                 endMilisecond = localStorage.getItem("endMiliseconds");
             } else {
-                endMilisecond = today.getTime()+5400*1000;
+                endMilisecond = today.getTime() +${duration*60*1000};
             }
             localStorage.setItem('endMiliseconds', endMilisecond);
             <%} else {%>
-                var startMilisecond;
-            if (localStorage.getItem("miliSeconds") != null) {
-                startMilisecond = localStorage.getItem("miliSeconds");
+            var startMilisecond;
+            if (localStorage.getItem("startMiliseconds") != null) {
+                startMilisecond = localStorage.getItem("startMiliseconds");
             } else {
                 startMilisecond = today.getTime();
             }
-            localStorage.setItem('miliSeconds', startMilisecond);
-                <% } %>
+            localStorage.setItem('startMiliseconds', startMilisecond);
+            <% } %>
             setInterval(setTime, 100);
             function setTime() {
                 var today2 = new Date();
                 var presentMilisecond = today2.getTime();
-                <%if(quizType==1){ %>
-                totalSecond = (endMilisecond-presentMilisecond) / 1000;
-                <% } else {%> 
-                     totalSecond = (presentMilisecond - startMilisecond) / 1000;
-                    <% } %>
+            <% if (quizType == 1) { %>
+                totalSecond = (endMilisecond - presentMilisecond) / 1000;
+            <% } else {%>
+                totalSecond = ((presentMilisecond - startMilisecond) / 1000);
+            <% } %>
                 var totalMinute = (totalSecond / 60) % 60;
                 var totalHour = totalSecond / 60 / 60;
                 secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));
                 minutesLabel.innerHTML = pad(parseInt(totalMinute));
                 hoursLabel.innerHTML = pad(parseInt(totalHour));
+                document.getElementById('time').value = Math.round(totalSecond);
             }
             function resetTime() {
                 localStorage.clear();
@@ -342,13 +294,13 @@
             });
 
 
- var numberOfAnswer = document.getElementById("numberOfAnswer");
+            var numberOfAnswer = document.getElementById("numberOfAnswer");
             function countThis() {
-                <%answeredNumber+=1; %>
+            <%answeredNumber += 1;%>
                 var answered = <%=answeredNumber%>;
-            numberOfAnswer.innerHTML = answered ;
-            
-            
+                numberOfAnswer.innerHTML = answered;
+
+
             }
 
 

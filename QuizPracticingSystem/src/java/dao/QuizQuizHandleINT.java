@@ -16,11 +16,11 @@ import java.util.ArrayList;
  */
 public interface QuizQuizHandleINT {
 
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList);
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId);
 
     public double calculateScore(QuizQuizHandle quiz);
 
     public int getAnsweredQuestion(QuizQuizHandle quiz);
-
+            
     public QuizQuizHandle getReviewQuiz(int quizTakeId);
 }

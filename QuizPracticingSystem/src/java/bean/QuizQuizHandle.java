@@ -12,12 +12,20 @@ import java.util.ArrayList;
  * @author ADMN
  */
 public class QuizQuizHandle {
-
+    private Quiz quiz;
     private ArrayList<QuestionQuizHandle> questions;
+    private int Time;   // thoi gian lam bai quiz tinh bang giay
 
     public QuizQuizHandle() {
         questions = new ArrayList<>();
     }
+
+    public QuizQuizHandle(Quiz quiz, ArrayList<QuestionQuizHandle> questions, int Time) {
+        this.quiz = quiz;
+        this.questions = questions;
+        this.Time = Time;
+    }
+    
 
     public QuizQuizHandle(ArrayList<QuestionQuizHandle> questions) {
         this.questions = questions;
@@ -30,6 +38,23 @@ public class QuizQuizHandle {
     public void setQuestions(ArrayList<QuestionQuizHandle> questions) {
         this.questions = questions;
     }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
+    public int getTime() {
+        return Time;
+    }
+
+    public void setTime(int Time) {
+        this.Time = Time;
+    }
+    
     public QuestionQuizHandle getQuestionByNumber(int questionNumber){
         return questions.get(questionNumber-1);
     }
