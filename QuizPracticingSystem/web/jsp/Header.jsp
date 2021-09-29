@@ -15,7 +15,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Header Page</title>
         <link rel="stylesheet" href="${contextPath}/css/bootstrap.css">
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+        <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -53,10 +54,10 @@
                             </span>
                         </div>
                     </form>
-                        
+
                     <c:choose>    
                         <%--When the user is not logged in--%>
-                        <c:when test="${sessionScope['currUser'] == null}">
+                        <c:when test="${currUser == null}">
                             <div class="form-inline" style="float:right">
                                 <a href="${contextPath}/login/login.jsp" class="btn btn-default "style="background-color:#5BC0DE;color:white;font-weight: bold;" 
                                    role="button" aria-pressed="true">Login</a>
@@ -68,23 +69,32 @@
                         <c:otherwise>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-th-list"></span> Profile</a>
+                                    <span class="glyphicon glyphicon-th-list">
+                                    </span> Profile
+                                </a>
                                 <div class="dropdown-menu">
-                                <a href="${contextPath}/login/changePassword.jsp"><span class="glyphicon glyphicon-log-in"></span> Change Password</a>
-                                <!-- If role is admin or owner-->
-                                <c:if test="${sessionScope['currUser'] != null && fn.toLowerCase(sessionScope['role']) == admin}">
-                                    <a href="#"><span class="glyphicon glyphicon-log-in"></span> Admin Page</a>
-                                </c:if>
-                                <hr>
-                                <a href="${contextPath}/userController?service=logout"><span class="glyphicon glyphicon-log-in"></span>Log Out</a>
+                                    <a href="${contextPath}/login/changePassword.jsp">
+                                        <span class="glyphicon glyphicon-log-in"></span> Change Password
+                                    </a>
+                                    <!-- If role is admin or owner-->
+                                    <c:if test="${sessionScope['currUser'] != null && fn.toLowerCase(sessionScope['role']) == admin}">
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-log-in"></span> Admin Page
+                                        </a>
+                                    </c:if>
+                                    <hr>
+                                    <a href="${contextPath}/userController?service=logout">
+                                        <span class="glyphicon glyphicon-log-in"></span>Log Out
+                                    </a>
+                                </div>
                             </li>
                         </c:otherwise>  
                     </c:choose>    
-                    
-                    
-                        
-                    
-                    
+
+
+
+
+
                 </div>
             </div>
         </nav>

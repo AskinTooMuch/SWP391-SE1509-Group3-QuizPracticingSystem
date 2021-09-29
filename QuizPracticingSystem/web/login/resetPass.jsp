@@ -12,41 +12,96 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+        <link href="css/bootstrapp.min.css" rel="stylesheet">
+        <script src="js/bootstrapp.min.js"></script>
+        <link href="css/font-awesome.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>    
     </head>
     <body>
-        <c:set var="userMail" value="${ param.userMail }"/>
-        <c:choose >
-            <c:when  test="${ userMail != null }">
-                <c:set var="currentTime" value="${System.currentTimeMillis() }"/>
-                <c:set var="createTime" value="${ param.createTime }"/>
-                <c:choose>
-                    <c:when test = "${ ((currentTim - createTime) / 1000 / 60) < 3 }">
-                        <form action="${contextPath}/userController" method="post">
-                            <p>Enter your new pass</p>
-                            <input type="password" name="newPass">
-                            <p>Re-Enter your new pass</p>
-                            <input type="password" name="confirmNewPass">
-                            <input type="hidden" name="service" value="resetPage">
-                            <input type="hidden" name="userMail" value="<c:out value="${userMail}"></c:out>">
-                                <input type="submit" value="Confirm">
-                            </form>
+        <jsp:include page="/jsp/Header.jsp"/>
+        <div class="main">
+            <div class="container" style="align-self: center; min-height: 50vh">
+                <c:set var="userMail" value="${ param.userMail }"/>
+                <c:choose >
+                    <c:when  test="${ userMail != null }">
+                        <c:set var="currentTime" value="${System.currentTimeMillis() }"/>
+                        <c:set var="createTime" value="${ param.createTime }"/>
+                        <c:choose>
+                            <c:when test = "${ ((currentTim - createTime) / 1000 / 60) < 3 }">
+                                <form action="${contextPath}/userController" method="post">
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-6">
+                                            <label class="label control-label">Enter your new pass</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-user"></span></span>
+                                                <input type="password" class="form-control" name="newPass" placeholder="">
+                                            </div>
+                                            <label class="label control-label">Re-Enter your new pass</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-lock"></span></span>
+                                                <input type="password" class="form-control" name="confirmNewPass">
+                                            </div>
+                                            <c:if test="${mess != null}">
+                                                <label class="label control-label">
+                                                    <p style="color: red; font-weight: bold;">
+                                                        <c:out value="${mess}"/>
+                                                    </p>
+                                                </label>
+                                            </c:if>
+                                            <div class="input-group">
+                                                <button type="submit" id="submit" class="btn btn-success">Change password!</button>
+                                                <input type="hidden" name="service" value="resetPage">
+                                                <input type="hidden" name="userMail" value="<c:out value="${userMail}"/>">  
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                    </div>  
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Your link have over due</p>
+                            </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:otherwise>
-                        <p>Your link have over due</p>
+                        <form action="${contextPath}/userController" method="post">
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6">
+                                    <label class="label control-label">Enter your email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span></span>
+                                        <input type="text" class="form-control" name="enteredUserMail" placeholder="">
+                                    </div>
+                                    <br>
+                                    <c:if test="${mess != null}">
+                                                <label class="label control-label">
+                                                    <p style="color: red; font-weight: bold;">
+                                                        <c:out value="${mess}"/>
+                                                    </p>
+                                                </label>
+                                            </c:if>
+                                    <div class="input-group">                                        
+                                        <button type="submit" id="submit" class="btn btn-success">Send confirm</button>
+                                        <input type="hidden" name="service" value="resetPassword">
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </form>
                     </c:otherwise>
                 </c:choose>
-            </c:when>
-            <c:otherwise>
-                <form action="${contextPath}/userController" method="post">
-                    <input type="hidden" name="service" value="resetPassword">
-                    <p>Enter your email</p>
-                    <input type="text" name="userMail" >
-                    <input type="submit" value="Send">
-                </form>
-            </c:otherwise>
-        </c:choose>
-
-
-        
+            </div>
+        </div>
+        <jsp:include page="/jsp/Footer.jsp"/>
     </body>
 </html>

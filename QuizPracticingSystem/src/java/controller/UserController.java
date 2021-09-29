@@ -8,7 +8,7 @@
  *  Date        Version     Author          Description
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
  *  24/9/21     1.0         ChucNVHE150618  Add changePassword service
-*/
+ */
 package controller;
 
 import bean.*;
@@ -61,7 +61,7 @@ public class UserController extends HttpServlet {
                 User log = null;
                 UserINT t = new UserDAO();
                 UserRoleINT userRoleDAO = new UserRoleDAO();
-                
+
                 log = t.getUserLogin(userMail, password);
 
                 if (log == null) {
@@ -82,7 +82,7 @@ public class UserController extends HttpServlet {
                 request.getSession().invalidate();
                 sendDispatcher(request, response, "index.jsp");
             }
-            
+
             //get all atribute from page then check validate and save to database
             if (service.equalsIgnoreCase("register")) {
                 String mess = "";
@@ -95,9 +95,9 @@ public class UserController extends HttpServlet {
                 boolean gender;
                 User addUser = new User();
 
-                if (userName.length() == 0 || password.length() == 0 
-                        || confirmPass.length() == 0 
-                        || userMail.length() == 0 || userMobile.length() == 0 
+                if (userName.length() == 0 || password.length() == 0
+                        || confirmPass.length() == 0
+                        || userMail.length() == 0 || userMobile.length() == 0
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
@@ -115,7 +115,7 @@ public class UserController extends HttpServlet {
 
                 //check validate mail
                 String mailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-                if ( !userMail.matches(mailRegex)) {
+                if (!userMail.matches(mailRegex)) {
                     mess = "The Email is invalid !";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
@@ -164,10 +164,12 @@ public class UserController extends HttpServlet {
 
                 SystemEmail se = new SystemEmail();
                 String confirmLink = "http://localhost:8080/QuizPracticingSystem"
-                        + "/userController?service=confirmAccount&userMail=" 
+                        + "/userController?service=confirmAccount&userMail="
                         + userMail;
                 se.sendEmail(userMail, "Confirm Your Account", confirmLink);
-                out.println("<p>An confirm mail have been sent to your email address!</p>");
+                mess = "An confirm mail have been sent to your email address!";
+                request.setAttribute("mess", mess);
+                request.getRequestDispatcher("login/register.jsp").forward(request, response);
             }
 
             //change status for user account
@@ -176,32 +178,34 @@ public class UserController extends HttpServlet {
                 User user = userInterface.getUserByMail(userMail);
                 userInterface.changeStatus(user.getUserId(), true);
                 out.println("Confirmed");
-                out.println("<a href=" + "login/login.jsp" 
+                out.println("<a href=" + "login/login.jsp"
                         + ">Login</a>");
             }
 
             //get email from page and send a resetPass mail to the address
             if (service.equalsIgnoreCase("resetPassword")) {
-                String userMail = request.getParameter("userMail").trim();
-                
+                String userMail = request.getParameter("enteredUserMail").trim();
+                String mess = "";
                 //check email if it is true
-                if (userMail.length() == 0  || userMail == null) {
-                    out.println("You have to input your email");
-                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
+                if (userMail.length() == 0 || userMail == null) {
+                    mess = "You have to input your email";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 } else if (userInterface.getUserByMail(userMail) == null) {
-                    out.println("Email not existed!");
-                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
+                    mess = "Email not existed!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 } else {
                     sendResetMail(userMail);
-                    out.println("An reset password link have been sent to your email address");
-                    request.getRequestDispatcher("login/resetPass.jsp").include(request, response);
+                    mess = "An reset password link have been sent to your email address";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 }
             }
 
-            
             //get new pass and svae to the database
             if (service.equalsIgnoreCase("resetPage")) {
                 String userMail = request.getParameter("userMail");
@@ -245,8 +249,8 @@ public class UserController extends HttpServlet {
                 }
 
             }
-            
-            if(service.equalsIgnoreCase("editProfile")){
+
+            if (service.equalsIgnoreCase("editProfile")) {
                 String mess = "";
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String userName = request.getParameter("userName").trim();
@@ -254,7 +258,7 @@ public class UserController extends HttpServlet {
                 String txtGender = request.getParameter("gender").trim();
                 boolean gender;
 
-                if (userName.length() == 0 || userMobile.length() == 0 
+                if (userName.length() == 0 || userMobile.length() == 0
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
                     request.setAttribute("mess", mess);
@@ -262,15 +266,15 @@ public class UserController extends HttpServlet {
                             .forward(request, response);
                     return;
                 }
-                
+
                 //check if this Moblie already existed in the system
-                if (userInterface.getUserByMobile(userMobile) != null 
+                if (userInterface.getUserByMobile(userMobile) != null
                         && !userMobile.equals(userInterface.getUserById(currUser.getUserId()).getUserMobile())) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
                     return;
-                }                
+                }
 
                 //check if the moblie is in right fomat and length
                 String moblieRegex = "(09|03|07|08|05)+([0-9]{8})";
@@ -292,13 +296,13 @@ public class UserController extends HttpServlet {
                 currUser.setUserMobile(userMobile);
                 currUser.setGender(gender);
                 userInterface.updateUser(currUser);
-                request.setAttribute("currUser", 
+                request.setAttribute("currUser",
                         userInterface.getUserById(currUser.getUserId()));
                 request.getRequestDispatcher("index.jsp").
                         forward(request, response);
             }
-            
-            if(service.equalsIgnoreCase("test")){
+
+            if (service.equalsIgnoreCase("uploadImage")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String filename = null;
                 // Create a factory for disk-based file items
@@ -328,8 +332,10 @@ public class UserController extends HttpServlet {
                             } else {
                                 Path path = Paths.get(filename);
                                 String storePath = servletContext.getRealPath("/upload");
-                                File uploadFile = new File(storePath + "/" + path.getFileName());
-                                if(uploadFile.canRead()){uploadFile.delete();}
+                                File uploadFile = new File(storePath + "/"  + path.getFileName());
+                                if (uploadFile.canRead()) {
+                                    uploadFile.delete();
+                                }
                                 item.write(uploadFile);
                             }
                             out.println(filename);
@@ -346,7 +352,7 @@ public class UserController extends HttpServlet {
             }
         }
     }
-    
+
     //create reset password link and send to the email address
     public void sendResetMail(String userMail) {
         SystemEmail se = new SystemEmail();
@@ -405,5 +411,5 @@ public class UserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-                                                                                
+
 }
