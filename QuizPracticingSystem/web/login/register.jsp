@@ -60,6 +60,7 @@
                                 <br>
                             </div>
                         </c:if>
+                        
 
                         <div class="u-align-center u-form-group u-form-submit">
                             <button class="u-btn u-btn-submit u-button-style" type="submit">Register</button>
