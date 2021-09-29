@@ -19,7 +19,7 @@
     <head>
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrapp.min.css" rel="stylesheet">
-
+        <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
     </head>
     <body>
@@ -86,13 +86,16 @@
                         <c:otherwise>
                             <div class="row">
                                 <c:forEach items = "${blogList}" var="blog" begin = "0" end = "2">
-                                    <div class="col-md-4">
-                                        <img src="${blog.getThumbnail()}" class="img-fluid rounded-start" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${blog.getBlogTitle()}</h5>                               
-                                            <p class="card-text"><small class="text-muted">${blog.getCreated()}</small></p>
+                                    <div class="box-border" style="border: solid 1px">
+                                        <div class="col-md-4">
+                                            <img src="${blog.getThumbnail()}" class="img-fluid rounded-start" style="width:80%; height:200px;">
+                                        </div> 
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h3 class="card-title">${blog.getBlogTitle()}</h3>                               
+                                                <p class="card-text"><small class="text-muted">${blog.getCreated()}</small></p>
+                                                <a href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -102,7 +105,7 @@
                 </div>
 
                 <div>
-                    <button class="btn btn-default" style="position: relative;left:45%;border:solid 2px;border-radius: 50px"><a href="">BROWSE ALL POST</a></button>  
+                    <button class="btn btn-default" style="position: relative;left:45%;border:solid 2px;border-radius: 50px"><a href="${contextPath}/marketingController?service=blogList">BROWSE ALL POST</a></button>  
                 </div>
 
             </div>
@@ -124,7 +127,7 @@
                             <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
                                 <div class="col-md-3">
                                     <div class="card h-100">
-                                        <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
+                                        <img src="images/${subject.getThumbnail()}"style="width: 100%; height: 80%" class="card-img-top" alt="${subject.getSubjectName()}">
                                         <div class="card-body" style="float: bottom">
                                             <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
                                             <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
@@ -155,7 +158,7 @@
                             <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
                                 <div class="col-md-3">
                                     <div class="card h-100">
-                                        <img src="images/${subject.getThumbnail()}" class="card-img-top" alt="${subject.getSubjectName()}">
+                                        <img src="images/${subject.getThumbnail()}" style="width: 100%; height: 80%" class="card-img-top" alt="${subject.getSubjectName()}">
                                         <div class="card-body">
                                             <h5 class="card-title"><a href="#"><c:out value = "${subject.getSubjectName()}"/></a></h5>
                                             <p class="card-text" style="overflow: hidden"><c:out value= "${subject.getDescription()}"/></p>
