@@ -20,26 +20,26 @@
         <title>Change Password Page</title>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-        <link href="css/bootstrapp.min.css" rel="stylesheet">
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="js/bootstrapp.min.js"></script>
         <link href="css/font-awesome.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>    
     </head>
-    
+
     <body>
         <%-- Check If user is logged in or not, if not redirect to index --%>
         <c:if test="${sessionScope.currUser == null}">
-            <c:redirect url="${contextPath}/index.jsp"/>
+            <c:redirect url="/index.jsp"/>
         </c:if>
-        
+
         <jsp:include page="/jsp/Header.jsp"/>
         <div class="main">
-            
-        <%-- Login form --%>
+
+            <%-- Login form --%>
             <div class="container" style="align-self: center; min-height: 50vh">
-                
+
                 <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
                     <div class="row">
                         <div class="col-md-3"></div>
@@ -63,8 +63,9 @@
                                 <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();'>
                                 <span id='message'></span>
                             </div>
+                            <br>
                             <div class="input-group">
-                                <button type="submit" id="submit" class="btn btn-default">Change password!</button>
+                                <button type="submit" id="submit" class="btn btn-success">Change password!</button>
                                 <input type="hidden" name="service" value="changePassword">
                             </div>
                             <div>
@@ -74,7 +75,7 @@
                     </div>
                 </form> 
             </div>
-                            
+
         </div>
         <jsp:include page="/jsp/Footer.jsp"/>
     </body>
@@ -82,15 +83,15 @@
 
 <script>
     <%-- Check if new password and re-enter password match or not --%>
-    var check = function() {
+    var check = function () {
         if (document.getElementById('newPassword').value == document.getElementById('rePassword').value) {
-          document.getElementById('message').style.color = 'green';
-          document.getElementById('message').innerHTML = 'Valid';
-           document.getElementById('submit').disabled = false;
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = 'Valid';
+            document.getElementById('submit').disabled = false;
         } else {
-          document.getElementById('message').style.color = 'red';
-          document.getElementById('message').innerHTML = 'New password dont match';
-           document.getElementById('submit').disabled = true;
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = 'New password dont match';
+            document.getElementById('submit').disabled = true;
         }
-      }
+    }
 </script>

@@ -24,6 +24,33 @@
         <link href="${contextPath}/css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="${contextPath}/js/bootstrap.min.js"></script>
+         <style>
+        .subjectCard {
+            margin: auto;
+            width: 65vw;
+            height: 20vh;
+            border: 3px solid #73AD21;
+            overflow: hidden;
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+        }
+        
+        .cardThumbnail {
+            height: 100%;
+            width: 20vh;
+            display: inline-block;
+        }
+        
+        .cardBody {
+            display: inline-block;
+            margin-left: 1vw;
+        }
+        
+        .thumbNailImg{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     </head>
     <body>
         <div class="wrap">
@@ -69,31 +96,5 @@
             <jsp:include page="Footer.jsp"/>
         </div>
     </body>
-    <style>
-        .subjectCard {
-            margin: auto;
-            width: 65vw;
-            height: 20vh;
-            border: 3px solid #73AD21;
-            overflow: hidden;
-            margin-top: 1vh;
-            margin-bottom: 1vh;
-        }
-        
-        .cardThumbnail {
-            height: 100%;
-            width: 20vh;
-            display: inline-block;
-        }
-        
-        .cardBody {
-            display: inline-block;
-            margin-left: 1vw;
-        }
-        
-        .thumbNailImg{
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+   
 </html>

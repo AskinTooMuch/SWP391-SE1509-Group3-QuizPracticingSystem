@@ -17,7 +17,7 @@ public class Blog {
     private String blogTitle;
     private Date created;
     private Date lastEdited;
-    private int author;    /*userId of user write the blog*/
+    private User author;    /*userId of user write the blog*/
     private String detail;
     private String thumbnail;
     private Boolean status;
@@ -25,7 +25,7 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(int blogId, String blogTitle, Date created, Date lastEdited, int author, String detail, String thumbnail, Boolean status) {
+    public Blog(int blogId, String blogTitle, Date created, Date lastEdited, User author, String detail, String thumbnail, Boolean status) {
         this.blogId = blogId;
         this.blogTitle = blogTitle;
         this.created = created;
@@ -35,6 +35,8 @@ public class Blog {
         this.thumbnail = thumbnail;
         this.status = status;
     }
+
+    
     
     
 
@@ -46,14 +48,15 @@ public class Blog {
         this.blogId = blogId;
     }
 
-    public int getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(int author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
+   
     public Date getCreated() {
         return created;
     }

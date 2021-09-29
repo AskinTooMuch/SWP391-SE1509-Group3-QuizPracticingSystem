@@ -30,7 +30,7 @@ public class RegistrationDAO extends MyDAO {
     public int editRegistration(int registrationId,Registration editedRegistration) {
         return 0;
     }
-    public int deleteRegistration(int registrationId){
+        public int deleteRegistration(int registrationId){
         return 0;
     }
 }

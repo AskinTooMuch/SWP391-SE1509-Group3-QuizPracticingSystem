@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện tạo ra những bài quiz từ các câu hỏi 
+  lấy từ database phục vụ funtion QuizHandle hoặc QuizReview
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -19,17 +19,20 @@ import java.util.ArrayList;
  */
 public class QuizQuizHandleDAO implements QuizQuizHandleINT {
     
-    @Override
     //turn a list of question into list of question quiz handle
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList) {
+    @Override
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId) {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAO questionQuizzHandleDAO = new QuestionQuizHandleDAO();
-        
+        QuizDAO quizDAO = new QuizDAO();
+        Quiz quizInDatabase = quizDAO.getQuizById(quizId);
         for (Question question : questionList) {
             int questionId = question.getQuestionId();
             QuestionQuizHandle questionQH = questionQuizzHandleDAO.generateQuestionById(questionId);//turn a question into question quiz handle
-            quiz.addQuestion(questionQH);                                                           //add question to list 
+            quiz.addQuestion(questionQH);                                                           //add question to list           
         }
+        quiz.setQuiz(quizInDatabase);
+        quiz.setTime(quizInDatabase.getQuizDuration());
         return quiz;
     }
     

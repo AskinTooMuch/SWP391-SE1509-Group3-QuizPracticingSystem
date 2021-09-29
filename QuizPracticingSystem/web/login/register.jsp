@@ -18,13 +18,10 @@
 
     </head>
     <body class="u-body">
-        <div class="u-clearfix u-sheet u-sheet-1">
-                <c:if test="${mess != null}">
-                    <c:out value="${mess}"></c:out>
-                </c:if>
+        <header class="u-align-left u-clearfix u-header u-header" id="sec-ad7d">
+            <div class="u-clearfix u-sheet u-sheet-1">
                 <img class="u-image u-image-default u-preserve-proportions u-image-1" src="${contextPath}/images/login/logologin2.png" alt="" data-image-width="210" data-image-height="92">
                 <img class="u-image u-image-default u-image-2" src="${contextPath}/images/login/logo-login.png" alt="" data-image-width="492" data-image-height="93">
-
                 <div class="u-form u-form-1">
                     <form action="${contextPath}/userController" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
 
@@ -55,14 +52,28 @@
                             <input type="radio" name="gender" value="Female"> Female
                         </div>
 
+                        <c:if test="${mess != null}">
+                            <div class="u-form-group u-form-name">
+                                <p style="color: red; font-weight: bold;">
+                                    <c:out value="${mess}"/>
+                                </p>
+                                <br>
+                            </div>
+                        </c:if>
+                        
+
                         <div class="u-align-center u-form-group u-form-submit">
-
-                            <input type="hidden" name="service" value="register">
-
                             <button class="u-btn u-btn-submit u-button-style" type="submit">Register</button>
                         </div>
+                        <div class="u-align-center u-form-group u-form-submit">
+                            <button class="u-btn u-btn-submit u-button-style" >
+                                <a href="${contextPath}/index.jsp" style="text-decoration: none;color: white;">Home Page</a>
+                            </button>
+                        </div>
+                        <input type="hidden" name="service" value="register">
                     </form>
                 </div>
             </div>
+        </header>
     </body>
 </html>

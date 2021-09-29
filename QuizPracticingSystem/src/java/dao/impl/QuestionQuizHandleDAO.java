@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện tạo ra những câu hỏi trong bài quiz bằng 
+  các câu hỏi lấy từ database, kết hợp với QuizQuizHandle để
+  phục vụ funtion QuizHandle hoặc QuizReview
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -21,7 +22,12 @@ import java.util.ArrayList;
 public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleINT {
 
     @Override
-    //Turn a Question into QuestionQuizHandle
+    /*
+    *Turn a Question into QuestionQuizHandle.
+    *
+    *@param question the question. It is a Question type
+    *@param answers the list of question's answers. It is ArrayList<Question> type
+    */
     public QuestionQuizHandle generateQuestionById(int questionId) {
         QuestionDAO questionDAO = new QuestionDAO();
         AnswerDAO answerDAO = new AnswerDAO();
@@ -31,7 +37,8 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
     }
 
     @Override
-    //mark and unmark question
+//    mark and unmark question
+//    
     public void markQuestion(QuestionQuizHandle question) {
         if (question.isMarked()) {
             question.setMarked(false);
@@ -41,7 +48,12 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
     }
 
     @Override
-    //get the right answer of question (peek at answer)
+    /*
+    *Get the right answer of the question 
+    *
+    *@param answer the answer of the question. It is a Answer type
+    *@param answerList the list of question's answers. It is ArrayList<Question> type
+    */
     public Answer getRightAnswer(QuestionQuizHandle question) {
         ArrayList<Answer> answerList = question.getAnswerList();
         for (Answer answer : answerList) {
@@ -51,7 +63,12 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
         }
         return null;
     }
-
+    /*
+    *Get the list of question marked from the QuizTake table in database 
+    *
+    *@param pre. It is a PreparedStatement type
+    *@param rs. It is ResultSet type
+    */
     @Override
     public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) {
         ArrayList<Boolean> markQuestionList = new ArrayList();

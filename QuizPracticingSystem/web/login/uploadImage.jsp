@@ -25,7 +25,7 @@
     </head>
     <body>
 
-        <form method="post" action="${contextPath}/userController?service=test" enctype="multipart/form-data">
+        <form method="post" action="${contextPath}/userController?service=uploadImage" enctype="multipart/form-data">
             <div class="container">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
@@ -55,7 +55,7 @@
                 <div class="col-md-4"></div>
             </div>
         </form>
-        <a href="index.jsp">Go to home</a>
+        <a href="${contextPath}/index.jsp">Go to home</a>
         <script>
             const wrapper = document.querySelector(".wrapper");
             const fileName = document.querySelector(".file-name");
