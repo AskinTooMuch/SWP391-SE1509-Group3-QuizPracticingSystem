@@ -38,7 +38,7 @@
         <div class="main">
             
         <%-- Login form --%>
-            <div class="container" style="align-self: center">
+            <div class="container" style="align-self: center; min-height: 50vh">
                 
                 <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
                     <div class="row">
