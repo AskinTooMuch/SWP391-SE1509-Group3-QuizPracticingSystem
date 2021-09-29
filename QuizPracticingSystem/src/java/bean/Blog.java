@@ -17,7 +17,7 @@ public class Blog {
     private String blogTitle;
     private Date created;
     private Date lastEdited;
-    private User author;    /*userId of user write the blog*/
+    private User author;    
     private String detail;
     private String thumbnail;
     private Boolean status;

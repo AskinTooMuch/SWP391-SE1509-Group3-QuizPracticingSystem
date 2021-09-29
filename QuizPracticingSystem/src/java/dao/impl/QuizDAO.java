@@ -24,7 +24,7 @@ public class QuizDAO extends MyDAO implements QuizINT {
     @Override
     public ArrayList<Quiz> getAllQuiz() {
         ArrayList<Quiz> allQuiz = null;
-
+        
         return allQuiz;
     }
 
