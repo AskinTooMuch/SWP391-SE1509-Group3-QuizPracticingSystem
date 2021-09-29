@@ -40,7 +40,7 @@
                             <p>          </p>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${contextPath}/SubjectController?service=courseContentList" style="font-weight: bold;">Course Content List</a>
+                            <a class="nav-link" href="${contextPath}/subjectController?service=courseContentList" style="font-weight: bold;">Course Content List</a>
                         </li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">

@@ -12,6 +12,7 @@ package controller;
 
 import bean.Subject;
 import bean.User;
+import bean.UserRole;
 import dao.SubjectINT;
 import dao.impl.SubjectDAO;
 import java.io.IOException;
@@ -49,24 +50,22 @@ public class SubjectController extends HttpServlet {
             SubjectINT subjectInterface = new SubjectDAO();
             
             if (service.equalsIgnoreCase("courseContentList")) {
-                User currUser = (User)request.getSession().getAttribute("role");
-                Role currRole = (Role)request.getSession().getAttribute("role");
+                User currUser = (User)request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
                 /* If user is not logged in, redirect to index */
-                if (currUser==null || currRole==null){
+                if ((currUser == null) || (currRole == null)){
                     sendDispatcher(request, response, "index.jsp");
-                }
-                
-                if (currRole.getRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
                     ArrayList<Subject> featuredSubjectList = subjectInterface.getSubjectsAssigned(currUser.getUserId());
                     request.setAttribute("subjectList", featuredSubjectList);
-                }   else if (currRole.getRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
+                    sendDispatcher(request, response, "jsp/subjectList.jsp");
+                }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
                     ArrayList<Subject> allSubject = subjectInterface.getAllSubjects();
                     request.setAttribute("subjectList", allSubject);
+                    sendDispatcher(request, response, "jsp/subjectList.jsp");
                 }   else {
                     sendDispatcher(request, response, "index.jsp");
                 }
-                
-                sendDispatcher(request, response, "jsp/subjectList.jsp");
                 
             }
         }
