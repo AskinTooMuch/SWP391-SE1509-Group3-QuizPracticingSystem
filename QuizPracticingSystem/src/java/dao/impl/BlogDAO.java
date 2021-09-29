@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
+  quan tới bảng Blog,CateBlog, phục vụ cho các chức năng liên quan tới Blog của 
+  dự án
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -12,7 +13,6 @@ import dao.BlogINT;
 import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -32,11 +32,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 allBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -64,11 +66,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                blogList.add(new Blog(rs.getInt(1),
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
+                blogList.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -87,11 +91,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 userBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -109,15 +115,17 @@ public class BlogDAO extends MyDAO implements BlogINT {
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
-            while (rs.next()) {
-                return new Blog(rs.getInt("blogId"),
+            if (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
+                return (new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status")));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -133,11 +141,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 titleBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -158,11 +168,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 allTrueBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -172,8 +184,8 @@ public class BlogDAO extends MyDAO implements BlogINT {
         }
         return allTrueBlog;
     }
-    
-@Override
+
+    @Override
     public ArrayList<Blog> getLastBlogs() {
         ArrayList<Blog> lastBlog = new ArrayList();
         String sql = "SELECT TOP 3 * FROM [Blog] where status = 1 ORDER BY created DESC";
@@ -182,11 +194,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 lastBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -214,18 +228,20 @@ public class BlogDAO extends MyDAO implements BlogINT {
             sql += ")";
         }
         if (search != null) {
-            sql += " AND a.blogTitle like '%" + search + "%'";
+            sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                blogList.add(new Blog(rs.getInt(1),
+                BlogDAO blogDAO = new BlogDAO();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
+                blogList.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
                         rs.getDate("created"),
                         rs.getDate("lastEdited"),
-                        rs.getInt("author"),
+                        author,
                         rs.getString("detail"),
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
@@ -244,7 +260,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             ps.setString(1, blog.getBlogTitle());
             ps.setDate(2, blog.getCreated());
             ps.setDate(3, blog.getLastEdited());
-            ps.setInt(4, blog.getAuthor());
+            ps.setInt(4, blog.getAuthor().getUserId());
             ps.setString(5, blog.getDetail());
             ps.setString(6, blog.getThumbnail());
             ps.setInt(7, blog.getStatus() == true ? 1 : 0);
@@ -257,17 +273,16 @@ public class BlogDAO extends MyDAO implements BlogINT {
 
     @Override
     public int addBlog(Blog blog) {
-        String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?)";
         try {
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, blog.getBlogId());
-            ps.setString(2, blog.getBlogTitle());
-            ps.setDate(3, blog.getCreated());
-            ps.setDate(4, blog.getLastEdited());
-            ps.setInt(5, blog.getAuthor());
-            ps.setString(6, blog.getDetail());
-            ps.setString(7, blog.getThumbnail());
-            ps.setInt(8, blog.getStatus() == true ? 1 : 0);
+            ps.setString(1, blog.getBlogTitle());
+            ps.setDate(2, blog.getCreated());
+            ps.setDate(3, blog.getLastEdited());
+            ps.setInt(4, blog.getAuthor().getUserId());
+            ps.setString(5, blog.getDetail());
+            ps.setString(6, blog.getThumbnail());
+            ps.setInt(7, blog.getStatus() == true ? 1 : 0);
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -350,7 +365,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
         String[] a = {"1", "2"};
-        List<Blog> list = dao.getLastBlogs();
+        List<Blog> list = dao.getAllTrueBlog();
         for (Blog o : list) {
             System.out.println(o);
         }

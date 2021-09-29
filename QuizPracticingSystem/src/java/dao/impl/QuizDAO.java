@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan tới
+  bảng Quiz.
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
 import bean.DimensionType;
-import bean.Question;
 import bean.Quiz;
 import bean.QuizLevel;
 import bean.TestType;

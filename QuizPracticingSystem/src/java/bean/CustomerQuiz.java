@@ -16,21 +16,32 @@ public class CustomerQuiz {
     private int quizId;
     private int userId;
     private int score;
+    private int time;
     private Date startedAt;
     private boolean status;
 
     public CustomerQuiz() {
     }
 
-    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, Date startedAt, boolean status) {
+    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, int time, Date startedAt, boolean status) {
         this.quizTakeId = quizTakeId;
         this.quizId = quizId;
         this.userId = userId;
         this.score = score;
+        this.time = time;
         this.startedAt = startedAt;
         this.status = status;
     }
 
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    
     public int getQuizTakeId() {
         return quizTakeId;
     }

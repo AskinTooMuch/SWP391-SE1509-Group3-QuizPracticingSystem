@@ -77,7 +77,7 @@ public class MarketingController extends HttpServlet {
                 }
                 request.setAttribute("pagenum", pageNumber);
                 request.setAttribute("page", page);
-                                
+
                 ArrayList<Blog> paginatedBlogList = blogINT.Paging(page, blogList);
                 request.setAttribute("blogList", paginatedBlogList);
                 //Send blog category list
@@ -86,16 +86,16 @@ public class MarketingController extends HttpServlet {
                 //Send last blogs
                 ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();
                 request.setAttribute("lastBlogs", lastBlogs);
-               
+
                 request.getRequestDispatcher("jsp/blogList.jsp").forward(request, response);
             }
 
             if (service.equalsIgnoreCase("blogDetail")) {
-                
+
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
                 Blog blog = blogINT.getBlogById(blogId);
                 request.setAttribute("blog", blog);
-                
+
                 ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
                 ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();

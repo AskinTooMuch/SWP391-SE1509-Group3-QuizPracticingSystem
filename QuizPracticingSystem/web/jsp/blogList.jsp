@@ -57,19 +57,16 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <a href="marketingController?service=blogList"><h5>Lastest Posts</h5></a>
-                        <% BlogINT blogDAO = new BlogDAO();
-                            ArrayList<Blog> lastBlogs = (ArrayList<Blog>) request.getAttribute("lastBlogs");
-                            for (Blog blog : lastBlogs) {
-                        %>
+                        <c:forEach items="${lastBlogs}" var="blog">
                         <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
                             <div style="width: 104px;border-right:#bccafd 1px solid;">
-                                <img src="<%=blog.getThumbnail()%>" style="height: 70px;width: auto; ">
+                                <img src="${blog.getThumbnail()}" style="height: 70px;width: auto; ">
                             </div>
                             <div>
-                                <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=<%=blog.getBlogId()%>"><h6><%=blog.getBlogTitle()%></h6></a>
+                                <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}"><h6>${blog.getBlogTitle()}</h6></a>
                             </div>
                         </div>
-                        <%}%>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="right col-9">
@@ -79,21 +76,19 @@
                                 <a href="marketingController?service=blogList" style="text-decoration:none;color:black;"><h3 class="head col-3">ALL BLOGS</h3></a>
                             </div>             
                         </div>
+                       
                         <div class="blogList row">
-                            <% 
-                                ArrayList<Blog> blogList = (ArrayList<Blog>) request.getAttribute("blogList");
-                                for (Blog blog : blogList) {
-                            %>
+                            <c:forEach items="${blogList}" var="blog">
                             <div class="card" style="width: 18rem;margin-bottom: 20px;">
-                                <img class="card-img-top" src="<%=blog.getThumbnail()%>" style="width:100%;height:270px;" alt="Card image cap">
+                                <img class="card-img-top" src="${blog.getThumbnail()}" style="width:100%;height:270px;" alt="Card image cap">
                                 <div class="card-body">
-                                    <h8>Author <%=blogDAO.getAuthor(blog.getBlogId()).getUserName()%></h8>
-                                    <h5 class="card-title"><%=blog.getBlogTitle()%></h5>
+                                    <h8>Author ${blog.getAuthor().getUserName()}</h8>
+                                    <h5 class="card-title">${blog.getBlogTitle()}</h5>
                                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                    <a href="marketingController?service=blogDetail&blogId=<%=blog.getBlogId()%>" class="btn btn-primary">Read More</a>
+                                    <a href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
                                 </div>
                             </div>
-                            <%}%>
+                        </c:forEach>
                             <style>
                                 .card-body{
                                    height: 300px;

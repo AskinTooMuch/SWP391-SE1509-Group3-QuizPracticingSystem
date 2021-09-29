@@ -182,6 +182,7 @@ CREATE TABLE dbo.[CustomerQuiz](
 	quizId		int			NOT NULL,
 	userId		int			NOT NULL,
 	score		int,
+	[time]      int,
 	startedAt	datetime	NOT NULL,
 	[status]	bit,
 	FOREIGN KEY (quizId) REFERENCES dbo.[Quiz](quizId),
