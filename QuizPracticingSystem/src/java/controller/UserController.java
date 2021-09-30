@@ -211,20 +211,24 @@ public class UserController extends HttpServlet {
                 }
             }
 
-            //get new pass and svae to the database
+            //get new pass and save to the database
             if (service.equalsIgnoreCase("resetPage")) {
+                String mess;
                 String userMail = request.getParameter("userMail");
                 String newPass = request.getParameter("newPass");
                 String confirmNewPass = request.getParameter("confirmNewPass");
                 User user = userInterface.getUserByMail(userMail);
-                if (newPass.equals(confirmNewPass)) {
+                if (newPass.equals(confirmNewPass)) { // if cofirm password match the password then change pass
                     user.setPassword(newPass);
                     userInterface.updateUser(user);
-                    out.println("Your password have been reset");
-                    out.println("<a href=" + "login/login.jsp" + ">Login</a>");
+                    mess = "Your password have been reset";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
-                } else {
-                    out.println("The confirm-password is not match with the password!");
+                } else { // if cofirm password dont match the password then print out alert mess
+                    mess = "Confirm password dont match";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 }
 
@@ -263,6 +267,7 @@ public class UserController extends HttpServlet {
                 String txtGender = request.getParameter("gender").trim();
                 boolean gender;
 
+                //check if any input is blank
                 if (userName.length() == 0 || userMobile.length() == 0
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
@@ -310,17 +315,14 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("uploadImage")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String filename = null;
-                // Create a factory for disk-based file items
                 try {
+                    // Create a factory for disk-based file items
                     DiskFileItemFactory factory = new DiskFileItemFactory();
                     ServletContext servletContext = this.getServletConfig().getServletContext();
-//                    out.println(servletContext);
-                    out.println(servletContext.getRealPath("/upload"));
                     File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
                     factory.setRepository(repository);
                     ServletFileUpload upload = new ServletFileUpload(factory);
                     List<FileItem> items = upload.parseRequest(request);
-                    // Process the uploaded items
                     Iterator<FileItem> iter = items.iterator();
                     HashMap<String, String> fields = new HashMap<>();
                     while (iter.hasNext()) {
