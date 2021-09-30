@@ -53,7 +53,7 @@
     </head>
     <body>
         <div class="wrap">
-            <jsp:include page="Header.jsp"/>
+            <jsp:include page="header.jsp"/>
             <div class="main">
                 <c:choose>
                     <%-- Case 1: subjectList is empty --%>
@@ -91,7 +91,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <jsp:include page="Footer.jsp"/>
+            <jsp:include page="footer.jsp"/>
         </div>
     </body>
 

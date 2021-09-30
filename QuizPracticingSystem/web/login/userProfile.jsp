@@ -24,7 +24,7 @@
         <link href="${contextPath}/css/userprofile.css" rel="stylesheet" >
     </head>
     <body>
-        <jsp:include page="/jsp/Header.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
         <div class="container emp-profile">
             <form method="post">
                 <div class="row">
@@ -91,6 +91,6 @@
                 </div>
             </form>           
         </div>
-        <jsp:include page="/jsp/Footer.jsp"/>
+        <jsp:include page="/jsp/footer.jsp"/>
     </body>
 </html>

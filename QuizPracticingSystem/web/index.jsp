@@ -32,11 +32,11 @@
             <c:redirect url="homeController"/>
         </c:if>
         <div class="wrap">
-            <jsp:include page="jsp/Header.jsp"/>
+            <jsp:include page="jsp/header.jsp"/>
             <div class="main">
-                <jsp:include page="jsp/Menu.jsp"/>
+                <jsp:include page="jsp/menu.jsp"/>
             </div>
-            <jsp:include page="jsp/Footer.jsp"/>
+            <jsp:include page="jsp/footer.jsp"/>
         </div>
     </body>
 </html>
