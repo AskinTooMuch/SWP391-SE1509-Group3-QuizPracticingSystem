@@ -147,15 +147,16 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of main method, of class UserDAO.
+     * Test of deleteUser method, of class UserDAO.
      */
     @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        UserDAO.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDeleteUser() {
+        System.out.println("deleteUser");
+        UserDAO instance = new UserDAO();
+        User user = instance.getUserByMail("duonghoang8805");
+        int expResult = 1;
+        int result = instance.deleteUser(user);
+        assertTrue(expResult == result);
     }
 
 }

@@ -1,7 +1,12 @@
 <%-- 
-    Document   : Header
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 20, 2021, 10:50:34 PM
-    Author     : tuan
+    Menu of Homepage
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    20/9/21     1.0         TuanPAHE150543  First Deploy
 --%>
 
 <%@page import="bean.User"%>

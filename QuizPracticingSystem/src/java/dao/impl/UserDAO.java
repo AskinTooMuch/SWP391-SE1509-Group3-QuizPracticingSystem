@@ -191,4 +191,20 @@ public class UserDAO extends MyDAO implements UserINT {
 
     }
 
+    @Override
+    public int deleteUser(User user) {
+        xSql = " delete from [User] where userId = ?";
+        
+        int check = 0;
+        try {
+            ps = conn.prepareStatement(xSql);
+            ps.setInt(1, user.getUserId());
+            check = ps.executeUpdate();
+            return check;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
 }

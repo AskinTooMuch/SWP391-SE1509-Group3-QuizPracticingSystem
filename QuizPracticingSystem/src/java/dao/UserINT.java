@@ -29,4 +29,6 @@ public interface UserINT {
     public int changeStatus(int userId, boolean newStatus);
     
     public int addUser(User newUser);
+    
+    public int deleteUser(User user);
 }
