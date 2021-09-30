@@ -6,7 +6,8 @@
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  23/9/21     1.0         ChucNVHE150618  First Deploy
+ *  21/9/21     1.0         ChucNVHE150618  First Deploy
+ *  23/9/21     1.0         TungBTHE150621  Add login service
  *  23/9/21     1.0         DuongNHHE150328 Add register
  *  24/9/21     1.0         ChucNVHE150618  Add changePassword service
  *  24/9/21     1.0         DuongNHHE150328 Add reset password function 
@@ -57,6 +58,7 @@ public class UserController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
             UserINT userInterface = new UserDAO();
+            /*Log in*/
             if (service.equalsIgnoreCase("login")) {
                 String userMail = request.getParameter("userMail");
                 String mess = "";
@@ -66,13 +68,13 @@ public class UserController extends HttpServlet {
                 UserRoleINT userRoleDAO = new UserRoleDAO();
 
                 log = t.getUserLogin(userMail, password);
-
+                //validate user log in, if wrong, re-login
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
                     request.setAttribute("mess", mess);
                     sendDispatcher(request, response, "login/login.jsp");
                     return;
-
+                //if loged in, get user role and forward to homepage with their role    
                 } else {
                     request.getSession().setAttribute("currUser", log);
                     request.getSession().setAttribute("role", userRoleDAO.getUserRoleById(log.getRoleId()));
@@ -209,20 +211,24 @@ public class UserController extends HttpServlet {
                 }
             }
 
-            //get new pass and svae to the database
+            //get new pass and save to the database
             if (service.equalsIgnoreCase("resetPage")) {
+                String mess;
                 String userMail = request.getParameter("userMail");
                 String newPass = request.getParameter("newPass");
                 String confirmNewPass = request.getParameter("confirmNewPass");
                 User user = userInterface.getUserByMail(userMail);
-                if (newPass.equals(confirmNewPass)) {
+                if (newPass.equals(confirmNewPass)) { // if cofirm password match the password then change pass
                     user.setPassword(newPass);
                     userInterface.updateUser(user);
-                    out.println("Your password have been reset");
-                    out.println("<a href=" + "login/login.jsp" + ">Login</a>");
+                    mess = "Your password have been reset";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
-                } else {
-                    out.println("The confirm-password is not match with the password!");
+                } else { // if cofirm password dont match the password then print out alert mess
+                    mess = "Confirm password dont match";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 }
 
@@ -261,6 +267,7 @@ public class UserController extends HttpServlet {
                 String txtGender = request.getParameter("gender").trim();
                 boolean gender;
 
+                //check if any input is blank
                 if (userName.length() == 0 || userMobile.length() == 0
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
@@ -308,17 +315,14 @@ public class UserController extends HttpServlet {
             if (service.equalsIgnoreCase("uploadImage")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String filename = null;
-                // Create a factory for disk-based file items
                 try {
+                    // Create a factory for disk-based file items
                     DiskFileItemFactory factory = new DiskFileItemFactory();
                     ServletContext servletContext = this.getServletConfig().getServletContext();
-//                    out.println(servletContext);
-                    out.println(servletContext.getRealPath("/upload"));
                     File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
                     factory.setRepository(repository);
                     ServletFileUpload upload = new ServletFileUpload(factory);
                     List<FileItem> items = upload.parseRequest(request);
-                    // Process the uploaded items
                     Iterator<FileItem> iter = items.iterator();
                     HashMap<String, String> fields = new HashMap<>();
                     while (iter.hasNext()) {
@@ -335,7 +339,7 @@ public class UserController extends HttpServlet {
                             } else {
                                 Path path = Paths.get(filename);
                                 String storePath = servletContext.getRealPath("/upload");
-                                File uploadFile = new File(storePath + "/"  + path.getFileName());
+                                File uploadFile = new File(storePath + "/" + path.getFileName());
                                 if (uploadFile.canRead()) {
                                     uploadFile.delete();
                                 }

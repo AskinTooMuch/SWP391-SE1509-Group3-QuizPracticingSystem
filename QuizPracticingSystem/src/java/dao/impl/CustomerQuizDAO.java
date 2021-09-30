@@ -1,7 +1,19 @@
+/* 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 17, 2021, 9:33:11 PM
+    CustomerQuizDAO
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    17/9/21     1.0         ChucNVHE150618  First Deploy
+    27/9/21     1.1         NamDHHE150519   update method
+*/
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
+quan tới bảng CustomerQuiz, TakeAnswer phục vụ cho các chức năng liên quan tới QuizReview của 
+  dự án
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -48,6 +60,12 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
         return i;
     }
 
+    /**
+     * insert into CustomerQuiz table the quiz that just have taken by user
+     *
+     * @param customerQuiz the new CustomerQuiz. It is a <code>CustomerQuiz</code> object
+     * @return number of changes in database. It is a <code>int</code> primitive type.
+     */
     @Override
     public int addCustomerQuiz(CustomerQuiz customerQuiz) {
         String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
@@ -66,6 +84,11 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
         return 0;
     }
 
+    /**
+     * get the last added customer quiz
+     *
+     * @return a customer quiz. It is a <code>CustomerQuiz</code> object.
+     */
     public CustomerQuiz getLastAddedCustomerQuiz() {
         String sql = "SELECT TOP 1 * FROM [CustomerQuiz] ORDER BY quizTakeId DESC";
         try {
@@ -92,7 +115,12 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
 
         return i;
     }
-
+/**
+     * add user's answer of the taken quiz into database
+     *
+     * @param quiz the id of quiz that user have just taken. It is a <code>QuizQuizHandle</code> object
+     * @return number of changes in database <code>int</code> primitive type.
+     */
     @Override
     public int addTakeAnswer(QuizQuizHandle quiz) {
         int change = 0;
@@ -116,7 +144,12 @@ public class CustomerQuizDAO extends MyDAO implements CustomerQuizINT {
         }
         return change;
     }
-
+/**
+     * insert into the database a list of questions marked by the quiz the user has just taken 
+     *
+    * @param quiz the quiz the user has just taken. It is a <code>QuizQuizHandle</code> object
+     * @return number of changes in database. It is a <code>int</code> primitive type
+     */
     @Override
     public int addMarkQuestion(QuizQuizHandle quiz) {
         int change = 0;
