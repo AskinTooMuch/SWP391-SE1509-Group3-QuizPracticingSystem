@@ -6,7 +6,8 @@
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  23/9/21     1.0         ChucNVHE150618  First Deploy
+ *  21/9/21     1.0         ChucNVHE150618  First Deploy
+ *  23/9/21     1.0         TungBTHE150621  Add login service
  *  23/9/21     1.0         DuongNHHE150328 Add register
  *  24/9/21     1.0         ChucNVHE150618  Add changePassword service
  *  24/9/21     1.0         DuongNHHE150328 Add reset password function 
@@ -57,6 +58,7 @@ public class UserController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
             UserINT userInterface = new UserDAO();
+            /*Log in*/
             if (service.equalsIgnoreCase("login")) {
                 String userMail = request.getParameter("userMail");
                 String mess = "";
@@ -66,13 +68,13 @@ public class UserController extends HttpServlet {
                 UserRoleINT userRoleDAO = new UserRoleDAO();
 
                 log = t.getUserLogin(userMail, password);
-
+                //validate user log in, if wrong, re-login
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";
                     request.setAttribute("mess", mess);
                     sendDispatcher(request, response, "login/login.jsp");
                     return;
-
+                //if loged in, get user role and forward to homepage with their role    
                 } else {
                     request.getSession().setAttribute("currUser", log);
                     request.getSession().setAttribute("role", userRoleDAO.getUserRoleById(log.getRoleId()));
@@ -335,7 +337,7 @@ public class UserController extends HttpServlet {
                             } else {
                                 Path path = Paths.get(filename);
                                 String storePath = servletContext.getRealPath("/upload");
-                                File uploadFile = new File(storePath + "/"  + path.getFileName());
+                                File uploadFile = new File(storePath + "/" + path.getFileName());
                                 if (uploadFile.canRead()) {
                                     uploadFile.delete();
                                 }

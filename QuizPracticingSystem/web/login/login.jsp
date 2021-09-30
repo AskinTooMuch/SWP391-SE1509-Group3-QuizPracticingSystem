@@ -1,10 +1,16 @@
 
 <%@page import="bean.User"%>
 <%-- 
-    Document   : login
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 21, 2021, 10:25:35 AM
-    Author     : Admin
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author           Description
+    21/9/21     1.0         TungBTHE150621  First Deploy
+    24/9/21     1.1         TungBTHE150621  Add front-end
 --%>
+
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -19,17 +25,11 @@
 
     </head>
     <body class="u-body"><header class="u-align-left u-clearfix u-header u-header" id="sec-ad7d"><div class="u-clearfix u-sheet u-sheet-1">
-                <% String mess = (String) request.getAttribute("mess");
-                    if (mess != null) {
-                %>
-                <p> <%=mess%> </p>
-                <%
-                    }
-                %>
+
                 <img class="u-image u-image-default u-preserve-proportions u-image-1" src="${contextPath}/images/login/logologin2.png" alt="" data-image-width="210" data-image-height="92">
                 <img class="u-image u-image-default u-image-2" src="${contextPath}/images/login/logo-login.png" alt="" data-image-width="492" data-image-height="93">
 
-
+                <%--Log in form--%>
                 <form action="${contextPath}/userController" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
                     <div class="u-form-group u-form-name">
                         <p>Enter your user mail:</p>
@@ -40,7 +40,15 @@
                         <p>Enter your password:</p>
                         <input type="password" placeholder="Password"  name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
                     </div>
-
+                    <%--Message when log in failed--%>
+                    <c:if test="${mess != null}">
+                            <div class="u-form-group u-form-name">
+                                <p style="color: red; font-weight: bold;">
+                                    <c:out value="${mess}"/>
+                                </p>
+                                <br>
+                            </div>
+                        </c:if>
                     <div class="u-align-center u-form-group u-form-submit">
 
                         <input type="hidden" name="service" value="login">
@@ -51,8 +59,9 @@
             </div>
 
 
-
+            <%--Register--%>
             <a href="${contextPath}/login/register.jsp" class="u-active-none u-border-2 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-btn-2">Register</a>
+            <%--Forgot password--%>
             <a href="${contextPath}/login/resetPass.jsp" class="u-active-none u-border-2 u-border-palette-1-base u-btn u-btn-rectangle u-button-style u-hover-none u-none u-btn-3">Reset your password</a>
     </body>
 </html>
