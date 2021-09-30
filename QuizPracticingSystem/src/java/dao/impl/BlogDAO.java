@@ -1,4 +1,15 @@
-/*
+/* 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 17, 2021, 9:33:11 PM
+    BlogDAO
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    17/9/21     1.0         ChucNVHE150618  First Deploy
+    30/9/21     2.0         NamDHHE150519   Complete code
+ */
+ /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
   quan tới bảng Blog,CateBlog, phục vụ cho các chức năng liên quan tới Blog của 
   dự án
@@ -22,6 +33,12 @@ import java.util.List;
  */
 public class BlogDAO extends MyDAO implements BlogINT {
 
+    /**
+     * Get all blog from database
+     *
+     * @return a list of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getAllBlog() {
         ArrayList<Blog> allBlog = new ArrayList();
@@ -49,6 +66,14 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return allBlog;
     }
 
+    /**
+     * Get all blog from database by blog's category
+     *
+     * @param postCateIdList the list of filter categories. It is an array of
+     * String
+     * @return a list of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) {
         ArrayList<Blog> blogList = new ArrayList();
@@ -83,6 +108,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return blogList;
     }
 
+    /**
+     * Get all blog from database by blog's author
+     *
+     * @param userId author's user ID. It is a <code>Integer</code>
+     * @return a list of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getBlogByUser(int userId) {
         ArrayList<Blog> userBlog = new ArrayList();
@@ -108,6 +140,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return userBlog;
     }
 
+    /**
+     * Get blog from database by blog's id
+     *
+     * @param blogId blog's ID. It is a <code>Integer</code>
+     * @return a <code>Blog</code> objects
+     */
     @Override
     public Blog getBlogById(int blogId) {
 
@@ -133,6 +171,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return null;
     }
 
+    /**
+     * Get blog from database by blog's title
+     *
+     * @param title blog's title. It is a <code>String</code>
+     * @return a <code>Blog</code> objects
+     */
     @Override
     public ArrayList<Blog> getBlogByTitle(String title) {
         ArrayList<Blog> titleBlog = new ArrayList();
@@ -158,6 +202,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return titleBlog;
     }
 
+    /**
+     * Get all blog from database where blog's status is true
+     *
+     * @return List of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getAllTrueBlog() {
         ArrayList<Blog> allTrueBlog = new ArrayList();
@@ -185,6 +235,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return allTrueBlog;
     }
 
+    /**
+     * Get 3 latest blog from database
+     *
+     * @return List of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getLastBlogs() {
         ArrayList<Blog> lastBlog = new ArrayList();
@@ -211,6 +267,15 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return lastBlog;
     }
 
+    /**
+     * Get blog from database filter by category and title
+     *
+     * @param postCateIdList filter blog's categories. It is a
+     * <code>java.util.ArrayList</code>
+     * @param search search string. It is a <code>String</code>
+     * @return List of <code>Blog</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     */
     @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
         ArrayList<Blog> blogList = new ArrayList();
@@ -252,6 +317,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return blogList;
     }
 
+    /**
+     * Edit blog information in database
+     *
+     * @param blogId id of the target blog. It is a <code>int</code>
+     * @param blog carry edited information. It is a <code>Blog</code> object
+     * @return number of changes in database. It is a <code>int</code> object
+     */
     @Override
     public int editBlog(int blogId, Blog blog) {
         String sql = "UPDATE [Blog] SET blogTitle =?, created =?, lastEdited =?, author =?, detail =?, thumbnail =?, status =? WHERE blogId =?";
@@ -271,6 +343,13 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return 0;
     }
 
+    /**
+     * add new blog into database
+     *
+     * @param blog adding target. It is a <code>Blog</code> object
+     * @param sql the sql query. It is a <code>String</code>
+     * @return number of changes in database. It is a <code>int</code> object
+     */
     @Override
     public int addBlog(Blog blog) {
         String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?)";
@@ -290,6 +369,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return 0;
     }
 
+    /**
+     * delete in database
+     *
+     * @param blogId the target blog. It is a <code>int</code>
+     * @return number of changes in database. It is a <code>int</code> object
+     */
     @Override
     public int deleteBlog(int blogId) {
         String sql = "DELETE FROM [Blog] WHERE blogId =" + blogId;
@@ -302,6 +387,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return 0;
     }
 
+    /**
+     * get blog's author
+     *
+     * @param blogId blog target. It is a <code>int</code> object
+     * @return blog's author. It is a <code>User</code> object
+     */
     @Override
     public User getAuthor(int blogId) {
 
@@ -328,6 +419,12 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return null;
     }
 
+    /**
+     * get blog's category
+     *
+     * @param blogId blog target. It is a <code>int</code> object
+     * @return blog's category. It is a <code>PostCate</code> object
+     */
     @Override
     public PostCate getBlogCategory(int blogId) {
         String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;
@@ -345,10 +442,20 @@ public class BlogDAO extends MyDAO implements BlogINT {
         return null;
     }
 
+    /**
+     * divide a list of blog into many sublist(page)
+     *
+     * @param page blog target. It is a <code>int</code> object
+     * @param list the target list. It is a <code>java.util.ArrayList</code>
+     *
+     * @return sublist of blog list. It is a <code>java.util.ArrayList</code>
+     */
     @Override
     public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) {
+        //start: index of first element of the sublist
+        //end: index of the last element of the sublist
         int start, end;
-        int numberpage = 9;
+        int numberpage = 9;// 9 blog a sublist;
         start = (page - 1) * numberpage;
         if (page * numberpage > list.size()) {
             end = list.size();
@@ -361,14 +468,4 @@ public class BlogDAO extends MyDAO implements BlogINT {
         }
         return t;
     }
-
-    public static void main(String[] args) {
-        BlogDAO dao = new BlogDAO();
-        String[] a = {"1", "2"};
-        List<Blog> list = dao.getAllTrueBlog();
-        for (Blog o : list) {
-            System.out.println(o);
-        }
-    }
-
 }

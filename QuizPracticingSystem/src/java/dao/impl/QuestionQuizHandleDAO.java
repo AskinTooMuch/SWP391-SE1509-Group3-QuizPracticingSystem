@@ -1,3 +1,12 @@
+/* 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 17, 2021, 9:33:11 PM
+    QuestionQuizHandleDAO
+    Record of change:
+    Date        Version     Author          Description
+    17/9/21     1.0         NamDHHE150519   First Deploy
+    30/9/21     1.1         NamDHHE150519   update method
+*/
 /*
   Lớp này có các phương thức thực hiện tạo ra những câu hỏi trong bài quiz bằng 
   các câu hỏi lấy từ database, kết hợp với QuizQuizHandle để
@@ -15,19 +24,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- *
- * @author ADMN
- */
 public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleINT {
 
     @Override
-    /*
-    *Turn a Question into QuestionQuizHandle.
-    *
-    *@param question the question. It is a Question type
-    *@param answers the list of question's answers. It is ArrayList<Question> type
-    */
+    /**
+     * turn a Question into QuestionQUizHandle type
+     *
+     * @param questionId the target question's id. It is a <code>int</code>
+     * primitive type
+     * @return a QuestionQuizHandle <code>QuestionQuizHandle</code> object.
+     */
     public QuestionQuizHandle generateQuestionById(int questionId) {
         QuestionDAO questionDAO = new QuestionDAO();
         AnswerDAO answerDAO = new AnswerDAO();
@@ -37,8 +43,12 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
     }
 
     @Override
-//    mark and unmark question
-//    
+/**
+     * mark and unmark question
+     *
+     * @param question the target question's id. It is a <code>QuestionQuizHandle</code> object
+     * @return void.
+     */
     public void markQuestion(QuestionQuizHandle question) {
         if (question.isMarked()) {
             question.setMarked(false);
@@ -48,12 +58,13 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
     }
 
     @Override
-    /*
-    *Get the right answer of the question 
-    *
-    *@param answer the answer of the question. It is a Answer type
-    *@param answerList the list of question's answers. It is ArrayList<Question> type
-    */
+    /**
+     * get right answer of the question
+     *
+     * @param question the target question's id. It is a <code>QuestionQuizHandle</code>
+     * object
+     * @return right answer of the question. It is <code>Answer</code> object.
+     */
     public Answer getRightAnswer(QuestionQuizHandle question) {
         ArrayList<Answer> answerList = question.getAnswerList();
         for (Answer answer : answerList) {
@@ -63,12 +74,13 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
         }
         return null;
     }
-    /*
-    *Get the list of question marked from the QuizTake table in database 
-    *
-    *@param pre. It is a PreparedStatement type
-    *@param rs. It is ResultSet type
-    */
+    /**
+     * get list of mark question from taken quiz
+     *
+     * @param quizTakeId the target taken quiz's id. It is a <code>int</code>
+     * primitive type
+     * @return a list of boolean. It is a <code>java.util.ArrayList</code> object.
+     */
     @Override
     public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) {
         ArrayList<Boolean> markQuestionList = new ArrayList();
@@ -84,6 +96,13 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
         return markQuestionList;
     }
 
+    /**
+     * get the taken quiz for review action
+     *
+     * @param quizTakeId the target taken quiz's id. It is a <code>int</code>
+     * primitive type
+     * @return a <code>QuizQuizHandle</code> object.
+     */
     @Override
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
         QuestionQuizHandleDAO questionQuizHandleDAO = new QuestionQuizHandleDAO();

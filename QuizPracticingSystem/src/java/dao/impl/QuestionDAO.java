@@ -1,7 +1,19 @@
+/* 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 17, 2021, 9:33:11 PM
+    PostCateDAO
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    17/9/21     1.0         NamDHHE150519   First Deploy
+    30/9/21     1.1         NamDHHE150519   update method
+*/
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
+  quan tới bảng Question phục vụ cho các chức năng liên quan tới Question của 
+  dự án
+  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -12,12 +24,15 @@ import dao.QuestionINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- *
- * @author admin
- */
+
+
 public class QuestionDAO extends MyDAO implements QuestionINT {
 
+    /**
+     * get all question from database
+     *
+     * @return list of all question. It is a <code>java.util.ArrayList</code> object.
+     */
     @Override
     public ArrayList<Question> getAllQuestion() {
         ArrayList<Question> questionList = new ArrayList();
@@ -41,6 +56,13 @@ public class QuestionDAO extends MyDAO implements QuestionINT {
         return questionList;
     }
 
+    /**
+     * turn a list of question into list of question quiz handle
+     *
+     * @param questionId the target question's id. It is a <code>int</code>
+     * primitive type
+     * @return a question. It is a <code>Question</code> object.
+     */
     @Override
     public Question getQuestionById(int questionId) {
         String sql = "SELECT * FROM Question WHERE questionId=" + questionId;
@@ -62,7 +84,13 @@ public class QuestionDAO extends MyDAO implements QuestionINT {
         }
         return null;
     }
-
+    /**
+     * get list of question of the target quiz 
+     *
+     * @param quizId the target quiz's id. It is a <code>int</code>
+     * primitive type
+     * @return a list of question. It is a <code>java.util.ArrayList</code> object.
+     */
     @Override
     public ArrayList<Question> getQuestionByQuizId(int quizId) {
         ArrayList<Question> questionList = new ArrayList();

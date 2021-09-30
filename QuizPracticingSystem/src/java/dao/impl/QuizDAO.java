@@ -1,3 +1,12 @@
+/* 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 17, 2021, 9:33:11 PM
+    QuizDAO
+    Record of change:
+    Date        Version     Author          Description
+    17/9/21     1.0         ChucNVHE150618   First Deploy
+    30/9/21     1.1         NamDHHE150519   update method
+*/
 /*
   Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan tới
   bảng Quiz.
@@ -28,6 +37,13 @@ public class QuizDAO extends MyDAO implements QuizINT {
         return allQuiz;
     }
 
+    /**
+     * get quiz by Id
+     *
+     * @param quizId the target quiz's id. It is a <code>int</code>
+     * primitive type
+     * @return a quiz <code>Quiz</code> object.
+     */
     @Override
     public Quiz getQuizById(int quizId) {
 
@@ -67,6 +83,13 @@ public class QuizDAO extends MyDAO implements QuizINT {
         return null;
     }
     
+    /**
+     * get taken quiz by takeQuiz's Id
+     *
+     * @param quizTakeId the target quiz's id. It is a <code>int</code>
+     * primitive type
+     * @return a quiz <code>Quiz</code> object.
+     */
     @Override
     public Quiz getQuizByQuizTakeId(int quizTakeId){
         String sql = "select * from Quiz as a join CustomerQuiz as b on a.quizId = b.quizId where quizTakeId="+quizTakeId;
