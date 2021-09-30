@@ -1,9 +1,14 @@
 <%-- 
-    Document   : Index
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 21, 2021, 10:36:55 AM
-    Author     : tuan
---%>
+    Index
+    Quiz practicing system
 
+    Record of change:
+    Date        Version     Author          Description
+    20/9/21     1.0         TuanPAHE150543  First Deploy
+    
+--%>
 <%@page import="bean.Subject"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
