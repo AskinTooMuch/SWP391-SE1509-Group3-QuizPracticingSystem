@@ -44,9 +44,10 @@ public class PostCateDAO extends MyDAO implements PostCateINT {
 
     @Override
     public PostCate getPostCateById(int pcId) {
-        String sql = "SELECT * FROM Blog [PostCate] WHERE postCateId =" + pcId;
+        String sql = "SELECT * FROM [PostCate] WHERE postCateId = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, pcId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 return new PostCate(rs.getInt("postCateId"),
@@ -73,4 +74,5 @@ public class PostCateDAO extends MyDAO implements PostCateINT {
     public int addPostCate(PostCate newPostCate) {
         return 0;
     }
+    
 }

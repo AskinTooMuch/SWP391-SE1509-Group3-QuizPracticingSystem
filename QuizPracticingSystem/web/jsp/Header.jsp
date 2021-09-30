@@ -16,7 +16,11 @@
         <title>Header Page</title>
         <link rel="stylesheet" href="${contextPath}/css/bootstrap.css">
         <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+        <style>
+            .dropdown-menu a :hover{
+                color:red;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -67,34 +71,29 @@
                         </c:when>
                         <%--When the user logged in--%>
                         <c:otherwise>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-th-list">
-                                    </span> Profile
+                            <button class="nav-item dropdown" style="background-color:#5BC0DE;color:white;font-weight: bold;border-radius: 5px">
+                                <a class="nav-link dropdown-toggle"  data-toggle="dropdown" style="text-decoration: none;color:black;">
+                                    <span class="fas fa-user-alt">Profile
+                                    </span> 
                                 </a>
-                                <div class="dropdown-menu">
-                                    <a href="${contextPath}/login/changePassword.jsp">
-                                        <span class="glyphicon glyphicon-log-in"></span> Change Password
+                                <div class="dropdown-menu" style="background-color:cyan;padding:10px 5px;">
+                                    <a href="${contextPath}/login/changePassword.jsp" style="text-decoration: none;color:black">
+                                        <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
                                     <!-- If role is admin or owner-->
                                     <c:if test="${sessionScope['currUser'] != null && fn.toLowerCase(sessionScope['role']) == admin}">
-                                        <a href="#">
-                                            <span class="glyphicon glyphicon-log-in"></span> Admin Page
+                                        <a href="#" style="text-decoration: none;color:black" >
+                                            <span class="fas fa-user-shield">Admin Page</span>  
                                         </a>
                                     </c:if>
                                     <hr>
-                                    <a href="${contextPath}/userController?service=logout">
-                                        <span class="glyphicon glyphicon-log-in"></span>Log Out
+                                    <a href="${contextPath}/userController?service=logout" style="text-decoration: none;color:black" >
+                                        <span class="fas fa-sign-out-alt">Log Out</span>   
                                     </a>
                                 </div>
-                            </li>
+                            </button>
                         </c:otherwise>  
                     </c:choose>    
-
-
-
-
-
                 </div>
             </div>
         </nav>

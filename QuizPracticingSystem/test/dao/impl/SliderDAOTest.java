@@ -64,7 +64,7 @@ public class SliderDAOTest {
         String expResult = "OOP with Java";
         String result = instance.getSliderById(sliderId).getSliderTitle();
         assertEquals(expResult, result);
-        
+        fail("The test case is a prototype.");
     }
 
      /**
@@ -78,7 +78,7 @@ public class SliderDAOTest {
         int expResult = 1;
         int result = instance.addSlider(newSlder);
         assertEquals(expResult, result);
-        
+        fail("The test case is a prototype.");
     }
 
     /**

@@ -1,9 +1,15 @@
-<%-- 
-    Document   : Footer
-    Created on : Sep 20, 2021, 10:56:47 PM
-    Author     : tuan
---%>
 
+<%-- 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 20, 2021, 10:50:34 PM
+    Footer
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    20/9/21     1.0         TuanPAHE150543  First Deploy
+   
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,7 +25,7 @@
         </style>
     </head>
     <body>
-        <!-- Footer -->
+        <%-- Footer --%>
         <footer class="page-footer font-small mdb-color pt-4 " style="background-color:#EDF0F4" >
             <!-- Footer Links -->
             <!-- Footer links -->
@@ -29,10 +35,10 @@
                     <h6 class="text-uppercase mb-4 font-weight-bold">GROUP TREE</h6>
                     <img src="/QuizPracticingSystem/images/FPT.jpg" style="width:60%">
                 </div>
-                <!-- Grid column -->
+                <%-- Grid column --%>
           
 
-                <!-- Grid column -->
+                <%-- Grid column --%>
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">More Information</h6>
                     <p>
@@ -48,7 +54,7 @@
                     </p>
                 </div>
 
-                <!-- Grid column -->
+                <%-- Grid column --%>
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
                     <p>
@@ -60,10 +66,10 @@
                     <p>
                         <i class="fas fa-print mr-3"></i> +84 ...</p>
                 </div>
-                <!-- Grid column -->
+                <%-- Grid column --%>
 
             </div>
-            <!-- Footer links -->
+            <%-- Footer links --%>
 
         </footer>
         <!-- Footer -->
