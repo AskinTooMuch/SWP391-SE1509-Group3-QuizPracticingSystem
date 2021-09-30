@@ -7,6 +7,7 @@
     Record of change:
     Date        Version     Author          Description
     20/9/21     1.0         TuanPAHE150543  First Deploy
+    29/9/21     1.1         ChucNVHE150618  Add course content
 --%>
 
 <%@page import="bean.User"%>
@@ -49,9 +50,12 @@
                         <li class="nav-item">
                             <p>          </p>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="${contextPath}/subjectController?service=courseContentList" style="font-weight: bold;">Course Content List</a>
-                        </li>
+                        <c:if test="${(role.getUserRoleName().equalsIgnoreCase('admin')) || (role.getUserRoleName().equalsIgnoreCase('expert'))}">
+                            <li class="nav-item">
+                                <a class="nav-link" href="${contextPath}/subjectController?service=courseContentList" style="font-weight: bold;">Course Content List</a>
+                            </li>
+                        </c:if>
+                        
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="input-group">
@@ -86,7 +90,7 @@
                                         <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
                                     <!-- If role is admin or owner-->
-                                    <c:if test="${sessionScope['currUser'] != null && fn.toLowerCase(sessionScope['role']) == admin}">
+                                    <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
                                         <a href="#" style="text-decoration: none;color:black" >
                                             <span class="fas fa-user-shield">Admin Page</span>  
                                         </a>

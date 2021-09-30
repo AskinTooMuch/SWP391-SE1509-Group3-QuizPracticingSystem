@@ -20,7 +20,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.relation.Role;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,6 +48,10 @@ public class SubjectController extends HttpServlet {
             String service = request.getParameter("service");
             SubjectINT subjectInterface = new SubjectDAO();
             
+            /**
+             * Service course content list: for admin and expert to check the 
+             * proper subject, depends on the role
+             */
             if (service.equalsIgnoreCase("courseContentList")) {
                 User currUser = (User)request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole)request.getSession().getAttribute("role");
@@ -57,12 +60,12 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "index.jsp");
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
                     ArrayList<Subject> featuredSubjectList = subjectInterface.getSubjectsAssigned(currUser.getUserId());
-                    request.setAttribute("subjectList", featuredSubjectList);
-                    sendDispatcher(request, response, "jsp/subjectList.jsp");
+                    request.setAttribute("courseContentSubjectList", featuredSubjectList);
+                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
                 }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
                     ArrayList<Subject> allSubject = subjectInterface.getAllSubjects();
-                    request.setAttribute("subjectList", allSubject);
-                    sendDispatcher(request, response, "jsp/subjectList.jsp");
+                    request.setAttribute("courseContentSubjectList", allSubject);
+                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
                 }   else {
                     sendDispatcher(request, response, "index.jsp");
                 }
