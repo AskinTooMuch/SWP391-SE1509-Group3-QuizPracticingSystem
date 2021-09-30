@@ -95,13 +95,11 @@ public class SubjectDAOTest {
     @Test
     public void testGetSubjectbyCateId() {
         System.out.println("getSubjectbyCateId");
-        int cateId = 0;
+        int cateId = 1;
         SubjectDAO instance = new SubjectDAO();
-        ArrayList<Subject> expResult = null;
+        int expResult = 1;
         ArrayList<Subject> result = instance.getSubjectbyCateId(cateId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result.size());
     }
 
     /**

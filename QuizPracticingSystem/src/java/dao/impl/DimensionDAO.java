@@ -83,8 +83,4 @@ public class DimensionDAO extends MyDAO implements DimensionINT{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-//    public static void main(String[] args) {
-//        DimensionDAO dimensionDao = new DimensionDAO();
-//        System.out.println(dimensionDao.getDimensionBySubject(4).size());
-//    }
 }
