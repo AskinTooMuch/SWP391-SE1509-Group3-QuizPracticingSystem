@@ -85,17 +85,19 @@
                                     <span class="fas fa-user-alt">Profile
                                     </span> 
                                 </a>
+                                <%-- Change user password--%>
                                 <div class="dropdown-menu" style="background-color:cyan;padding:10px 5px;">
                                     <a href="${contextPath}/login/changePassword.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
-                                    <!-- If role is admin or owner-->
+                                    <%-- If role is admin or owner--%>
                                     <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
                                         <a href="#" style="text-decoration: none;color:black" >
                                             <span class="fas fa-user-shield">Admin Page</span>  
                                         </a>
                                     </c:if>
                                     <hr>
+                                    <%-- Logout --%>
                                     <a href="${contextPath}/userController?service=logout" style="text-decoration: none;color:black" >
                                         <span class="fas fa-sign-out-alt">Log Out</span>   
                                     </a>

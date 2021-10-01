@@ -27,15 +27,18 @@
         <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
-        
+        <%-- if subjectList is empty redirect to homeController--%>
         <c:if test = "${subjectList == null}">
             <c:redirect url="homeController"/>
         </c:if>
         <div class="wrap">
+            <%-- Include header page--%>
             <jsp:include page="jsp/header.jsp"/>
             <div class="main">
+                <%-- Include menu page--%>
                 <jsp:include page="jsp/menu.jsp"/>
             </div>
+            <%-- Include footer page--%>
             <jsp:include page="jsp/footer.jsp"/>
         </div>
     </body>

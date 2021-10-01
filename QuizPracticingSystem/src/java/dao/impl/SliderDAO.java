@@ -18,12 +18,13 @@ import java.util.ArrayList;
  */
 public class SliderDAO extends MyDAO implements SliderINT{
 
+    /*Get all Slider from table*/
     @Override
     public ArrayList<Slider> getSlider() {
         ArrayList<Slider> allSlider = new ArrayList();
         String sql = "SELECT * FROM [Slider]";
         try {
-            /* Get the subject */
+            /* Get the slider */
             PreparedStatement preSlider = conn.prepareStatement(sql);
             rs = preSlider.executeQuery();
             while (rs.next()) {

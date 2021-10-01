@@ -16,6 +16,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Footer Page</title>
+        <%-- CSS,JS --%>
         <link rel="stylesheet" href="css/bootstrap.css">
         <script src="https://kit.fontawesome.com/9650a62e47.js" crossorigin="anonymous"></script>
         <style>
@@ -27,25 +28,22 @@
     <body>
         <%-- Footer --%>
         <footer class="page-footer font-small mdb-color pt-4 " style="background-color:#EDF0F4" >
-            <!-- Footer Links -->
-            <!-- Footer links -->
+            
             <div class="row text-center text-md-left mt-3 pb-3" >
-                <!-- Grid column -->
+                <%-- Grid column --%>
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">GROUP TREE</h6>
                     <img src="/QuizPracticingSystem/images/FPT.jpg" style="width:60%">
                 </div>
                 <%-- Grid column --%>
-          
-
-                <%-- Grid column --%>
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                     <h6 class="text-uppercase mb-4 font-weight-bold">More Information</h6>
+                    <%-- Links --%>
                     <p>
                         <a href="https://uni.fpt.edu.vn"><i class="fas fa-university"></i> WEB</a>
                     </p>
                     <p>
-                        <a href="https://www.facebook.com/uni.fpt.edu.vn"><i class="fa fa-facebook"></i> FB</a>                        </p>
+                        <a href="https://www.facebook.com/uni.fpt.edu.vn"><i class="fa fa-facebook"></i> FB</a></p>
                     <p>
                         <a href="https://www.youtube.com/c/FPTUniversityChanel/featured"><i class="fa fa-youtube"></i> YouTube</a>
                     </p>
@@ -72,6 +70,6 @@
             <%-- Footer links --%>
 
         </footer>
-        <!-- Footer -->
+            <%-- Footer --%>
     </body>
 </html>

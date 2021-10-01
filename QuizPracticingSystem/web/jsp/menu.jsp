@@ -17,7 +17,8 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
+    <head
+        <%-- CSS,JSTL--%>
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrapp.min.css" rel="stylesheet">
         <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -187,6 +188,8 @@
 
 
         </div>
+                
+        <%--JS--%>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootstrapp.min.js"></script>
         <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
