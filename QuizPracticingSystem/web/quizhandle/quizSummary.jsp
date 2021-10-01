@@ -1,8 +1,14 @@
-<%-- 
-    Document   : quizSummary
-    Created on : Sep 29, 2021, 8:24:14 AM
-    Author     : ADMN
---%>
+<!--
+   Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+   Created on : Sep 23, 2021
+   QuizController map
+   Quiz practicing system
+ 
+   Record of change:
+   Date        Version     Author          Description
+   29/9/21     1.0         NamDHHE150519   First Deploy
+   29/9/21     2.0         NamDHHE150519   complete all funtion
+-->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -18,14 +24,14 @@
         <div class="container-fluid">
             <div class="infomation" >
                 <div class='info row' style='display:flex;'>
-                <div class='col-1'>
-                    <a type="button" class="btn" href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
-    margin-left: 5px;'> Back</a>
+                    <div class='col-1'>
+                        <a type="button" class="btn" href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
+                           margin-left: 5px;'> Back</a>
+                    </div>
+                    <div class='col-11'>
+                        thong tin bai quiz
+                    </div>
                 </div>
-                <div class='col-11'>
-                    thong tin bai quiz
-                </div>
-                  </div>
             </div>
             <div class="row infomation1">
                 thong tin bai quiz
@@ -54,7 +60,7 @@
                     </div>
                 </div>        
             </div>
-    <div class="modal fade submitthis" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade submitthis" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -103,11 +109,11 @@
                     </div>
                 </div>
             </div>
-                <style>
-                    #marked{
-                        border: 3px solid red;
-                    }
-                </style>
+            <style>
+                #marked{
+                    border: 3px solid red;
+                }
+            </style>
         </div>
     </body>
     <script>
@@ -137,7 +143,7 @@
             secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));
             minutesLabel.innerHTML = pad(parseInt(totalMinute));
             hoursLabel.innerHTML = pad(parseInt(totalHour));
-            document.getElementById("time").value=Math.round(totalSecond);
+            document.getElementById("time").value = Math.round(totalSecond);
         }
         function resetTime() {
             localStorage.clear();

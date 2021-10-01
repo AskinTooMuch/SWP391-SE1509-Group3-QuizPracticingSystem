@@ -1,8 +1,14 @@
-<%-- 
-    Document   : blogList
-    Created on : Sep 21, 2021, 11:10:40 AM
-    Author     : ADMN
---%>
+<!--
+   Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+   Created on : Sep 23, 2021
+   MarketingController map
+   Quiz practicing system
+ 
+   Record of change:
+   Date        Version     Author          Description
+   23/9/21     1.0         NamDHHE150519   First Deploy
+   23/9/21     2.0         NamDHHE150519   complete all funtion 
+-->
 
 <%@page import="bean.PostCate"%>
 <%@page import="bean.Blog"%>

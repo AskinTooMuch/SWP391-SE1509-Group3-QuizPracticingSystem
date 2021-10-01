@@ -1,8 +1,16 @@
-<%-- 
-    Document   : quizHandle
-    Created on : Sep 24, 2021, 8:51:12 PM
-    Author     : ADMN
---%>
+<!--
+   Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+   Created on : Sep 23, 2021
+   QuizController map
+   Quiz practicing system
+ 
+   Record of change:
+   Date        Version     Author          Description
+   23/9/21     1.0         NamDHHE150519   First Deploy
+   24/9/21     1.1         NamDHHE150519   Update
+   25/9/21     1.2         NamDHHE150519   Big Update
+   29/9/21     1.9         NamDDHE150519   complete all funtion
+-->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -192,7 +200,7 @@
                     </div>
                 </div>
             </div>
-          
+
         </div>
         <script>
 

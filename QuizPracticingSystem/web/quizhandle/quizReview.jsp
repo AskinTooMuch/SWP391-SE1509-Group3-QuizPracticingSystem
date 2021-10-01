@@ -1,8 +1,16 @@
-<%-- 
-    Document   : quizHandle
-    Created on : Sep 24, 2021, 8:51:12 PM
-    Author     : ADMN
---%>
+<!--
+   Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+   Created on : Sep 23, 2021
+   QuizController map
+   Quiz practicing system
+ 
+   Record of change:
+   Date        Version     Author          Description
+   23/9/21     1.0         NamDHHE150519   First Deploy
+   24/9/21     1.1         NamDHHE150519   Update
+   25/9/21     1.2         NamDHHE150519   Big Update
+   29/9/21     1.9         NamDDHE150519   complete all funtion
+-->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -57,14 +65,14 @@
                 </div>
                 <c:set var="answered" value="${requestScope.answered}"/>
                 <div class="row answers" style="margin-top:10px;">
-                  
+
                     <div class="col-12">
                         <ul style='margin-left:50px;margin-top: 10px;'>                  
                             <c:forEach items="${answerList}" var="answer">
                                 <c:if test="${answer.getAnswerId()==answered}">
                                     <img src="images/youranswer.png" style='width:90px;height: auto;'>
                                 </c:if>
-                                    
+
                                 <div class="checkbox-inline ${answer.getAnswerId()==answered?"":"wrong"}" style="display: -webkit-inline-box;">
                                     <label class="labelA" for="${answer.getAnswerId()}">
                                         <li>
@@ -75,7 +83,7 @@
                                         <span class="checkmark ${answer.getAnswerId()==answered?"":"disable"}"></span>
                                     </label>
                                 </div>
-                                    <c:if test="${answer.isIsCorrect()}">
+                                <c:if test="${answer.isIsCorrect()}">
                                     <img src="images/right.png" style='width:20px;height: auto;'>
                                 </c:if>
                                 <c:if test="${!answer.isIsCorrect()}">
