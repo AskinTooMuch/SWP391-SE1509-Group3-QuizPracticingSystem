@@ -40,12 +40,12 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of getUserAllUser method, of class UserDAO.
+     * Test of getUserAllUser method, of class UserDAOImpl.
      */
     @Test
     public void testGetUserAllUser() {
         System.out.println("getUserAllUser");
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         ArrayList<User> expResult = null;
         ArrayList<User> result = instance.getUserAllUser();
         assertEquals(expResult, result);
@@ -54,65 +54,65 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of getUserLogin method, of class UserDAO.
+     * Test of getUserLogin method, of class UserDAOImpl.
      */
     @Test
     public void testGetUserLogin() {
         System.out.println("getUserLogin");
         String userMail = "DuongNHHE150328@fpt.edu.vn";
         String password = "1";
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         User expResult = null;
         User result = instance.getUserLogin(userMail, password);
         assertTrue(result.getPassword().equalsIgnoreCase("1"));
     }
 
     /**
-     * Test of getUserById method, of class UserDAO.
+     * Test of getUserById method, of class UserDAOImpl.
      */
     @Test
     public void testGetUserById() {
         System.out.println("getUserById");
         int userId = 1;
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         int expResult = 1;
         User result = instance.getUserById(userId);
         assertTrue(expResult == result.getUserId());
     }
 
     /**
-     * Test of getUserByMail method, of class UserDAO.
+     * Test of getUserByMail method, of class UserDAOImpl.
      */
     @Test
     public void testGetUserByMail() {
         System.out.println("getUserByMail");
         String userMail = "DuongNHHE150328@fpt.edu.vn";
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         String expResult = "DuongNHHE150328@fpt.edu.vn";
         User result = instance.getUserByMail(userMail);
         assertTrue(expResult.equalsIgnoreCase(result.getUserMail()));
     }
 
     /**
-     * Test of getUserByMobile method, of class UserDAO.
+     * Test of getUserByMobile method, of class UserDAOImpl.
      */
     @Test
     public void testGetUserByMobile() {
         System.out.println("getUserByMobile");
         String Moblie = "0969044713";
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         String expResult = "0969044713";
         User result = instance.getUserByMobile(Moblie);
         assertTrue(expResult.equalsIgnoreCase(result.getUserMobile()));
     }
 
     /**
-     * Test of updateUser method, of class UserDAO.
+     * Test of updateUser method, of class UserDAOImpl.
      */
     @Test
     public void testUpdateUser() {
         System.out.println("updateUser");
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         User updatedUser = instance.getUserById(1);
         int expResult = 1;
         int result = instance.updateUser(updatedUser);
@@ -120,39 +120,39 @@ public class UserDAOTest {
     }
 
     /**
-     * Test of changeStatus method, of class UserDAO.
+     * Test of changeStatus method, of class UserDAOImpl.
      */
     @Test
     public void testChangeStatus() {
         System.out.println("changeStatus");
         int userId = 1;
         boolean newStatus = true;
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         int expResult = 1;
         int result = instance.changeStatus(userId, newStatus);
         assertTrue(expResult == result);
     }
 
     /**
-     * Test of addUser method, of class UserDAO.
+     * Test of addUser method, of class UserDAOImpl.
      */
     @Test
     public void testAddUser() {
         System.out.println("addUser");
         User newUser = new User(0, "Dong01", "1", 1, null, "duonghoang8805", true, "0842274855", true);
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         int expResult = 1;
         int result = instance.addUser(newUser);
         assertTrue(expResult == result);
     }
 
     /**
-     * Test of deleteUser method, of class UserDAO.
+     * Test of deleteUser method, of class UserDAOImpl.
      */
     @Test
     public void testDeleteUser() {
         System.out.println("deleteUser");
-        UserDAO instance = new UserDAO();
+        UserDAOImpl instance = new UserDAOImpl();
         User user = instance.getUserByMail("duonghoang8805");
         int expResult = 1;
         int result = instance.deleteUser(user);

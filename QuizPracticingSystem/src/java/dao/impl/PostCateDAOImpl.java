@@ -14,15 +14,15 @@ import bean.Blog;
 import java.util.ArrayList;
 import bean.PostCate;
 import dao.MyDAO;
-import dao.PostCateINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import dao.PostCateDAO;
 
 /**
  *
  * @author duong
  */
-public class PostCateDAOImpl extends MyDAO implements PostCateINT {
+public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
 
     @Override
     public ArrayList<PostCate> getAllPostCates() {

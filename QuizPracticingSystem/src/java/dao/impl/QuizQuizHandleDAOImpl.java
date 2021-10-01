@@ -18,14 +18,14 @@ import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
-import dao.QuizQuizHandleINT;
 import java.util.ArrayList;
+import dao.QuizQuizHandleDAO;
 
 /**
  *
  * @author ADMN
  */
-public class QuizQuizHandleDAOImpl implements QuizQuizHandleINT {
+public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
 
     /**
      * turn a list of question into list of question quiz handle
@@ -41,7 +41,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleINT {
     public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId) {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAOImpl questionQuizzHandleDAO = new QuestionQuizHandleDAOImpl();
-        QuizDAO quizDAO = new QuizDAO();
+        QuizDAOImpl quizDAO = new QuizDAOImpl();
         Quiz quizInDatabase = quizDAO.getQuizById(quizId);
         for (Question question : questionList) {
             int questionId = question.getQuestionId();
@@ -114,7 +114,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleINT {
         QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizQuizHandle reviewQuiz = new QuizQuizHandle();
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
-        QuizDAO quizDAO = new QuizDAO();
+        QuizDAOImpl quizDAO = new QuizDAOImpl();
         Quiz quiz = quizDAO.getQuizByQuizTakeId(quizTakeId);
         ArrayList<QuestionQuizHandle> reviewQuestionList = questionQuizHandleDAO.getReviewQuestion(quizTakeId);     //Questions answered
         ArrayList<Question> questionList = questionDAO.getQuestionByQuizId(quiz.getQuizId());                             //All question of quiz

@@ -16,10 +16,8 @@
 package controller;
 
 import bean.*;
-import dao.UserINT;
-import dao.UserRoleINT;
-import dao.impl.UserDAO;
-import dao.impl.UserRoleDAO;
+import dao.impl.UserDAOImpl;
+import dao.impl.UserRoleDAOImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,6 +38,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import dao.UserDAO;
+import dao.UserRoleDAO;
 
 public class UserController extends HttpServlet {
 
@@ -57,15 +57,15 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            UserINT userInterface = new UserDAO();
+            UserDAO userInterface = new UserDAOImpl();
             /*Log in*/
             if (service.equalsIgnoreCase("login")) {
                 String userMail = request.getParameter("userMail");
                 String mess = "";
                 String password = request.getParameter("password");
                 User log = null;
-                UserINT t = new UserDAO();
-                UserRoleINT userRoleDAO = new UserRoleDAO();
+                UserDAO t = new UserDAOImpl();
+                UserRoleDAO userRoleDAO = new UserRoleDAOImpl();
 
                 log = t.getUserLogin(userMail, password);
                 //validate user log in, if wrong, re-login

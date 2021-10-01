@@ -40,12 +40,12 @@ public class SubjectCateDAOTest {
     }
 
     /**
-     * Test of getAllSubjectCates method, of class SubjectCateDAO.
+     * Test of getAllSubjectCates method, of class SubjectCateDAOImpl.
      */
     @Test
     public void testGetAllSubjectCates() {
         System.out.println("getAllSubjectCates");
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         ArrayList<SubjectCate> expResult = null;
         ArrayList<SubjectCate> result = instance.getAllSubjectCates();
         assertEquals(expResult, result);
@@ -54,13 +54,13 @@ public class SubjectCateDAOTest {
     }
 
     /**
-     * Test of getSubjectCateById method, of class SubjectCateDAO.
+     * Test of getSubjectCateById method, of class SubjectCateDAOImpl.
      */
     @Test
     public void testGetSubjectCateById() {
         System.out.println("getSubjectCateById");
         int scId = 0;
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         SubjectCate expResult = null;
         SubjectCate result = instance.getSubjectCateById(scId);
         assertEquals(expResult, result);
@@ -69,13 +69,13 @@ public class SubjectCateDAOTest {
     }
 
     /**
-     * Test of getSubjectCateBySubject method, of class SubjectCateDAO.
+     * Test of getSubjectCateBySubject method, of class SubjectCateDAOImpl.
      */
     @Test
     public void testGetSubjectCateBySubject1() {
         System.out.println("getSubjectCateBySubject");
         int subjectId = 1;
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         int expResult = 2;
         ArrayList<SubjectCate> result = instance.getSubjectCateBySubject(subjectId);
         assertEquals(expResult, result.size());
@@ -85,20 +85,20 @@ public class SubjectCateDAOTest {
     public void testGetSubjectCateBySubject2() {
         System.out.println("getSubjectCateBySubject");
         int subjectId = 2;
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         int expResult = 1;
         ArrayList<SubjectCate> result = instance.getSubjectCateBySubject(subjectId);
         assertEquals(expResult, result.size());
     }
 
     /**
-     * Test of updateSubjectCate method, of class SubjectCateDAO.
+     * Test of updateSubjectCate method, of class SubjectCateDAOImpl.
      */
     @Test
     public void testUpdateSubjectCate() {
         System.out.println("updateSubjectCate");
         SubjectCate updatedSubjectCate = null;
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         int expResult = 0;
         int result = instance.updateSubjectCate(updatedSubjectCate);
         assertEquals(expResult, result);
@@ -107,13 +107,13 @@ public class SubjectCateDAOTest {
     }
 
     /**
-     * Test of deteleSubjectCate method, of class SubjectCateDAO.
+     * Test of deteleSubjectCate method, of class SubjectCateDAOImpl.
      */
     @Test
     public void testDeteleSubjectCate() {
         System.out.println("deteleSubjectCate");
         int scId = 0;
-        SubjectCateDAO instance = new SubjectCateDAO();
+        SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         int expResult = 0;
         int result = instance.deteleSubjectCate(scId);
         assertEquals(expResult, result);

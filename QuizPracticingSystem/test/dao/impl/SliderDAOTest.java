@@ -41,12 +41,12 @@ public class SliderDAOTest {
     }
 
     /**
-     * Test of getSlider method, of class SliderDAO.
+     * Test of getSlider method, of class SliderDAOImpl.
      */
     @Test
     public void testGetSlider() {
         System.out.println("getSlider");
-        SliderDAO instance = new SliderDAO();
+        SliderDAOImpl instance = new SliderDAOImpl();
         int expResult = 0;
         int result = instance.getSlider().size();
         assertTrue(expResult < result);
@@ -54,13 +54,13 @@ public class SliderDAOTest {
     }
 
     /**
-     * Test of getSliderById method, of class SliderDAO.
+     * Test of getSliderById method, of class SliderDAOImpl.
      */
     @Test
     public void testGetSliderById() {
         System.out.println("getSliderById");
         int sliderId = 1;
-        SliderDAO instance = new SliderDAO();
+        SliderDAOImpl instance = new SliderDAOImpl();
         String expResult = "OOP with Java";
         String result = instance.getSliderById(sliderId).getSliderTitle();
         assertEquals(expResult, result);
@@ -68,13 +68,13 @@ public class SliderDAOTest {
     }
 
      /**
-     * Test of addSlider method, of class SliderDAO.
+     * Test of addSlider method, of class SliderDAOImpl.
      */
     @Test
     public void testAddSlider() {
         System.out.println("addSlider");
         Slider newSlder = new Slider(0, "testSlider", "testpic", "haha", "iidesune", true);
-        SliderDAO instance = new SliderDAO();
+        SliderDAOImpl instance = new SliderDAOImpl();
         int expResult = 1;
         int result = instance.addSlider(newSlder);
         assertEquals(expResult, result);
@@ -82,14 +82,14 @@ public class SliderDAOTest {
     }
 
     /**
-     * Test of editSlider method, of class SliderDAO.
+     * Test of editSlider method, of class SliderDAOImpl.
      */
     @Test
     public void testEditSlider() {
         System.out.println("editSlider");
         int sliderId = 0;
         Slider editedSlider = null;
-        SliderDAO instance = new SliderDAO();
+        SliderDAOImpl instance = new SliderDAOImpl();
         int expResult = 0;
         int result = instance.editSlider(sliderId, editedSlider);
         assertEquals(expResult, result);
@@ -99,13 +99,13 @@ public class SliderDAOTest {
 
    
     /**
-     * Test of deleteSlider method, of class SliderDAO.
+     * Test of deleteSlider method, of class SliderDAOImpl.
      */
     @Test
     public void testDeleteSlider() {
         System.out.println("deleteSlider");
         int sliderId = 0;
-        SliderDAO instance = new SliderDAO();
+        SliderDAOImpl instance = new SliderDAOImpl();
         int expResult = 0;
         int result = instance.deleteSlider(sliderId);
         assertEquals(expResult, result);

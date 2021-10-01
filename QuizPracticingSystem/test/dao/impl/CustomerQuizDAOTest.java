@@ -41,12 +41,12 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of getAllCustomerQuiz method, of class CustomerQuizDAO.
+     * Test of getAllCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testGetAllCustomerQuiz() {
         System.out.println("getAllCustomerQuiz");
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         ArrayList<CustomerQuiz> expResult = null;
         ArrayList<CustomerQuiz> result = instance.getAllCustomerQuiz();
         assertEquals(expResult, result);
@@ -55,13 +55,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of getQuizByUser method, of class CustomerQuizDAO.
+     * Test of getQuizByUser method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testGetQuizByUser() {
         System.out.println("getQuizByUser");
         int userId = 0;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         ArrayList<CustomerQuiz> expResult = null;
         ArrayList<CustomerQuiz> result = instance.getQuizByUser(userId);
         assertEquals(expResult, result);
@@ -70,13 +70,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of getQuizById method, of class CustomerQuizDAO.
+     * Test of getQuizById method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testGetQuizById() {
         System.out.println("getQuizById");
         int quizId = 0;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         CustomerQuiz expResult = null;
         CustomerQuiz result = instance.getQuizById(quizId);
         assertEquals(expResult, result);
@@ -85,14 +85,14 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of editCustomerQuiz method, of class CustomerQuizDAO.
+     * Test of editCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testEditCustomerQuiz() {
         System.out.println("editCustomerQuiz");
         int customerQuizId = 0;
         CustomerQuiz customerQuiz = null;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         int expResult = 0;
         int result = instance.editCustomerQuiz(customerQuizId, customerQuiz);
         assertEquals(expResult, result);
@@ -101,13 +101,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of addCustomerQuiz method, of class CustomerQuizDAO.
+     * Test of addCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testAddCustomerQuiz() {
         System.out.println("addCustomerQuiz");
         CustomerQuiz customerQuiz = null;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         int expResult = 0;
         int result = instance.addCustomerQuiz(customerQuiz);
         assertEquals(expResult, result);
@@ -116,12 +116,12 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of getLastAddedCustomerQuiz method, of class CustomerQuizDAO.
+     * Test of getLastAddedCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testGetLastAddedCustomerQuiz() {
         System.out.println("getLastAddedCustomerQuiz");
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         CustomerQuiz expResult = null;
         CustomerQuiz result = instance.getLastAddedCustomerQuiz();
         assertEquals(expResult, result);
@@ -130,13 +130,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of deleteCustomerQuiz method, of class CustomerQuizDAO.
+     * Test of deleteCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testDeleteCustomerQuiz() {
         System.out.println("deleteCustomerQuiz");
         int customerQuizId = 0;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         int expResult = 0;
         int result = instance.deleteCustomerQuiz(customerQuizId);
         assertEquals(expResult, result);
@@ -145,13 +145,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of addTakeAnswer method, of class CustomerQuizDAO.
+     * Test of addTakeAnswer method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testAddTakeAnswer() {
         System.out.println("addTakeAnswer");
         QuizQuizHandle quiz = null;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         int expResult = 0;
         int result = instance.addTakeAnswer(quiz);
         assertEquals(expResult, result);
@@ -160,13 +160,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of addMarkQuestion method, of class CustomerQuizDAO.
+     * Test of addMarkQuestion method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testAddMarkQuestion() {
         System.out.println("addMarkQuestion");
         QuizQuizHandle quiz = null;
-        CustomerQuizDAO instance = new CustomerQuizDAO();
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         int expResult = 0;
         int result = instance.addMarkQuestion(quiz);
         assertEquals(expResult, result);
@@ -175,13 +175,13 @@ public class CustomerQuizDAOTest {
     }
 
     /**
-     * Test of main method, of class CustomerQuizDAO.
+     * Test of main method, of class CustomerQuizDAOImpl.
      */
     @Test
     public void testMain() {
         System.out.println("main");
         String[] args = null;
-        CustomerQuizDAO.main(args);
+        CustomerQuizDAOImpl.main(args);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

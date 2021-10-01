@@ -8,15 +8,15 @@ package dao.impl;
 import java.util.ArrayList;
 import bean.QuizLevel;
 import dao.MyDAO;
-import dao.QuizLevelINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import dao.QuizLevelDAO;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class QuizLevelDAOImpl extends MyDAO implements QuizLevelINT {
+public class QuizLevelDAOImpl extends MyDAO implements QuizLevelDAO {
 
     @Override
     public ArrayList<QuizLevel> getAllQuizLevel() {

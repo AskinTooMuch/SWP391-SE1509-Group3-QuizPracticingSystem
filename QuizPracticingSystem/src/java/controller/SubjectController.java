@@ -13,8 +13,7 @@ package controller;
 import bean.Subject;
 import bean.User;
 import bean.UserRole;
-import dao.SubjectINT;
-import dao.impl.SubjectDAO;
+import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import dao.SubjectDAO;
 
 public class SubjectController extends HttpServlet {
 
@@ -43,7 +43,7 @@ public class SubjectController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* Get service and initialise the subjectDAO */
             String service = request.getParameter("service");
-            SubjectINT subjectInterface = new SubjectDAO();
+            SubjectDAO subjectInterface = new SubjectDAOImpl();
             
             /**
              * Service course content list: for admin and expert to check the 

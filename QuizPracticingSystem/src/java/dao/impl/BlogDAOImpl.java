@@ -20,18 +20,18 @@ package dao.impl;
 import bean.Blog;
 import bean.PostCate;
 import bean.User;
-import dao.BlogINT;
 import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import dao.BlogDAO;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class BlogDAOImpl extends MyDAO implements BlogINT {
+public class BlogDAOImpl extends MyDAO implements BlogDAO {
 
     /**
      * Get all blog from database

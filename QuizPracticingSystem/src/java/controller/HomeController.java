@@ -15,14 +15,10 @@ package controller;
 import bean.Blog;
 import bean.Slider;
 import bean.Subject;
-import dao.BlogINT;
-import dao.SliderINT;
-import dao.SubjectINT;
-import dao.UserINT;
 import dao.impl.BlogDAOImpl;
-import dao.impl.SliderDAO;
-import dao.impl.SubjectDAO;
-import dao.impl.UserDAO;
+import dao.impl.SliderDAOImpl;
+import dao.impl.SubjectDAOImpl;
+import dao.impl.UserDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -33,6 +29,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import dao.BlogDAO;
+import dao.SliderDAO;
+import dao.SubjectDAO;
+import dao.UserDAO;
 
 /**
  *
@@ -57,10 +57,10 @@ public class HomeController extends HttpServlet {
             String service = request.getParameter("service");
             if (service==null) service="homePage";
             /* Initialize the DAO needed */
-            UserINT userInterface = new UserDAO();
-            BlogINT blogInterface = new BlogDAOImpl();
-            SubjectINT subjectInterface = new SubjectDAO();
-            SliderINT sliderInterface = new SliderDAO();
+            UserDAO userInterface = new UserDAOImpl();
+            BlogDAO blogInterface = new BlogDAOImpl();
+            SubjectDAO subjectInterface = new SubjectDAOImpl();
+            SliderDAO sliderInterface = new SliderDAOImpl();
             /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/
             if (service.equalsIgnoreCase("homePage")) {
                 /* Get the needed lists for index and set attribute to request */

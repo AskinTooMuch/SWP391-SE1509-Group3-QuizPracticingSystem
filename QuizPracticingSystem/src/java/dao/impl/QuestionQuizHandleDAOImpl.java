@@ -19,12 +19,12 @@ import bean.Answer;
 import bean.Question;
 import bean.QuestionQuizHandle;
 import dao.MyDAO;
-import dao.QuestionQuizHandleINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import dao.QuestionQuizHandleDAO;
 
-public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHandleINT {
+public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHandleDAO {
 
     @Override
     /**
@@ -36,7 +36,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      */
     public QuestionQuizHandle generateQuestionById(int questionId) {
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
-        AnswerDAO answerDAO = new AnswerDAO();
+        AnswerDAOImpl answerDAO = new AnswerDAOImpl();
         Question question = questionDAO.getQuestionById(questionId);                        //get question
         ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);          //get question's answer list
         return new QuestionQuizHandle(question, answers, 0, false);                         //constructor(question,question's answers list, user's answerd id,marked)
@@ -107,7 +107,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
         QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
-        AnswerDAO answerDAO = new AnswerDAO();
+        AnswerDAOImpl answerDAO = new AnswerDAOImpl();
         ArrayList<QuestionQuizHandle> questionList = new ArrayList();
        
         String sql = "SELECT * FROM [TakeAnswer] WHERE quizTakeId=" + quizTakeId;

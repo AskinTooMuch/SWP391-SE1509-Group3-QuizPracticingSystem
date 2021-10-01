@@ -40,12 +40,12 @@ public class TestTypeDAOTest {
     }
 
     /**
-     * Test of getAllTestTypes method, of class TestTypeDAO.
+     * Test of getAllTestTypes method, of class TestTypeDAOImpl.
      */
     @Test
     public void testGetAllTestTypes() {
         System.out.println("getAllTestTypes");
-        TestTypeDAO instance = new TestTypeDAO();
+        TestTypeDAOImpl instance = new TestTypeDAOImpl();
         ArrayList<TestType> expResult = null;
         ArrayList<TestType> result = instance.getAllTestTypes();
         assertEquals(expResult, result);
@@ -54,26 +54,26 @@ public class TestTypeDAOTest {
     }
 
     /**
-     * Test of getTestTypeById method, of class TestTypeDAO.
+     * Test of getTestTypeById method, of class TestTypeDAOImpl.
      */
     @Test
     public void testGetTestTypeById() {
         System.out.println("getTestTypeById");
         int testTypeId = 1;
-        TestTypeDAO instance = new TestTypeDAO();
+        TestTypeDAOImpl instance = new TestTypeDAOImpl();
         int expResult = 1;
         TestType result = instance.getTestTypeById(testTypeId);
         assertTrue(expResult == result.getTestTypeId());
     }
 
     /**
-     * Test of updateTestType method, of class TestTypeDAO.
+     * Test of updateTestType method, of class TestTypeDAOImpl.
      */
     @Test
     public void testUpdateTestType() {
         System.out.println("updateTestType");
         TestType updatedTestType = null;
-        TestTypeDAO instance = new TestTypeDAO();
+        TestTypeDAOImpl instance = new TestTypeDAOImpl();
         int expResult = 0;
         int result = instance.updateTestType(updatedTestType);
         assertEquals(expResult, result);
@@ -82,13 +82,13 @@ public class TestTypeDAOTest {
     }
 
     /**
-     * Test of deleteTestType method, of class TestTypeDAO.
+     * Test of deleteTestType method, of class TestTypeDAOImpl.
      */
     @Test
     public void testDeleteTestType() {
         System.out.println("deleteTestType");
         int testTypeId = 0;
-        TestTypeDAO instance = new TestTypeDAO();
+        TestTypeDAOImpl instance = new TestTypeDAOImpl();
         int expResult = 0;
         int result = instance.deleteTestType(testTypeId);
         assertEquals(expResult, result);
@@ -97,13 +97,13 @@ public class TestTypeDAOTest {
     }
 
     /**
-     * Test of addTestType method, of class TestTypeDAO.
+     * Test of addTestType method, of class TestTypeDAOImpl.
      */
     @Test
     public void testAddTestType() {
         System.out.println("addTestType");
         TestType newTestType = null;
-        TestTypeDAO instance = new TestTypeDAO();
+        TestTypeDAOImpl instance = new TestTypeDAOImpl();
         int expResult = 0;
         int result = instance.addTestType(newTestType);
         assertEquals(expResult, result);

@@ -40,12 +40,12 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of getAllQuiz method, of class QuizDAO.
+     * Test of getAllQuiz method, of class QuizDAOImpl.
      */
     @Test
     public void testGetAllQuiz() {
         System.out.println("getAllQuiz");
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         ArrayList<Quiz> expResult = null;
         ArrayList<Quiz> result = instance.getAllQuiz();
         assertEquals(expResult, result);
@@ -54,13 +54,13 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of getQuizById method, of class QuizDAO.
+     * Test of getQuizById method, of class QuizDAOImpl.
      */
     @Test
     public void testGetQuizById() {
         System.out.println("getQuizById");
         int quizId = 1;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         Quiz expResult = null;
         Quiz result = instance.getQuizById(quizId);
         assertEquals(2, result.getTestTypeId());
@@ -68,26 +68,26 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of getQuizByQuizTakeId method, of class QuizDAO.
+     * Test of getQuizByQuizTakeId method, of class QuizDAOImpl.
      */
     @Test
     public void testGetQuizByQuizTakeId() {
         System.out.println("getQuizByQuizTakeId");
         int quizTakeId = 1;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         Quiz expResult = null;
         Quiz result = instance.getQuizByQuizTakeId(quizTakeId);
         assertEquals(30, result.getQuizDuration());       
     }
 
     /**
-     * Test of getQuizBySubject method, of class QuizDAO.
+     * Test of getQuizBySubject method, of class QuizDAOImpl.
      */
     @Test
     public void testGetQuizBySubject() {
         System.out.println("getQuizBySubject");
         int subjectId = 0;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         ArrayList<Quiz> expResult = null;
         ArrayList<Quiz> result = instance.getQuizBySubject(subjectId);
         assertEquals(expResult, result);
@@ -96,13 +96,13 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of getQuizByLesson method, of class QuizDAO.
+     * Test of getQuizByLesson method, of class QuizDAOImpl.
      */
     @Test
     public void testGetQuizByLesson() {
         System.out.println("getQuizByLesson");
         int lessonId = 0;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         ArrayList<Quiz> expResult = null;
         ArrayList<Quiz> result = instance.getQuizByLesson(lessonId);
         assertEquals(expResult, result);
@@ -111,14 +111,14 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of editQuiz method, of class QuizDAO.
+     * Test of editQuiz method, of class QuizDAOImpl.
      */
     @Test
     public void testEditQuiz() {
         System.out.println("editQuiz");
         int quizId = 0;
         Quiz quiz = null;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         int expResult = 0;
         int result = instance.editQuiz(quizId, quiz);
         assertEquals(expResult, result);
@@ -127,13 +127,13 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of addQuiz method, of class QuizDAO.
+     * Test of addQuiz method, of class QuizDAOImpl.
      */
     @Test
     public void testAddQuiz() {
         System.out.println("addQuiz");
         Quiz quiz = null;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         int expResult = 0;
         int result = instance.addQuiz(quiz);
         assertEquals(expResult, result);
@@ -142,13 +142,13 @@ public class QuizDAOTest {
     }
 
     /**
-     * Test of deleteQuiz method, of class QuizDAO.
+     * Test of deleteQuiz method, of class QuizDAOImpl.
      */
     @Test
     public void testDeleteQuiz() {
         System.out.println("deleteQuiz");
         int quizId = 0;
-        QuizDAO instance = new QuizDAO();
+        QuizDAOImpl instance = new QuizDAOImpl();
         int expResult = 0;
         int result = instance.deleteQuiz(quizId);
         assertEquals(expResult, result);

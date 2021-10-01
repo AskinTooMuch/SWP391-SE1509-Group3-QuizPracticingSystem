@@ -12,8 +12,6 @@
 package controller;
 
 import bean.*;
-import dao.BlogINT;
-import dao.PostCateINT;
 import dao.impl.BlogDAOImpl;
 import dao.impl.PostCateDAOImpl;
 import java.io.IOException;
@@ -23,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import dao.BlogDAO;
+import dao.PostCateDAO;
 
 /**
  *
@@ -48,8 +48,8 @@ public class MarketingController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
-            BlogINT blogInterface = new BlogDAOImpl();
-            PostCateINT postCateInterface = new PostCateDAOImpl();
+            BlogDAO blogInterface = new BlogDAOImpl();
+            PostCateDAO postCateInterface = new PostCateDAOImpl();
             
             if (service.equalsIgnoreCase("blogList")) {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();

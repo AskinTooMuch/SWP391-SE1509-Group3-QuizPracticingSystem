@@ -40,38 +40,38 @@ public class UserRoleDAOTest {
     }
 
     /**
-     * Test of getAllUserRole method, of class UserRoleDAO.
+     * Test of getAllUserRole method, of class UserRoleDAOImpl.
      */
     @Test
     public void testGetAllUserRole() {
         System.out.println("getAllUserRole");
-        UserRoleDAO instance = new UserRoleDAO();
+        UserRoleDAOImpl instance = new UserRoleDAOImpl();
         int expResult = 0;
         ArrayList<UserRole> result = instance.getAllUserRole();
         assertTrue(expResult <= result.size());
     }
 
     /**
-     * Test of getUserRoleById method, of class UserRoleDAO.
+     * Test of getUserRoleById method, of class UserRoleDAOImpl.
      */
     @Test
     public void testGetUserRoleById() {
         System.out.println("getUserRoleById");
         int roleId = 1;
-        UserRoleDAO instance = new UserRoleDAO();
+        UserRoleDAOImpl instance = new UserRoleDAOImpl();
         int expResult = 1;
         UserRole result = instance.getUserRoleById(roleId);
         assertTrue(expResult == result.getUserRoleId());
     }
 
     /**
-     * Test of editRole method, of class UserRoleDAO.
+     * Test of editRole method, of class UserRoleDAOImpl.
      */
     @Test
     public void testEditRole() {
         System.out.println("editRole");
         int roleId = 1;
-        UserRoleDAO instance = new UserRoleDAO();
+        UserRoleDAOImpl instance = new UserRoleDAOImpl();
         UserRole userRole = instance.getUserRoleById(roleId);
         int expResult = 1;
         int result = instance.editRole(userRole);
@@ -79,12 +79,12 @@ public class UserRoleDAOTest {
     }
 
     /**
-     * Test of addRole method, of class UserRoleDAO.
+     * Test of addRole method, of class UserRoleDAOImpl.
      */
     @Test
     public void testAddRole() {
         System.out.println("addRole");
-        UserRoleDAO instance = new UserRoleDAO();
+        UserRoleDAOImpl instance = new UserRoleDAOImpl();
         UserRole userRole = instance.getUserRoleById(1);
         int expResult = 1;
         int result = instance.addRole(userRole);
@@ -92,13 +92,13 @@ public class UserRoleDAOTest {
     }
 
     /**
-     * Test of deleteRole method, of class UserRoleDAO.
+     * Test of deleteRole method, of class UserRoleDAOImpl.
      */
     @Test
     public void testDeleteRole() {
         System.out.println("deleteRole");
         int roleId = 6;
-        UserRoleDAO instance = new UserRoleDAO();
+        UserRoleDAOImpl instance = new UserRoleDAOImpl();
         int expResult = 1;
         int result = instance.deleteRole(roleId);
         assertTrue(expResult == result);

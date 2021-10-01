@@ -15,15 +15,10 @@ import bean.CustomerQuiz;
 import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
-import dao.CustomerQuizINT;
-import dao.QuestionINT;
-import dao.QuestionQuizHandleINT;
-import dao.QuizINT;
-import dao.QuizQuizHandleINT;
-import dao.impl.CustomerQuizDAO;
+import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuestionQuizHandleDAOImpl;
-import dao.impl.QuizDAO;
+import dao.impl.QuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +28,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import dao.CustomerQuizDAO;
+import dao.QuestionDAO;
+import dao.QuestionQuizHandleDAO;
+import dao.QuizDAO;
+import dao.QuizQuizHandleDAO;
 
 /**
  *
@@ -57,10 +57,10 @@ public class QuizController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            QuizQuizHandleINT quizQHInterface = new QuizQuizHandleDAOImpl();
-            QuestionQuizHandleINT questionQHInterface = new QuestionQuizHandleDAOImpl();
-            QuestionINT questionInterface = new QuestionDAOImpl();
-            QuizINT quizInterface = new QuizDAO();           
+            QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
+            QuestionQuizHandleDAO questionQHInterface = new QuestionQuizHandleDAOImpl();
+            QuestionDAO questionInterface = new QuestionDAOImpl();
+            QuizDAO quizInterface = new QuizDAOImpl();           
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("quizHandle")) {
@@ -213,7 +213,7 @@ public class QuizController extends HttpServlet {
                     java.sql.Date date = new java.sql.Date(millis);
                     //Insert into CustomerQuiz table in database
                     CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, 2, (int) score, time, date, true);
-                    CustomerQuizINT customerQuizINT = new CustomerQuizDAO();
+                    CustomerQuizDAO customerQuizINT = new CustomerQuizDAOImpl();
                     customerQuizINT.addCustomerQuiz(customerQuiz);
                     //Insert into TakeAnswer table in database;
                     customerQuizINT.addTakeAnswer(questionArray);

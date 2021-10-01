@@ -40,12 +40,12 @@ public class DimensionTypeDAOTest {
     }
 
     /**
-     * Test of getAllDimensionTypes method, of class DimensionTypeDAO.
+     * Test of getAllDimensionTypes method, of class DimensionTypeDAOImpl.
      */
     @Test
     public void testGetAllDimensionTypes() {
         System.out.println("getAllDimensionTypes");
-        DimensionTypeDAO instance = new DimensionTypeDAO();
+        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
         ArrayList<DimensionType> expResult = null;
         ArrayList<DimensionType> result = instance.getAllDimensionTypes();
         assertEquals(expResult, result);
@@ -54,26 +54,26 @@ public class DimensionTypeDAOTest {
     }
 
     /**
-     * Test of getDimensionTypeById method, of class DimensionTypeDAO.
+     * Test of getDimensionTypeById method, of class DimensionTypeDAOImpl.
      */
     @Test
     public void testGetDimensionTypeById1() {
         System.out.println("getDimensionTypeById");
         int dimensionTypeId = 1;
-        DimensionTypeDAO instance = new DimensionTypeDAO();
+        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
         DimensionType expResult = new DimensionType(1, "Domain", true);
         DimensionType result = instance.getDimensionTypeById(dimensionTypeId);
         assertEquals(expResult.getDimensionTypeId(), result.getDimensionTypeId());
     }
 
     /**
-     * Test of updateDimensionType method, of class DimensionTypeDAO.
+     * Test of updateDimensionType method, of class DimensionTypeDAOImpl.
      */
     @Test
     public void testUpdateDimensionType() {
         System.out.println("updateDimensionType");
         DimensionType updatedDimensionType = null;
-        DimensionTypeDAO instance = new DimensionTypeDAO();
+        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
         int expResult = 0;
         int result = instance.updateDimensionType(updatedDimensionType);
         assertEquals(expResult, result);
@@ -82,13 +82,13 @@ public class DimensionTypeDAOTest {
     }
 
     /**
-     * Test of deteteDimensionTyoe method, of class DimensionTypeDAO.
+     * Test of deteteDimensionTyoe method, of class DimensionTypeDAOImpl.
      */
     @Test
     public void testDeteteDimensionTyoe() {
         System.out.println("deteteDimensionTyoe");
         int dtId = 0;
-        DimensionTypeDAO instance = new DimensionTypeDAO();
+        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
         int expResult = 0;
         int result = instance.deteteDimensionTyoe(dtId);
         assertEquals(expResult, result);
@@ -97,13 +97,13 @@ public class DimensionTypeDAOTest {
     }
 
     /**
-     * Test of addDimensionType method, of class DimensionTypeDAO.
+     * Test of addDimensionType method, of class DimensionTypeDAOImpl.
      */
     @Test
     public void testAddDimensionType() {
         System.out.println("addDimensionType");
         DimensionType newDimensionType = null;
-        DimensionTypeDAO instance = new DimensionTypeDAO();
+        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
         int expResult = 0;
         int result = instance.addDimensionType(newDimensionType);
         assertEquals(expResult, result);

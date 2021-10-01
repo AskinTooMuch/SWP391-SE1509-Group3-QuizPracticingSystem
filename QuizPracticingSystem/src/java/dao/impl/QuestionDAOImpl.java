@@ -20,13 +20,13 @@ package dao.impl;
 import bean.Question;
 import java.util.ArrayList;
 import dao.MyDAO;
-import dao.QuestionINT;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import dao.QuestionDAO;
 
 
 
-public class QuestionDAOImpl extends MyDAO implements QuestionINT {
+public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
 
     /**
      * get all question from database
