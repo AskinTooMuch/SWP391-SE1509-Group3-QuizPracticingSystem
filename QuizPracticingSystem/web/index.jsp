@@ -1,9 +1,14 @@
 <%-- 
-    Document   : Index
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 21, 2021, 10:36:55 AM
-    Author     : tuan
---%>
+    Index
+    Quiz practicing system
 
+    Record of change:
+    Date        Version     Author          Description
+    20/9/21     1.0         TuanPAHE150543  First Deploy
+    
+--%>
 <%@page import="bean.Subject"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,11 +32,11 @@
             <c:redirect url="homeController"/>
         </c:if>
         <div class="wrap">
-            <jsp:include page="jsp/Header.jsp"/>
+            <jsp:include page="jsp/header.jsp"/>
             <div class="main">
-                <jsp:include page="jsp/Menu.jsp"/>
+                <jsp:include page="jsp/menu.jsp"/>
             </div>
-            <jsp:include page="jsp/Footer.jsp"/>
+            <jsp:include page="jsp/footer.jsp"/>
         </div>
     </body>
 </html>

@@ -28,7 +28,7 @@
         <script src="js/bootstrap.min.js"></script>    
     </head>
     <body>
-        <jsp:include page="/jsp/Header.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
         <div class="main">
             <div class="container" style="align-self: center; min-height: 50vh">
                 <c:set var="userMail" value="${ param.userMail }"/>
@@ -108,6 +108,6 @@
                 </c:choose>
             </div>
         </div>
-        <jsp:include page="/jsp/Footer.jsp"/>
+        <jsp:include page="/jsp/footer.jsp"/>
     </body>
 </html>

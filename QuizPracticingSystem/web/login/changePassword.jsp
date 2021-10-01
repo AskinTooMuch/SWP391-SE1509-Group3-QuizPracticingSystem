@@ -30,7 +30,7 @@
             <c:redirect url="/index.jsp"/>
         </c:if>
 
-        <jsp:include page="/jsp/Header.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
         <div class="main">
 
             <%-- Login form --%>
@@ -73,7 +73,7 @@
             </div>
 
         </div>
-        <jsp:include page="/jsp/Footer.jsp"/>
+        <jsp:include page="/jsp/footer.jsp"/>
     </body>
 </html>
 

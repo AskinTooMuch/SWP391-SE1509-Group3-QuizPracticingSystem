@@ -1,12 +1,13 @@
 <%-- 
     Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 26, 2021, 9:33:11 PM
+    Created on : Sep 29, 2021, 9:32:27 AM
     Display subject list in cards
     Quiz practicing system
 
     Record of change:
     Date        Version     Author          Description
-    26/9/21     1.0         ChucNVHE150618  First Deploy
+    29/9/21     1.0         ChucNVHE150618  First Deploy
+    30/9/21     2.0         ChucNVHE150618  Add display list and include header, footer
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -56,17 +57,17 @@
             <div class="main">
                 <c:choose>
                     <%-- Case 1: subjectList is empty --%>
-                    <c:when test = "${empty subjectList}">
+                    <c:when test = "${empty courseContentSubjectList}">
                         <div class="row" style="height: 50vh">
                             <h5 style="margin: auto; text-align: center">We currently don't have any course. 
-                                <br> Feels Knowledgeable? Contact us and add your own course!</h5>
+                                <br> <a  href="">Add new course ? </a> </h5>
                         </div>
                     </c:when>
                     <%-- Case 2: subjectList is not empty --%>
                     <c:otherwise>
                         <div class="row" style="min-height: 50vh">
                             <%-- Print available subject --%>
-                            <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
+                            <c:forEach items = "${courseContentSubjectList}" var="subject" begin = "0" end = "${courseContentSubjectList.size()-1}">
                                 <div class="col-md-10 subjectCard">
                                     <div class="cardThumbnail">
                                         <image class="thumbNailImg" src="${contextPath}/images/${subject.getThumbnail()}" alt="${subject.getThumbnail()}">
@@ -83,8 +84,7 @@
                                     <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
                                 </div>
                                 <div class="cardBody">
-                                    <h5>Currently Not Available</h5>
-                                    <p style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
+                                    <a href="#"><h5> Add new course. </h5></a>
                                 </div>
                             </div>
                         </div>
