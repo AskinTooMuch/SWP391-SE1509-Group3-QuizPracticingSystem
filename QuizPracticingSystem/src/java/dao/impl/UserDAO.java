@@ -23,7 +23,14 @@ public class UserDAO extends MyDAO implements UserINT {
     public ArrayList<User> getUserAllUser() {
         return null;
     }
-
+    
+    /**
+     * get user from User table Using mail and password
+     *
+     * @param userMail is an String
+     * @param password is an String
+     * @return <code>User</code> object.
+     */
     @Override
     public User getUserLogin(String userMail, String password) {
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
@@ -33,7 +40,7 @@ public class UserDAO extends MyDAO implements UserINT {
             ps.setString(2, password);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(rs.getInt("userId"),
+                User loginUser = new User(rs.getInt("userId"),
                         rs.getString("userName"),
                         rs.getString("password"),
                         rs.getInt("roleId"),
@@ -42,6 +49,8 @@ public class UserDAO extends MyDAO implements UserINT {
                         rs.getBoolean("gender"),
                         rs.getString("userMobile"),
                         rs.getBoolean("status"));
+                finalize();
+                return loginUser;
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,6 +58,12 @@ public class UserDAO extends MyDAO implements UserINT {
         return null;
     }
 
+    /**
+     * get user from User table using userId
+     *
+     * @param userId is an int
+     * @return <code>User</code> object.
+     */
     @Override
     public User getUserById(int userId) {
         xSql = "SELECT * FROM [User] WHERE userId = ?";
@@ -75,6 +90,12 @@ public class UserDAO extends MyDAO implements UserINT {
         return null;
     }
 
+    /**
+     * get user from User table using userMail
+     *
+     * @param userMail is an String
+     * @return <code>User</code> object.
+     */
     @Override
     public User getUserByMail(String userMail) {
         xSql = "SELECT * FROM [User] WHERE userMail = ?";
@@ -99,6 +120,12 @@ public class UserDAO extends MyDAO implements UserINT {
         return null;
     }
 
+    /**
+     * get user from User table using userMobile
+     *
+     * @param userMobile is an String
+     * @return <code>User</code> object.
+     */    
     @Override
     public User getUserByMobile(String Moblie) {
         xSql = "SELECT * FROM [User] WHERE userMobile = ?";
@@ -122,7 +149,13 @@ public class UserDAO extends MyDAO implements UserINT {
         }
         return null;
     }
-
+    
+    /**
+     * update a user from User table 
+     *
+     * @param updatedUser is a <code>User</code> object
+     * @return a int.
+     */  
     @Override
     public int updateUser(User updatedUser) {
         xSql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
@@ -146,6 +179,14 @@ public class UserDAO extends MyDAO implements UserINT {
         return 0;
     }
 
+    
+    /**
+     * change a user status from User table 
+     *
+     * @param userId is an int
+     * @param newStatus is a boolean object
+     * @return a int.
+     */  
     @Override
     public int changeStatus(int userId, boolean newStatus) {
         xSql = "UPDATE [User] set [status] = ? where userId = ?";
@@ -162,6 +203,12 @@ public class UserDAO extends MyDAO implements UserINT {
         return 0;
     }
 
+    /**
+     * add a user to User table 
+     *
+     * @param newUser is an <code>User</code> object
+     * @return a int.
+     */  
     @Override
     public int addUser(User newUser) {
         xSql = "INSERT INTO [User](userName,[password],roleId,userMail,gender,userMobile,[status])"
@@ -191,6 +238,12 @@ public class UserDAO extends MyDAO implements UserINT {
 
     }
 
+    /**
+     * delete a user from User table 
+     *
+     * @param User is an <code>User</code> object
+     * @return a int.
+     */ 
     @Override
     public int deleteUser(User user) {
         xSql = " delete from [User] where userId = ?";

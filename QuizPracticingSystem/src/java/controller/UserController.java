@@ -100,6 +100,7 @@ public class UserController extends HttpServlet {
                 boolean gender;
                 User addUser = new User();
 
+                //check blank input fields
                 if (userName.length() == 0 || password.length() == 0
                         || confirmPass.length() == 0
                         || userMail.length() == 0 || userMobile.length() == 0
@@ -259,6 +260,7 @@ public class UserController extends HttpServlet {
 
             }
 
+            //update user information
             if (service.equalsIgnoreCase("editProfile")) {
                 String mess = "";
                 User currUser = (User) request.getSession().getAttribute("currUser");
@@ -312,6 +314,7 @@ public class UserController extends HttpServlet {
                         forward(request, response);
             }
 
+            //upload or change profile image
             if (service.equalsIgnoreCase("uploadImage")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String filename = null;
