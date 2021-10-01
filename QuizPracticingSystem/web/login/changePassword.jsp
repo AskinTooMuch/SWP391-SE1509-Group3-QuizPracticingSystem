@@ -29,41 +29,47 @@
         <c:if test="${sessionScope.currUser == null}">
             <c:redirect url="/index.jsp"/>
         </c:if>
-
+        <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
         <div class="main">
 
             <%-- Login form --%>
             <div class="container" style="align-self: center; min-height: 50vh">
-
+                <%-- Start form --%>
                 <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
                     <div class="row">
+                        <%-- Bootstrap to center form --%>
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
+                            <%-- Enter old password --%>
                             <label class="label control-label">Old Password</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span></span>
-                                <input type="password" class="form-control" name="oldPassword" placeholder="">
+                                <input type="password" class="form-control" name="oldPassword" placeholder="" required>
                             </div>
+                            <%-- Enter new password --%>
                             <label class="label control-label">New Password</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="" onkeyup='check();'>
+                                <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="" onkeyup='check();' required>
                             </div>
+                            <%-- Confirm new password --%>
                             <label class="label control-label">Confirm Password</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();'>
+                                <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();' required>
                                 <span id='message'></span>
                             </div>
                             <br>
+                            <%-- Submit form --%>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success">Change password!</button>
                                 <input type="hidden" name="service" value="changePassword">
                             </div>
+                            <%-- Display messages, if any --%>
                             <div>
                                 <h4 style="color:${color}"> <c:out value="${message}"/> </h4>
                             </div>
@@ -73,6 +79,7 @@
             </div>
 
         </div>
+        <%-- Include footer page --%>
         <jsp:include page="/jsp/footer.jsp"/>
     </body>
 </html>
