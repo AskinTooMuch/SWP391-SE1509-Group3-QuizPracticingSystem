@@ -26,10 +26,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author admin
- */
 public class SubjectController extends HttpServlet {
 
     /**
@@ -45,6 +41,7 @@ public class SubjectController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* Get service and initialise the subjectDAO */
             String service = request.getParameter("service");
             SubjectINT subjectInterface = new SubjectDAO();
             
@@ -53,20 +50,25 @@ public class SubjectController extends HttpServlet {
              * proper subject, depends on the role
              */
             if (service.equalsIgnoreCase("courseContentList")) {
+                /* Get user and role on session scope */
                 User currUser = (User)request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole)request.getSession().getAttribute("role");
                 /* If user is not logged in, redirect to index */
                 if ((currUser == null) || (currRole == null)){
                     sendDispatcher(request, response, "index.jsp");
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
+                    /* Get assigned list */
                     ArrayList<Subject> featuredSubjectList = subjectInterface.getSubjectsAssigned(currUser.getUserId());
+                    /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
                 }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
+                    /* Get all subject */
                     ArrayList<Subject> allSubject = subjectInterface.getAllSubjects();
+                    /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                }   else {
+                }   else { /* If the user is logged in but not admin or expert, send back to index.jsp */
                     sendDispatcher(request, response, "index.jsp");
                 }
                 
@@ -74,6 +76,7 @@ public class SubjectController extends HttpServlet {
         }
     }
     
+    /* Forward the request to the destination, catch any unexpected exceptions and log it */
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);

@@ -15,6 +15,7 @@ import dao.PricePackageINT;
  * @author tuan
  */
 public class PricePackageDAO extends MyDAO implements PricePackageINT{
+    
     @Override
     public ArrayList<PricePackage> getAllPricePackage(){
         return null;

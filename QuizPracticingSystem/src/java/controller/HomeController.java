@@ -53,27 +53,32 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* If the service is null(normally on first load, set the service is homePage) */
             String service = request.getParameter("service");
             if (service==null) service="homePage";
-            
+            /* Initialize the DAO needed */
             UserINT userInterface = new UserDAO();
             BlogINT blogInterface = new BlogDAO();
             SubjectINT subjectInterface = new SubjectDAO();
             SliderINT sliderInterface = new SliderDAO();
             /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/
             if (service.equalsIgnoreCase("homePage")) {
+                /* Get the needed lists for index and set attribute to request */
                 ArrayList<Subject> featuredSubjectList = subjectInterface.getFeaturedSubjects();
                 request.setAttribute("subjectList", featuredSubjectList);
                 ArrayList<Slider> sliderList = sliderInterface.getSlider();
                 request.setAttribute("sliderList", sliderList);
                 ArrayList<Blog> blogList = blogInterface.getAllBlog();
                 request.setAttribute("blogList", blogList);
+                /* Redicrect to index.jsp */
                 sendDispatcher(request, response, "index.jsp");
             }
             /*Service: subjectList. Load subjectList and redirect user.*/
             if (service.equalsIgnoreCase("subjectList")) {
+                /* Get subject list and set attribute */
                 ArrayList<Subject> subjectList = subjectInterface.getAllSubjects();
                 request.setAttribute("subjectList", subjectList);
+                /* Redirect to subjectList.jsp */
                 sendDispatcher(request, response, "jsp/subjectList.jsp");
             }
             
@@ -119,7 +124,7 @@ public class HomeController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+    /* Forward the request to the destination, catch any unexpected exceptions and log it */
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
