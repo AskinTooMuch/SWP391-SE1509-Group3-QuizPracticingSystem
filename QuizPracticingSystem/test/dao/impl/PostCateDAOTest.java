@@ -45,7 +45,7 @@ public class PostCateDAOTest {
     @Test
     public void testGetAllPostCates() {
         System.out.println("getAllPostCates");
-        PostCateDAO instance = new PostCateDAO();
+        PostCateDAOImpl instance = new PostCateDAOImpl();
         ArrayList<PostCate> expResult = null;
         ArrayList<PostCate> result = instance.getAllPostCates();
         assertEquals(expResult, result);
@@ -60,11 +60,19 @@ public class PostCateDAOTest {
     public void testGetPostCateById() {
         System.out.println("getPostCateById");
         int pcId = 1;
-        PostCateDAO instance = new PostCateDAO();
+        PostCateDAOImpl instance = new PostCateDAOImpl();
         int expResult = 1;
         int result = instance.getPostCateById(pcId).getPostCateId();
         assertEquals(expResult,result);
        
+    }
+    @Test
+    public void testGetBlogPostCateByBlogId() throws Exception {
+        System.out.println("getAllPostCates");
+        PostCateDAOImpl instance = new PostCateDAOImpl();
+        ArrayList<PostCate> expResult = null;
+        int result = instance.getBlogCateByBlogId(10);
+        assertEquals(3, result);
     }
 
     /**
@@ -74,7 +82,7 @@ public class PostCateDAOTest {
     public void testUpdatePostCate() {
         System.out.println("updatePostCate");
         PostCate updatedPostCate = null;
-        PostCateDAO instance = new PostCateDAO();
+        PostCateDAOImpl instance = new PostCateDAOImpl();
         int expResult = 0;
         int result = instance.updatePostCate(updatedPostCate);
         assertEquals(expResult, result);
@@ -89,7 +97,7 @@ public class PostCateDAOTest {
     public void testDeletePostCate() {
         System.out.println("deletePostCate");
         int pcId = 0;
-        PostCateDAO instance = new PostCateDAO();
+        PostCateDAOImpl instance = new PostCateDAOImpl();
         int expResult = 0;
         int result = instance.deletePostCate(pcId);
         assertEquals(expResult, result);
@@ -104,7 +112,7 @@ public class PostCateDAOTest {
     public void testAddPostCate() {
         System.out.println("addPostCate");
         PostCate newPostCate = null;
-        PostCateDAO instance = new PostCateDAO();
+        PostCateDAOImpl instance = new PostCateDAOImpl();
         int expResult = 0;
         int result = instance.addPostCate(newPostCate);
         assertEquals(expResult, result);

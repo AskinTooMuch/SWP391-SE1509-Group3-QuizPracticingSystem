@@ -52,7 +52,7 @@ public class QuizDAO extends MyDAO implements QuizINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                QuizLevelDAO quizLevelDAO = new QuizLevelDAO();
+                QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
                 QuizLevel quizLevel =quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
                 String quizLevelName  = quizLevel.getQuizLevelName();
                 TestTypeDAO testTypeDAO = new TestTypeDAO();
@@ -97,7 +97,7 @@ public class QuizDAO extends MyDAO implements QuizINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                QuizLevelDAO quizLevelDAO = new QuizLevelDAO();
+                QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
                 QuizLevel quizLevel =quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
                 String quizLevelName  = quizLevel.getQuizLevelName();
                 TestTypeDAO testTypeDAO = new TestTypeDAO();

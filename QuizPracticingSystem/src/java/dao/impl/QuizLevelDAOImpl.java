@@ -16,7 +16,7 @@ import java.sql.SQLException;
  *
  * @author ChucNVHE150618
  */
-public class QuizLevelDAO extends MyDAO implements QuizLevelINT {
+public class QuizLevelDAOImpl extends MyDAO implements QuizLevelINT {
 
     @Override
     public ArrayList<QuizLevel> getAllQuizLevel() {

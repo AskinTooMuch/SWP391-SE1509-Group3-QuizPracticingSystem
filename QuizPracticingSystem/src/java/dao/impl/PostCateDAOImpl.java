@@ -22,7 +22,7 @@ import java.sql.SQLException;
  *
  * @author duong
  */
-public class PostCateDAO extends MyDAO implements PostCateINT {
+public class PostCateDAOImpl extends MyDAO implements PostCateINT {
 
     @Override
     public ArrayList<PostCate> getAllPostCates() {
@@ -59,7 +59,17 @@ public class PostCateDAO extends MyDAO implements PostCateINT {
         }
         return null;
     }
-
+    
+    @Override
+    public int getBlogCateByBlogId(int blogId) throws Exception{
+        String sql= "SELECT * FROM [BlogCate] WHERE blogId="+blogId;
+        PreparedStatement pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("postCateId");
+    }
+            return 0;
+    }
     @Override
     public int updatePostCate(PostCate updatedPostCate) {
         return 0;

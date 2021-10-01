@@ -48,7 +48,7 @@ public class QuestionQuizHandleDAOTest {
     public void testGenerateQuestionById() {
         System.out.println("generateQuestionById");
         int questionId = 1;
-        QuestionQuizHandleDAO instance = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         QuestionQuizHandle expResult = null;
         QuestionQuizHandle result = instance.generateQuestionById(questionId);
         assertEquals("nihongo", result.getQuestion().getExplanation());
@@ -62,7 +62,7 @@ public class QuestionQuizHandleDAOTest {
     public void testMarkQuestion() {
         System.out.println("markQuestion");
         QuestionQuizHandle question = new QuestionQuizHandle();
-        QuestionQuizHandleDAO instance = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         instance.markQuestion(question);
         assertEquals(true, question.isMarked());
     }
@@ -73,7 +73,7 @@ public class QuestionQuizHandleDAOTest {
     @Test
     public void testGetRightAnswer() {
         System.out.println("getRightAnswer");
-        QuestionQuizHandleDAO instance = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         QuestionQuizHandle questionQH  = instance.generateQuestionById(1);
         Answer expResult = null;
         String result = questionQH.getAnswerList().get(0).getAnswerContent();
@@ -88,7 +88,7 @@ public class QuestionQuizHandleDAOTest {
     public void testGetMarkQuestionList() {
         System.out.println("getMarkQuestionList");
         int quizTakeId = 1;
-        QuestionQuizHandleDAO instance = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         ArrayList<Boolean> expResult = null;
         ArrayList<Boolean> result = instance.getMarkQuestionList(quizTakeId);
         assertEquals(false, result.get(0));
@@ -101,7 +101,7 @@ public class QuestionQuizHandleDAOTest {
     public void testGetReviewQuestion() {
         System.out.println("getReviewQuestion");
         int quizTakeId = 2;
-        QuestionQuizHandleDAO instance = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         ArrayList<QuestionQuizHandle> expResult = null;
         ArrayList<QuestionQuizHandle> result = instance.getReviewQuestion(quizTakeId);
         assertEquals(1, result.get(0).getQuestion().getQuestionId());

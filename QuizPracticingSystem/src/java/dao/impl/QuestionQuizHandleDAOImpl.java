@@ -24,7 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleINT {
+public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHandleINT {
 
     @Override
     /**
@@ -35,7 +35,7 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
      * @return a QuestionQuizHandle <code>QuestionQuizHandle</code> object.
      */
     public QuestionQuizHandle generateQuestionById(int questionId) {
-        QuestionDAO questionDAO = new QuestionDAO();
+        QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAO answerDAO = new AnswerDAO();
         Question question = questionDAO.getQuestionById(questionId);                        //get question
         ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(questionId);          //get question's answer list
@@ -105,8 +105,8 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
      */
     @Override
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
-        QuestionQuizHandleDAO questionQuizHandleDAO = new QuestionQuizHandleDAO();
-        QuestionDAO questionDAO = new QuestionDAO();
+        QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
+        QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAO answerDAO = new AnswerDAO();
         ArrayList<QuestionQuizHandle> questionList = new ArrayList();
        
@@ -132,8 +132,8 @@ public class QuestionQuizHandleDAO extends MyDAO implements QuestionQuizHandleIN
     }
 
     public static void main(String[] args) {
-        QuestionQuizHandleDAO dao = new QuestionQuizHandleDAO();
-        QuestionDAO qdao = new QuestionDAO();
+        QuestionQuizHandleDAOImpl dao = new QuestionQuizHandleDAOImpl();
+        QuestionDAOImpl qdao = new QuestionDAOImpl();
         ArrayList<Boolean> s = dao.getMarkQuestionList(11);
         for (boolean a : s) {
             System.out.println(a);

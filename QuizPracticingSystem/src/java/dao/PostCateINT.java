@@ -13,13 +13,16 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface PostCateINT {
-     public ArrayList<PostCate> getAllPostCates();
-     
-     public PostCate getPostCateById(int pcId);
-     
-     public int updatePostCate(PostCate updatedPostCate);
-     
-     public int deletePostCate(int pcId);
-     
-     public int addPostCate(PostCate newPostCate);
+
+    public ArrayList<PostCate> getAllPostCates();
+
+    public PostCate getPostCateById(int pcId);
+
+    public int updatePostCate(PostCate updatedPostCate);
+
+    public int getBlogCateByBlogId(int blogId) throws Exception;
+
+    public int deletePostCate(int pcId);
+
+    public int addPostCate(PostCate newPostCate);
 }

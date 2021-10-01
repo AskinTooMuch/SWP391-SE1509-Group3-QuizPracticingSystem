@@ -10,14 +10,10 @@
    23/9/21     2.9         NamDHHE150519   complete all funtion
 -->
 
-<%@page import="java.sql.Date"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="bean.Blog"%>
-<%@page import="java.util.ArrayList"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="dao.BlogINT"%>
-<%@page import="dao.impl.BlogDAO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -54,40 +50,32 @@
                     </div>
 
                     <div style="margin-top: 20px;">
-                        <a href="marketingController?service=blogList"><h5>Lastest Posts</h5></a>
-                        <% BlogINT blogDAO = new BlogDAO();
-                            ArrayList<Blog> lastBlogs = (ArrayList<Blog>) request.getAttribute("lastBlogs");
-                            for (Blog blog : lastBlogs) {
-                        %>
-                        <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
-                            <div style="width: 104px;border-right:#bccafd 1px solid;">
-                                <img src="<%=blog.getThumbnail()%>" style="height: 70px;width: auto; ">
+                        <a href="marketingController?service=blogList"><h5>Latest Posts</h5></a>
+                        <c:forEach items="${lastBlogs}" var="blog">
+                            <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
+                                <div style="width: 104px;border-right:#bccafd 1px solid;">
+                                    <img src="${blog.getThumbnail()}" style="height: 70px;width: auto; ">
+                                </div>
+                                <div>
+                                    <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}"><h6>${blog.getBlogTitle()}</h6></a>
+                                </div>
                             </div>
-                            <div>
-                                <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=<%=blog.getBlogId()%>"><h6><%=blog.getBlogTitle()%></h6></a>
-                            </div>
-                        </div>
-                        <%}%>
+                        </c:forEach>
                     </div>
                 </div>
 
                 <div class="right col-9">
-                    <%
-                        Blog blog = (Blog) request.getAttribute("blog");
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                        Date date = blog.getLastEdited();
-                        
-                    %>
+                    <c:set var="thisBlog" value="${blog}"/>
                     <div class="info row">
-                        <div class="cate col-9"><%=blogDAO.getBlogCategory(blog.getBlogId()).getPostCateName()%></div>
-                        <div class="date col-3"><div style="float:right;">Last Edited: <%=df.format(date)%></div></div>
+                        <div class="cate col-9">${blogCateName}</div>
+                        <div class="date col-3"><div style="float:right;">Last Edited: <fmt:formatDate type = "date" value = "${thisBlog.getLastEdited()}" /></div></div>
                     </div>        
                     <div class="title row">
-                        <h4>${blog.getBlogTitle()}</h4>
+                        <h4>${thisBlog.getBlogTitle()}</h4>
                     </div>
                     <hr>
                     <div class="content row" style="text-align: justify;">
-                        <p><%=blog.getDetail()%></p>
+                        <p>${thisBlog.getDetail()}</p>
                     </div>
                     <div class="author row" style="float:right;">
                         <div>
@@ -95,7 +83,7 @@
                         </div>
                         <div>
                             <div style="float:right;">
-                                <h5><%=blogDAO.getAuthor(blog.getBlogId()).getUserName()%></h5>
+                                <h5>${thisBlog.getAuthor().getUserName()}</h5>
                             </div>
                         </div>
                     </div>

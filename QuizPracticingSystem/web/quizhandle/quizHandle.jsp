@@ -179,7 +179,6 @@
                                 <input type="image" id="markedbutton" src="images/marked.png " alt="Submit Form" />
                                 <input type="image" id="answeredbutton" src="images/answered.png" alt="Submit Form" />
                                 <input type="image" id="allquestionsbutton" src="images/allquestions.png" alt="Submit Form" />
-
                                 <input type="submit" class="btn scorereview" name='action' value='Finish Exam' style="float:right;background-color: #4472c4;border: 1px white solid; color:white" form='questionForm'>
                             </div>
                             <br/><br/>

@@ -26,7 +26,7 @@ import java.sql.SQLException;
 
 
 
-public class QuestionDAO extends MyDAO implements QuestionINT {
+public class QuestionDAOImpl extends MyDAO implements QuestionINT {
 
     /**
      * get all question from database
@@ -133,7 +133,7 @@ public class QuestionDAO extends MyDAO implements QuestionINT {
     }
 
     public static void main(String[] args) {
-        QuestionDAO dao = new QuestionDAO();
+        QuestionDAOImpl dao = new QuestionDAOImpl();
 
         ArrayList<Question> list = dao.getQuestionByQuizId(1);
         for (Question q : list) {

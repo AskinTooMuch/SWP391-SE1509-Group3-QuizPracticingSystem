@@ -25,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author ADMN
  */
-public class QuizQuizHandleDAO implements QuizQuizHandleINT {
+public class QuizQuizHandleDAOImpl implements QuizQuizHandleINT {
 
     /**
      * turn a list of question into list of question quiz handle
@@ -40,7 +40,7 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
     @Override
     public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId) {
         QuizQuizHandle quiz = new QuizQuizHandle();
-        QuestionQuizHandleDAO questionQuizzHandleDAO = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl questionQuizzHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizDAO quizDAO = new QuizDAO();
         Quiz quizInDatabase = quizDAO.getQuizById(quizId);
         for (Question question : questionList) {
@@ -111,9 +111,9 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
      */
     @Override
     public QuizQuizHandle getReviewQuiz(int quizTakeId) {
-        QuestionQuizHandleDAO questionQuizHandleDAO = new QuestionQuizHandleDAO();
+        QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizQuizHandle reviewQuiz = new QuizQuizHandle();
-        QuestionDAO questionDAO = new QuestionDAO();
+        QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         QuizDAO quizDAO = new QuizDAO();
         Quiz quiz = quizDAO.getQuizByQuizTakeId(quizTakeId);
         ArrayList<QuestionQuizHandle> reviewQuestionList = questionQuizHandleDAO.getReviewQuestion(quizTakeId);     //Questions answered
@@ -148,8 +148,8 @@ public class QuizQuizHandleDAO implements QuizQuizHandleINT {
     }
 
     public static void main(String[] args) {
-        QuizQuizHandleDAO dao = new QuizQuizHandleDAO();
-        QuestionDAO qdao = new QuestionDAO();
+        QuizQuizHandleDAOImpl dao = new QuizQuizHandleDAOImpl();
+        QuestionDAOImpl qdao = new QuestionDAOImpl();
         ArrayList<Question> s = qdao.getAllQuestion();
 
         QuizQuizHandle list = dao.getReviewQuiz(11);

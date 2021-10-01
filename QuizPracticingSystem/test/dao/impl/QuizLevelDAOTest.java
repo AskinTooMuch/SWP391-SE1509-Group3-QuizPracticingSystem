@@ -45,7 +45,7 @@ public class QuizLevelDAOTest {
     @Test
     public void testGetAllQuizLevel() {
         System.out.println("getAllQuizLevel");
-        QuizLevelDAO instance = new QuizLevelDAO();
+        QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         ArrayList<QuizLevel> expResult = null;
         ArrayList<QuizLevel> result = instance.getAllQuizLevel();
         assertEquals(expResult, result);
@@ -60,7 +60,7 @@ public class QuizLevelDAOTest {
     public void testGetQuizLevelById() {
         System.out.println("getQuizLevelById");
         int quizLevelId = 1;
-        QuizLevelDAO instance = new QuizLevelDAO();
+        QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         QuizLevel expResult = null;
         QuizLevel result = instance.getQuizLevelById(quizLevelId);
         assertEquals("Hard", result.getQuizLevelName());
@@ -75,7 +75,7 @@ public class QuizLevelDAOTest {
         System.out.println("editQuizLevel");
         int quizLevelId = 0;
         QuizLevel quizLevel = null;
-        QuizLevelDAO instance = new QuizLevelDAO();
+        QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         int expResult = 0;
         int result = instance.editQuizLevel(quizLevelId, quizLevel);
         assertEquals(expResult, result);
@@ -90,7 +90,7 @@ public class QuizLevelDAOTest {
     public void testAddQuizLevel() {
         System.out.println("addQuizLevel");
         QuizLevel quizLevel = null;
-        QuizLevelDAO instance = new QuizLevelDAO();
+        QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         int expResult = 0;
         int result = instance.addQuizLevel(quizLevel);
         assertEquals(expResult, result);
@@ -105,7 +105,7 @@ public class QuizLevelDAOTest {
     public void testDeleteQuizLevel() {
         System.out.println("deleteQuizLevel");
         int quizLevelId = 0;
-        QuizLevelDAO instance = new QuizLevelDAO();
+        QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         int expResult = 0;
         int result = instance.deleteQuizLevel(quizLevelId);
         assertEquals(expResult, result);

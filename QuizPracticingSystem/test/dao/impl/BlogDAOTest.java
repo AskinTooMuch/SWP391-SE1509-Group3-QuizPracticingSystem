@@ -48,7 +48,7 @@ public class BlogDAOTest {
     @Test
     public void testGetAllBlog() {
         System.out.println("getAllBlog");
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.getAllBlog().size();
         assertTrue(expResult < result);
@@ -61,7 +61,7 @@ public class BlogDAOTest {
     public void testGetBlogByCategory() {
         System.out.println("getBlogByCategory");
         String[] postCateIdList = {"1","2"};
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.getBlogByCategory(postCateIdList).size();
         assertTrue(expResult < result);
@@ -74,7 +74,7 @@ public class BlogDAOTest {
     public void testGetBlogByUser() {
         System.out.println("getBlogByUser");
         int userId = 2;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 4;
         int result = instance.getBlogByUser(userId).size();
         assertEquals(expResult, result);
@@ -87,7 +87,7 @@ public class BlogDAOTest {
     public void testGetBlogById() {
         System.out.println("getBlogById");
         int blogId = 1;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         String expResult = "Rita’s Way: Why is it so Effective?";
         String result = instance.getBlogById(blogId).getBlogTitle();
         assertEquals(expResult, result);
@@ -100,7 +100,7 @@ public class BlogDAOTest {
     public void testGetBlogByTitle() {
         System.out.println("getBlogByTitle");
         String title = "Why";
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.getBlogByTitle(title).size();
         assertTrue(expResult < result);
@@ -112,7 +112,7 @@ public class BlogDAOTest {
     @Test
     public void testGetAllTrueBlog() {
         System.out.println("getAllTrueBlog");
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.getAllTrueBlog().size();
         assertTrue(expResult < result);
@@ -124,7 +124,7 @@ public class BlogDAOTest {
     @Test
     public void testGetLastBlogs() {
         System.out.println("getLastBlogs");
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResultUpper = 3;
         int expResultLower = 0;
         int result = instance.getLastBlogs().size();
@@ -139,7 +139,7 @@ public class BlogDAOTest {
         System.out.println("getBlogByCategoryAndTitle");
         String[] postCateIdList = null;
         String search = "";
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         ArrayList<Blog> expResult = null;
         ArrayList<Blog> result = instance.getBlogByCategoryAndTitle(postCateIdList, search);
         assertEquals(expResult, result);
@@ -156,7 +156,7 @@ public class BlogDAOTest {
             User user = new User(1, "testUserName", "testUserPassword", 1, "testProfilePic", "testUserMail", true, "0303030303", true);
             Blog blog = new Blog(0, "testBlogTitle", Date.valueOf("2020-12-12"), Date.valueOf("2020-12-12"), user, "test", "testThumbnail", true);
             
-            BlogDAO instance = new BlogDAO();
+            BlogDAOImpl instance = new BlogDAOImpl();
             int expResult = 1;
             int result = instance.addBlog(blog);
             assertEquals(expResult, result);
@@ -170,7 +170,7 @@ public class BlogDAOTest {
         System.out.println("editBlog");
         int blogId = 0;
         Blog blog = null;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.editBlog(blogId, blog);
         assertEquals(expResult, result);
@@ -187,7 +187,7 @@ public class BlogDAOTest {
     public void testDeleteBlog() {
         System.out.println("deleteBlog");
         int blogId = 0;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
         int result = instance.deleteBlog(blogId);
         assertEquals(expResult, result);
@@ -202,7 +202,7 @@ public class BlogDAOTest {
     public void testGetAuthor() {
         System.out.println("getAuthor");
         int blogId = 0;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         User expResult = null;
         User result = instance.getAuthor(blogId);
         assertEquals(expResult, result);
@@ -217,7 +217,7 @@ public class BlogDAOTest {
     public void testGetBlogCategory() {
         System.out.println("getBlogCategory");
         int blogId = 0;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         PostCate expResult = null;
         PostCate result = instance.getBlogCategory(blogId);
         assertEquals(expResult, result);
@@ -233,7 +233,7 @@ public class BlogDAOTest {
         System.out.println("Paging");
         int page = 0;
         ArrayList<Blog> list = null;
-        BlogDAO instance = new BlogDAO();
+        BlogDAOImpl instance = new BlogDAOImpl();
         ArrayList<Blog> expResult = null;
         ArrayList<Blog> result = instance.Paging(page, list);
         assertEquals(expResult, result);

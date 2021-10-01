@@ -45,7 +45,7 @@ public class QuestionDAOTest {
     @Test
     public void testGetAllQuestion() {
         System.out.println("getAllQuestion");
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         ArrayList<Question> expResult = null;
         ArrayList<Question> result = instance.getAllQuestion();
         assertEquals(10, result.size());
@@ -59,7 +59,7 @@ public class QuestionDAOTest {
     public void testGetQuestionById() {
         System.out.println("getQuestionById");
         int questionId = 1;
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         Question expResult = null;
         Question result = instance.getQuestionById(questionId);
         assertEquals(1, result.getQuestionId());       
@@ -72,7 +72,7 @@ public class QuestionDAOTest {
     public void testGetQuestionByQuizId() {
         System.out.println("getQuestionByQuizId");
         int quizId = 1;
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         ArrayList<Question> expResult = null;
         ArrayList<Question> result = instance.getQuestionByQuizId(quizId);
         assertEquals(10, result.size());
@@ -86,7 +86,7 @@ public class QuestionDAOTest {
     public void testAddQuestion() {
         System.out.println("addQuestion");
         Question newQuestion = new Question(1,2,2,5,"hon","","nihongo",true);
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         int expResult = 0;
         int result = instance.addQuestion(newQuestion);
         assertEquals(1, result);
@@ -101,7 +101,7 @@ public class QuestionDAOTest {
         System.out.println("editQuestion");
         int questionId = 0;
         Question editedQuestion = null;
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         int expResult = 0;
         int result = instance.editQuestion(questionId, editedQuestion);
         assertEquals(expResult, result);
@@ -116,7 +116,7 @@ public class QuestionDAOTest {
     public void testDeleteQuestion() {
         System.out.println("deleteQuestion");
         int questionId = 0;
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         int expResult = 0;
         int result = instance.deleteQuestion(questionId);
         assertEquals(expResult, result);
@@ -131,7 +131,7 @@ public class QuestionDAOTest {
     public void testImportQuestion() {
         System.out.println("importQuestion");
         ArrayList<Question> questionList = null;
-        QuestionDAO instance = new QuestionDAO();
+        QuestionDAOImpl instance = new QuestionDAOImpl();
         int expResult = 0;
         int result = instance.importQuestion(questionList);
         assertEquals(expResult, result);

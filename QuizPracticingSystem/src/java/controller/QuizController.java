@@ -14,7 +14,6 @@ import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Question;
 import bean.QuestionQuizHandle;
-import bean.Quiz;
 import bean.QuizQuizHandle;
 import dao.CustomerQuizINT;
 import dao.QuestionINT;
@@ -22,14 +21,12 @@ import dao.QuestionQuizHandleINT;
 import dao.QuizINT;
 import dao.QuizQuizHandleINT;
 import dao.impl.CustomerQuizDAO;
-import dao.impl.QuestionDAO;
-import dao.impl.QuestionQuizHandleDAO;
+import dao.impl.QuestionDAOImpl;
+import dao.impl.QuestionQuizHandleDAOImpl;
 import dao.impl.QuizDAO;
-import dao.impl.QuizQuizHandleDAO;
+import dao.impl.QuizQuizHandleDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,15 +49,18 @@ public class QuizController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    QuizQuizHandleINT quizQHINT = new QuizQuizHandleDAO();
-    QuestionQuizHandleINT questionQHINT = new QuestionQuizHandleDAO();
-    QuestionINT questionINT = new QuestionDAO();
-    QuizINT quizINT = new QuizDAO();
-
+    static final int EXAM_TYPE = 1;
+    static final int PRACTICE_TYPE = 2;
+    static final int MAX_SESSION_TIME = 7200;
+    static final int DEFAULT_PAGE = 1;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            QuizQuizHandleINT quizQHInterface = new QuizQuizHandleDAOImpl();
+            QuestionQuizHandleINT questionQHInterface = new QuestionQuizHandleDAOImpl();
+            QuestionINT questionInterface = new QuestionDAOImpl();
+            QuizINT quizInterface = new QuizDAO();           
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("quizHandle")) {
@@ -71,16 +71,17 @@ public class QuizController extends HttpServlet {
 
                 request.setAttribute("quizId", quizId);
                 if (questionArray == null) {
-                    ArrayList<Question> questionList = questionINT.getQuestionByQuizId(quizId);
-                    questionArray = quizQHINT.generateQuiz(questionList, quizId);
+                    ArrayList<Question> questionList = questionInterface.getQuestionByQuizId(quizId);
+                    questionArray = quizQHInterface.generateQuiz(questionList, quizId);
                 }
                 session.setAttribute("questionArray", questionArray);
-                int quizType = questionArray.getQuiz().getTestTypeId();
-                if (quizType == 2) {//1 exam 2 practice
+                int quizType = questionArray.getQuiz()
+                        .getTestTypeId();
+                if (quizType == EXAM_TYPE) {//1 = exam, 2 = practice
                     session.setMaxInactiveInterval(questionArray.getQuiz()
                             .getQuizDuration());
                 } else {
-                    session.setMaxInactiveInterval(7200);
+                    session.setMaxInactiveInterval(MAX_SESSION_TIME);
                 }
                 request.setAttribute("quizType", quizType);
 
@@ -106,7 +107,7 @@ public class QuizController extends HttpServlet {
                 ArrayList<Answer> answerList = questionQH.getAnswerList();
                 request.setAttribute("answerList", answerList);
                 //true answer of question
-                Answer trueAnswer = questionQHINT.getRightAnswer(questionQH);
+                Answer trueAnswer = questionQHInterface.getRightAnswer(questionQH);
                 request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
                 //number of question in this quiz
                 request.setAttribute("questionNumber", questionNumber);
@@ -119,12 +120,12 @@ public class QuizController extends HttpServlet {
                 //Mark this question 
                 String marked = request.getParameter("marked");
                 if (marked != null && marked.equalsIgnoreCase("yes")) {
-                    questionQHINT.markQuestion(questionQH);
+                    questionQHInterface.markQuestion(questionQH);
                 }
 
                 //send quiz infomation
                 //Number of answered question in quiz
-                int answeredQuestionNumber = quizQHINT.getAnsweredQuestion(questionArray);
+                int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
                 request.setAttribute("answeredNumber", answeredQuestionNumber);
                 //length of this quiz
                 request.setAttribute("quizSize", quiz.size());
@@ -159,7 +160,7 @@ public class QuizController extends HttpServlet {
                             && (action.charAt(0) != 'S') && (action.charAt(0) != 'E') && (action.charAt(0) != 'F')) {
 
                         response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
-                    }else if (action.equalsIgnoreCase("Finish Exam")) {
+                    } else if (action.equalsIgnoreCase("Finish Exam")) {
                         int time = Integer.parseInt(request.getParameter("time"));
                         questionArray.setTime(time);
                         request.setAttribute("totalsecond", time);
@@ -186,7 +187,7 @@ public class QuizController extends HttpServlet {
                     request.setAttribute("total", questionArray.getTime());
                     request.setAttribute("quizSize", questionArray.getQuestions()
                             .size());
-                    int answeredQuestionNumber = quizQHINT.getAnsweredQuestion(questionArray);
+                    int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
                     request.setAttribute("answeredNumber", answeredQuestionNumber);
 
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
@@ -206,7 +207,7 @@ public class QuizController extends HttpServlet {
                     int quizId = questionArray.getQuiz().getQuizId();
                     int time = Integer.parseInt(request.getParameter("time"));
                     //Score of this quiz    
-                    double score = quizQHINT.calculateScore(questionArray);
+                    double score = quizQHInterface.calculateScore(questionArray);
                     //Date of this quiz
                     long millis = System.currentTimeMillis();
                     java.sql.Date date = new java.sql.Date(millis);
@@ -228,7 +229,7 @@ public class QuizController extends HttpServlet {
                 //prepare quiz information
                 int quizTakeId = Integer.parseInt(request.getParameter("quizTakeId"));
                 request.setAttribute("quizTakeId", quizTakeId);
-                QuizQuizHandle questionArray = quizQHINT.getReviewQuiz(quizTakeId);
+                QuizQuizHandle questionArray = quizQHInterface.getReviewQuiz(quizTakeId);
                 ArrayList<QuestionQuizHandle> quizReview = questionArray.getQuestions();
                 request.setAttribute("quizReview", quizReview);
                 request.setAttribute("quizSize", quizReview.size());
@@ -250,7 +251,7 @@ public class QuizController extends HttpServlet {
                 ArrayList<Answer> answerList = questionQH.getAnswerList();
                 request.setAttribute("answerList", answerList);
                 //true answer of question
-                Answer trueAnswer = questionQHINT.getRightAnswer(questionQH);
+                Answer trueAnswer = questionQHInterface.getRightAnswer(questionQH);
                 request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
                 //number of question in this quiz
                 request.setAttribute("questionNumber", questionNumber);
@@ -289,6 +290,8 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
             }
+        } catch(Exception e){
+            response.sendRedirect("error.jsp");
         }
     }
 

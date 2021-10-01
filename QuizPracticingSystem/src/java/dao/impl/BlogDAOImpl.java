@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author ChucNVHE150618
  */
-public class BlogDAO extends MyDAO implements BlogINT {
+public class BlogDAOImpl extends MyDAO implements BlogINT {
 
     /**
      * Get all blog from database
@@ -49,7 +49,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 allBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -91,7 +91,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 blogList.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -123,7 +123,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 userBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -154,7 +154,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 return (new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -185,7 +185,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 titleBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -218,7 +218,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 allTrueBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -250,7 +250,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 lastBlog.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),
@@ -300,7 +300,7 @@ public class BlogDAO extends MyDAO implements BlogINT {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                BlogDAO blogDAO = new BlogDAO();
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
                 blogList.add(new Blog(rs.getInt("blogId"),
                         rs.getString("blogTitle"),

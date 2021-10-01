@@ -19,7 +19,7 @@ import dao.BlogINT;
 import dao.SliderINT;
 import dao.SubjectINT;
 import dao.UserINT;
-import dao.impl.BlogDAO;
+import dao.impl.BlogDAOImpl;
 import dao.impl.SliderDAO;
 import dao.impl.SubjectDAO;
 import dao.impl.UserDAO;
@@ -58,7 +58,7 @@ public class HomeController extends HttpServlet {
             if (service==null) service="homePage";
             /* Initialize the DAO needed */
             UserINT userInterface = new UserDAO();
-            BlogINT blogInterface = new BlogDAO();
+            BlogINT blogInterface = new BlogDAOImpl();
             SubjectINT subjectInterface = new SubjectDAO();
             SliderINT sliderInterface = new SliderDAO();
             /*Service: Homepage. If the page is loaded without some attribute(First time) it will gets redirected here.*/

@@ -7,14 +7,15 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  18/9/21     1.0         NamDHHe510519   First Deploy
+    19/9/21     1.1         NamDHHe510519   update service
  */
 package controller;
 
 import bean.*;
 import dao.BlogINT;
 import dao.PostCateINT;
-import dao.impl.BlogDAO;
-import dao.impl.PostCateDAO;
+import dao.impl.BlogDAOImpl;
+import dao.impl.PostCateDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class MarketingController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    BlogINT blogINT = new BlogDAO();
-    PostCateINT postCateINT = new PostCateDAO();
+    static final int CARD_PER_PAGE = 9;
+    static final int DEFAULT_PAGE = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,66 +48,71 @@ public class MarketingController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
-
+            BlogINT blogInterface = new BlogDAOImpl();
+            PostCateINT postCateInterface = new PostCateDAOImpl();
+            
             if (service.equalsIgnoreCase("blogList")) {
-
-                ArrayList<Blog> blogList = blogINT.getAllTrueBlog();
+                ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
                 //neu tim kiem theo category hoac string
-                String[] cate = request.getParameterValues("category");
+                String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
 
-                if ((cate != null) || (searchString != null)) {
-                    blogList = blogINT.getBlogByCategoryAndTitle(cate, searchString);       //searched blogList 
+                if ((searchCate != null) || (searchString != null)) {
+                    blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
                     //phan trang sau khi tim kiem theo category
-                    String pagingUrl = "";                                                  //url conncet to ...?page=          
-                    if (cate != null) {
-                        for (String category : cate) {
-                            pagingUrl += "&category=" + category;                           //Add category parameter
+                    String pagingUrl = "";                                                               //url connect to ...?page=          
+                    if (searchCate != null) {
+                        for (String category : searchCate) {
+                            pagingUrl += "&category=" + category;                                        //Add category parameter
                         }
                     }
                     if (searchString != null) {
-                        pagingUrl += "&search=" + searchString;                             //Add search parameter
+                        pagingUrl += "&search=" + searchString;                                          //Add search parameter
                     }
                     request.setAttribute("pagingUrl", pagingUrl);
                 }
 
                 //xu li phan trang
-                int listSize = blogList.size();                                             //Number of blogs
-                int pageNumber = (listSize % 9 == 0) ? (listSize / 9) : (listSize / 9 + 1); //Number of pages needed 
+                int listSize = blogList.size();
+                int pageNumber = (listSize % CARD_PER_PAGE == 0) ? (listSize / CARD_PER_PAGE) : (listSize / CARD_PER_PAGE + 1); //Number of pages needed 
                 String pageRaw = request.getParameter("page");
                 int page;
                 if (pageRaw == null) {
-                    page = 1;
+                    page = DEFAULT_PAGE;
                 } else {
                     page = Integer.parseInt(pageRaw);
                 }
                 request.setAttribute("pagenum", pageNumber);
                 request.setAttribute("page", page);
 
-                ArrayList<Blog> paginatedBlogList = blogINT.Paging(page, blogList);
+                ArrayList<Blog> paginatedBlogList = blogInterface.Paging(page, blogList);
                 request.setAttribute("blogList", paginatedBlogList);
                 //Send blog category list
-                ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
+                ArrayList<PostCate> postCateList = postCateInterface.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
                 //Send last blogs
-                ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();
+                ArrayList<Blog> lastBlogs = blogInterface.getLastBlogs();
                 request.setAttribute("lastBlogs", lastBlogs);
 
                 request.getRequestDispatcher("jsp/blogList.jsp").forward(request, response);
             }
 
             if (service.equalsIgnoreCase("blogDetail")) {
-
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
-                Blog blog = blogINT.getBlogById(blogId);
+                Blog blog = blogInterface.getBlogById(blogId);
                 request.setAttribute("blog", blog);
-
-                ArrayList<PostCate> postCateList = postCateINT.getAllPostCates();
+                int blogCate = postCateInterface.getBlogCateByBlogId(blogId);
+                String blogCateName = postCateInterface.getPostCateById(blogCate)
+                                                    .getPostCateName();
+                request.setAttribute("blogCateName", blogCateName);
+                ArrayList<PostCate> postCateList = postCateInterface.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
-                ArrayList<Blog> lastBlogs = blogINT.getLastBlogs();
+                ArrayList<Blog> lastBlogs = blogInterface.getLastBlogs();
                 request.setAttribute("lastBlogs", lastBlogs);
                 request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
+        } catch(Exception e){
+            response.sendRedirect("error.jsp");
         }
     }
 

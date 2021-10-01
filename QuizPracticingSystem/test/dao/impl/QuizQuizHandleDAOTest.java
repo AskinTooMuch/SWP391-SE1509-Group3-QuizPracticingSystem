@@ -46,10 +46,10 @@ public class QuizQuizHandleDAOTest {
     @Test
     public void testGenerateQuiz() {
         System.out.println("generateQuiz");
-        QuestionDAO questionDAO = new QuestionDAO();
+        QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         ArrayList<Question> questionList = questionDAO.getQuestionByQuizId(1);
         int quizId = 0;
-        QuizQuizHandleDAO instance = new QuizQuizHandleDAO();
+        QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle expResult = null;
         QuizQuizHandle result = instance.generateQuiz(questionList, 1);
         assertEquals(30, result.getTime());
@@ -61,7 +61,7 @@ public class QuizQuizHandleDAOTest {
     @Test
     public void testCalculateScore() {
         System.out.println("calculateScore");
-        QuizQuizHandleDAO instance = new QuizQuizHandleDAO();
+        QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle questionList = instance.getReviewQuiz(1);
         double expResult = 0.0;
         double result = instance.calculateScore(questionList);
@@ -75,7 +75,7 @@ public class QuizQuizHandleDAOTest {
     public void testGetAnsweredQuestion() {
         System.out.println("getAnsweredQuestion");
         QuizQuizHandle quiz = null;
-        QuizQuizHandleDAO instance = new QuizQuizHandleDAO();
+        QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle questionList = instance.getReviewQuiz(1);
         int expResult = 0;
         int result = instance.getAnsweredQuestion(questionList);
@@ -89,7 +89,7 @@ public class QuizQuizHandleDAOTest {
     public void testGetReviewQuiz() {
         System.out.println("getReviewQuiz");
         int quizTakeId = 1;
-        QuizQuizHandleDAO instance = new QuizQuizHandleDAO();
+        QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle expResult = null;
         QuizQuizHandle result = instance.getReviewQuiz(quizTakeId);
         assertEquals(10, result.getQuestions().size());
