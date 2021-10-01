@@ -53,6 +53,7 @@
     </head>
     <body>
         <div class="wrap">
+            <%-- Include header page --%>
             <jsp:include page="header.jsp"/>
             <div class="main">
                 <c:choose>
@@ -69,16 +70,18 @@
                             <%-- Print available subject --%>
                             <c:forEach items = "${courseContentSubjectList}" var="subject" begin = "0" end = "${courseContentSubjectList.size()-1}">
                                 <div class="col-md-10 subjectCard">
+                                    <%-- Image part of the card --%>
                                     <div class="cardThumbnail">
                                         <image class="thumbNailImg" src="${contextPath}/images/${subject.getThumbnail()}" alt="${subject.getThumbnail()}">
                                     </div>
+                                    <%-- Body part of the card --%>
                                     <div class="cardBody">
                                         <h5>${subject.getSubjectName()}</h5>
                                         <p style="overflow: hidden">${subject.getDescription()}</p>
                                     </div>
                                 </div>
                             </c:forEach>
-                            <%-- Print Subject placeholder card --%>
+                            <%-- Print Subject placeholder card, same as subject card but the content is default --%>
                             <div class="col-md-10 subjectCard">
                                 <div class="cardThumbnail">
                                     <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
@@ -91,6 +94,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
+            <%-- Include footer page --%>
             <jsp:include page="footer.jsp"/>
         </div>
     </body>
