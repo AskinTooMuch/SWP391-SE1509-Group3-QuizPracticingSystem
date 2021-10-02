@@ -13,10 +13,16 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface PricePackageDAO {
-    public ArrayList<PricePackage> getAllPricePackage();
-    public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId);
-    public PricePackage getPricePackageById(int ppId);
-    public int addPricePackage(PricePackage newPricePackage);
-    public int updatePricePackage(PricePackage updatedPricePackage);
-    public int deletePricePackage(int ppId);
+    
+    public ArrayList<PricePackage> getAllPricePackage() throws Exception;
+    
+    public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId) throws Exception;
+    
+    public PricePackage getPricePackageById(int ppId) throws Exception;
+    
+    public int addPricePackage(PricePackage newPricePackage) throws Exception;
+    
+    public int updatePricePackage(PricePackage updatedPricePackage) throws Exception;
+    
+    public int deletePricePackage(int ppId) throws Exception;
 }

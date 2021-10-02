@@ -31,7 +31,7 @@ import dao.QuizDAO;
 public class QuizDAOImpl extends MyDAO implements QuizDAO {
 
     @Override
-    public ArrayList<Quiz> getAllQuiz() {
+    public ArrayList<Quiz> getAllQuiz() throws Exception {
         ArrayList<Quiz> allQuiz = null;
         
         return allQuiz;
@@ -45,10 +45,9 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
      * @return a quiz <code>Quiz</code> object.
      */
     @Override
-    public Quiz getQuizById(int quizId) {
+    public Quiz getQuizById(int quizId) throws Exception {
 
         String sql = "SELECT * FROM [Quiz] WHERE quizId=" + quizId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -77,9 +76,6 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
                         dimensionTypeName,
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
     
@@ -91,9 +87,8 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
      * @return a quiz <code>Quiz</code> object.
      */
     @Override
-    public Quiz getQuizByQuizTakeId(int quizTakeId){
+    public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception{
         String sql = "select * from Quiz as a join CustomerQuiz as b on a.quizId = b.quizId where quizTakeId="+quizTakeId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -122,50 +117,47 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
                         dimensionTypeName,
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
 
     @Override
-    public ArrayList<Quiz> getQuizBySubject(int subjectId) {
+    public ArrayList<Quiz> getQuizBySubject(int subjectId) throws Exception {
         ArrayList<Quiz> subjectQuiz = null;
 
         return subjectQuiz;
     }
 
     @Override
-    public ArrayList<Quiz> getQuizByLesson(int lessonId) {
+    public ArrayList<Quiz> getQuizByLesson(int lessonId) throws Exception {
         ArrayList<Quiz> lessonQuiz = null;
 
         return lessonQuiz;
     }
 
     @Override
-    public int editQuiz(int quizId, Quiz quiz) {
+    public int editQuiz(int quizId, Quiz quiz) throws Exception {
         int i = 0;
 
         return i;
     }
 
     @Override
-    public int addQuiz(Quiz quiz) {
+    public int addQuiz(Quiz quiz) throws Exception {
         int i = 0;
 
         return i;
     }
 
     @Override
-    public int deleteQuiz(int quizId) {
+    public int deleteQuiz(int quizId) throws Exception {
         int i = 0;
 
         return i;
     }
-     public static void main(String[] args) {
-        QuizDAOImpl dao = new QuizDAOImpl();
-        Quiz quiz = dao.getQuizById(1);
-        System.out.print(quiz.getQuizDuration());
-    }
+//     public static void main(String[] args) {
+//        QuizDAOImpl dao = new QuizDAOImpl();
+//        Quiz quiz = dao.getQuizById(1);
+//        System.out.print(quiz.getQuizDuration());
+//    }
 
 }

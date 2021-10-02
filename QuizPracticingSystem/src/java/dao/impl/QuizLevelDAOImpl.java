@@ -19,15 +19,14 @@ import dao.QuizLevelDAO;
 public class QuizLevelDAOImpl extends MyDAO implements QuizLevelDAO {
 
     @Override
-    public ArrayList<QuizLevel> getAllQuizLevel() {
+    public ArrayList<QuizLevel> getAllQuizLevel() throws Exception {
         ArrayList<QuizLevel> quizLevels = null;
         return quizLevels;
     }
 
     @Override
-    public QuizLevel getQuizLevelById(int quizLevelId) {
+    public QuizLevel getQuizLevelById(int quizLevelId) throws Exception {
         String sql = "SELECT * FROM [QuizLevel] where quizLevelId=" + quizLevelId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -35,27 +34,25 @@ public class QuizLevelDAOImpl extends MyDAO implements QuizLevelDAO {
                         rs.getString("quizLevelName"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-        }
         return null;
     }
 
     @Override
-    public int editQuizLevel(int quizLevelId, QuizLevel quizLevel) {
+    public int editQuizLevel(int quizLevelId, QuizLevel quizLevel) throws Exception {
         int i = 0;
 
         return i;
     }
 
     @Override
-    public int addQuizLevel(QuizLevel quizLevel) {
+    public int addQuizLevel(QuizLevel quizLevel) throws Exception {
         int i = 0;
 
         return i;
     }
 
     @Override
-    public int deleteQuizLevel(int quizLevelId) {
+    public int deleteQuizLevel(int quizLevelId) throws Exception {
         int i = 0;
 
         return i;

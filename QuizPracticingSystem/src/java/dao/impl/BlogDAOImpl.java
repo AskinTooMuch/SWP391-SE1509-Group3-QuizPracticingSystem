@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 import dao.BlogDAO;
 
 /**
@@ -40,28 +39,22 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * <code>java.util.ArrayList</code> object
      */
     @Override
-    public ArrayList<Blog> getAllBlog() {
+    public ArrayList<Blog> getAllBlog() throws Exception {
         ArrayList<Blog> allBlog = new ArrayList();
-
         String sql = "SELECT * FROM [Blog] ORDER BY created DESC";
-
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                BlogDAOImpl blogDAO = new BlogDAOImpl();
-                User author = blogDAO.getAuthor(rs.getInt("blogId"));
-                allBlog.add(new Blog(rs.getInt("blogId"),
-                        rs.getString("blogTitle"),
-                        rs.getDate("created"),
-                        rs.getDate("lastEdited"),
-                        author,
-                        rs.getString("detail"),
-                        rs.getString("thumbnail"),
-                        rs.getBoolean("status")));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
+        PreparedStatement pre = conn.prepareStatement(sql);
+        rs = pre.executeQuery();
+        while (rs.next()) {
+            BlogDAOImpl blogDAO = new BlogDAOImpl();
+            User author = blogDAO.getAuthor(rs.getInt("blogId"));
+            allBlog.add(new Blog(rs.getInt("blogId"),
+                    rs.getString("blogTitle"),
+                    rs.getDate("created"),
+                    rs.getDate("lastEdited"),
+                    author,
+                    rs.getString("detail"),
+                    rs.getString("thumbnail"),
+                    rs.getBoolean("status")));
         }
         return allBlog;
     }
@@ -75,7 +68,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * <code>java.util.ArrayList</code> object
      */
     @Override
-    public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) {
+    public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) throws Exception {
         ArrayList<Blog> blogList = new ArrayList();
         int[] cateList = null;
         for (int i = 0; i < postCateIdList.length; i++) {
@@ -86,24 +79,19 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             sql += "," + cateList[i];
         }
         sql += ")";
-
-        try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                BlogDAOImpl blogDAO = new BlogDAOImpl();
-                User author = blogDAO.getAuthor(rs.getInt("blogId"));
-                blogList.add(new Blog(rs.getInt("blogId"),
-                        rs.getString("blogTitle"),
-                        rs.getDate("created"),
-                        rs.getDate("lastEdited"),
-                        author,
-                        rs.getString("detail"),
-                        rs.getString("thumbnail"),
-                        rs.getBoolean("status")));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
+        PreparedStatement pre = conn.prepareStatement(sql);
+        rs = pre.executeQuery();
+        while (rs.next()) {
+            BlogDAOImpl blogDAO = new BlogDAOImpl();
+            User author = blogDAO.getAuthor(rs.getInt("blogId"));
+            blogList.add(new Blog(rs.getInt("blogId"),
+                    rs.getString("blogTitle"),
+                    rs.getDate("created"),
+                    rs.getDate("lastEdited"),
+                    author,
+                    rs.getString("detail"),
+                    rs.getString("thumbnail"),
+                    rs.getBoolean("status")));
         }
         return blogList;
     }
@@ -114,12 +102,12 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @param userId author's user ID. It is a <code>Integer</code>
      * @return a list of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
-    public ArrayList<Blog> getBlogByUser(int userId) {
+    public ArrayList<Blog> getBlogByUser(int userId) throws Exception {
         ArrayList<Blog> userBlog = new ArrayList();
         String sql = "SELECT * FROM Blog WHERE author =" + userId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -134,9 +122,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return userBlog;
     }
 
@@ -147,10 +132,9 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return a <code>Blog</code> objects
      */
     @Override
-    public Blog getBlogById(int blogId) {
+    public Blog getBlogById(int blogId) throws Exception {
 
         String sql = "SELECT * FROM Blog WHERE blogId =" + blogId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -165,9 +149,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+
         return null;
     }
 
@@ -178,10 +160,9 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return a <code>Blog</code> objects
      */
     @Override
-    public ArrayList<Blog> getBlogByTitle(String title) {
+    public ArrayList<Blog> getBlogByTitle(String title) throws Exception {
         ArrayList<Blog> titleBlog = new ArrayList();
         String sql = "SELECT * FROM [Blog] WHERE blogTitle like '%" + title + "%'";
-        try {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -196,9 +177,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+
         return titleBlog;
     }
 
@@ -209,12 +188,11 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * <code>java.util.ArrayList</code> object
      */
     @Override
-    public ArrayList<Blog> getAllTrueBlog() {
+    public ArrayList<Blog> getAllTrueBlog() throws Exception {
         ArrayList<Blog> allTrueBlog = new ArrayList();
 
         String sql = "SELECT * FROM [Blog] where status = 1 ORDER BY created DESC";
 
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -229,9 +207,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+
         return allTrueBlog;
     }
 
@@ -242,11 +218,10 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * <code>java.util.ArrayList</code> object
      */
     @Override
-    public ArrayList<Blog> getLastBlogs() {
+    public ArrayList<Blog> getLastBlogs() throws Exception {
         ArrayList<Blog> lastBlog = new ArrayList();
         String sql = "SELECT TOP 3 * FROM [Blog] where status = 1 ORDER BY created DESC";
 
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -261,9 +236,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return lastBlog;
     }
 
@@ -277,7 +249,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * <code>java.util.ArrayList</code> object
      */
     @Override
-    public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) {
+    public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) throws Exception {
         ArrayList<Blog> blogList = new ArrayList();
         String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE a.status = 1";
         if (postCateIdList != null) {
@@ -296,7 +268,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -311,9 +282,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return blogList;
     }
 
@@ -325,9 +293,8 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return number of changes in database. It is a <code>int</code> object
      */
     @Override
-    public int editBlog(int blogId, Blog blog) {
+    public int editBlog(int blogId, Blog blog) throws Exception {
         String sql = "UPDATE [Blog] SET blogTitle =?, created =?, lastEdited =?, author =?, detail =?, thumbnail =?, status =? WHERE blogId =?";
-        try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, blog.getBlogTitle());
             ps.setDate(2, blog.getCreated());
@@ -337,10 +304,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             ps.setString(6, blog.getThumbnail());
             ps.setInt(7, blog.getStatus() == true ? 1 : 0);
             return ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return 0;
     }
 
     /**
@@ -351,9 +314,8 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return number of changes in database. It is a <code>int</code> object
      */
     @Override
-    public int addBlog(Blog blog) {
+    public int addBlog(Blog blog) throws Exception {
         String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?)";
-        try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, blog.getBlogTitle());
             ps.setDate(2, blog.getCreated());
@@ -363,10 +325,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             ps.setString(6, blog.getThumbnail());
             ps.setInt(7, blog.getStatus() == true ? 1 : 0);
             return ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return 0;
+
     }
 
     /**
@@ -376,15 +335,11 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return number of changes in database. It is a <code>int</code> object
      */
     @Override
-    public int deleteBlog(int blogId) {
+    public int deleteBlog(int blogId) throws Exception {
         String sql = "DELETE FROM [Blog] WHERE blogId =" + blogId;
-        try {
             ps = conn.prepareStatement(sql);
             return ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return 0;
+
     }
 
     /**
@@ -394,12 +349,10 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return blog's author. It is a <code>User</code> object
      */
     @Override
-    public User getAuthor(int blogId) {
+    public User getAuthor(int blogId) throws Exception {
 
         String sql = "SELECT b.userId,b.userName,b.password,b.roleId,b.profilePic,b.userMail,b.gender,b.userMobile,b.status "
                 + "FROM Blog as a right join [User] as b on a.author=b.userId WHERE a.blogId=" + blogId;
-
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -413,9 +366,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("userMobile"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
 
@@ -426,9 +376,8 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return blog's category. It is a <code>PostCate</code> object
      */
     @Override
-    public PostCate getBlogCategory(int blogId) {
+    public PostCate getBlogCategory(int blogId) throws Exception {
         String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -436,9 +385,6 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("postCateName"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
 
@@ -451,7 +397,7 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      * @return sublist of blog list. It is a <code>java.util.ArrayList</code>
      */
     @Override
-    public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) {
+    public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) throws Exception {
         //start: index of first element of the sublist
         //end: index of the last element of the sublist
         int start, end;

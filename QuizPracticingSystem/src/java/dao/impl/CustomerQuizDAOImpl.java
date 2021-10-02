@@ -33,28 +33,28 @@ import dao.CustomerQuizDAO;
 public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
 
     @Override
-    public ArrayList<CustomerQuiz> getAllCustomerQuiz() {
+    public ArrayList<CustomerQuiz> getAllCustomerQuiz() throws Exception {
         ArrayList<CustomerQuiz> allCustomerQuiz = null;
 
         return allCustomerQuiz;
     }
 
     @Override
-    public ArrayList<CustomerQuiz> getQuizByUser(int userId) {
+    public ArrayList<CustomerQuiz> getQuizByUser(int userId) throws Exception {
         ArrayList<CustomerQuiz> customerQuiz = null;
 
         return customerQuiz;
     }
 
     @Override
-    public CustomerQuiz getQuizById(int quizId) {
+    public CustomerQuiz getQuizById(int quizId) throws Exception {
         CustomerQuiz customerQuiz = null;
 
         return customerQuiz;
     }
 
     @Override
-    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) {
+    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) throws Exception {
         int i = 0;
 
         return i;
@@ -67,9 +67,8 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      * @return number of changes in database. It is a <code>int</code> primitive type.
      */
     @Override
-    public int addCustomerQuiz(CustomerQuiz customerQuiz) {
+    public int addCustomerQuiz(CustomerQuiz customerQuiz) throws Exception {
         String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, customerQuiz.getQuizId());
             pre.setInt(2, customerQuiz.getUserId());
@@ -78,20 +77,18 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
             pre.setDate(5, customerQuiz.getStartedAt());
             pre.setBoolean(6, true);
             return pre.executeUpdate();
-        } catch (SQLException e) {
-            System.out.print(e);
-        }
-        return 0;
+
     }
 
     /**
      * get the last added customer quiz
      *
      * @return a customer quiz. It is a <code>CustomerQuiz</code> object.
+     * @throws java.lang.Exception
      */
-    public CustomerQuiz getLastAddedCustomerQuiz() {
+    @Override
+    public CustomerQuiz getLastAddedCustomerQuiz() throws Exception {
         String sql = "SELECT TOP 1 * FROM [CustomerQuiz] ORDER BY quizTakeId DESC";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -103,14 +100,11 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
                         rs.getDate("startedAt"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.print(e);
-        }
         return null;
     }
 
     @Override
-    public int deleteCustomerQuiz(int customerQuizId) {
+    public int deleteCustomerQuiz(int customerQuizId) throws Exception {
         int i = 0;
 
         return i;
@@ -122,14 +116,13 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      * @return number of changes in database <code>int</code> primitive type.
      */
     @Override
-    public int addTakeAnswer(QuizQuizHandle quiz) {
+    public int addTakeAnswer(QuizQuizHandle quiz) throws Exception {
         int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
             if (question.getAnsweredId() != 0) {
                 String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
-                try {
                     PreparedStatement pre = conn.prepareStatement(sql);
                     pre.setInt(1, quizTakeId);
                     pre.setInt(2, question.getQuestion().getQuestionId());
@@ -137,11 +130,9 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
                     pre.setBoolean(4, true);
                     pre.executeUpdate();
                     change++;
-                } catch (SQLException e) {
-                    System.out.print(e);
                 }
             }
-        }
+        
         return change;
     }
 /**
@@ -151,30 +142,26 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      * @return number of changes in database. It is a <code>int</code> primitive type
      */
     @Override
-    public int addMarkQuestion(QuizQuizHandle quiz) {
+    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception {
         int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
             String sql = "INSERT INTO [MarkQuestion](quizTakeId,questionId,[status]) VALUES(?,?,?)";
-            try {
                 PreparedStatement pre = conn.prepareStatement(sql);
                 pre.setInt(1, quizTakeId);
                 pre.setInt(2, question.getQuestion().getQuestionId());
                 pre.setBoolean(3, question.isMarked());
                 pre.executeUpdate();
                 change++;
-            } catch (SQLException e) {
-                System.out.print(e);
-            }
         }
         return change;
     }
 
-    public static void main(String[] args) {
-        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
-        String[] a = {"1", "2"};
-        CustomerQuiz list = dao.getLastAddedCustomerQuiz();
-        System.out.print(list.getQuizTakeId());
-    }
+//    public static void main(String[] args) {
+//        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
+//        String[] a = {"1", "2"};
+//        CustomerQuiz list = dao.getLastAddedCustomerQuiz();
+//        System.out.print(list.getQuizTakeId());
+//    }
 }

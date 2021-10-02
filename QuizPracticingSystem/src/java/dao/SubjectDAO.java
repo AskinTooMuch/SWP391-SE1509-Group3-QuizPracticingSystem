@@ -13,19 +13,19 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface SubjectDAO {
-    public ArrayList<Subject> getAllSubjects();
+    public ArrayList<Subject> getAllSubjects() throws Exception;
     
-    public ArrayList<Subject> getFeaturedSubjects();
+    public ArrayList<Subject> getFeaturedSubjects() throws Exception;
     
-    public ArrayList<Subject> getSubjectsAssigned(int userId);
+    public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception;
     
-    public Subject getSubjectbyId(int subjectId);
+    public Subject getSubjectbyId(int subjectId) throws Exception;
     
-    public ArrayList<Subject> getSubjectbyCateId(int cateId);
+    public ArrayList<Subject> getSubjectbyCateId(int cateId) throws Exception;
     
-    public int updateSubject(int subjectId, Subject subject);
+    public int updateSubject(int subjectId, Subject subject) throws Exception;
     
-    public int addSubject(Subject subject);
+    public int addSubject(Subject subject) throws Exception;
     
-    public int deleteSubject(int subjectId);
+    public int deleteSubject(int subjectId) throws Exception;
 }

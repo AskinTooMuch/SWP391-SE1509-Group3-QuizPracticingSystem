@@ -13,8 +13,6 @@ package dao.impl;
 import bean.Dimension;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.DimensionDAO;
 
@@ -25,12 +23,12 @@ import dao.DimensionDAO;
 public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
 
     @Override
-    public ArrayList<Dimension> getAllDimension() {
+    public ArrayList<Dimension> getAllDimension() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Dimension> getDimensionBySubject(int subjectId) {
+    public ArrayList<Dimension> getDimensionBySubject(int subjectId) throws Exception {
         /* Get dimension list of the subject */
         ArrayList<Dimension> dimensions = new ArrayList<>();
         String sql = "SELECT S.[subjectId]\n" +
@@ -45,7 +43,6 @@ public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
                     "  INNER JOIN [QuizSystem].[dbo].[Dimension] D ON S.subjectId = D.subjectId \n" +
                     "  INNER JOIN [QuizSystem].[dbo].DimensionType DT ON DT.dimensionTypeId = D.dimensionTypeId\n" +
                     "  WHERE S.subjectId =" + subjectId;
-        try {
         PreparedStatement pre = conn.prepareStatement(sql);
         rs = pre.executeQuery();
         while (rs.next()) {
@@ -57,29 +54,27 @@ public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
                 rs.getString("description"),
                 rs.getBoolean("status")));
         }
-        } catch (SQLException e) {
-        System.out.println(e);
-        }
+
         return dimensions; 
     }
 
     @Override
-    public Dimension getDimensionById() {
+    public Dimension getDimensionById() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int addDimension(Dimension dimension) {
+    public int addDimension(Dimension dimension) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int deleteDimension(int dimensionId) {
+    public int deleteDimension(int dimensionId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int editDimension(int dimensionId, Dimension dimension) {
+    public int editDimension(int dimensionId, Dimension dimension) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

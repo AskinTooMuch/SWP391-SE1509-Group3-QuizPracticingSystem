@@ -13,13 +13,13 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface SubjectCateDAO {
-    public ArrayList<SubjectCate> getAllSubjectCates();
+    public ArrayList<SubjectCate> getAllSubjectCates() throws Exception;
     
-    public SubjectCate getSubjectCateById(int scId);
+    public SubjectCate getSubjectCateById(int scId) throws Exception;
     
-    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId);
+    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) throws Exception;
     
-    public int updateSubjectCate(SubjectCate updatedSubjectCate);
+    public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception;
     
-    public int deteleSubjectCate(int scId);
+    public int deteleSubjectCate(int scId) throws Exception;
 }

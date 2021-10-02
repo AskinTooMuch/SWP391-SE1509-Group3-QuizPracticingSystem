@@ -74,7 +74,7 @@ public class UserController extends HttpServlet {
                     request.setAttribute("mess", mess);
                     sendDispatcher(request, response, "login/login.jsp");
                     return;
-                //if loged in, get user role and forward to homepage with their role    
+                    //if loged in, get user role and forward to homepage with their role    
                 } else {
                     request.getSession().setAttribute("currUser", log);
                     request.getSession().setAttribute("role", userRoleDAO.getUserRoleById(log.getRoleId()));
@@ -284,7 +284,8 @@ public class UserController extends HttpServlet {
                         && !userMobile.equals(userInterface.getUserById(currUser.getUserId()).getUserMobile())) {
                     mess = "The phone number is already been used";
                     request.setAttribute("mess", mess);
-                    request.getRequestDispatcher("login/editProfile.jsp").forward(request, response);
+                    request.getRequestDispatcher("login/editProfile.jsp")
+                            .forward(request, response);
                     return;
                 }
 
@@ -359,7 +360,12 @@ public class UserController extends HttpServlet {
                 currUser.setProfilePic(filename);
                 userInterface.updateUser(currUser);
                 request.getSession().setAttribute("currUser", userInterface.getUserById(currUser.getUserId()));
+                response.sendRedirect("login/userProfile.jsp");
             }
+        } catch (Exception ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMess", ex.toString());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

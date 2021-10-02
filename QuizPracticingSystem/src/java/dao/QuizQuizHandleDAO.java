@@ -16,11 +16,11 @@ import java.util.ArrayList;
  */
 public interface QuizQuizHandleDAO {
 
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId);
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId) throws Exception;
 
-    public double calculateScore(QuizQuizHandle quiz);
+    public double calculateScore(QuizQuizHandle quiz) throws Exception;
 
-    public int getAnsweredQuestion(QuizQuizHandle quiz);
+    public int getAnsweredQuestion(QuizQuizHandle quiz) throws Exception;
             
-    public QuizQuizHandle getReviewQuiz(int quizTakeId);
+    public QuizQuizHandle getReviewQuiz(int quizTakeId) throws Exception;
 }

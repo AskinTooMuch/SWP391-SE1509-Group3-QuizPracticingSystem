@@ -13,15 +13,15 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface DimensionDAO {
-    public ArrayList<Dimension> getAllDimension();
+    public ArrayList<Dimension> getAllDimension() throws Exception;
     
-    public ArrayList<Dimension> getDimensionBySubject(int subjectId);
+    public ArrayList<Dimension> getDimensionBySubject(int subjectId) throws Exception;
     
-    public Dimension getDimensionById();
+    public Dimension getDimensionById() throws Exception;
     
-    public int addDimension(Dimension dimension);
+    public int addDimension(Dimension dimension) throws Exception;
     
-    public int deleteDimension(int dimensionId);
+    public int deleteDimension(int dimensionId) throws Exception;
     
-    public int editDimension(int dimensionId, Dimension dimension);
+    public int editDimension(int dimensionId, Dimension dimension) throws Exception;
 }

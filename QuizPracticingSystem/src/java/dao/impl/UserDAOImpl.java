@@ -20,7 +20,7 @@ import dao.UserDAO;
 public class UserDAOImpl extends MyDAO implements UserDAO {
 
     @Override
-    public ArrayList<User> getUserAllUser() {
+    public ArrayList<User> getUserAllUser() throws Exception {
         return null;
     }
     
@@ -32,9 +32,8 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return <code>User</code> object.
      */
     @Override
-    public User getUserLogin(String userMail, String password) {
+    public User getUserLogin(String userMail, String password) throws Exception {
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
-        try {
             ps = conn.prepareStatement(sql);
             ps.setString(1, userMail);
             ps.setString(2, password);
@@ -52,9 +51,6 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
                 finalize();
                 return loginUser;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return null;
     }
 
@@ -65,10 +61,9 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return <code>User</code> object.
      */
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(int userId) throws Exception {
         xSql = "SELECT * FROM [User] WHERE userId = ?";
         User user = null;
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setInt(1, userId);
             rs = ps.executeQuery();
@@ -84,9 +79,6 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
                         rs.getBoolean("status"));
                 return user;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return null;
     }
 
@@ -97,9 +89,8 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return <code>User</code> object.
      */
     @Override
-    public User getUserByMail(String userMail) {
+    public User getUserByMail(String userMail) throws Exception {
         xSql = "SELECT * FROM [User] WHERE userMail = ?";
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setString(1, userMail);
             rs = ps.executeQuery();
@@ -114,9 +105,6 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
                         rs.getString("userMobile"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return null;
     }
 
@@ -127,9 +115,8 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return <code>User</code> object.
      */    
     @Override
-    public User getUserByMobile(String Moblie) {
+    public User getUserByMobile(String Moblie) throws Exception {
         xSql = "SELECT * FROM [User] WHERE userMobile = ?";
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setString(1, Moblie);
             rs = ps.executeQuery();
@@ -144,9 +131,6 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
                         rs.getString("userMobile"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return null;
     }
     
@@ -157,10 +141,9 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return a int.
      */  
     @Override
-    public int updateUser(User updatedUser) {
+    public int updateUser(User updatedUser) throws Exception {
         xSql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
         int check = 0;
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setString(1, updatedUser.getUserName());
             ps.setString(2, updatedUser.getPassword());
@@ -173,10 +156,7 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
             ps.setInt(9, updatedUser.getUserId());
             check = ps.executeUpdate();
             return check;
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
+        
     }
 
     
@@ -188,19 +168,15 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return a int.
      */  
     @Override
-    public int changeStatus(int userId, boolean newStatus) {
+    public int changeStatus(int userId, boolean newStatus) throws Exception {
         xSql = "UPDATE [User] set [status] = ? where userId = ?";
         int check = 0;
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setBoolean(1, newStatus);
             ps.setInt(2, userId);
             check = ps.executeUpdate();
             return check;
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
+       
     }
 
     /**
@@ -210,11 +186,10 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return a int.
      */  
     @Override
-    public int addUser(User newUser) {
+    public int addUser(User newUser) throws Exception {
         xSql = "INSERT INTO [User](userName,[password],roleId,userMail,gender,userMobile,[status])"
                 + "values(?,?,?,?,?,?,?)";
         int check = 0;
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setString(1, newUser.getUserName());
             ps.setString(2, newUser.getPassword());
@@ -224,9 +199,7 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
             ps.setString(6, newUser.getUserMobile());
             ps.setBoolean(7, false);
             check = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
         return check;
     }
@@ -245,19 +218,15 @@ public class UserDAOImpl extends MyDAO implements UserDAO {
      * @return a int.
      */ 
     @Override
-    public int deleteUser(User user) {
+    public int deleteUser(User user) throws Exception {
         xSql = " delete from [User] where userId = ?";
         
         int check = 0;
-        try {
             ps = conn.prepareStatement(xSql);
             ps.setInt(1, user.getUserId());
             check = ps.executeUpdate();
-            return check;
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
+        return check;
+
     }
 
 }

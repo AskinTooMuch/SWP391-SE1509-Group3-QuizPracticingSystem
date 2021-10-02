@@ -16,37 +16,37 @@ import dao.LessonDAO;
  */
 public class LessonDAOImpl extends MyDAO implements LessonDAO{
     @Override
-    public ArrayList<Lesson> getAllLessons(){
+    public ArrayList<Lesson> getAllLessons() throws Exception{
         return null;
     }
     
     @Override
-    public ArrayList<Lesson> getAllLessonBySubjectId(int subId){
+    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception{
         return null;
     }
     
     @Override
-    public ArrayList<Lesson> getAllLessonByTypeId(int typeId){
+    public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception{
         return null;
     }
     
     @Override
-    public Lesson getLessonById(int lessonId){
+    public Lesson getLessonById(int lessonId) throws Exception{
         return null;
     }
     
     @Override
-    public int updateLesson(Lesson updatedLesson){
+    public int updateLesson(Lesson updatedLesson) throws Exception{
         return 0;
     }
     
     @Override
-    public int deleteLesson(int lessonId){
+    public int deleteLesson(int lessonId) throws Exception{
         return 0;
     }
     
     @Override
-    public int addLesson(Lesson newLesson){
+    public int addLesson(Lesson newLesson) throws Exception{
         return 0;
     }
 }

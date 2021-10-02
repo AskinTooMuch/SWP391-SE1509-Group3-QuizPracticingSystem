@@ -20,10 +20,9 @@ public class SliderDAOImpl extends MyDAO implements SliderDAO{
 
     /*Get all Slider from table*/
     @Override
-    public ArrayList<Slider> getSlider() {
+    public ArrayList<Slider> getSlider() throws Exception {
         ArrayList<Slider> allSlider = new ArrayList();
         String sql = "SELECT * FROM [Slider]";
-        try {
             /* Get the slider */
             PreparedStatement preSlider = conn.prepareStatement(sql);
             rs = preSlider.executeQuery();
@@ -37,29 +36,26 @@ public class SliderDAOImpl extends MyDAO implements SliderDAO{
                 
                 allSlider.add(new Slider(sliderId, sliderTitle, image, link, note, true));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return allSlider;
 
     }
 
     @Override
-    public Slider getSliderById(int sliderId) {
+    public Slider getSliderById(int sliderId) throws Exception {
         return null;
     }
 
     @Override
-    public int editSlider(int sliderId,Slider editedSlider) {
+    public int editSlider(int sliderId,Slider editedSlider) throws Exception {
         return 0;
     }
 
     @Override
-    public int addSlider(Slider newSlder) {
+    public int addSlider(Slider newSlder) throws Exception {
         return 0;
     }
     @Override
-    public int deleteSlider(int sliderId){
+    public int deleteSlider(int sliderId) throws Exception{
         return 0;
     }
 }

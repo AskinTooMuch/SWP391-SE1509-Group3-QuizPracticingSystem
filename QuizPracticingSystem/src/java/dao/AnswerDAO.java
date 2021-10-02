@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 public interface AnswerDAO {
     
-    public ArrayList<Answer> getAllAnswers();
+    public ArrayList<Answer> getAllAnswers() throws Exception;
     
-    public ArrayList<Answer> getAnswersByQuenstionId(int qId);
+    public ArrayList<Answer> getAnswersByQuenstionId(int qId) throws Exception;
     
-    public int deleteAnswerById(int aId);
+    public int deleteAnswerById(int aId) throws Exception;
     
-    public int deleteAnswerByQuestionId( int qId);
+    public int deleteAnswerByQuestionId( int qId) throws Exception;
     
-    public int updateAnswer(Answer updatedAns);
+    public int updateAnswer(Answer updatedAns) throws Exception;
     
-    public int addAnswer(Answer newAns);
+    public int addAnswer(Answer newAns) throws Exception;
 }

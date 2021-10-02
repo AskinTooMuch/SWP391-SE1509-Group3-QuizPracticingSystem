@@ -14,13 +14,13 @@ import java.util.ArrayList;
  */
 public interface DimensionTypeDAO {
     
-    public ArrayList<DimensionType> getAllDimensionTypes();
+    public ArrayList<DimensionType> getAllDimensionTypes() throws Exception;
     
-    public DimensionType getDimensionTypeById(int dtId);
+    public DimensionType getDimensionTypeById(int dtId) throws Exception;
     
-    public int updateDimensionType (DimensionType updatedDimensionType);
+    public int updateDimensionType (DimensionType updatedDimensionType) throws Exception;
     
-    public int deteteDimensionTyoe(int dtId);
+    public int deteteDimensionTyoe(int dtId) throws Exception;
     
-    public int addDimensionType(DimensionType newDimensionType );
+    public int addDimensionType(DimensionType newDimensionType ) throws Exception;
 }

@@ -73,6 +73,10 @@ public class SubjectController extends HttpServlet {
                 }
                 
             }
+        } catch (Exception ex) {
+            Logger.getLogger(SubjectController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMess", ex.toString());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
     

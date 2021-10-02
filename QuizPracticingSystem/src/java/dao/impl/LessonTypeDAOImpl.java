@@ -16,27 +16,27 @@ import dao.LessonTypeDAO;
  */
 public class LessonTypeDAOImpl extends MyDAO implements LessonTypeDAO{
     @Override
-    public ArrayList<LessonType> getAllLessonType(){
+    public ArrayList<LessonType> getAllLessonType() throws Exception{
         return null;
     }
     
     @Override
-    public LessonType getLessonTypeById(int ltId){
+    public LessonType getLessonTypeById(int ltId) throws Exception{
         return null;
     }
     
     @Override
-    public int addLessonType(LessonType newLessonType){
+    public int addLessonType(LessonType newLessonType) throws Exception{
         return 0;
     }
     
     @Override
-    public int updateLessonType(LessonType updatedLessonType){
+    public int updateLessonType(LessonType updatedLessonType) throws Exception{
         return 0;
     }
     
     @Override
-    public int deleteLessonType(int ltId){
+    public int deleteLessonType(int ltId) throws Exception{
         return 0;
     }
 }

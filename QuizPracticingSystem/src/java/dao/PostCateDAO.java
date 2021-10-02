@@ -14,15 +14,15 @@ import java.util.ArrayList;
  */
 public interface PostCateDAO {
 
-    public ArrayList<PostCate> getAllPostCates();
+    public ArrayList<PostCate> getAllPostCates() throws Exception;
 
-    public PostCate getPostCateById(int pcId);
+    public PostCate getPostCateById(int pcId) throws Exception;
 
-    public int updatePostCate(PostCate updatedPostCate);
+    public int updatePostCate(PostCate updatedPostCate) throws Exception;
 
     public int getBlogCateByBlogId(int blogId) throws Exception;
 
-    public int deletePostCate(int pcId);
+    public int deletePostCate(int pcId) throws Exception;
 
-    public int addPostCate(PostCate newPostCate);
+    public int addPostCate(PostCate newPostCate) throws Exception;
 }

@@ -14,13 +14,13 @@ import java.util.ArrayList;
  */
 public interface TestTypeDAO {
     
-    public ArrayList<TestType> getAllTestTypes();
+    public ArrayList<TestType> getAllTestTypes() throws Exception;
     
-    public TestType getTestTypeById(int ttId);
+    public TestType getTestTypeById(int ttId) throws Exception;
     
-    public int updateTestType (TestType updatedTestType);
+    public int updateTestType (TestType updatedTestType) throws Exception;
     
-    public int deleteTestType(int ttId);
+    public int deleteTestType(int ttId) throws Exception;
     
-    public int addTestType(TestType newTestType);
+    public int addTestType(TestType newTestType) throws Exception;
 }

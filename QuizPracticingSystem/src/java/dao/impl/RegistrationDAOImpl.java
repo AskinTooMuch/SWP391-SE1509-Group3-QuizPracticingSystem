@@ -8,29 +8,36 @@ package dao.impl;
 import bean.Registration;
 import dao.MyDAO;
 import java.util.ArrayList;
+import dao.RegistrationDAO;
 
 /**
  *
  * @author admin
  */
-public class RegistrationDAOImpl extends MyDAO {
+public class RegistrationDAOImpl extends MyDAO implements RegistrationDAO{
 
-    public ArrayList<Registration> getAllRegistration() {
+    @Override
+    public ArrayList<Registration> getAllRegistration() throws Exception {
         return null;
     }
 
-    public Registration getRegistrationById(int registrationId) {
+    @Override
+    public Registration getRegistrationById(int registrationId) throws Exception {
         return null;
     }
 
-    public int addRegistration(Registration newRegistration) {
+    @Override
+    public int addRegistration(Registration newRegistration) throws Exception {
         return 0;
     }
 
-    public int editRegistration(int registrationId,Registration editedRegistration) {
+    @Override
+    public int editRegistration(int registrationId,Registration editedRegistration) throws Exception {
         return 0;
     }
-        public int deleteRegistration(int registrationId){
+        
+    @Override
+    public int deleteRegistration(int registrationId) throws Exception{
         return 0;
     }
 }

@@ -15,31 +15,31 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface BlogDAO {
-    public ArrayList<Blog> getAllBlog();
+    public ArrayList<Blog> getAllBlog() throws Exception;
     
-    public ArrayList<Blog> getBlogByCategory(String[] postCateIdList);
+    public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) throws Exception;
     
-    public ArrayList<Blog> getBlogByUser(int userId);
+    public ArrayList<Blog> getBlogByUser(int userId) throws Exception;
     
-    public Blog getBlogById(int blogId);
+    public Blog getBlogById(int blogId) throws Exception;
     
-    public ArrayList<Blog> getBlogByTitle(String title);
+    public ArrayList<Blog> getBlogByTitle(String title) throws Exception;
     
-    public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search);
+    public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) throws Exception;
     
-    public ArrayList<Blog> getAllTrueBlog();
+    public ArrayList<Blog> getAllTrueBlog() throws Exception;
     
-    public int editBlog(int blogId, Blog blog);
+    public int editBlog(int blogId, Blog blog) throws Exception;
     
-    public int addBlog(Blog blog);
+    public int addBlog(Blog blog) throws Exception;
     
-    public int deleteBlog(int blogId);
+    public int deleteBlog(int blogId) throws Exception;
     
-    public ArrayList<Blog> getLastBlogs();
+    public ArrayList<Blog> getLastBlogs() throws Exception;
     
-    public User getAuthor(int blogId);
+    public User getAuthor(int blogId) throws Exception;
     
-    public PostCate getBlogCategory(int blogId);
+    public PostCate getBlogCategory(int blogId) throws Exception;
             
-    public ArrayList<Blog> Paging(int page, ArrayList<Blog> list);
+    public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) throws Exception;
 }

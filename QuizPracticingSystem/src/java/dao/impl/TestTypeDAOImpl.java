@@ -24,14 +24,13 @@ import dao.TestTypeDAO;
 public class TestTypeDAOImpl extends MyDAO implements TestTypeDAO {
 
     @Override
-    public ArrayList<TestType> getAllTestTypes() {
+    public ArrayList<TestType> getAllTestTypes() throws Exception {
         return null;
     }
 
     @Override
-    public TestType getTestTypeById(int testTypeId) {
+    public TestType getTestTypeById(int testTypeId) throws Exception {
         String sql = "SELECT * FROM [TestType] WHERE testTypeId =" + testTypeId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -39,23 +38,21 @@ public class TestTypeDAOImpl extends MyDAO implements TestTypeDAO {
                         rs.getString("testTypeName"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-        }
         return null;
     }
 
     @Override
-    public int updateTestType(TestType updatedTestType) {
+    public int updateTestType(TestType updatedTestType) throws Exception {
         return 0;
     }
 
     @Override
-    public int deleteTestType(int testTypeId) {
+    public int deleteTestType(int testTypeId) throws Exception {
         return 0;
     }
 
     @Override
-    public int addTestType(TestType newTestType) {
+    public int addTestType(TestType newTestType) throws Exception {
         return 0;
     }
 }

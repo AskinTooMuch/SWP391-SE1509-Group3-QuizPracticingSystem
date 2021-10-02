@@ -38,7 +38,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId) {
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId) throws Exception {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAOImpl questionQuizzHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizDAOImpl quizDAO = new QuizDAOImpl();
@@ -61,7 +61,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public double calculateScore(QuizQuizHandle quiz) {
+    public double calculateScore(QuizQuizHandle quiz) throws Exception {
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         ArrayList<Integer> rightAnswerList = new ArrayList();                       //An array of right answerid only 
         double rightAnsweredCount = 0;
@@ -91,7 +91,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public int getAnsweredQuestion(QuizQuizHandle quiz) {
+    public int getAnsweredQuestion(QuizQuizHandle quiz) throws Exception {
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int count = 0;
         for (QuestionQuizHandle question : questionList) {
@@ -110,7 +110,7 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public QuizQuizHandle getReviewQuiz(int quizTakeId) {
+    public QuizQuizHandle getReviewQuiz(int quizTakeId) throws Exception {
         QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizQuizHandle reviewQuiz = new QuizQuizHandle();
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
@@ -147,14 +147,14 @@ public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
         return reviewQuiz;
     }
 
-    public static void main(String[] args) {
-        QuizQuizHandleDAOImpl dao = new QuizQuizHandleDAOImpl();
-        QuestionDAOImpl qdao = new QuestionDAOImpl();
-        ArrayList<Question> s = qdao.getAllQuestion();
-
-        QuizQuizHandle list = dao.getReviewQuiz(11);
-        for (QuestionQuizHandle q : list.getQuestions()) {
-            System.out.println(q.getAnsweredId());
-        }
-    }
+//    public static void main(String[] args) {
+//        QuizQuizHandleDAOImpl dao = new QuizQuizHandleDAOImpl();
+//        QuestionDAOImpl qdao = new QuestionDAOImpl();
+//        ArrayList<Question> s = qdao.getAllQuestion();
+//
+//        QuizQuizHandle list = dao.getReviewQuiz(11);
+//        for (QuestionQuizHandle q : list.getQuestions()) {
+//            System.out.println(q.getAnsweredId());
+//        }
+//    }
 }

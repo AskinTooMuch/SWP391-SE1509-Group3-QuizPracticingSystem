@@ -16,13 +16,13 @@ import java.util.ArrayList;
  */
 public interface QuestionQuizHandleDAO {
 
-    public QuestionQuizHandle generateQuestionById(int questionId);
+    public QuestionQuizHandle generateQuestionById(int questionId) throws Exception;
 
-    public void markQuestion(QuestionQuizHandle question);
+    public void markQuestion(QuestionQuizHandle question) throws Exception;
 
-    public Answer getRightAnswer(QuestionQuizHandle question);
+    public Answer getRightAnswer(QuestionQuizHandle question) throws Exception;
 
-    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId);
+    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) throws Exception;
 
-    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId);
+    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) throws Exception;
 }

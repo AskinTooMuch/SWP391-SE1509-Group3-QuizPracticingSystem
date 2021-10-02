@@ -20,17 +20,17 @@ import dao.SubjectCateDAO;
 public class SubjectCateDAOImpl extends MyDAO implements SubjectCateDAO{
 
     @Override
-    public ArrayList<SubjectCate> getAllSubjectCates() {
+    public ArrayList<SubjectCate> getAllSubjectCates() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SubjectCate getSubjectCateById(int scId) {
+    public SubjectCate getSubjectCateById(int scId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) {
+    public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) throws Exception {
     /* Getcategory list of the subject */
         ArrayList<SubjectCate> categories = new ArrayList<>();
         String sql = "SELECT C.[subjectId]\n" +
@@ -40,25 +40,21 @@ public class SubjectCateDAOImpl extends MyDAO implements SubjectCateDAO{
                     "  FROM [QuizSystem].[dbo].[CategorySubject] C \n" +
                     "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n" +
                     "  ON C.cateId = S.subjectCateId WHERE C.subjectId =" + subjectId;
-        try {
         PreparedStatement pre = conn.prepareStatement(sql);
         rs = pre.executeQuery();
         while (rs.next()) {
             categories.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
         }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return categories;
     }
 
     @Override
-    public int updateSubjectCate(SubjectCate updatedSubjectCate) {
+    public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int deteleSubjectCate(int scId) {
+    public int deteleSubjectCate(int scId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     /* Test DAO */

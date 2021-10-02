@@ -14,13 +14,13 @@ import java.util.ArrayList;
  */
 public interface QuizLevelDAO {
     
-    public ArrayList<QuizLevel> getAllQuizLevel();
+    public ArrayList<QuizLevel> getAllQuizLevel() throws Exception;
     
-    public QuizLevel getQuizLevelById(int quizLevelId);
+    public QuizLevel getQuizLevelById(int quizLevelId) throws Exception;
     
-    public int editQuizLevel(int quizLevelId, QuizLevel quizLevel);
+    public int editQuizLevel(int quizLevelId, QuizLevel quizLevel) throws Exception;
     
-    public int addQuizLevel(QuizLevel quizLevel);
+    public int addQuizLevel(QuizLevel quizLevel) throws Exception;
     
-    public int deleteQuizLevel(int quizLevelId);
+    public int deleteQuizLevel(int quizLevelId) throws Exception;
 }

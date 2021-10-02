@@ -34,10 +34,9 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
      * @return list of all question. It is a <code>java.util.ArrayList</code> object.
      */
     @Override
-    public ArrayList<Question> getAllQuestion() {
+    public ArrayList<Question> getAllQuestion() throws Exception {
         ArrayList<Question> questionList = new ArrayList();
         String sql = "SELECT * FROM Question";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -50,9 +49,6 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
                         rs.getString("explanation"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return questionList;
     }
 
@@ -64,9 +60,8 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
      * @return a question. It is a <code>Question</code> object.
      */
     @Override
-    public Question getQuestionById(int questionId) {
+    public Question getQuestionById(int questionId) throws Exception {
         String sql = "SELECT * FROM Question WHERE questionId=" + questionId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -79,9 +74,6 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
                         rs.getString("explanation"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
     /**
@@ -92,20 +84,15 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
      * @return a list of question. It is a <code>java.util.ArrayList</code> object.
      */
     @Override
-    public ArrayList<Question> getQuestionByQuizId(int quizId) {
+    public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception {
         ArrayList<Question> questionList = new ArrayList();
         ArrayList<Integer> idList = new ArrayList();
         String sql = "SELECT * FROM [QuizQuestion] WHERE quizId=" + quizId;
-
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 idList.add(rs.getInt("questionId"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         for (int id : idList) {
             questionList.add(getQuestionById(id));
         }
@@ -113,32 +100,32 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
     }
 
     @Override
-    public int addQuestion(Question newQuestion) {
+    public int addQuestion(Question newQuestion) throws Exception {
         return 0;
     }
 
     @Override
-    public int editQuestion(int questionId, Question editedQuestion) {
+    public int editQuestion(int questionId, Question editedQuestion) throws Exception {
         return 0;
     }
 
     @Override
-    public int deleteQuestion(int questionId) {
+    public int deleteQuestion(int questionId) throws Exception {
         return 0;
     }
 
     @Override
-    public int importQuestion(ArrayList<Question> questionList) {
+    public int importQuestion(ArrayList<Question> questionList) throws Exception {
         return 0;
     }
 
-    public static void main(String[] args) {
-        QuestionDAOImpl dao = new QuestionDAOImpl();
-
-        ArrayList<Question> list = dao.getQuestionByQuizId(1);
-        for (Question q : list) {
-            System.out.println(q);
-        }
-    }
+//    public static void main(String[] args) {
+//        QuestionDAOImpl dao = new QuestionDAOImpl();
+//
+//        ArrayList<Question> list = dao.getQuestionByQuizId(1);
+//        for (Question q : list) {
+//            System.out.println(q);
+//        }
+//    }
 
 }

@@ -19,14 +19,13 @@ import dao.DimensionTypeDAO;
 public class DimensionTypeDAOImpl extends MyDAO implements DimensionTypeDAO{
     
     @Override
-    public ArrayList<DimensionType> getAllDimensionTypes(){
+    public ArrayList<DimensionType> getAllDimensionTypes() throws Exception{
         return null;
     }
     
     @Override
-    public DimensionType getDimensionTypeById(int dimensionTypeId){
+    public DimensionType getDimensionTypeById(int dimensionTypeId) throws Exception{
         String sql="SELECT * FROM [DimensionType] WHERE dimensionTypeId="+dimensionTypeId;
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
@@ -34,24 +33,22 @@ public class DimensionTypeDAOImpl extends MyDAO implements DimensionTypeDAO{
                rs.getString("dimensionTypeName"),
                rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+         
         return null;
     }
     
     @Override
-    public int updateDimensionType (DimensionType updatedDimensionType){
+    public int updateDimensionType (DimensionType updatedDimensionType) throws Exception{
         return 0;
     }
     
     @Override
-    public int deteteDimensionTyoe(int dtId){
+    public int deteteDimensionTyoe(int dtId) throws Exception{
         return 0;
     }
     
     @Override
-    public int addDimensionType(DimensionType newDimensionType ){
+    public int addDimensionType(DimensionType newDimensionType ) throws Exception{
         return 0;
     }
 }

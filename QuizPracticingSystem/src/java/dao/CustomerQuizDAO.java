@@ -15,19 +15,21 @@ import java.util.ArrayList;
  */
 public interface CustomerQuizDAO {
 
-    public ArrayList<CustomerQuiz> getAllCustomerQuiz();
+    public ArrayList<CustomerQuiz> getAllCustomerQuiz() throws Exception;
 
-    public ArrayList<CustomerQuiz> getQuizByUser(int userId);
+    public ArrayList<CustomerQuiz> getQuizByUser(int userId) throws Exception;
 
-    public CustomerQuiz getQuizById(int quizId);
+    public CustomerQuiz getQuizById(int quizId) throws Exception;
 
-    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz);
+    public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) throws Exception;
 
-    public int addCustomerQuiz(CustomerQuiz customerQuiz);
+    public int addCustomerQuiz(CustomerQuiz customerQuiz) throws Exception;
 
-    public int addTakeAnswer(QuizQuizHandle quiz);
+    public int addTakeAnswer(QuizQuizHandle quiz) throws Exception;
 
-    public int deleteCustomerQuiz(int customerQuizId);
+    public int deleteCustomerQuiz(int customerQuizId) throws Exception;
     
-    public int addMarkQuestion(QuizQuizHandle quiz);
+    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception;
+    
+    public CustomerQuiz getLastAddedCustomerQuiz() throws Exception;
 }

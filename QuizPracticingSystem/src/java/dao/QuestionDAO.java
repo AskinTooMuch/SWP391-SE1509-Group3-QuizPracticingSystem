@@ -14,17 +14,17 @@ import java.util.ArrayList;
  */
 public interface QuestionDAO {
 
-    ArrayList<Question> getAllQuestion();
+    ArrayList<Question> getAllQuestion() throws Exception;
 
-    public Question getQuestionById(int questionId);
+    public Question getQuestionById(int questionId) throws Exception;
     
-    public ArrayList<Question> getQuestionByQuizId(int quizId);
+    public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception;
 
-    public int addQuestion(Question newQuestion);
+    public int addQuestion(Question newQuestion) throws Exception;
 
-    public int editQuestion(int questionId, Question editedQuestion);
+    public int editQuestion(int questionId, Question editedQuestion) throws Exception;
 
-    public int deleteQuestion(int questionId);
+    public int deleteQuestion(int questionId) throws Exception;
 
-    public int importQuestion(ArrayList<Question> questionList);
+    public int importQuestion(ArrayList<Question> questionList) throws Exception;
 }

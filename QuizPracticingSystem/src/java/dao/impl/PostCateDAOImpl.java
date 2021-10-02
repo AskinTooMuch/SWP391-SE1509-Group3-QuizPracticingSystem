@@ -7,7 +7,7 @@
  *  Record of change:
  *  Date        Version     Author           Description
  *  23/9/21     1.0         DuongNHHE150328  First Deploy
-*/
+ */
 package dao.impl;
 
 import bean.Blog;
@@ -25,10 +25,9 @@ import dao.PostCateDAO;
 public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
 
     @Override
-    public ArrayList<PostCate> getAllPostCates() {
+    public ArrayList<PostCate> getAllPostCates() throws Exception {
         ArrayList<PostCate> allPostCate = new ArrayList();
         String sql = "SELECT * FROM [PostCate] ";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -36,16 +35,12 @@ public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
                         rs.getString("postCateName"),
                         rs.getBoolean("status")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return allPostCate;
     }
 
     @Override
-    public PostCate getPostCateById(int pcId) {
+    public PostCate getPostCateById(int pcId) throws Exception {
         String sql = "SELECT * FROM [PostCate] WHERE postCateId = ?";
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, pcId);
             rs = pre.executeQuery();
@@ -54,35 +49,33 @@ public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
                         rs.getString("postCateName"),
                         rs.getBoolean("status"));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return null;
     }
-    
+
     @Override
     public int getBlogCateByBlogId(int blogId) throws Exception{
-        String sql= "SELECT * FROM [BlogCate] WHERE blogId="+blogId;
+        String sql = "SELECT * FROM [BlogCate] WHERE blogId=" + blogId;
         PreparedStatement pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("postCateId");
-    }
-            return 0;
-    }
-    @Override
-    public int updatePostCate(PostCate updatedPostCate) {
+        rs = pre.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("postCateId");
+        }
         return 0;
     }
 
     @Override
-    public int deletePostCate(int pcId) {
+    public int updatePostCate(PostCate updatedPostCate) throws Exception {
         return 0;
     }
 
     @Override
-    public int addPostCate(PostCate newPostCate) {
+    public int deletePostCate(int pcId) throws Exception {
         return 0;
     }
-    
+
+    @Override
+    public int addPostCate(PostCate newPostCate) throws Exception {
+        return 0;
+    }
+
 }

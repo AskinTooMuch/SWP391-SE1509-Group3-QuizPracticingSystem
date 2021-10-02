@@ -28,14 +28,12 @@ import dao.SubjectDAO;
 public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
     @Override
     /* Get all subject in the Subject table */
-    public ArrayList<Subject> getAllSubjects(){
+    public ArrayList<Subject> getAllSubjects() throws Exception{
         ArrayList<Subject> allSubject = new ArrayList();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
         
         String sqlSubject = "SELECT * FROM [Subject]";
-        
-        try {
             /* Get the subject */
             PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
             rs = preSubject.executeQuery();
@@ -52,21 +50,17 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                         dimensionDAO.getDimensionBySubject(subjectId), 
                         subjectCateDAO.getSubjectCateBySubject(subjectId)));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return allSubject;
     }
     
     @Override
-    public ArrayList<Subject> getFeaturedSubjects() {
+    public ArrayList<Subject> getFeaturedSubjects() throws Exception {
         ArrayList<Subject> featuredSubjects = new ArrayList();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
         
         String sqlSubject = "SELECT * FROM [Subject] WHERE featuredSubject = 1";
         
-        try {
             /* Get the subject */
             PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
             rs = preSubject.executeQuery();
@@ -83,14 +77,11 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                         dimensionDAO.getDimensionBySubject(subjectId), 
                         subjectCateDAO.getSubjectCateBySubject(subjectId)));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return featuredSubjects;
     }
     /* Get subjects assigned by certain expert */
     @Override
-    public ArrayList<Subject> getSubjectsAssigned(int userId) {
+    public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception {
         ArrayList<Subject> assignedSubjects = new ArrayList();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
@@ -99,7 +90,6 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                             "  FROM [QuizSystem].[dbo].[Subject] S INNER JOIN [QuizSystem].dbo.[SubjectExpert] SE\n" +
                             "  ON S.subjectId = SE.subjectId WHERE SE.userId = " + userId;
         
-        try {
             /* Get the subject */
             PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
             rs = preSubject.executeQuery();
@@ -116,21 +106,17 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                         dimensionDAO.getDimensionBySubject(subjectId), 
                         subjectCateDAO.getSubjectCateBySubject(subjectId)));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return assignedSubjects;
     }
     
     @Override
-    public Subject getSubjectbyId(int subjectId){
+    public Subject getSubjectbyId(int subjectId) throws Exception{
         Subject subjectById = null;
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
         
         String sqlSubject = "SELECT * FROM [Subject] WHERE [subjectId] = "+subjectId;
         
-        try {
             /* Get the subject */
             PreparedStatement preSubject = conn.prepareStatement(sqlSubject);
             rs = preSubject.executeQuery();
@@ -147,14 +133,11 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                         dimensionDAO.getDimensionBySubject(subjectId), 
                         subjectCateDAO.getSubjectCateBySubject(subjectId));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return subjectById;
     }
     
     @Override
-    public ArrayList<Subject> getSubjectbyCateId(int cateId){
+    public ArrayList<Subject> getSubjectbyCateId(int cateId) throws Exception{
         ArrayList<Subject> subjectByCate = new ArrayList();
 
         String sql = "SELECT S.[subjectId]\n" +
@@ -162,32 +145,28 @@ public class SubjectDAOImpl extends MyDAO implements SubjectDAO{
                     "  INNER JOIN [QuizSystem].[dbo].CategorySubject CS ON S.subjectId = CS.subjectId\n" +
                     "  WHERE CS.cateId =" + cateId;
 
-        try {
             PreparedStatement pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 subjectByCate.add(getSubjectbyId(rs.getInt("subjectId")));
             }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
         return subjectByCate;
     }
     
     @Override
-    public int updateSubject(int subjectId, Subject subject){
+    public int updateSubject(int subjectId, Subject subject) throws Exception{
         int i = 0;
         return i;
     }
     
     @Override
-    public int addSubject(Subject subject){
+    public int addSubject(Subject subject) throws Exception{
         int i = 0;
         return i;
     }
     
     @Override
-    public int deleteSubject(int subjectId){
+    public int deleteSubject(int subjectId) throws Exception{
         int i = 0;
         return i;
     }

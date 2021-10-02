@@ -13,19 +13,19 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface QuizDAO {
-    public ArrayList<Quiz> getAllQuiz();
+    public ArrayList<Quiz> getAllQuiz() throws Exception;
     
-    public Quiz getQuizById(int quizId);
+    public Quiz getQuizById(int quizId) throws Exception;
     
-    public Quiz getQuizByQuizTakeId(int quizTakeId);
+    public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception;
             
-    public ArrayList<Quiz> getQuizBySubject(int subjectId);
+    public ArrayList<Quiz> getQuizBySubject(int subjectId) throws Exception;
     
-    public ArrayList<Quiz> getQuizByLesson(int lessonId);
+    public ArrayList<Quiz> getQuizByLesson(int lessonId) throws Exception;
     
-    public int editQuiz(int quizId, Quiz quiz);
+    public int editQuiz(int quizId, Quiz quiz) throws Exception;
     
-    public int addQuiz(Quiz quiz);
+    public int addQuiz(Quiz quiz) throws Exception;
     
-    public int deleteQuiz(int quizId);
+    public int deleteQuiz(int quizId) throws Exception;
 }

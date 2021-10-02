@@ -13,17 +13,17 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface LessonDAO {
-    public ArrayList<Lesson> getAllLessons();
+    public ArrayList<Lesson> getAllLessons() throws Exception;
     
-    public ArrayList<Lesson> getAllLessonBySubjectId(int subId);
+    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception;
     
-    public ArrayList<Lesson> getAllLessonByTypeId(int typeId);
+    public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception;
     
-    public Lesson getLessonById(int lessonId);
+    public Lesson getLessonById(int lessonId) throws Exception;
     
-    public int updateLesson(Lesson updatedLesson);
+    public int updateLesson(Lesson updatedLesson) throws Exception;
     
-    public int deleteLesson(int lessonId);
+    public int deleteLesson(int lessonId) throws Exception;
     
-    public int addLesson(Lesson newLesson);
+    public int addLesson(Lesson newLesson) throws Exception;
 }

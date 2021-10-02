@@ -13,13 +13,13 @@ import java.util.ArrayList;
  * @author admin
  */
 public interface UserRoleDAO {
-    public ArrayList<UserRole> getAllUserRole();
+    public ArrayList<UserRole> getAllUserRole() throws Exception;
     
-    public UserRole getUserRoleById(int roleId);
+    public UserRole getUserRoleById(int roleId) throws Exception;
     
-    public int editRole(UserRole userRole);
+    public int editRole(UserRole userRole) throws Exception;
     
-    public int addRole(UserRole userRole);
+    public int addRole(UserRole userRole) throws Exception;
     
-    public int deleteRole(int roleId);
+    public int deleteRole(int roleId) throws Exception;
 }

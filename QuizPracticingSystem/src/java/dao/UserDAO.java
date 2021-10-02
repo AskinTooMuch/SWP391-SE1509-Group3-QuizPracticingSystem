@@ -14,21 +14,21 @@ import java.util.ArrayList;
  */
 public interface UserDAO {
     
-    public ArrayList<User> getUserAllUser();
+    public ArrayList<User> getUserAllUser() throws Exception;
     
-    public User getUserLogin(String userMail, String password);
+    public User getUserLogin(String userMail, String password) throws Exception;
     
-    public User getUserById(int userId);
+    public User getUserById(int userId) throws Exception;
     
-    public User getUserByMail(String userMail);
+    public User getUserByMail(String userMail) throws Exception;
     
-    public User getUserByMobile(String Moblie);
+    public User getUserByMobile(String Moblie) throws Exception;
         
-    public int updateUser(User updatedUser);
+    public int updateUser(User updatedUser) throws Exception;
     
-    public int changeStatus(int userId, boolean newStatus);
+    public int changeStatus(int userId, boolean newStatus) throws Exception;
     
-    public int addUser(User newUser);
+    public int addUser(User newUser) throws Exception;
     
-    public int deleteUser(User user);
+    public int deleteUser(User user) throws Exception;
 }

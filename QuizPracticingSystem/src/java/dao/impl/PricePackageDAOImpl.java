@@ -17,32 +17,32 @@ import dao.PricePackageDAO;
 public class PricePackageDAOImpl extends MyDAO implements PricePackageDAO{
     
     @Override
-    public ArrayList<PricePackage> getAllPricePackage(){
+    public ArrayList<PricePackage> getAllPricePackage() throws Exception{
         return null;
     }
     
     @Override
-    public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId){
+    public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId) throws Exception{
         return null;
     }
     
     @Override
-    public PricePackage getPricePackageById(int ppId){
+    public PricePackage getPricePackageById(int ppId) throws Exception{
         return null;
     }
     
     @Override
-    public int addPricePackage(PricePackage newPricePackage){
+    public int addPricePackage(PricePackage newPricePackage) throws Exception{
         return 0;
     }
     
     @Override
-    public int updatePricePackage(PricePackage updatedPricePackage){
+    public int updatePricePackage(PricePackage updatedPricePackage) throws Exception{
         return 0;
     }
     
     @Override
-    public int deletePricePackage(int ppId){
+    public int deletePricePackage(int ppId) throws Exception{
         return 0;
     }
 }

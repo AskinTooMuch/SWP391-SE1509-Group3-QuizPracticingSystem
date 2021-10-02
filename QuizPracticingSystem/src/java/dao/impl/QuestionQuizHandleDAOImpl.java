@@ -34,7 +34,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      * primitive type
      * @return a QuestionQuizHandle <code>QuestionQuizHandle</code> object.
      */
-    public QuestionQuizHandle generateQuestionById(int questionId) {
+    public QuestionQuizHandle generateQuestionById(int questionId) throws Exception{
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAOImpl answerDAO = new AnswerDAOImpl();
         Question question = questionDAO.getQuestionById(questionId);                        //get question
@@ -49,7 +49,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      * @param question the target question's id. It is a <code>QuestionQuizHandle</code> object
      * @return void.
      */
-    public void markQuestion(QuestionQuizHandle question) {
+    public void markQuestion(QuestionQuizHandle question)  throws Exception {
         if (question.isMarked()) {
             question.setMarked(false);
         } else {
@@ -65,7 +65,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      * object
      * @return right answer of the question. It is <code>Answer</code> object.
      */
-    public Answer getRightAnswer(QuestionQuizHandle question) {
+    public Answer getRightAnswer(QuestionQuizHandle question)  throws Exception {
         ArrayList<Answer> answerList = question.getAnswerList();
         for (Answer answer : answerList) {
             if (answer.isIsCorrect()) {
@@ -82,7 +82,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      * @return a list of boolean. It is a <code>java.util.ArrayList</code> object.
      */
     @Override
-    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) {
+    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId)throws Exception{
         ArrayList<Boolean> markQuestionList = new ArrayList();
         String sql = "SELECT * FROM [MarkQuestion] WHERE quizTakeId =" + quizTakeId;
         try {
@@ -104,7 +104,7 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) {
+    public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) throws Exception {
         QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAOImpl answerDAO = new AnswerDAOImpl();
@@ -131,12 +131,12 @@ public class QuestionQuizHandleDAOImpl extends MyDAO implements QuestionQuizHand
         return questionList;
     }
 
-    public static void main(String[] args) {
-        QuestionQuizHandleDAOImpl dao = new QuestionQuizHandleDAOImpl();
-        QuestionDAOImpl qdao = new QuestionDAOImpl();
-        ArrayList<Boolean> s = dao.getMarkQuestionList(11);
-        for (boolean a : s) {
-            System.out.println(a);
-        }
-    }
+//    public static void main(String[] args) {
+//        QuestionQuizHandleDAOImpl dao = new QuestionQuizHandleDAOImpl();
+//        QuestionDAOImpl qdao = new QuestionDAOImpl();
+//        ArrayList<Boolean> s = dao.getMarkQuestionList(11);
+//        for (boolean a : s) {
+//            System.out.println(a);
+//        }
+//    }
 }

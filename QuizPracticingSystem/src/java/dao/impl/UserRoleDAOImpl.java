@@ -17,84 +17,65 @@ import dao.UserRoleDAO;
  *
  * @author admin
  */
-public class UserRoleDAOImpl extends MyDAO implements UserRoleDAO{
+public class UserRoleDAOImpl extends MyDAO implements UserRoleDAO {
 
     @Override
-    public ArrayList<UserRole> getAllUserRole() {
+    public ArrayList<UserRole> getAllUserRole() throws Exception {
         xSql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole]";
         ArrayList<UserRole> allUserRole = new ArrayList<>();
         UserRole add = null;
-        try {
-            ps = conn.prepareStatement(xSql);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                add = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
-                allUserRole.add(add);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        ps = conn.prepareStatement(xSql);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            add = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
+            allUserRole.add(add);
         }
         return allUserRole;
     }
 
     @Override
-    public UserRole getUserRoleById(int roleId) {
-        xSql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole] WHERE userRoleId = "+roleId;
+    public UserRole getUserRoleById(int roleId) throws Exception {
+        xSql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole] WHERE userRoleId = " + roleId;
         UserRole userRole = null;
-        try {
-            ps = conn.prepareStatement(xSql);
-            rs = ps.executeQuery();
-            if (rs.next()){
-                userRole = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        ps = conn.prepareStatement(xSql);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            userRole = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
         }
         return userRole;
     }
 
     @Override
-    public int editRole(UserRole userRole) {
+    public int editRole(UserRole userRole) throws Exception {
         xSql = "UPDATE [UserRole] SET userRoleName = ?,[status] = ? WHERE userRoleId = ?";
         int i = 0;
-        try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, userRole.getUserRoleName());
-            ps.setBoolean(2, userRole.isStatus());
-            ps.setInt(3, userRole.getUserRoleId());
-            i = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ps = conn.prepareStatement(xSql);
+        ps.setString(1, userRole.getUserRoleName());
+        ps.setBoolean(2, userRole.isStatus());
+        ps.setInt(3, userRole.getUserRoleId());
+        i = ps.executeUpdate();
         return i;
     }
 
     @Override
-    public int addRole(UserRole userRole) {
+    public int addRole(UserRole userRole) throws Exception {
         xSql = "INSERT INTO [UserRole](userRoleName,status) VALUES(?,?)";
         int i = 0;
-        try {
-            ps = conn.prepareStatement(xSql);
-            ps.setString(1, userRole.getUserRoleName());
-            ps.setBoolean(2, userRole.isStatus());
-            i = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ps = conn.prepareStatement(xSql);
+        ps.setString(1, userRole.getUserRoleName());
+        ps.setBoolean(2, userRole.isStatus());
+        i = ps.executeUpdate();
         return i;
     }
 
     @Override
-    public int deleteRole(int roleId) {
-        xSql = "DELETE FROM [UserRole] WHERE userRoleID = "+roleId;
+    public int deleteRole(int roleId) throws Exception {
+        xSql = "DELETE FROM [UserRole] WHERE userRoleID = " + roleId;
         int i = 0;
-        try {
             ps = conn.prepareStatement(xSql);
             i = ps.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         return i;
     }
-    
+
 }
