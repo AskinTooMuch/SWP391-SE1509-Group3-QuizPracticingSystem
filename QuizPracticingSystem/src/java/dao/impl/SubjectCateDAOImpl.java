@@ -8,8 +8,6 @@ package dao.impl;
 import bean.SubjectCate;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.SubjectCateDAO;
 

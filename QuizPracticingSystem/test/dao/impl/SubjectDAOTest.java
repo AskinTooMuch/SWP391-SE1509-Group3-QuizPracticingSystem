@@ -43,7 +43,7 @@ public class SubjectDAOTest {
      * Test of getAllSubjects method, of class SubjectDAOImpl.
      */
     @Test
-    public void testGetAllSubjects() {
+    public void testGetAllSubjects() throws Exception {
         System.out.println("getAllSubjects");
         SubjectDAOImpl instance = new SubjectDAOImpl();
         int expResult = 4;
@@ -55,7 +55,7 @@ public class SubjectDAOTest {
      * Test of getFeaturedSubjects method, of class SubjectDAOImpl.
      */
     @Test
-    public void testGetFeaturedSubjects() {
+    public void testGetFeaturedSubjects() throws Exception {
         System.out.println("getFeaturedSubjects");
         SubjectDAOImpl instance = new SubjectDAOImpl();
         int expResult = 3;
@@ -67,7 +67,7 @@ public class SubjectDAOTest {
      * Test of getSubjectsAssigned method, of class SubjectDAOImpl.
      */
     @Test
-    public void testGetSubjectsAssigned() {
+    public void testGetSubjectsAssigned() throws Exception {
         System.out.println("getSubjectsAssigned");
         int userId = 6;
         SubjectDAOImpl instance = new SubjectDAOImpl();
@@ -80,7 +80,7 @@ public class SubjectDAOTest {
      * Test of getSubjectbyId method, of class SubjectDAOImpl.
      */
     @Test
-    public void testGetSubjectbyId() {
+    public void testGetSubjectbyId() throws Exception {
         System.out.println("getSubjectbyId");
         int subjectId = 1;
         SubjectDAOImpl instance = new SubjectDAOImpl();
@@ -93,7 +93,7 @@ public class SubjectDAOTest {
      * Test of getSubjectbyCateId method, of class SubjectDAOImpl.
      */
     @Test
-    public void testGetSubjectbyCateId() {
+    public void testGetSubjectbyCateId() throws Exception {
         System.out.println("getSubjectbyCateId");
         int cateId = 1;
         SubjectDAOImpl instance = new SubjectDAOImpl();
@@ -106,7 +106,7 @@ public class SubjectDAOTest {
      * Test of updateSubject method, of class SubjectDAOImpl.
      */
     @Test
-    public void testUpdateSubject() {
+    public void testUpdateSubject() throws Exception {
         System.out.println("updateSubject");
         int subjectId = 0;
         Subject subject = null;
@@ -122,7 +122,7 @@ public class SubjectDAOTest {
      * Test of addSubject method, of class SubjectDAOImpl.
      */
     @Test
-    public void testAddSubject() {
+    public void testAddSubject() throws Exception {
         System.out.println("addSubject");
         Subject subject = null;
         SubjectDAOImpl instance = new SubjectDAOImpl();
@@ -137,7 +137,7 @@ public class SubjectDAOTest {
      * Test of deleteSubject method, of class SubjectDAOImpl.
      */
     @Test
-    public void testDeleteSubject() {
+    public void testDeleteSubject() throws Exception {
         System.out.println("deleteSubject");
         int subjectId = 0;
         SubjectDAOImpl instance = new SubjectDAOImpl();

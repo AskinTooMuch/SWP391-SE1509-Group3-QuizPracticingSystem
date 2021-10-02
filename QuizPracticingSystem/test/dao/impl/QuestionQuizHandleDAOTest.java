@@ -45,7 +45,7 @@ public class QuestionQuizHandleDAOTest {
      * Test of generateQuestionById method, of class QuestionQuizHandleDAO.
      */
     @Test
-    public void testGenerateQuestionById() {
+    public void testGenerateQuestionById() throws Exception {
         System.out.println("generateQuestionById");
         int questionId = 1;
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
@@ -59,7 +59,7 @@ public class QuestionQuizHandleDAOTest {
      * Test of markQuestion method, of class QuestionQuizHandleDAO.
      */
     @Test
-    public void testMarkQuestion() {
+    public void testMarkQuestion() throws Exception {
         System.out.println("markQuestion");
         QuestionQuizHandle question = new QuestionQuizHandle();
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
@@ -71,7 +71,7 @@ public class QuestionQuizHandleDAOTest {
      * Test of getRightAnswer method, of class QuestionQuizHandleDAO.
      */
     @Test
-    public void testGetRightAnswer() {
+    public void testGetRightAnswer() throws Exception{
         System.out.println("getRightAnswer");
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         QuestionQuizHandle questionQH  = instance.generateQuestionById(1);
@@ -85,7 +85,7 @@ public class QuestionQuizHandleDAOTest {
      * Test of getMarkQuestionList method, of class QuestionQuizHandleDAO.
      */
     @Test
-    public void testGetMarkQuestionList() {
+    public void testGetMarkQuestionList() throws Exception {
         System.out.println("getMarkQuestionList");
         int quizTakeId = 1;
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
@@ -98,7 +98,7 @@ public class QuestionQuizHandleDAOTest {
      * Test of getReviewQuestion method, of class QuestionQuizHandleDAO.
      */
     @Test
-    public void testGetReviewQuestion() {
+    public void testGetReviewQuestion() throws Exception{
         System.out.println("getReviewQuestion");
         int quizTakeId = 2;
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();

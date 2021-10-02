@@ -43,7 +43,7 @@ public class UserRoleDAOTest {
      * Test of getAllUserRole method, of class UserRoleDAOImpl.
      */
     @Test
-    public void testGetAllUserRole() {
+    public void testGetAllUserRole() throws Exception {
         System.out.println("getAllUserRole");
         UserRoleDAOImpl instance = new UserRoleDAOImpl();
         int expResult = 0;
@@ -55,7 +55,7 @@ public class UserRoleDAOTest {
      * Test of getUserRoleById method, of class UserRoleDAOImpl.
      */
     @Test
-    public void testGetUserRoleById() {
+    public void testGetUserRoleById() throws Exception {
         System.out.println("getUserRoleById");
         int roleId = 1;
         UserRoleDAOImpl instance = new UserRoleDAOImpl();
@@ -68,7 +68,7 @@ public class UserRoleDAOTest {
      * Test of editRole method, of class UserRoleDAOImpl.
      */
     @Test
-    public void testEditRole() {
+    public void testEditRole() throws Exception {
         System.out.println("editRole");
         int roleId = 1;
         UserRoleDAOImpl instance = new UserRoleDAOImpl();
@@ -82,7 +82,7 @@ public class UserRoleDAOTest {
      * Test of addRole method, of class UserRoleDAOImpl.
      */
     @Test
-    public void testAddRole() {
+    public void testAddRole() throws Exception {
         System.out.println("addRole");
         UserRoleDAOImpl instance = new UserRoleDAOImpl();
         UserRole userRole = instance.getUserRoleById(1);
@@ -95,7 +95,7 @@ public class UserRoleDAOTest {
      * Test of deleteRole method, of class UserRoleDAOImpl.
      */
     @Test
-    public void testDeleteRole() {
+    public void testDeleteRole() throws Exception {
         System.out.println("deleteRole");
         int roleId = 6;
         UserRoleDAOImpl instance = new UserRoleDAOImpl();

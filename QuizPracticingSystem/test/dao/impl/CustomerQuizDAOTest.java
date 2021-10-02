@@ -44,7 +44,7 @@ public class CustomerQuizDAOTest {
      * Test of getAllCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testGetAllCustomerQuiz() {
+    public void testGetAllCustomerQuiz() throws Exception {
         System.out.println("getAllCustomerQuiz");
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         ArrayList<CustomerQuiz> expResult = null;
@@ -58,7 +58,7 @@ public class CustomerQuizDAOTest {
      * Test of getQuizByUser method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testGetQuizByUser() {
+    public void testGetQuizByUser() throws Exception {
         System.out.println("getQuizByUser");
         int userId = 0;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -73,7 +73,7 @@ public class CustomerQuizDAOTest {
      * Test of getQuizById method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testGetQuizById() {
+    public void testGetQuizById() throws Exception {
         System.out.println("getQuizById");
         int quizId = 0;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -88,7 +88,7 @@ public class CustomerQuizDAOTest {
      * Test of editCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testEditCustomerQuiz() {
+    public void testEditCustomerQuiz() throws Exception {
         System.out.println("editCustomerQuiz");
         int customerQuizId = 0;
         CustomerQuiz customerQuiz = null;
@@ -104,7 +104,7 @@ public class CustomerQuizDAOTest {
      * Test of addCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testAddCustomerQuiz() {
+    public void testAddCustomerQuiz() throws Exception {
         System.out.println("addCustomerQuiz");
         CustomerQuiz customerQuiz = null;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -119,7 +119,7 @@ public class CustomerQuizDAOTest {
      * Test of getLastAddedCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testGetLastAddedCustomerQuiz() {
+    public void testGetLastAddedCustomerQuiz() throws Exception {
         System.out.println("getLastAddedCustomerQuiz");
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         CustomerQuiz expResult = null;
@@ -133,7 +133,7 @@ public class CustomerQuizDAOTest {
      * Test of deleteCustomerQuiz method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testDeleteCustomerQuiz() {
+    public void testDeleteCustomerQuiz() throws Exception {
         System.out.println("deleteCustomerQuiz");
         int customerQuizId = 0;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -148,7 +148,7 @@ public class CustomerQuizDAOTest {
      * Test of addTakeAnswer method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testAddTakeAnswer() {
+    public void testAddTakeAnswer() throws Exception {
         System.out.println("addTakeAnswer");
         QuizQuizHandle quiz = null;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -163,7 +163,7 @@ public class CustomerQuizDAOTest {
      * Test of addMarkQuestion method, of class CustomerQuizDAOImpl.
      */
     @Test
-    public void testAddMarkQuestion() {
+    public void testAddMarkQuestion() throws Exception {
         System.out.println("addMarkQuestion");
         QuizQuizHandle quiz = null;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
@@ -174,16 +174,4 @@ public class CustomerQuizDAOTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of main method, of class CustomerQuizDAOImpl.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        CustomerQuizDAOImpl.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

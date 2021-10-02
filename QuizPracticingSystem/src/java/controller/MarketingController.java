@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.BlogDAO;
 import dao.PostCateDAO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -111,7 +113,9 @@ public class MarketingController extends HttpServlet {
                 request.setAttribute("lastBlogs", lastBlogs);
                 request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
-        } catch(Exception e){
+        } catch(Exception ex){
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");
         }
     }

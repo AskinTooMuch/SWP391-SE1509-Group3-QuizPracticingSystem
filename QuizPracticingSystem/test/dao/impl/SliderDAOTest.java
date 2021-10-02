@@ -6,8 +6,6 @@
 package dao.impl;
 
 import bean.Slider;
-import bean.User;
-import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,7 +42,7 @@ public class SliderDAOTest {
      * Test of getSlider method, of class SliderDAOImpl.
      */
     @Test
-    public void testGetSlider() {
+    public void testGetSlider() throws Exception {
         System.out.println("getSlider");
         SliderDAOImpl instance = new SliderDAOImpl();
         int expResult = 0;
@@ -57,7 +55,7 @@ public class SliderDAOTest {
      * Test of getSliderById method, of class SliderDAOImpl.
      */
     @Test
-    public void testGetSliderById() {
+    public void testGetSliderById() throws Exception {
         System.out.println("getSliderById");
         int sliderId = 1;
         SliderDAOImpl instance = new SliderDAOImpl();
@@ -71,7 +69,7 @@ public class SliderDAOTest {
      * Test of addSlider method, of class SliderDAOImpl.
      */
     @Test
-    public void testAddSlider() {
+    public void testAddSlider() throws Exception {
         System.out.println("addSlider");
         Slider newSlder = new Slider(0, "testSlider", "testpic", "haha", "iidesune", true);
         SliderDAOImpl instance = new SliderDAOImpl();
@@ -85,7 +83,7 @@ public class SliderDAOTest {
      * Test of editSlider method, of class SliderDAOImpl.
      */
     @Test
-    public void testEditSlider() {
+    public void testEditSlider() throws Exception {
         System.out.println("editSlider");
         int sliderId = 0;
         Slider editedSlider = null;
@@ -102,7 +100,7 @@ public class SliderDAOTest {
      * Test of deleteSlider method, of class SliderDAOImpl.
      */
     @Test
-    public void testDeleteSlider() {
+    public void testDeleteSlider() throws Exception {
         System.out.println("deleteSlider");
         int sliderId = 0;
         SliderDAOImpl instance = new SliderDAOImpl();

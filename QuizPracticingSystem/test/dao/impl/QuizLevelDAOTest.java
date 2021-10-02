@@ -43,7 +43,7 @@ public class QuizLevelDAOTest {
      * Test of getAllQuizLevel method, of class QuizLevelDAO.
      */
     @Test
-    public void testGetAllQuizLevel() {
+    public void testGetAllQuizLevel() throws Exception {
         System.out.println("getAllQuizLevel");
         QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
         ArrayList<QuizLevel> expResult = null;
@@ -57,7 +57,7 @@ public class QuizLevelDAOTest {
      * Test of getQuizLevelById method, of class QuizLevelDAO.
      */
     @Test
-    public void testGetQuizLevelById() {
+    public void testGetQuizLevelById() throws Exception {
         System.out.println("getQuizLevelById");
         int quizLevelId = 1;
         QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
@@ -71,7 +71,7 @@ public class QuizLevelDAOTest {
      * Test of editQuizLevel method, of class QuizLevelDAO.
      */
     @Test
-    public void testEditQuizLevel() {
+    public void testEditQuizLevel() throws Exception {
         System.out.println("editQuizLevel");
         int quizLevelId = 0;
         QuizLevel quizLevel = null;
@@ -87,7 +87,7 @@ public class QuizLevelDAOTest {
      * Test of addQuizLevel method, of class QuizLevelDAO.
      */
     @Test
-    public void testAddQuizLevel() {
+    public void testAddQuizLevel() throws Exception {
         System.out.println("addQuizLevel");
         QuizLevel quizLevel = null;
         QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
@@ -102,7 +102,7 @@ public class QuizLevelDAOTest {
      * Test of deleteQuizLevel method, of class QuizLevelDAO.
      */
     @Test
-    public void testDeleteQuizLevel() {
+    public void testDeleteQuizLevel() throws Exception {
         System.out.println("deleteQuizLevel");
         int quizLevelId = 0;
         QuizLevelDAOImpl instance = new QuizLevelDAOImpl();

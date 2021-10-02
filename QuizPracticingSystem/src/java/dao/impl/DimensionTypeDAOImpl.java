@@ -8,7 +8,6 @@ package dao.impl;
 import bean.DimensionType;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.DimensionTypeDAO;
 

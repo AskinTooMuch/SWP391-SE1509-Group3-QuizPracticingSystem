@@ -46,7 +46,7 @@ public class BlogDAOTest {
      * Test of getAllBlog method, of class BlogDAO.
      */
     @Test
-    public void testGetAllBlog() {
+    public void testGetAllBlog() throws Exception {
         System.out.println("getAllBlog");
         BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
@@ -58,7 +58,7 @@ public class BlogDAOTest {
      * Test of getBlogByCategory method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogByCategory() {
+    public void testGetBlogByCategory() throws Exception {
         System.out.println("getBlogByCategory");
         String[] postCateIdList = {"1","2"};
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -71,7 +71,7 @@ public class BlogDAOTest {
      * Test of getBlogByUser method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogByUser() {
+    public void testGetBlogByUser() throws Exception {
         System.out.println("getBlogByUser");
         int userId = 2;
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -84,7 +84,7 @@ public class BlogDAOTest {
      * Test of getBlogById method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogById() {
+    public void testGetBlogById() throws Exception {
         System.out.println("getBlogById");
         int blogId = 1;
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -97,7 +97,7 @@ public class BlogDAOTest {
      * Test of getBlogByTitle method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogByTitle() {
+    public void testGetBlogByTitle() throws Exception {
         System.out.println("getBlogByTitle");
         String title = "Why";
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -110,7 +110,7 @@ public class BlogDAOTest {
      * Test of getAllTrueBlog method, of class BlogDAO.
      */
     @Test
-    public void testGetAllTrueBlog() {
+    public void testGetAllTrueBlog() throws Exception {
         System.out.println("getAllTrueBlog");
         BlogDAOImpl instance = new BlogDAOImpl();
         int expResult = 0;
@@ -122,7 +122,7 @@ public class BlogDAOTest {
      * Test of getLastBlogs method, of class BlogDAO.
      */
     @Test
-    public void testGetLastBlogs() {
+    public void testGetLastBlogs() throws Exception {
         System.out.println("getLastBlogs");
         BlogDAOImpl instance = new BlogDAOImpl();
         int expResultUpper = 3;
@@ -135,7 +135,7 @@ public class BlogDAOTest {
      * Test of getBlogByCategoryAndTitle method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogByCategoryAndTitle() {
+    public void testGetBlogByCategoryAndTitle() throws Exception {
         System.out.println("getBlogByCategoryAndTitle");
         String[] postCateIdList = null;
         String search = "";
@@ -151,7 +151,7 @@ public class BlogDAOTest {
          * Test of addBlog method, of class BlogDAO.
          */
         @Test
-        public void testAddBlog() {
+        public void testAddBlog() throws Exception {
             System.out.println("addBlog");
             User user = new User(1, "testUserName", "testUserPassword", 1, "testProfilePic", "testUserMail", true, "0303030303", true);
             Blog blog = new Blog(0, "testBlogTitle", Date.valueOf("2020-12-12"), Date.valueOf("2020-12-12"), user, "test", "testThumbnail", true);
@@ -166,7 +166,7 @@ public class BlogDAOTest {
      * Test of editBlog method, of class BlogDAO.
      */
     @Test
-    public void testEditBlog() {
+    public void testEditBlog() throws Exception {
         System.out.println("editBlog");
         int blogId = 0;
         Blog blog = null;
@@ -184,7 +184,7 @@ public class BlogDAOTest {
      * Test of deleteBlog method, of class BlogDAO.
      */
     @Test
-    public void testDeleteBlog() {
+    public void testDeleteBlog() throws Exception {
         System.out.println("deleteBlog");
         int blogId = 0;
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -199,7 +199,7 @@ public class BlogDAOTest {
      * Test of getAuthor method, of class BlogDAO.
      */
     @Test
-    public void testGetAuthor() {
+    public void testGetAuthor() throws Exception {
         System.out.println("getAuthor");
         int blogId = 0;
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -214,7 +214,7 @@ public class BlogDAOTest {
      * Test of getBlogCategory method, of class BlogDAO.
      */
     @Test
-    public void testGetBlogCategory() {
+    public void testGetBlogCategory() throws Exception {
         System.out.println("getBlogCategory");
         int blogId = 0;
         BlogDAOImpl instance = new BlogDAOImpl();
@@ -229,7 +229,7 @@ public class BlogDAOTest {
      * Test of Paging method, of class BlogDAO.
      */
     @Test
-    public void testPaging() {
+    public void testPaging() throws Exception {
         System.out.println("Paging");
         int page = 0;
         ArrayList<Blog> list = null;
@@ -241,16 +241,5 @@ public class BlogDAOTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of main method, of class BlogDAO.
-     */
-//    @Test
-//    public void testMain() {
-//        System.out.println("main");
-//        String[] args = null;
-//        BlogDAO.main(args);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
     
 }

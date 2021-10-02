@@ -44,7 +44,7 @@ public class QuizQuizHandleDAOTest {
      * Test of generateQuiz method, of class QuizQuizHandleDAO.
      */
     @Test
-    public void testGenerateQuiz() {
+    public void testGenerateQuiz() throws Exception {
         System.out.println("generateQuiz");
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         ArrayList<Question> questionList = questionDAO.getQuestionByQuizId(1);
@@ -59,7 +59,7 @@ public class QuizQuizHandleDAOTest {
      * Test of calculateScore method, of class QuizQuizHandleDAO.
      */
     @Test
-    public void testCalculateScore() {
+    public void testCalculateScore() throws Exception {
         System.out.println("calculateScore");
         QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle questionList = instance.getReviewQuiz(1);
@@ -72,7 +72,7 @@ public class QuizQuizHandleDAOTest {
      * Test of getAnsweredQuestion method, of class QuizQuizHandleDAO.
      */
     @Test
-    public void testGetAnsweredQuestion() {
+    public void testGetAnsweredQuestion() throws Exception {
         System.out.println("getAnsweredQuestion");
         QuizQuizHandle quiz = null;
         QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
@@ -86,7 +86,7 @@ public class QuizQuizHandleDAOTest {
      * Test of getReviewQuiz method, of class QuizQuizHandleDAO.
      */
     @Test
-    public void testGetReviewQuiz() {
+    public void testGetReviewQuiz() throws Exception {
         System.out.println("getReviewQuiz");
         int quizTakeId = 1;
         QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();

@@ -22,7 +22,6 @@ import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.CustomerQuizDAO;
 

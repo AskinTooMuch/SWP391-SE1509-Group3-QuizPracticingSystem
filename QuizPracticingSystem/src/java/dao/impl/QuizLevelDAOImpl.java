@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import bean.QuizLevel;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import dao.QuizLevelDAO;
 
 /**

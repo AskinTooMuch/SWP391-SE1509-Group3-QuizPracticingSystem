@@ -20,7 +20,6 @@ import bean.QuizLevel;
 import bean.TestType;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.QuizDAO;
 

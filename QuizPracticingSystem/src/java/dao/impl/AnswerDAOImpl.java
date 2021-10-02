@@ -13,7 +13,6 @@ package dao.impl;
 import bean.*;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.AnswerDAO;
 

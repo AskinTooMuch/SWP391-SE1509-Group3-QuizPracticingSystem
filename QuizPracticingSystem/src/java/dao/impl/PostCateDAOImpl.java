@@ -10,12 +10,10 @@
  */
 package dao.impl;
 
-import bean.Blog;
 import java.util.ArrayList;
 import bean.PostCate;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import dao.PostCateDAO;
 
 /**

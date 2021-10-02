@@ -43,7 +43,7 @@ public class DimensionDAOTest {
      * Test of getAllDimension method, of class DimensionDAOImpl.
      */
     @Test
-    public void testGetAllDimension() {
+    public void testGetAllDimension() throws Exception {
         System.out.println("getAllDimension");
         DimensionDAOImpl instance = new DimensionDAOImpl();
         ArrayList<Dimension> expResult = null;
@@ -57,7 +57,7 @@ public class DimensionDAOTest {
      * Test of getDimensionBySubject method, of class DimensionDAOImpl.
      */
     @Test
-    public void testGetDimensionBySubject() {
+    public void testGetDimensionBySubject() throws Exception {
         System.out.println("getDimensionBySubject");
         int subjectId = 1;
         DimensionDAOImpl instance = new DimensionDAOImpl();
@@ -70,7 +70,7 @@ public class DimensionDAOTest {
      * Test of getDimensionById method, of class DimensionDAOImpl.
      */
     @Test
-    public void testGetDimensionById() {
+    public void testGetDimensionById() throws Exception {
         System.out.println("getDimensionById");
         DimensionDAOImpl instance = new DimensionDAOImpl();
         Dimension expResult = null;
@@ -84,7 +84,7 @@ public class DimensionDAOTest {
      * Test of addDimension method, of class DimensionDAOImpl.
      */
     @Test
-    public void testAddDimension() {
+    public void testAddDimension() throws Exception {
         System.out.println("addDimension");
         Dimension dimension = null;
         DimensionDAOImpl instance = new DimensionDAOImpl();
@@ -99,7 +99,7 @@ public class DimensionDAOTest {
      * Test of deleteDimension method, of class DimensionDAOImpl.
      */
     @Test
-    public void testDeleteDimension() {
+    public void testDeleteDimension() throws Exception {
         System.out.println("deleteDimension");
         int dimensionId = 0;
         DimensionDAOImpl instance = new DimensionDAOImpl();
@@ -114,7 +114,7 @@ public class DimensionDAOTest {
      * Test of editDimension method, of class DimensionDAOImpl.
      */
     @Test
-    public void testEditDimension() {
+    public void testEditDimension() throws Exception {
         System.out.println("editDimension");
         int dimensionId = 0;
         Dimension dimension = null;

@@ -33,6 +33,8 @@ import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,6 +55,7 @@ public class QuizController extends HttpServlet {
     static final int PRACTICE_TYPE = 2;
     static final int MAX_SESSION_TIME = 7200;
     static final int DEFAULT_PAGE = 1;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -60,7 +63,7 @@ public class QuizController extends HttpServlet {
             QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
             QuestionQuizHandleDAO questionQHInterface = new QuestionQuizHandleDAOImpl();
             QuestionDAO questionInterface = new QuestionDAOImpl();
-            QuizDAO quizInterface = new QuizDAOImpl();           
+            QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("quizHandle")) {
@@ -290,7 +293,9 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
             }
-        } catch(Exception e){
+        } catch (Exception ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");
         }
     }

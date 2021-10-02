@@ -43,7 +43,7 @@ public class SubjectCateDAOTest {
      * Test of getAllSubjectCates method, of class SubjectCateDAOImpl.
      */
     @Test
-    public void testGetAllSubjectCates() {
+    public void testGetAllSubjectCates() throws Exception {
         System.out.println("getAllSubjectCates");
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         ArrayList<SubjectCate> expResult = null;
@@ -57,7 +57,7 @@ public class SubjectCateDAOTest {
      * Test of getSubjectCateById method, of class SubjectCateDAOImpl.
      */
     @Test
-    public void testGetSubjectCateById() {
+    public void testGetSubjectCateById() throws Exception {
         System.out.println("getSubjectCateById");
         int scId = 0;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
@@ -72,7 +72,7 @@ public class SubjectCateDAOTest {
      * Test of getSubjectCateBySubject method, of class SubjectCateDAOImpl.
      */
     @Test
-    public void testGetSubjectCateBySubject1() {
+    public void testGetSubjectCateBySubject1() throws Exception {
         System.out.println("getSubjectCateBySubject");
         int subjectId = 1;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
@@ -82,7 +82,7 @@ public class SubjectCateDAOTest {
     }
     
     @Test
-    public void testGetSubjectCateBySubject2() {
+    public void testGetSubjectCateBySubject2() throws Exception {
         System.out.println("getSubjectCateBySubject");
         int subjectId = 2;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
@@ -95,7 +95,7 @@ public class SubjectCateDAOTest {
      * Test of updateSubjectCate method, of class SubjectCateDAOImpl.
      */
     @Test
-    public void testUpdateSubjectCate() {
+    public void testUpdateSubjectCate() throws Exception {
         System.out.println("updateSubjectCate");
         SubjectCate updatedSubjectCate = null;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
@@ -110,7 +110,7 @@ public class SubjectCateDAOTest {
      * Test of deteleSubjectCate method, of class SubjectCateDAOImpl.
      */
     @Test
-    public void testDeteleSubjectCate() {
+    public void testDeteleSubjectCate() throws Exception {
         System.out.println("deteleSubjectCate");
         int scId = 0;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();

@@ -19,22 +19,22 @@ import static org.junit.Assert.*;
  * @author ADMN
  */
 public class QuizDAOTest {
-    
+
     public QuizDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -43,7 +43,7 @@ public class QuizDAOTest {
      * Test of getAllQuiz method, of class QuizDAOImpl.
      */
     @Test
-    public void testGetAllQuiz() {
+    public void testGetAllQuiz() throws Exception {
         System.out.println("getAllQuiz");
         QuizDAOImpl instance = new QuizDAOImpl();
         ArrayList<Quiz> expResult = null;
@@ -57,7 +57,7 @@ public class QuizDAOTest {
      * Test of getQuizById method, of class QuizDAOImpl.
      */
     @Test
-    public void testGetQuizById() {
+    public void testGetQuizById() throws Exception {
         System.out.println("getQuizById");
         int quizId = 1;
         QuizDAOImpl instance = new QuizDAOImpl();
@@ -71,20 +71,20 @@ public class QuizDAOTest {
      * Test of getQuizByQuizTakeId method, of class QuizDAOImpl.
      */
     @Test
-    public void testGetQuizByQuizTakeId() {
+    public void testGetQuizByQuizTakeId() throws Exception {
         System.out.println("getQuizByQuizTakeId");
         int quizTakeId = 1;
         QuizDAOImpl instance = new QuizDAOImpl();
         Quiz expResult = null;
         Quiz result = instance.getQuizByQuizTakeId(quizTakeId);
-        assertEquals(30, result.getQuizDuration());       
+        assertEquals(30, result.getQuizDuration());
     }
 
     /**
      * Test of getQuizBySubject method, of class QuizDAOImpl.
      */
     @Test
-    public void testGetQuizBySubject() {
+    public void testGetQuizBySubject() throws Exception {
         System.out.println("getQuizBySubject");
         int subjectId = 0;
         QuizDAOImpl instance = new QuizDAOImpl();
@@ -99,7 +99,7 @@ public class QuizDAOTest {
      * Test of getQuizByLesson method, of class QuizDAOImpl.
      */
     @Test
-    public void testGetQuizByLesson() {
+    public void testGetQuizByLesson() throws Exception {
         System.out.println("getQuizByLesson");
         int lessonId = 0;
         QuizDAOImpl instance = new QuizDAOImpl();
@@ -114,7 +114,7 @@ public class QuizDAOTest {
      * Test of editQuiz method, of class QuizDAOImpl.
      */
     @Test
-    public void testEditQuiz() {
+    public void testEditQuiz() throws Exception {
         System.out.println("editQuiz");
         int quizId = 0;
         Quiz quiz = null;
@@ -130,7 +130,7 @@ public class QuizDAOTest {
      * Test of addQuiz method, of class QuizDAOImpl.
      */
     @Test
-    public void testAddQuiz() {
+    public void testAddQuiz() throws Exception {
         System.out.println("addQuiz");
         Quiz quiz = null;
         QuizDAOImpl instance = new QuizDAOImpl();
@@ -145,7 +145,7 @@ public class QuizDAOTest {
      * Test of deleteQuiz method, of class QuizDAOImpl.
      */
     @Test
-    public void testDeleteQuiz() {
+    public void testDeleteQuiz() throws Exception {
         System.out.println("deleteQuiz");
         int quizId = 0;
         QuizDAOImpl instance = new QuizDAOImpl();
@@ -156,9 +156,4 @@ public class QuizDAOTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of main method, of class QuizDAO.
-     */
-  
-    
 }

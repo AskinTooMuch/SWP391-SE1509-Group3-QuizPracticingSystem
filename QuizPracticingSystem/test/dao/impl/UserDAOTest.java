@@ -43,7 +43,7 @@ public class UserDAOTest {
      * Test of getUserAllUser method, of class UserDAOImpl.
      */
     @Test
-    public void testGetUserAllUser() {
+    public void testGetUserAllUser() throws Exception {
         System.out.println("getUserAllUser");
         UserDAOImpl instance = new UserDAOImpl();
         ArrayList<User> expResult = null;
@@ -57,7 +57,7 @@ public class UserDAOTest {
      * Test of getUserLogin method, of class UserDAOImpl.
      */
     @Test
-    public void testGetUserLogin() {
+    public void testGetUserLogin() throws Exception {
         System.out.println("getUserLogin");
         String userMail = "DuongNHHE150328@fpt.edu.vn";
         String password = "1";
@@ -71,7 +71,7 @@ public class UserDAOTest {
      * Test of getUserById method, of class UserDAOImpl.
      */
     @Test
-    public void testGetUserById() {
+    public void testGetUserById() throws Exception {
         System.out.println("getUserById");
         int userId = 1;
         UserDAOImpl instance = new UserDAOImpl();
@@ -84,7 +84,7 @@ public class UserDAOTest {
      * Test of getUserByMail method, of class UserDAOImpl.
      */
     @Test
-    public void testGetUserByMail() {
+    public void testGetUserByMail() throws Exception {
         System.out.println("getUserByMail");
         String userMail = "DuongNHHE150328@fpt.edu.vn";
         UserDAOImpl instance = new UserDAOImpl();
@@ -97,7 +97,7 @@ public class UserDAOTest {
      * Test of getUserByMobile method, of class UserDAOImpl.
      */
     @Test
-    public void testGetUserByMobile() {
+    public void testGetUserByMobile() throws Exception {
         System.out.println("getUserByMobile");
         String Moblie = "0969044713";
         UserDAOImpl instance = new UserDAOImpl();
@@ -110,7 +110,7 @@ public class UserDAOTest {
      * Test of updateUser method, of class UserDAOImpl.
      */
     @Test
-    public void testUpdateUser() {
+    public void testUpdateUser() throws Exception {
         System.out.println("updateUser");
         UserDAOImpl instance = new UserDAOImpl();
         User updatedUser = instance.getUserById(1);
@@ -123,7 +123,7 @@ public class UserDAOTest {
      * Test of changeStatus method, of class UserDAOImpl.
      */
     @Test
-    public void testChangeStatus() {
+    public void testChangeStatus() throws Exception {
         System.out.println("changeStatus");
         int userId = 1;
         boolean newStatus = true;
@@ -137,7 +137,7 @@ public class UserDAOTest {
      * Test of addUser method, of class UserDAOImpl.
      */
     @Test
-    public void testAddUser() {
+    public void testAddUser() throws Exception {
         System.out.println("addUser");
         User newUser = new User(0, "Dong01", "1", 1, null, "duonghoang8805", true, "0842274855", true);
         UserDAOImpl instance = new UserDAOImpl();
@@ -150,7 +150,7 @@ public class UserDAOTest {
      * Test of deleteUser method, of class UserDAOImpl.
      */
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUser() throws Exception {
         System.out.println("deleteUser");
         UserDAOImpl instance = new UserDAOImpl();
         User user = instance.getUserByMail("duonghoang8805");

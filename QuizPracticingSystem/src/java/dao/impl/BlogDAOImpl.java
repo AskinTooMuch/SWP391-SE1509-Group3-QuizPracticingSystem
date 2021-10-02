@@ -23,7 +23,6 @@ import bean.User;
 import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import dao.BlogDAO;
 
 /**

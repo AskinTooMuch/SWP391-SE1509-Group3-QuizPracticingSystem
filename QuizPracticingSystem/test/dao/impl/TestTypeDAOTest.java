@@ -43,7 +43,7 @@ public class TestTypeDAOTest {
      * Test of getAllTestTypes method, of class TestTypeDAOImpl.
      */
     @Test
-    public void testGetAllTestTypes() {
+    public void testGetAllTestTypes() throws Exception {
         System.out.println("getAllTestTypes");
         TestTypeDAOImpl instance = new TestTypeDAOImpl();
         ArrayList<TestType> expResult = null;
@@ -57,7 +57,7 @@ public class TestTypeDAOTest {
      * Test of getTestTypeById method, of class TestTypeDAOImpl.
      */
     @Test
-    public void testGetTestTypeById() {
+    public void testGetTestTypeById() throws Exception {
         System.out.println("getTestTypeById");
         int testTypeId = 1;
         TestTypeDAOImpl instance = new TestTypeDAOImpl();
@@ -70,7 +70,7 @@ public class TestTypeDAOTest {
      * Test of updateTestType method, of class TestTypeDAOImpl.
      */
     @Test
-    public void testUpdateTestType() {
+    public void testUpdateTestType() throws Exception {
         System.out.println("updateTestType");
         TestType updatedTestType = null;
         TestTypeDAOImpl instance = new TestTypeDAOImpl();
@@ -85,7 +85,7 @@ public class TestTypeDAOTest {
      * Test of deleteTestType method, of class TestTypeDAOImpl.
      */
     @Test
-    public void testDeleteTestType() {
+    public void testDeleteTestType() throws Exception {
         System.out.println("deleteTestType");
         int testTypeId = 0;
         TestTypeDAOImpl instance = new TestTypeDAOImpl();
@@ -100,7 +100,7 @@ public class TestTypeDAOTest {
      * Test of addTestType method, of class TestTypeDAOImpl.
      */
     @Test
-    public void testAddTestType() {
+    public void testAddTestType() throws Exception {
         System.out.println("addTestType");
         TestType newTestType = null;
         TestTypeDAOImpl instance = new TestTypeDAOImpl();

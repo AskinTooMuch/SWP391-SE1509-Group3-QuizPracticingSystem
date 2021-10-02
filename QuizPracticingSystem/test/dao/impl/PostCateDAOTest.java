@@ -43,7 +43,7 @@ public class PostCateDAOTest {
      * Test of getAllPostCates method, of class PostCateDAO.
      */
     @Test
-    public void testGetAllPostCates() {
+    public void testGetAllPostCates() throws Exception {
         System.out.println("getAllPostCates");
         PostCateDAOImpl instance = new PostCateDAOImpl();
         ArrayList<PostCate> expResult = null;
@@ -57,7 +57,7 @@ public class PostCateDAOTest {
      * Test of getPostCateById method, of class PostCateDAO.
      */
     @Test
-    public void testGetPostCateById() {
+    public void testGetPostCateById() throws Exception {
         System.out.println("getPostCateById");
         int pcId = 1;
         PostCateDAOImpl instance = new PostCateDAOImpl();
@@ -79,7 +79,7 @@ public class PostCateDAOTest {
      * Test of updatePostCate method, of class PostCateDAO.
      */
     @Test
-    public void testUpdatePostCate() {
+    public void testUpdatePostCate() throws Exception {
         System.out.println("updatePostCate");
         PostCate updatedPostCate = null;
         PostCateDAOImpl instance = new PostCateDAOImpl();
@@ -94,7 +94,7 @@ public class PostCateDAOTest {
      * Test of deletePostCate method, of class PostCateDAO.
      */
     @Test
-    public void testDeletePostCate() {
+    public void testDeletePostCate() throws Exception {
         System.out.println("deletePostCate");
         int pcId = 0;
         PostCateDAOImpl instance = new PostCateDAOImpl();
@@ -109,7 +109,7 @@ public class PostCateDAOTest {
      * Test of addPostCate method, of class PostCateDAO.
      */
     @Test
-    public void testAddPostCate() {
+    public void testAddPostCate() throws Exception {
         System.out.println("addPostCate");
         PostCate newPostCate = null;
         PostCateDAOImpl instance = new PostCateDAOImpl();
