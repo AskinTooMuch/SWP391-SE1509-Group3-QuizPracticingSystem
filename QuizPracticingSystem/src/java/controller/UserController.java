@@ -152,7 +152,7 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
-
+                
                 //convert gender to booolean type
                 if (txtGender.equalsIgnoreCase("Male")) {
                     gender = true;

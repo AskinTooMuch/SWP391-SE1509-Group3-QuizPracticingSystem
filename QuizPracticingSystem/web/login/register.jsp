@@ -32,29 +32,29 @@
 
                         <div class="u-form-group u-form-name">
                             <p>Enter your user name:</p>
-                            <input type="text" placeholder="Username"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                            <input type="text" placeholder="Username"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.userName}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Enter your password:</p>
-                            <input type="password" placeholder="Password"  name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                            <input type="password" placeholder="Password"  name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.password}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Confirm your password:</p>
-                            <input type="password" placeholder="Confirm password"  name="confirmPass" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                            <input type="password" placeholder="Confirm password"  name="confirmPass" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.confirmPass}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Enter your email:</p>
-                            <input type="email" placeholder="Email"  name="userMail" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                            <input type="email" placeholder="Email"  name="userMail" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.userMail}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Enter your phone:</p>
-                            <input type="text" placeholder="Phone"  name="userMobile" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                            <input type="text" placeholder="Phone"  name="userMobile" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.userMobile}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Gender:</p>
-                            <input type="radio" name="gender" value="Male"> Male
+                            <input type="radio" name="gender" value="Male" <c:if test="${param.gender.equalsIgnoreCase('Male')}">Checked</c:if> > Male
                             <br>
-                            <input type="radio" name="gender" value="Female"> Female
+                            <input type="radio" name="gender" value="Female" <c:if test="${param.gender.equalsIgnoreCase('Female')}">Checked</c:if> > Female
                         </div>
 
                         <c:if test="${mess != null}">

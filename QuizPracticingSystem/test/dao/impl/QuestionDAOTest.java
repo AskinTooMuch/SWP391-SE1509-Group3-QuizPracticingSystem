@@ -43,7 +43,7 @@ public class QuestionDAOTest {
      * Test of getAllQuestion method, of class QuestionDAO.
      */
     @Test
-    public void testGetAllQuestion() {
+    public void testGetAllQuestion() throws Exception {
         System.out.println("getAllQuestion");
         QuestionDAOImpl instance = new QuestionDAOImpl();
         ArrayList<Question> expResult = null;
@@ -56,7 +56,7 @@ public class QuestionDAOTest {
      * Test of getQuestionById method, of class QuestionDAO.
      */
     @Test
-    public void testGetQuestionById() {
+    public void testGetQuestionById() throws Exception {
         System.out.println("getQuestionById");
         int questionId = 1;
         QuestionDAOImpl instance = new QuestionDAOImpl();
@@ -69,7 +69,7 @@ public class QuestionDAOTest {
      * Test of getQuestionByQuizId method, of class QuestionDAO.
      */
     @Test
-    public void testGetQuestionByQuizId() {
+    public void testGetQuestionByQuizId() throws Exception {
         System.out.println("getQuestionByQuizId");
         int quizId = 1;
         QuestionDAOImpl instance = new QuestionDAOImpl();
@@ -83,7 +83,7 @@ public class QuestionDAOTest {
      * Test of addQuestion method, of class QuestionDAO.
      */
     @Test
-    public void testAddQuestion() {
+    public void testAddQuestion() throws Exception {
         System.out.println("addQuestion");
         Question newQuestion = new Question(1,2,2,5,"hon","","nihongo",true);
         QuestionDAOImpl instance = new QuestionDAOImpl();
@@ -97,7 +97,7 @@ public class QuestionDAOTest {
      * Test of editQuestion method, of class QuestionDAO.
      */
     @Test
-    public void testEditQuestion() {
+    public void testEditQuestion() throws Exception {
         System.out.println("editQuestion");
         int questionId = 0;
         Question editedQuestion = null;
@@ -113,7 +113,7 @@ public class QuestionDAOTest {
      * Test of deleteQuestion method, of class QuestionDAO.
      */
     @Test
-    public void testDeleteQuestion() {
+    public void testDeleteQuestion() throws Exception {
         System.out.println("deleteQuestion");
         int questionId = 0;
         QuestionDAOImpl instance = new QuestionDAOImpl();
@@ -128,7 +128,7 @@ public class QuestionDAOTest {
      * Test of importQuestion method, of class QuestionDAO.
      */
     @Test
-    public void testImportQuestion() {
+    public void testImportQuestion() throws Exception {
         System.out.println("importQuestion");
         ArrayList<Question> questionList = null;
         QuestionDAOImpl instance = new QuestionDAOImpl();
