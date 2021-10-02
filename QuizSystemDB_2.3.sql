@@ -284,6 +284,7 @@ INSERT INTO dbo.SubjectCate(subjectCateName,status) VALUES('CSS',1);--14
 ----------dbo.[TestType]-------------------
 INSERT INTO dbo.TestType(testTypeName,status) VALUES('Simulation',1);
 INSERT INTO dbo.TestType(testTypeName,status) VALUES('Lesson-Quiz',1);
+INSERT INTO dbo.TestType(testTypeName,status) VALUES('Practice',1);
 ----------dbo.[QuizLevel]------------------
 INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Hard',1);
 INSERT INTO dbo.QuizLevel(quizLevelName,status) VALUES('Medium',1);
@@ -382,7 +383,7 @@ INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],
 INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Physics',1,3,'',1);
 INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES('Graphics Design',1,4,'',1);
 ----------dbo.[PricePackage]---------------
-
+INSERT INTO dbo.PricePackage(packName,subjectId,duration,listPrice,salePrice,[status]) VALUES('3 months package',1,3,10.0,20,1)
 ----------dbo.[Question]-------------------
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Watashi',NULL,'nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Neko',NULL,'nihongo',1)
