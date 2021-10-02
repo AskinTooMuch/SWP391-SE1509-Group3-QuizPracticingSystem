@@ -6,15 +6,15 @@
 package dao.impl;
 
 import bean.Lesson;
+import dao.DBConnection;
 import java.util.ArrayList;
-import dao.MyDAO;
 import dao.LessonDAO;
 
 /**
  *
  * @author tuan
  */
-public class LessonDAOImpl extends MyDAO implements LessonDAO{
+public class LessonDAOImpl extends DBConnection implements LessonDAO{
     @Override
     public ArrayList<Lesson> getAllLessons() throws Exception{
         return null;

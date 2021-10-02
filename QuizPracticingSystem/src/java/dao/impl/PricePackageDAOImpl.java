@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.PricePackage;
+import dao.DBConnection;
 import java.util.ArrayList;
 import dao.MyDAO;
 import dao.PricePackageDAO;
@@ -14,7 +15,7 @@ import dao.PricePackageDAO;
  *
  * @author tuan
  */
-public class PricePackageDAOImpl extends MyDAO implements PricePackageDAO{
+public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO{
     
     @Override
     public ArrayList<PricePackage> getAllPricePackage() throws Exception{

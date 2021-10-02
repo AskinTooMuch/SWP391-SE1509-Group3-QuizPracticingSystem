@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.Registration;
+import dao.DBConnection;
 import dao.MyDAO;
 import java.util.ArrayList;
 import dao.RegistrationDAO;
@@ -14,7 +15,7 @@ import dao.RegistrationDAO;
  *
  * @author admin
  */
-public class RegistrationDAOImpl extends MyDAO implements RegistrationDAO{
+public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO{
 
     @Override
     public ArrayList<Registration> getAllRegistration() throws Exception {

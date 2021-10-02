@@ -15,12 +15,15 @@ import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.AnswerDAO;
+import dao.DBConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author duong
  */
-public class AnswerDAOImpl extends MyDAO implements AnswerDAO {
+public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
 
     @Override
     public ArrayList<Answer> getAllAnswers() throws Exception {
@@ -29,18 +32,31 @@ public class AnswerDAOImpl extends MyDAO implements AnswerDAO {
 
     @Override
     public ArrayList<Answer> getAnswersByQuenstionId(int questionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
         ArrayList<Answer> answerList = new ArrayList();
-        String sql = "SELECT * FROM Answer WHERE questionId=" + questionId;
-        PreparedStatement pre = conn.prepareStatement(sql);
-        rs = pre.executeQuery();
-        while (rs.next()) {
-            answerList.add(new Answer(rs.getInt("answerId"),
-                    rs.getInt("questionId"),
-                    rs.getString("answerContent"),
-                    rs.getBoolean("isCorrect"),
-                    rs.getBoolean("status")));
+        String sql = "SELECT * FROM Answer WHERE questionId=" + questionId; /* Sql query */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                answerList.add(new Answer(rs.getInt("answerId"),
+                        rs.getInt("questionId"),
+                        rs.getString("answerContent"),
+                        rs.getBoolean("isCorrect"),
+                        rs.getBoolean("status")));
+            }
+            return answerList;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
-        return answerList;
     }
 
     @Override

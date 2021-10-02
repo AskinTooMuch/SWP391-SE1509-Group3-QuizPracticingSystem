@@ -37,6 +37,11 @@ public class DBConnection {
     }
     
     public Connection getConnection(){
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=QuizSystem", "sa", "sa");
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return connection;
     }
     
@@ -49,5 +54,44 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
+    }
+    
+    /**
+     * When you are done with using your connection, you need close in order to
+     * release any other database resource
+     *
+     * @param ps it is a object of <code>java.sql.PreparedStatement</code>
+     * @throws Exception
+     */
+    public void closePreparedStatement(PreparedStatement ps) throws Exception {
+        if (ps != null && !ps.isClosed()) {
+            ps.close();
+        }
+    }
+
+    /**
+     * When you are done with using your connection, you need close in order to
+     * release any other database resource
+     *
+     * @param con it is a object of <code>java.sql.Connection</code>
+     * @throws Exception
+     */
+    public void closeConnection(Connection con) throws Exception {
+        if (con != null && !con.isClosed()) {
+            con.close();
+        }
+    }
+
+    /**
+     * When you are done with using your connection, you need close in order to
+     * release any other database resource
+     *
+     * @param rs it is a object of <code>java.sql.ResultSet</code>
+     * @throws Exception
+     */
+    public void closeResultSet(ResultSet rs) throws Exception {
+        if (rs != null && !rs.isClosed()) {
+            rs.close();
+        }
     }
 }

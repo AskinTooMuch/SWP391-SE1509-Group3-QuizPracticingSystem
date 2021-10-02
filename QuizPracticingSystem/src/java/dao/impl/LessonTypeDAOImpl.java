@@ -6,7 +6,7 @@
 package dao.impl;
 
 import bean.LessonType;
-import dao.MyDAO;
+import dao.DBConnection;
 import java.util.ArrayList;
 import dao.LessonTypeDAO;
 
@@ -14,7 +14,7 @@ import dao.LessonTypeDAO;
  *
  * @author tuan
  */
-public class LessonTypeDAOImpl extends MyDAO implements LessonTypeDAO{
+public class LessonTypeDAOImpl extends DBConnection implements LessonTypeDAO{
     @Override
     public ArrayList<LessonType> getAllLessonType() throws Exception{
         return null;

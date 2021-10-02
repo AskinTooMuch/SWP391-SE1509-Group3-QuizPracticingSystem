@@ -18,6 +18,7 @@ import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
+import dao.DBConnection;
 import java.util.ArrayList;
 import dao.QuizQuizHandleDAO;
 
@@ -25,7 +26,7 @@ import dao.QuizQuizHandleDAO;
  *
  * @author ADMN
  */
-public class QuizQuizHandleDAOImpl implements QuizQuizHandleDAO {
+public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandleDAO {
 
     /**
      * turn a list of question into list of question quiz handle

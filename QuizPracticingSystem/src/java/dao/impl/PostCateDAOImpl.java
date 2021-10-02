@@ -12,34 +12,55 @@ package dao.impl;
 
 import java.util.ArrayList;
 import bean.PostCate;
-import dao.MyDAO;
+import dao.DBConnection;
 import java.sql.PreparedStatement;
 import dao.PostCateDAO;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author duong
  */
-public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
+public class PostCateDAOImpl extends DBConnection implements PostCateDAO {
 
     @Override
     public ArrayList<PostCate> getAllPostCates() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
         ArrayList<PostCate> allPostCate = new ArrayList();
         String sql = "SELECT * FROM [PostCate] ";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 allPostCate.add(new PostCate(rs.getInt("postCateId"),
                         rs.getString("postCateName"),
                         rs.getBoolean("status")));
             }
-        return allPostCate;
+            return allPostCate;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     @Override
     public PostCate getPostCateById(int pcId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
         String sql = "SELECT * FROM [PostCate] WHERE postCateId = ?";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, pcId);
             rs = pre.executeQuery();
             while (rs.next()) {
@@ -47,16 +68,36 @@ public class PostCateDAOImpl extends MyDAO implements PostCateDAO {
                         rs.getString("postCateName"),
                         rs.getBoolean("status"));
             }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
 
     @Override
-    public int getBlogCateByBlogId(int blogId) throws Exception{
+    public int getBlogCateByBlogId(int blogId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
         String sql = "SELECT * FROM [BlogCate] WHERE blogId=" + blogId;
-        PreparedStatement pre = conn.prepareStatement(sql);
-        rs = pre.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("postCateId");
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("postCateId");
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
         return 0;
     }

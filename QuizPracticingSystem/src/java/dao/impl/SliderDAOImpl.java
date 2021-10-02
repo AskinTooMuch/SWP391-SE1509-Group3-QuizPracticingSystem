@@ -6,25 +6,33 @@
 package dao.impl;
 
 import bean.Slider;
-import dao.MyDAO;
+import dao.DBConnection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.SliderDAO;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author admin
  */
-public class SliderDAOImpl extends MyDAO implements SliderDAO{
+public class SliderDAOImpl extends DBConnection implements SliderDAO{
 
     /*Get all Slider from table*/
     @Override
     public ArrayList<Slider> getSlider() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        
         ArrayList<Slider> allSlider = new ArrayList();
         String sql = "SELECT * FROM [Slider]";
             /* Get the slider */
-            PreparedStatement preSlider = conn.prepareStatement(sql);
-            rs = preSlider.executeQuery();
+            try {
+            conn = getConnection(); 
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 int sliderId = rs.getInt("sliderId");
                 String sliderTitle = rs.getString("sliderTitle");
@@ -35,6 +43,13 @@ public class SliderDAOImpl extends MyDAO implements SliderDAO{
                 
                 allSlider.add(new Slider(sliderId, sliderTitle, image, link, note, true));
             }
+            } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return allSlider;
 
     }

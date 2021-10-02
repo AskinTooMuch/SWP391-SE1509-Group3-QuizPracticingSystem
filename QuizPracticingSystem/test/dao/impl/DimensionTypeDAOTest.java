@@ -7,6 +7,8 @@ package dao.impl;
 
 import bean.DimensionType;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,13 +46,17 @@ public class DimensionTypeDAOTest {
      */
     @Test
     public void testGetAllDimensionTypes() {
-        System.out.println("getAllDimensionTypes");
-        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-        ArrayList<DimensionType> expResult = null;
-        ArrayList<DimensionType> result = instance.getAllDimensionTypes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            System.out.println("getAllDimensionTypes");
+            DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
+            ArrayList<DimensionType> expResult = null;
+            ArrayList<DimensionType> result = instance.getAllDimensionTypes();
+            assertEquals(expResult, result);
+            // TODO review the generated test code and remove the default call to fail.
+            fail("The test case is a prototype.");
+        } catch (Exception ex) {
+            Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -58,12 +64,16 @@ public class DimensionTypeDAOTest {
      */
     @Test
     public void testGetDimensionTypeById1() {
-        System.out.println("getDimensionTypeById");
-        int dimensionTypeId = 1;
-        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-        DimensionType expResult = new DimensionType(1, "Domain", true);
-        DimensionType result = instance.getDimensionTypeById(dimensionTypeId);
-        assertEquals(expResult.getDimensionTypeId(), result.getDimensionTypeId());
+        try {
+            System.out.println("getDimensionTypeById");
+            int dimensionTypeId = 1;
+            DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
+            DimensionType expResult = new DimensionType(1, "Domain", true);
+            DimensionType result = instance.getDimensionTypeById(dimensionTypeId);
+            assertEquals(expResult.getDimensionTypeId(), result.getDimensionTypeId());
+        } catch (Exception ex) {
+            Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -71,14 +81,18 @@ public class DimensionTypeDAOTest {
      */
     @Test
     public void testUpdateDimensionType() {
-        System.out.println("updateDimensionType");
-        DimensionType updatedDimensionType = null;
-        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-        int expResult = 0;
-        int result = instance.updateDimensionType(updatedDimensionType);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            System.out.println("updateDimensionType");
+            DimensionType updatedDimensionType = null;
+            DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
+            int expResult = 0;
+            int result = instance.updateDimensionType(updatedDimensionType);
+            assertEquals(expResult, result);
+            // TODO review the generated test code and remove the default call to fail.
+            fail("The test case is a prototype.");
+        } catch (Exception ex) {
+            Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -86,14 +100,18 @@ public class DimensionTypeDAOTest {
      */
     @Test
     public void testDeteteDimensionTyoe() {
-        System.out.println("deteteDimensionTyoe");
-        int dtId = 0;
-        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-        int expResult = 0;
-        int result = instance.deteteDimensionTyoe(dtId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            System.out.println("deteteDimensionTyoe");
+            int dtId = 0;
+            DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
+            int expResult = 0;
+            int result = instance.deteteDimensionTyoe(dtId);
+            assertEquals(expResult, result);
+            // TODO review the generated test code and remove the default call to fail.
+            fail("The test case is a prototype.");
+        } catch (Exception ex) {
+            Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -101,14 +119,18 @@ public class DimensionTypeDAOTest {
      */
     @Test
     public void testAddDimensionType() {
-        System.out.println("addDimensionType");
-        DimensionType newDimensionType = null;
-        DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-        int expResult = 0;
-        int result = instance.addDimensionType(newDimensionType);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            System.out.println("addDimensionType");
+            DimensionType newDimensionType = null;
+            DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
+            int expResult = 0;
+            int result = instance.addDimensionType(newDimensionType);
+            assertEquals(expResult, result);
+            // TODO review the generated test code and remove the default call to fail.
+            fail("The test case is a prototype.");
+        } catch (Exception ex) {
+            Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

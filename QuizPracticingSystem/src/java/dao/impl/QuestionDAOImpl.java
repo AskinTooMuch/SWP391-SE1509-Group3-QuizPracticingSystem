@@ -8,8 +8,8 @@
     Date        Version     Author          Description
     17/9/21     1.0         NamDHHE150519   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
-*/
-/*
+ */
+ /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
   quan tới bảng Question phục vụ cho các chức năng liên quan tới Question của 
   dự án
@@ -18,25 +18,34 @@
 package dao.impl;
 
 import bean.Question;
+import dao.DBConnection;
 import java.util.ArrayList;
-import dao.MyDAO;
 import java.sql.PreparedStatement;
 import dao.QuestionDAO;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
-
-
-public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
+public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
     /**
      * get all question from database
      *
-     * @return list of all question. It is a <code>java.util.ArrayList</code> object.
+     * @return list of all question. It is a <code>java.util.ArrayList</code>
+     * object.
      */
     @Override
     public ArrayList<Question> getAllQuestion() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
         ArrayList<Question> questionList = new ArrayList();
         String sql = "SELECT * FROM Question";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 questionList.add(new Question(rs.getInt("questionId"),
@@ -48,6 +57,13 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
                         rs.getString("explanation"),
                         rs.getBoolean("status")));
             }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return questionList;
     }
 
@@ -60,8 +76,15 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
      */
     @Override
     public Question getQuestionById(int questionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
         String sql = "SELECT * FROM Question WHERE questionId=" + questionId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return new Question(rs.getInt("questionId"),
@@ -73,27 +96,51 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
                         rs.getString("explanation"),
                         rs.getBoolean("status"));
             }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
+
     /**
-     * get list of question of the target quiz 
+     * get list of question of the target quiz
      *
-     * @param quizId the target quiz's id. It is a <code>int</code>
-     * primitive type
-     * @return a list of question. It is a <code>java.util.ArrayList</code> object.
+     * @param quizId the target quiz's id. It is a <code>int</code> primitive
+     * type
+     * @return a list of question. It is a <code>java.util.ArrayList</code>
+     * object.
      */
     @Override
     public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
         ArrayList<Question> questionList = new ArrayList();
         ArrayList<Integer> idList = new ArrayList();
         String sql = "SELECT * FROM [QuizQuestion] WHERE quizId=" + quizId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 idList.add(rs.getInt("questionId"));
             }
-        for (int id : idList) {
-            questionList.add(getQuestionById(id));
+            for (int id : idList) {
+                questionList.add(getQuestionById(id));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
         return questionList;
     }
@@ -126,5 +173,4 @@ public class QuestionDAOImpl extends MyDAO implements QuestionDAO {
 //            System.out.println(q);
 //        }
 //    }
-
 }

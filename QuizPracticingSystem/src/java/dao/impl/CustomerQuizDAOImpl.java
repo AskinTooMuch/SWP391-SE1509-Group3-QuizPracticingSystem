@@ -24,12 +24,15 @@ import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.CustomerQuizDAO;
+import dao.DBConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
+public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO {
 
     @Override
     public ArrayList<CustomerQuiz> getAllCustomerQuiz() throws Exception {
@@ -67,8 +70,14 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      */
     @Override
     public int addCustomerQuiz(CustomerQuiz customerQuiz) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */ 
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        
         String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, customerQuiz.getQuizId());
             pre.setInt(2, customerQuiz.getUserId());
             pre.setInt(3, customerQuiz.getScore());
@@ -76,7 +85,13 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
             pre.setDate(5, customerQuiz.getStartedAt());
             pre.setBoolean(6, true);
             return pre.executeUpdate();
-
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -87,8 +102,14 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      */
     @Override
     public CustomerQuiz getLastAddedCustomerQuiz() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        
         String sql = "SELECT TOP 1 * FROM [CustomerQuiz] ORDER BY quizTakeId DESC";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();    
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return new CustomerQuiz(rs.getInt("quizTakeId"),
@@ -100,6 +121,13 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
                         rs.getBoolean("status"));
             }
         return null;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     @Override
@@ -116,21 +144,34 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      */
     @Override
     public int addTakeAnswer(QuizQuizHandle quiz) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        
         int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
             if (question.getAnsweredId() != 0) {
                 String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
-                    PreparedStatement pre = conn.prepareStatement(sql);
+                try {
+                    conn = getConnection();
+                    pre = conn.prepareStatement(sql);
                     pre.setInt(1, quizTakeId);
                     pre.setInt(2, question.getQuestion().getQuestionId());
                     pre.setInt(3, question.getAnsweredId());
                     pre.setBoolean(4, true);
                     pre.executeUpdate();
                     change++;
+                } catch (Exception ex) {
+                    throw ex;
+                } finally {
+                    closeResultSet(rs);
+                    closePreparedStatement(pre);
+                    closeConnection(conn);
                 }
             }
+        }
         
         return change;
     }
@@ -142,17 +183,30 @@ public class CustomerQuizDAOImpl extends MyDAO implements CustomerQuizDAO {
      */
     @Override
     public int addMarkQuestion(QuizQuizHandle quiz) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        
         int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
             String sql = "INSERT INTO [MarkQuestion](quizTakeId,questionId,[status]) VALUES(?,?,?)";
-                PreparedStatement pre = conn.prepareStatement(sql);
+            try {
+                conn = getConnection();    
+                pre = conn.prepareStatement(sql);
                 pre.setInt(1, quizTakeId);
                 pre.setInt(2, question.getQuestion().getQuestionId());
                 pre.setBoolean(3, question.isMarked());
                 pre.executeUpdate();
                 change++;
+            } catch (Exception ex) {
+                throw ex;
+            } finally {
+                closeResultSet(rs);
+                closePreparedStatement(pre);
+                closeConnection(conn);
+            }
         }
         return change;
     }

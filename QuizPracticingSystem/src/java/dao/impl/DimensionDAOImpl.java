@@ -11,16 +11,18 @@
 package dao.impl;
 
 import bean.Dimension;
-import dao.MyDAO;
+import dao.DBConnection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.DimensionDAO;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author admin
  */
-public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
+public class DimensionDAOImpl extends DBConnection implements DimensionDAO{
 
     @Override
     public ArrayList<Dimension> getAllDimension() throws Exception {
@@ -29,6 +31,10 @@ public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
 
     @Override
     public ArrayList<Dimension> getDimensionBySubject(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
         /* Get dimension list of the subject */
         ArrayList<Dimension> dimensions = new ArrayList<>();
         String sql = "SELECT S.[subjectId]\n" +
@@ -43,18 +49,25 @@ public class DimensionDAOImpl extends MyDAO implements DimensionDAO{
                     "  INNER JOIN [QuizSystem].[dbo].[Dimension] D ON S.subjectId = D.subjectId \n" +
                     "  INNER JOIN [QuizSystem].[dbo].DimensionType DT ON DT.dimensionTypeId = D.dimensionTypeId\n" +
                     "  WHERE S.subjectId =" + subjectId;
-        PreparedStatement pre = conn.prepareStatement(sql);
-        rs = pre.executeQuery();
-        while (rs.next()) {
-            dimensions.add(new Dimension(rs.getInt("dimensionId"),
-                subjectId,
-                rs.getInt("dimensionTypeId"),
-                rs.getString("dimensionTypeName"),
-                rs.getString("dimensionName"),
-                rs.getString("description"),
-                rs.getBoolean("status")));
+        try {
+            conn = getConnection(); pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                dimensions.add(new Dimension(rs.getInt("dimensionId"),
+                    subjectId,
+                    rs.getInt("dimensionTypeId"),
+                    rs.getString("dimensionTypeName"),
+                    rs.getString("dimensionName"),
+                    rs.getString("description"),
+                    rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
-
         return dimensions; 
     }
 

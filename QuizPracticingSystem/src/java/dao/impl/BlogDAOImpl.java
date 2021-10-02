@@ -24,12 +24,15 @@ import java.util.ArrayList;
 import dao.MyDAO;
 import java.sql.PreparedStatement;
 import dao.BlogDAO;
+import dao.DBConnection;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class BlogDAOImpl extends MyDAO implements BlogDAO {
+public class BlogDAOImpl extends DBConnection implements BlogDAO {
 
     /**
      * Get all blog from database
@@ -39,23 +42,37 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getAllBlog() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> allBlog = new ArrayList();
         String sql = "SELECT * FROM [Blog] ORDER BY created DESC";
-        PreparedStatement pre = conn.prepareStatement(sql);
-        rs = pre.executeQuery();
-        while (rs.next()) {
-            BlogDAOImpl blogDAO = new BlogDAOImpl();
-            User author = blogDAO.getAuthor(rs.getInt("blogId"));
-            allBlog.add(new Blog(rs.getInt("blogId"),
-                    rs.getString("blogTitle"),
-                    rs.getDate("created"),
-                    rs.getDate("lastEdited"),
-                    author,
-                    rs.getString("detail"),
-                    rs.getString("thumbnail"),
-                    rs.getBoolean("status")));
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
+                allBlog.add(new Blog(rs.getInt("blogId"),
+                        rs.getString("blogTitle"),
+                        rs.getDate("created"),
+                        rs.getDate("lastEdited"),
+                        author,
+                        rs.getString("detail"),
+                        rs.getString("thumbnail"),
+                        rs.getBoolean("status")));
+            }
+            return allBlog;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
-        return allBlog;
     }
 
     /**
@@ -68,6 +85,11 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> blogList = new ArrayList();
         int[] cateList = null;
         for (int i = 0; i < postCateIdList.length; i++) {
@@ -78,21 +100,30 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             sql += "," + cateList[i];
         }
         sql += ")";
-        PreparedStatement pre = conn.prepareStatement(sql);
-        rs = pre.executeQuery();
-        while (rs.next()) {
-            BlogDAOImpl blogDAO = new BlogDAOImpl();
-            User author = blogDAO.getAuthor(rs.getInt("blogId"));
-            blogList.add(new Blog(rs.getInt("blogId"),
-                    rs.getString("blogTitle"),
-                    rs.getDate("created"),
-                    rs.getDate("lastEdited"),
-                    author,
-                    rs.getString("detail"),
-                    rs.getString("thumbnail"),
-                    rs.getBoolean("status")));
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                BlogDAOImpl blogDAO = new BlogDAOImpl();
+                User author = blogDAO.getAuthor(rs.getInt("blogId"));
+                blogList.add(new Blog(rs.getInt("blogId"),
+                        rs.getString("blogTitle"),
+                        rs.getDate("created"),
+                        rs.getDate("lastEdited"),
+                        author,
+                        rs.getString("detail"),
+                        rs.getString("thumbnail"),
+                        rs.getBoolean("status")));
+            }
+            return blogList;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
-        return blogList;
     }
 
     /**
@@ -105,9 +136,16 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getBlogByUser(int userId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> userBlog = new ArrayList();
         String sql = "SELECT * FROM Blog WHERE author =" + userId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
@@ -121,7 +159,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        return userBlog;
+            return userBlog;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -132,9 +177,15 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public Blog getBlogById(int blogId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
         String sql = "SELECT * FROM Blog WHERE blogId =" + blogId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
@@ -148,8 +199,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-
-        return null;
+            return null;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -160,10 +217,17 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getBlogByTitle(String title) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> titleBlog = new ArrayList();
         String sql = "SELECT * FROM [Blog] WHERE blogTitle like '%" + title + "%'";
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
                 User author = blogDAO.getAuthor(rs.getInt("blogId"));
@@ -176,8 +240,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-
-        return titleBlog;
+            return titleBlog;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -188,11 +258,16 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getAllTrueBlog() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
         ArrayList<Blog> allTrueBlog = new ArrayList();
 
         String sql = "SELECT * FROM [Blog] where status = 1 ORDER BY created DESC";
-
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
@@ -206,8 +281,15 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
+            return allTrueBlog;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
 
-        return allTrueBlog;
     }
 
     /**
@@ -218,10 +300,15 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getLastBlogs() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> lastBlog = new ArrayList();
         String sql = "SELECT TOP 3 * FROM [Blog] where status = 1 ORDER BY created DESC";
-
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
@@ -235,7 +322,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        return lastBlog;
+            return lastBlog;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -249,6 +343,11 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         ArrayList<Blog> blogList = new ArrayList();
         String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE a.status = 1";
         if (postCateIdList != null) {
@@ -267,7 +366,9 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
             sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 BlogDAOImpl blogDAO = new BlogDAOImpl();
@@ -281,7 +382,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("thumbnail"),
                         rs.getBoolean("status")));
             }
-        return blogList;
+            return blogList;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -293,16 +401,30 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public int editBlog(int blogId, Blog blog) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         String sql = "UPDATE [Blog] SET blogTitle =?, created =?, lastEdited =?, author =?, detail =?, thumbnail =?, status =? WHERE blogId =?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, blog.getBlogTitle());
-            ps.setDate(2, blog.getCreated());
-            ps.setDate(3, blog.getLastEdited());
-            ps.setInt(4, blog.getAuthor().getUserId());
-            ps.setString(5, blog.getDetail());
-            ps.setString(6, blog.getThumbnail());
-            ps.setInt(7, blog.getStatus() == true ? 1 : 0);
-            return ps.executeUpdate();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, blog.getBlogTitle());
+            pre.setDate(2, blog.getCreated());
+            pre.setDate(3, blog.getLastEdited());
+            pre.setInt(4, blog.getAuthor().getUserId());
+            pre.setString(5, blog.getDetail());
+            pre.setString(6, blog.getThumbnail());
+            pre.setInt(7, blog.getStatus() == true ? 1 : 0);
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -314,16 +436,30 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public int addBlog(Blog blog) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?)";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, blog.getBlogTitle());
-            ps.setDate(2, blog.getCreated());
-            ps.setDate(3, blog.getLastEdited());
-            ps.setInt(4, blog.getAuthor().getUserId());
-            ps.setString(5, blog.getDetail());
-            ps.setString(6, blog.getThumbnail());
-            ps.setInt(7, blog.getStatus() == true ? 1 : 0);
-            return ps.executeUpdate();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, blog.getBlogTitle());
+            pre.setDate(2, blog.getCreated());
+            pre.setDate(3, blog.getLastEdited());
+            pre.setInt(4, blog.getAuthor().getUserId());
+            pre.setString(5, blog.getDetail());
+            pre.setString(6, blog.getThumbnail());
+            pre.setInt(7, blog.getStatus() == true ? 1 : 0);
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
 
     }
 
@@ -335,9 +471,23 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public int deleteBlog(int blogId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         String sql = "DELETE FROM [Blog] WHERE blogId =" + blogId;
-            ps = conn.prepareStatement(sql);
-            return ps.executeUpdate();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
 
     }
 
@@ -349,10 +499,16 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public User getAuthor(int blogId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
         String sql = "SELECT b.userId,b.userName,b.password,b.roleId,b.profilePic,b.userMail,b.gender,b.userMobile,b.status "
                 + "FROM Blog as a right join [User] as b on a.author=b.userId WHERE a.blogId=" + blogId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return new User(rs.getInt("userId"),
@@ -365,7 +521,14 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
                         rs.getString("userMobile"),
                         rs.getBoolean("status"));
             }
-        return null;
+            return null;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**
@@ -376,15 +539,29 @@ public class BlogDAOImpl extends MyDAO implements BlogDAO {
      */
     @Override
     public PostCate getBlogCategory(int blogId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
         String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 return new PostCate(rs.getInt("postCateId"),
                         rs.getString("postCateName"),
                         rs.getBoolean("status"));
             }
-        return null;
+            return null;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     /**

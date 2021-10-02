@@ -6,8 +6,8 @@
     Date        Version     Author          Description
     17/9/21     1.0         ChucNVHE150618   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
-*/
-/*
+ */
+ /*
   Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan tới
   bảng Quiz.
   @author Đinh Hải Nam
@@ -18,41 +18,50 @@ import bean.DimensionType;
 import bean.Quiz;
 import bean.QuizLevel;
 import bean.TestType;
-import dao.MyDAO;
+import dao.DBConnection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.QuizDAO;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 /**
  *
  * @author ChucNVHE150618
  */
-public class QuizDAOImpl extends MyDAO implements QuizDAO {
+public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
     @Override
     public ArrayList<Quiz> getAllQuiz() throws Exception {
         ArrayList<Quiz> allQuiz = null;
-        
+
         return allQuiz;
     }
 
     /**
      * get quiz by Id
      *
-     * @param quizId the target quiz's id. It is a <code>int</code>
-     * primitive type
+     * @param quizId the target quiz's id. It is a <code>int</code> primitive
+     * type
      * @return a quiz <code>Quiz</code> object.
      */
     @Override
     public Quiz getQuizById(int quizId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
 
         String sql = "SELECT * FROM [Quiz] WHERE quizId=" + quizId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
-                QuizLevel quizLevel =quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
-                String quizLevelName  = quizLevel.getQuizLevelName();
+                QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
+                String quizLevelName = quizLevel.getQuizLevelName();
                 TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
                 TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
                 String testTypeName = testType.getTestTypeName();
@@ -75,9 +84,16 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
                         dimensionTypeName,
                         rs.getBoolean("status"));
             }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
-    
+
     /**
      * get taken quiz by takeQuiz's Id
      *
@@ -86,14 +102,22 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
      * @return a quiz <code>Quiz</code> object.
      */
     @Override
-    public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception{
-        String sql = "select * from Quiz as a join CustomerQuiz as b on a.quizId = b.quizId where quizTakeId="+quizTakeId;
-            PreparedStatement pre = conn.prepareStatement(sql);
+    public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = "select * from Quiz as a join CustomerQuiz as b on a.quizId = b.quizId where quizTakeId=" + quizTakeId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
                 QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
-                QuizLevel quizLevel =quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
-                String quizLevelName  = quizLevel.getQuizLevelName();
+                QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
+                String quizLevelName = quizLevel.getQuizLevelName();
                 TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
                 TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
                 String testTypeName = testType.getTestTypeName();
@@ -116,6 +140,13 @@ public class QuizDAOImpl extends MyDAO implements QuizDAO {
                         dimensionTypeName,
                         rs.getBoolean("status"));
             }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
 
