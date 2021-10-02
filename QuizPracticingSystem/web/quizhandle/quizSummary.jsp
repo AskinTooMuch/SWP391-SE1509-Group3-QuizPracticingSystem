@@ -88,10 +88,10 @@
                             <% if (answeredNumber == 0) {%>
                             You have not answered any question.By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
                             be able to change any answers after this point
-                            <% } %>
+                            <% }%>
                         </div>
                         <form id='questionForm' action='quizController' method="POST">
-                            <input hidden id="time" name="time" value="">  
+                            <input hidden id="time" name="time">  
                             <input hidden name="service" value="submit">
                         </form>
                         <div class="modal-footer">
@@ -122,22 +122,50 @@
         var hoursLabel = document.getElementById("hours");
         var totalSecond;
         var today = new Date();
-        <%int quizType = (int) request.getAttribute("quizType");%>
-        <% if (quizType == 1) {%>
+        <c:choose>
+            <c:when test="${quizType==1}">
         var endMilisecond = localStorage.getItem("endMiliseconds");
-        <%} else {%>
-        var startMilisecond = localStorage.getItem("startMiliseconds");
-        <%}%>
-
+        localStorage.setItem('endMiliseconds', endMilisecond);
         setInterval(setTime, 100);
         function setTime() {
             var today2 = new Date();
             var presentMilisecond = today2.getTime();
-        <% if (quizType == 1) {%>
             totalSecond = (endMilisecond - presentMilisecond) / 1000;
-        <%} else {%>
+            displayTime();
+            
+        }
+        setInterval(autoSubmit, 600);
+        function autoSubmit() {
+            
+            if (totalSecond < 0) {
+                resetTime();
+                document.getElementById("questionForm").submit();
+            }
+        }
+            </c:when>
+            <c:otherwise>
+        var startMilisecond = localStorage.getItem("startMiliseconds");
+        localStorage.setItem('startMiliseconds', startMilisecond);
+        setInterval(setTime, 100);
+        function setTime() {
+            var today2 = new Date();
+            var presentMilisecond = today2.getTime();
             totalSecond = (presentMilisecond - startMilisecond) / 1000;
-        <%}%>
+            displayTime();
+            
+        }
+        setInterval(autoSubmit, 600);
+        function autoSubmit() {
+            
+            if (totalSecond > 15) {
+                resetTime();
+                document.getElementById('questionForm').submit();
+            }
+        }
+            </c:otherwise>
+        </c:choose>
+
+        function displayTime() {
             var totalMinute = (totalSecond / 60) % 60;
             var totalHour = totalSecond / 60 / 60;
             secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));

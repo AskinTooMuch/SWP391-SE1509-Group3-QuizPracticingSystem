@@ -362,7 +362,8 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             sql += cateList[postCateIdList.length - 1];
             sql += ")";
         }
-        if (search != null) {
+        String checkSearch = search.replaceAll(" ","");
+        if (checkSearch.length()!=0) {
             sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";

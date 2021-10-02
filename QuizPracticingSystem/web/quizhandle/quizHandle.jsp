@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="css/quizhandle.css">
     </head>
-    <body>
+    <body onbeforeunload="submitForm()">
 
         <div class="container-fluid">
             <!--start header-->
@@ -69,13 +69,12 @@
                         <h4>${questionContent}</h4>
                     </div>
                 </div>
-                <%int answeredNumber = (int) request.getAttribute("answeredNumber");
-                %>    
+          
                 <c:set var="answered" value="${requestScope.answered}"/>
                 <div class="row answers" style="margin-top:10px;">
                     <div class="col-1"></div>
                     <div class="col-11">
-                        <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'">
+                        <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                             <ul>
                                 <input hidden name="questionTakenNumber" value="${questionNumber}">
                                 <c:forEach items="${answerList}" var="answer">
@@ -93,11 +92,13 @@
                                     <br/>
                                 </c:forEach>
                             </ul>
-                            <!--                                userid-->
+                            <!--                                userid-->     
+                            <input hidden id="formAction" name="finalAction" form="questionForm">
                             <input hidden name="userId" value="2" form="questionForm">
-                            <input hidden id="time" value="" name="time" form="questionForm">
+                            <input hidden id="time" name="time" form="questionForm">
                         </form>    
                     </div>
+
 
                     <div class="col-1"></div>
                 </div>
@@ -202,22 +203,37 @@
 
         </div>
         <script>
-
             var minutesLabel = document.getElementById("minutes");
             var secondsLabel = document.getElementById("seconds");
             var hoursLabel = document.getElementById("hours");
             var totalSecond;
             var today = new Date();
-            <%int quizType = (int) request.getAttribute("quizType");%>
-            <%if (quizType == 1) { %>
+            <c:choose>
+                <c:when test="${quizType==1}">
             var endMilisecond;
             if (localStorage.getItem("endMiliseconds") != null) {
                 endMilisecond = localStorage.getItem("endMiliseconds");
             } else {
-                endMilisecond = today.getTime() +${duration*60*1000};
+                endMilisecond = today.getTime() +${duration*1000};
             }
             localStorage.setItem('endMiliseconds', endMilisecond);
-            <%} else {%>
+            setInterval(setTime, 100);
+            function setTime() {
+                var today2 = new Date();
+                var presentMilisecond = today2.getTime();
+
+                totalSecond = (endMilisecond - presentMilisecond) / 1000;
+                displayTime();
+            }
+            setInterval(autoSubmit, 100);
+            function autoSubmit() {
+                if (totalSecond < 0) {
+                    document.getElementById("formAction").value = "Finish Exam";
+                    document.getElementById("questionForm").submit();
+                }
+            }
+                </c:when>
+                <c:otherwise>
             var startMilisecond;
             if (localStorage.getItem("startMiliseconds") != null) {
                 startMilisecond = localStorage.getItem("startMiliseconds");
@@ -225,16 +241,23 @@
                 startMilisecond = today.getTime();
             }
             localStorage.setItem('startMiliseconds', startMilisecond);
-            <% } %>
             setInterval(setTime, 100);
             function setTime() {
                 var today2 = new Date();
                 var presentMilisecond = today2.getTime();
-            <% if (quizType == 1) { %>
-                totalSecond = (endMilisecond - presentMilisecond) / 1000;
-            <% } else {%>
                 totalSecond = ((presentMilisecond - startMilisecond) / 1000);
-            <% } %>
+                displayTime();
+            }
+            setInterval(autoSubmit, 100);
+            function autoSubmit() {
+                if (totalSecond > 60) {
+                    document.getElementById("formAction").value = "Finish Exam";
+                    document.getElementById('questionForm').submit();
+                }
+            }
+                </c:otherwise>
+            </c:choose>
+            function displayTime() {
                 var totalMinute = (totalSecond / 60) % 60;
                 var totalHour = totalSecond / 60 / 60;
                 secondsLabel.innerHTML = pad(parseInt(totalSecond % 60));
@@ -245,7 +268,6 @@
             function resetTime() {
                 localStorage.clear();
             }
-
             function pad(val) {
                 var valString = val + "";
                 if (valString.length < 2) {
@@ -254,7 +276,6 @@
                     return valString;
                 }
             }
-
             const unanswered = document.getElementById('unansweredbutton');
             const marked = document.getElementById('markedbutton');
             const answered = document.getElementById('answeredbutton');
@@ -299,21 +320,6 @@
                     y[i].style.display = 'inline-flex';
                 }
             });
-
-
-            var numberOfAnswer = document.getElementById("numberOfAnswer");
-            function countThis() {
-            <%answeredNumber += 1;%>
-                var answered = <%=answeredNumber%>;
-                numberOfAnswer.innerHTML = answered;
-
-
-            }
-
-
-
-
-
         </script>
 
 

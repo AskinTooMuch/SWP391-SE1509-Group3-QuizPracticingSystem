@@ -157,13 +157,4 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
 
         return questionList;
     }
-
-//    public static void main(String[] args) {
-//        QuestionQuizHandleDAOImpl dao = new QuestionQuizHandleDAOImpl();
-//        QuestionDAOImpl qdao = new QuestionDAOImpl();
-//        ArrayList<Boolean> s = dao.getMarkQuestionList(11);
-//        for (boolean a : s) {
-//            System.out.println(a);
-//        }
-//    }
 }

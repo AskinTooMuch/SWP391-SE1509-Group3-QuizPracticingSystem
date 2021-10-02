@@ -132,9 +132,10 @@ public class QuizController extends HttpServlet {
                 request.setAttribute("answeredNumber", answeredQuestionNumber);
                 //length of this quiz
                 request.setAttribute("quizSize", quiz.size());
-                request.setAttribute("duration", questionArray.getTime());
+                request.setAttribute("duration", 10);
                 //Next quiz, Previous quiz, Score Exams handle
                 String action = request.getParameter("action");
+                String finalAction = request.getParameter("finalAction");
                 if (action != null) {
                     //information of recently submit question include questionNumber in this quiz and answer id in database
                     String answerTakenIdRaw = request.getParameter("answerTakenId");
@@ -164,6 +165,13 @@ public class QuizController extends HttpServlet {
 
                         response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
                     } else if (action.equalsIgnoreCase("Finish Exam")) {
+                        int time = Integer.parseInt(request.getParameter("time"));
+                        questionArray.setTime(time);
+                        request.setAttribute("totalsecond", time);
+                        response.sendRedirect("quizController?service=quizSummary");
+                    }
+                } else if (finalAction != null) {
+                    if (finalAction.equalsIgnoreCase("Finish Exam")) {
                         int time = Integer.parseInt(request.getParameter("time"));
                         questionArray.setTime(time);
                         request.setAttribute("totalsecond", time);
@@ -199,13 +207,14 @@ public class QuizController extends HttpServlet {
                 }
 
             }
-
+            
             if (service.equalsIgnoreCase("submit")) {
                 HttpSession session = request.getSession(true);
                 QuizQuizHandle questionArray = null;
                 Object object = session.getAttribute("questionArray");
-
+                int latestTakeQuizId = 0;
                 if (object != null) {
+                 
                     questionArray = (QuizQuizHandle) object;
                     int quizId = questionArray.getQuiz().getQuizId();
                     int time = Integer.parseInt(request.getParameter("time"));
@@ -216,17 +225,19 @@ public class QuizController extends HttpServlet {
                     java.sql.Date date = new java.sql.Date(millis);
                     //Insert into CustomerQuiz table in database
                     CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, 2, (int) score, time, date, true);
-                    CustomerQuizDAO customerQuizINT = new CustomerQuizDAOImpl();
-                    customerQuizINT.addCustomerQuiz(customerQuiz);
+                    CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
+                    customerQuizInterface.addCustomerQuiz(customerQuiz);
+                    latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
                     //Insert into TakeAnswer table in database;
-                    customerQuizINT.addTakeAnswer(questionArray);
+                    customerQuizInterface.addTakeAnswer(questionArray);
                     //Inser into MarkQuestion table in database;
-                    customerQuizINT.addMarkQuestion(questionArray);
+                    customerQuizInterface.addMarkQuestion(questionArray);
                     //redirect user to review quiz page
                     session.removeAttribute("questionArray");
-                    response.sendRedirect("homeController");
                 }
+                response.sendRedirect("quizController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
             }
+           
 
             if (service.equalsIgnoreCase("quizReview")) {
                 //prepare quiz information

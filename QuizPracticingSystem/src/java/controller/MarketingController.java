@@ -58,8 +58,8 @@ public class MarketingController extends HttpServlet {
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
-
-                if ((searchCate != null) || (searchString != null)) {
+                
+                if ((searchCate != null) || (searchString.trim() != null)) {
                     blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
                     //phan trang sau khi tim kiem theo category
                     String pagingUrl = "";                                                               //url connect to ...?page=          
