@@ -76,7 +76,7 @@
                     <div class="col-11">
                         <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                             <ul>
-                                <input hidden name="questionTakenNumber" value="${questionNumber}">
+                                
                                 <c:forEach items="${answerList}" var="answer">
                                     <div class="checkbox-inline" style="display: -webkit-inline-box;">
                                         <label class="labelA" for="${answer.getAnswerId()}">
@@ -94,7 +94,7 @@
                             </ul>
                             <!--                                userid-->     
                             <input hidden id="formAction" name="finalAction" form="questionForm">
-                            <input hidden name="userId" value="2" form="questionForm">
+                            <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
                             <input hidden id="time" name="time" form="questionForm">
                         </form>    
                     </div>
@@ -219,15 +219,16 @@
             localStorage.setItem('endMiliseconds', endMilisecond);
             setInterval(setTime, 100);
             function setTime() {
+             
                 var today2 = new Date();
                 var presentMilisecond = today2.getTime();
 
                 totalSecond = (endMilisecond - presentMilisecond) / 1000;
                 displayTime();
             }
-            setInterval(autoSubmit, 100);
+            setInterval(autoSubmit, 1000);
             function autoSubmit() {
-                if (totalSecond < 0) {
+                if (totalSecond < 2) {
                     document.getElementById("formAction").value = "Finish Exam";
                     document.getElementById("questionForm").submit();
                 }

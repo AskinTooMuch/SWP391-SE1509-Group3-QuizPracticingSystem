@@ -66,124 +66,126 @@ public class QuizController extends HttpServlet {
             QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
 
+            if (service.equalsIgnoreCase("quizEntrance")) {
+                int quizId = Integer.parseInt(request.getParameter("quizId"));
+                ArrayList<Question> questionList = questionInterface.getQuestionByQuizId(quizId);
+                QuizQuizHandle questionArray = quizQHInterface.generateQuiz(questionList, quizId);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("questionArray", questionArray);
+                response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=1");
+            }
+
             if (service.equalsIgnoreCase("quizHandle")) {
                 //get quiz from session or generate new quiz (not yet have userId)
                 HttpSession session = request.getSession(true);
-                QuizQuizHandle questionArray = (QuizQuizHandle) session.getAttribute("questionArray");
-                int quizId = Integer.parseInt(request.getParameter("quizId"));
+                Object object = session.getAttribute("questionArray");
+                if (object != null) {
+                    QuizQuizHandle questionArray = (QuizQuizHandle) object;
+                    int quizId = Integer.parseInt(request.getParameter("quizId"));
+                    request.setAttribute("quizId", quizId);
+                    int quizType = questionArray.getQuiz()
+                            .getTestTypeId();
+                    request.setAttribute("quizType", quizType);
 
-                request.setAttribute("quizId", quizId);
-                if (questionArray == null) {
-                    ArrayList<Question> questionList = questionInterface.getQuestionByQuizId(quizId);
-                    questionArray = quizQHInterface.generateQuiz(questionList, quizId);
-                }
-                session.setAttribute("questionArray", questionArray);
-                int quizType = questionArray.getQuiz()
-                        .getTestTypeId();
-                if (quizType == EXAM_TYPE) {//1 = exam, 2 = practice
-                    session.setMaxInactiveInterval(questionArray.getQuiz()
-                            .getQuizDuration());
-                } else {
-                    session.setMaxInactiveInterval(MAX_SESSION_TIME);
-                }
-                request.setAttribute("quizType", quizType);
+                    ArrayList<QuestionQuizHandle> quiz = questionArray.getQuestions();
+                    request.setAttribute("quiz", quiz);
 
-                ArrayList<QuestionQuizHandle> quiz = questionArray.getQuestions();
-                request.setAttribute("quiz", quiz);
+                    //get question id
+                    int questionNumber;
+                    if (request.getParameter("questionNumber") == null) {
+                        questionNumber = 1;
+                    } else {
+                        questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
+                    }
+                    QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
 
-                //get question id
-                int questionNumber;
-                if (request.getParameter("questionNumber") == null) {
-                    questionNumber = 1;
-                } else {
-                    questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
-                }
-                QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
-
-                //send being taking question's information
-                request.setAttribute("answered", questionQH.getAnsweredId());
-
-                request.setAttribute("questionQH", questionQH);
-                String questionContent = questionQH.getQuestion().getContent();
-                request.setAttribute("questionContent", questionContent);
-                //answer List of question
-                ArrayList<Answer> answerList = questionQH.getAnswerList();
-                request.setAttribute("answerList", answerList);
-                //true answer of question
-                Answer trueAnswer = questionQHInterface.getRightAnswer(questionQH);
-                request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
-                //number of question in this quiz
-                request.setAttribute("questionNumber", questionNumber);
-                //question id in database
-                request.setAttribute("questionId", questionQH.getQuestion()
-                        .getQuestionId());
-                //explanation of this question
-                request.setAttribute("explanation", questionQH.getQuestion()
-                        .getExplanation());
-                //Mark this question 
-                String marked = request.getParameter("marked");
-                if (marked != null && marked.equalsIgnoreCase("yes")) {
-                    questionQHInterface.markQuestion(questionQH);
-                }
-
-                //send quiz infomation
-                //Number of answered question in quiz
-                int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
-                request.setAttribute("answeredNumber", answeredQuestionNumber);
-                //length of this quiz
-                request.setAttribute("quizSize", quiz.size());
-                request.setAttribute("duration", 10);
-                //Next quiz, Previous quiz, Score Exams handle
-                String action = request.getParameter("action");
-                String finalAction = request.getParameter("finalAction");
-                if (action != null) {
-                    //information of recently submit question include questionNumber in this quiz and answer id in database
-                    String answerTakenIdRaw = request.getParameter("answerTakenId");
-                    String questionTakenNumberRaw = request.getParameter("questionTakenNumber");
-
-                    //set answerId of this question
-                    if (answerTakenIdRaw != null && questionTakenNumberRaw != null) {
-                        int answerTakenId = Integer.parseInt(answerTakenIdRaw);
-                        questionQH.setAnsweredId(answerTakenId);
+                    //send being taking question's information
+                    request.setAttribute("answered", questionQH.getAnsweredId());
+                    request.setAttribute("questionQH", questionQH);
+                    String questionContent = questionQH.getQuestion().getContent();
+                    request.setAttribute("questionContent", questionContent);
+                    //answer List of question
+                    ArrayList<Answer> answerList = questionQH.getAnswerList();
+                    request.setAttribute("answerList", answerList);
+                    //true answer of question
+                    Answer trueAnswer = questionQHInterface.getRightAnswer(questionQH);
+                    request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
+                    //number of question in this quiz
+                    request.setAttribute("questionNumber", questionNumber);
+                    //question id in database
+                    request.setAttribute("questionId", questionQH.getQuestion()
+                            .getQuestionId());
+                    //explanation of this question
+                    request.setAttribute("explanation", questionQH.getQuestion()
+                            .getExplanation());
+                    //Mark this question 
+                    String marked = request.getParameter("marked");
+                    if (marked != null && marked.equalsIgnoreCase("yes")) {
+                        questionQHInterface.markQuestion(questionQH);
                     }
 
-                    //prepare for next action
-                    int newQuestionNumber = 0;
-                    //previous question
-                    if (action.equalsIgnoreCase("Previous Question")) {
-                        newQuestionNumber = --questionNumber;
-                        response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+                    //send quiz infomation
+                    //Number of answered question in quiz
+                    int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
+                    request.setAttribute("answeredNumber", answeredQuestionNumber);
+                    //length of this quiz
+                    request.setAttribute("quizSize", quiz.size());
+                    request.setAttribute("duration", questionArray.getQuiz().getQuizDuration());
+                    //Next quiz, Previous quiz, Score Exams handle
+                    String action = request.getParameter("action");
+                    String finalAction = request.getParameter("finalAction");
+                    if (action != null) {
+                        //information of recently submit question include questionNumber in this quiz and answer id in database
+                        String answerTakenIdRaw = request.getParameter("answerTakenId");
+                        String questionTakenNumberRaw = request.getParameter("questionTakenNumber");
 
-                        //next question    
-                    } else if (action.equalsIgnoreCase("Next Question")) {
-                        newQuestionNumber = ++questionNumber;
-                        response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+                        //set answerId of this question
+                        if (answerTakenIdRaw != null && questionTakenNumberRaw != null) {
+                            int answerTakenId = Integer.parseInt(answerTakenIdRaw);
+                            questionQH.setAnsweredId(answerTakenId);
+                        }
 
-                        //score exam
-                    } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
-                            && (action.charAt(0) != 'S') && (action.charAt(0) != 'E') && (action.charAt(0) != 'F')) {
+                        //prepare for next action
+                        int newQuestionNumber = 0;
+                        //previous question
+                        if (action.equalsIgnoreCase("Previous Question")) {
+                            newQuestionNumber = --questionNumber;
+                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
 
-                        response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
-                    } else if (action.equalsIgnoreCase("Finish Exam")) {
-                        int time = Integer.parseInt(request.getParameter("time"));
-                        questionArray.setTime(time);
-                        request.setAttribute("totalsecond", time);
-                        response.sendRedirect("quizController?service=quizSummary");
+                            //next question    
+                        } else if (action.equalsIgnoreCase("Next Question")) {
+                            newQuestionNumber = ++questionNumber;
+                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+
+                            //score exam
+                        } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
+                                && (action.charAt(0) != 'S') && (action.charAt(0) != 'E') && (action.charAt(0) != 'F')) {
+
+                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + Integer.parseInt(action));
+                        } else if (action.equalsIgnoreCase("Finish Exam")) {
+                            int time = Integer.parseInt(request.getParameter("time"));
+                            questionArray.setTime(time);
+                            request.setAttribute("totalsecond", time);
+                            response.sendRedirect("quizController?service=quizSummary");
+                        }
+                    } else if (finalAction != null) {
+                        if (finalAction.equalsIgnoreCase("Finish Exam")) {
+                            int time = Integer.parseInt(request.getParameter("time"));
+                            questionArray.setTime(time);
+                            request.setAttribute("totalsecond", time);
+                            response.sendRedirect("quizController?service=quizSummary");
+                        }
+                    } else {
+                        request.getRequestDispatcher("quizhandle/quizHandle.jsp").forward(request, response);
                     }
-                } else if (finalAction != null) {
-                    if (finalAction.equalsIgnoreCase("Finish Exam")) {
-                        int time = Integer.parseInt(request.getParameter("time"));
-                        questionArray.setTime(time);
-                        request.setAttribute("totalsecond", time);
-                        response.sendRedirect("quizController?service=quizSummary");
-                    }
+
                 } else {
-                    request.getRequestDispatcher("quizhandle/quizHandle.jsp").forward(request, response);
+                    response.sendRedirect("homeController");
                 }
             }
 
             if (service.equalsIgnoreCase("quizSummary")) {
-                HttpSession session = request.getSession(true);
+                HttpSession session = request.getSession();
                 QuizQuizHandle questionArray = null;
                 Object object = session.getAttribute("questionArray");
                 //co roi
@@ -200,44 +202,30 @@ public class QuizController extends HttpServlet {
                             .size());
                     int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
                     request.setAttribute("answeredNumber", answeredQuestionNumber);
-
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("homeController");
                 }
-
             }
-            
+
             if (service.equalsIgnoreCase("submit")) {
                 HttpSession session = request.getSession(true);
                 QuizQuizHandle questionArray = null;
                 Object object = session.getAttribute("questionArray");
                 int latestTakeQuizId = 0;
                 if (object != null) {
-                 
                     questionArray = (QuizQuizHandle) object;
-                    int quizId = questionArray.getQuiz().getQuizId();
                     int time = Integer.parseInt(request.getParameter("time"));
-                    //Score of this quiz    
-                    double score = quizQHInterface.calculateScore(questionArray);
-                    //Date of this quiz
-                    long millis = System.currentTimeMillis();
-                    java.sql.Date date = new java.sql.Date(millis);
-                    //Insert into CustomerQuiz table in database
-                    CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, 2, (int) score, time, date, true);
-                    CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
-                    customerQuizInterface.addCustomerQuiz(customerQuiz);
-                    latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
-                    //Insert into TakeAnswer table in database;
-                    customerQuizInterface.addTakeAnswer(questionArray);
-                    //Inser into MarkQuestion table in database;
-                    customerQuizInterface.addMarkQuestion(questionArray);
-                    //redirect user to review quiz page
+                    questionArray.setTime(time);
                     session.removeAttribute("questionArray");
+                    CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
+                    latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
+                    //redirect user to review quiz page  
+                    
+                    response.sendRedirect("quizController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
+                    return;
                 }
-                response.sendRedirect("quizController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
             }
-           
 
             if (service.equalsIgnoreCase("quizReview")) {
                 //prepare quiz information

@@ -59,7 +59,7 @@ public class MarketingController extends HttpServlet {
                 String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
                 
-                if ((searchCate != null) || (searchString.trim() != null)) {
+                if ((searchCate != null) || (searchString != null)) {
                     blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
                     //phan trang sau khi tim kiem theo category
                     String pagingUrl = "";                                                               //url connect to ...?page=          
