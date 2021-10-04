@@ -395,6 +395,20 @@ INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanat
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Tokei',NULL,'nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Ashi',NULL,'nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Kami',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,1,'What is Object Oriented Programming?',NULL,'OOP Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,1,'What are the main features of OOPs?',NULL,'OOP Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,1,'What is an object?',NULL,'OOP Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,1,'What is a class?',NULL,'OOP Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is inheritance?',NULL,'OOP Details',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is polymorphism?',NULL,'OOP Details',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is encapsulation?',NULL,'OOP Details',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is Data Abstraction?',NULL,'OOP Details',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What is Adobe Photoshop?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What is Gradient in Photoshop?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What are the Photoshop’s work areas?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'How you can re-size the image in Photoshop?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'List some important tools in Adobe Photoshop?',NULL,'Photoshop Introduction',1)
+
 -------------------------------------------
 ----------dbo.[Answer]---------------------
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(1,'I',1,1)

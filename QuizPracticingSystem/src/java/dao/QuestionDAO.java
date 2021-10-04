@@ -19,6 +19,8 @@ public interface QuestionDAO {
     public Question getQuestionById(int questionId) throws Exception;
     
     public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception;
+    
+    public ArrayList<Question> getQuestionByContent(String content) throws Exception;
 
     public int addQuestion(Question newQuestion) throws Exception;
 

@@ -24,6 +24,9 @@ import java.sql.PreparedStatement;
 import dao.QuestionDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
@@ -146,8 +149,66 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
     }
 
     @Override
+    public ArrayList<Question> getQuestionByContent(String content) throws Exception{
+        DBConnection dbConn = new DBConnection();
+        Connection conn = dbConn.getConnection();
+        ResultSet rs;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */        
+        ArrayList<Question> listQuestion = new ArrayList<>();
+        String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%" + content + "%'";
+        rs = dbConn.getData(sql);
+        try {
+            while (rs.next()) {
+                Question question = new Question();
+                question.setQuestionId(rs.getInt("questionId"));
+                question.setSubjectId(rs.getInt("subjectId"));
+                question.setDimensionId(rs.getInt("dimensionId"));
+                question.setLessonId(rs.getInt("lessonId"));
+                question.setContent(rs.getString("content"));
+                question.setMedia(rs.getString("meadia"));
+                question.setExplanation(rs.getString("explanation"));
+                question.setStatus(rs.getBoolean("status"));
+                listQuestion.add(question);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return listQuestion;
+    }
+
+    @Override
     public int addQuestion(Question newQuestion) throws Exception {
-        return 0;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        
+        String sql = "INSERT INTO [Question](subjectId,dimensionId,lessonId,content,media,explanation,status) values (?,?,?,?,?,?,?)";
+        int count =0;
+        try {
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, newQuestion.getSubjectId());
+            pre.setInt(2, newQuestion.getDimensionId());
+            pre.setInt(3, newQuestion.getLessonId());
+            pre.setString(4, newQuestion.getContent());
+            pre.setString(5, newQuestion.getMedia());
+            pre.setString(6, newQuestion.getExplanation());
+            pre.setBoolean(7, newQuestion.isStatus());
+            count = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return count;
     }
 
     @Override
