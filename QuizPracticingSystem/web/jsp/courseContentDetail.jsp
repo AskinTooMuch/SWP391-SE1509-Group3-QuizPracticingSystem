@@ -23,60 +23,59 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+
     </head>
     <body>
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
-            
-            <div class="col-md-12">
-                <div class="col-md-4"></div>
-                <div class="tab col-md-4">
-                    <button class="tablinks" onclick="openTab(event, 'tab1')">Tab 1</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Tab 2</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab3')">Tab 3</button>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="tab row">
+                    <div class="col-md-3"></div>
+                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab1')">Tab 1</button>
+                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab2')">Tab 2</button>
+                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab3')">Tab 3</button>
+                    <div class="col-md-3"></div>
                 </div>
-                <div class="col-md-4"></div>
-            </div>
-            
-            <div class="col-md-12">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
+                <div class="details">
                     <div id="tab1" class="tabcontent" style="display: block">
-                      <h3>Tab 1</h3>
-                      <p>Tab content 1</p>
+                        <h3>Tab 1</h3>
+                        <p>Tab content 1</p>
                     </div>
 
                     <div id="tab2" class="tabcontent">
-                      <h3>Tab 2</h3>
-                      <p>Tab content 2</p> 
+                        <h3>Tab 2</h3>
+                        <p>Tab content 2</p>
                     </div>
 
                     <div id="tab3" class="tabcontent">
-                      <h3>Tab 3</h3>
-                      <p>Tab content 3</p>
+                        <h3>Tab 3</h3>
+                        <p>Tab content 3</p>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
             </div>
+            <div class="col-md-2"></div>
+        </div>
         <%-- Include footer page --%>
         <jsp:include page="footer.jsp"/>
     </body>
-    
+
     <script>
         <%-- Javascript for tabs opening --%>
         function openTab(evt, tabName) {
-          var i, tabcontent, tablinks;
-          tabcontent = document.getElementsByClassName("tabcontent");
-          for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-          }
-          tablinks = document.getElementsByClassName("tablinks");
-          for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-          }
-          document.getElementById(tabName).style.display = "block";
-          evt.currentTarget.className += " active";
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-</script>
+    </script>
 </html>
