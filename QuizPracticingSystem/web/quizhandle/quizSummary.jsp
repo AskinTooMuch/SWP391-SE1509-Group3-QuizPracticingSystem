@@ -22,24 +22,25 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="infomation" >
+            <div class="infomation" style="">
                 <div class='info row' style='display:flex;'>
                     <div class='col-1'>
                         <a type="button" class="btn" href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
                            margin-left: 5px;'> Back</a>
                     </div>
                     <div class='col-11'>
-                        ${mess}
+                       thong tin bai quiz
                     </div>
                 </div>
             </div>
-            <div class="row infomation1">
+            <div class="row infomation1" style="">
+                thong tin bai quiz
             </div>
             <div class="container">
                 <div class="row">
                     <div class="mainContent col-9" style="border-right: 1px solid black;">
-                        <c:forEach items="${questionArray.getQuestions()}" var="question">
-                            <a href="quizController?service=quizHandle&quizId=${questionArray.getQuiz().getQuizId()}&questionNumber=${questionArray.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${questionArray.getQuestions().indexOf(question)+1}</a>
+                        <c:forEach items="${doingQuiz.getQuestions()}" var="question">
+                            <a href="quizController?service=quizHandle&quizId=${doingQuiz.getQuiz().getQuizId()}&questionNumber=${doingQuiz.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${doingQuiz.getQuestions().indexOf(question)+1}</a>
                         </c:forEach>   
                     </div>
                     <div class="col-3" style="display:flex;">
@@ -65,7 +66,7 @@
                         <div class="modal-header">
 
 
-                            <c:if test="${answeredNumber==questionArray.getQuestions().size() || (answeredNumber < questionArray.getQuestions().size() && answeredNumber !=0)}" > 
+                            <c:if test="${answeredNumber==doingQuiz.getQuestions().size() || (answeredNumber < doingQuiz.getQuestions().size() && answeredNumber !=0)}" > 
                                   <h5 class="modal-title" id="exampleModalLabel" >Score Exam?</h5>
                         </c:if>
                         <c:if test="${answeredNumber == 0}">
@@ -73,16 +74,16 @@
                         </c:if>
                     </div>
                     <div class="modal-body">
-                        <c:if test="${answeredNumber == questionArray.getQuestions().size()}">
+                        <c:if test="${answeredNumber == doingQuiz.getQuestions().size()}">
 
                             By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
                             be able to change any answers after this point
                         </c:if>
 
 
-                        <c:if test="${answeredNumber < questionArray.getQuestions().size() && answeredNumber > 0}"> 
+                        <c:if test="${answeredNumber < doingQuiz.getQuestions().size() && answeredNumber > 0}"> 
                             <div style="display: flex;">
-                                <p style="color:red;" id="numberOfAnswer">${answeredNumber}</p><p style="color:red;">&nbsp;of ${questionArray.getQuestions().size()} Questions Answered</p>  
+                                <p style="color:red;" id="numberOfAnswer">${answeredNumber}</p><p style="color:red;">&nbsp;of ${doingQuiz.getQuestions().size()} Questions Answered</p>  
                             </div>
                             By clicking on the [Score Exam] button below, you will complete your current exam and receive your score. You will not 
                             be able to change any answers after this point

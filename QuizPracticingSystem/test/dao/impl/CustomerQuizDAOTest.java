@@ -20,22 +20,22 @@ import static org.junit.Assert.*;
  * @author Bùi Thanh Tùng
  */
 public class CustomerQuizDAOTest {
-    
+
     public CustomerQuizDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -78,7 +78,7 @@ public class CustomerQuizDAOTest {
         int quizId = 0;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
         CustomerQuiz expResult = null;
-        CustomerQuiz result = instance.getQuizById(quizId);
+        CustomerQuiz result = instance.getQuizByTakeQuizId(quizId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -158,20 +158,4 @@ public class CustomerQuizDAOTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of addMarkQuestion method, of class CustomerQuizDAOImpl.
-     */
-    @Test
-    public void testAddMarkQuestion() throws Exception {
-        System.out.println("addMarkQuestion");
-        QuizQuizHandle quiz = null;
-        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
-        int expResult = 0;
-        int result = instance.addMarkQuestion(quiz);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
 }

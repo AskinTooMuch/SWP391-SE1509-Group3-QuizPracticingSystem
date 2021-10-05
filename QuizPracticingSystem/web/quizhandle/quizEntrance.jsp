@@ -13,7 +13,7 @@
     </head>
     <body>
         <form action="http://localhost:8080/quizController?service=quizEntrance" method="POST">
-            <input hidden name="quizId" value="2">
+            <input hidden name="quizId" value="3">
             <input type="submit" name="ticket" value="yes">
         </form>
     </body>

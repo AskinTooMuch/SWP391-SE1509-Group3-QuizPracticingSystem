@@ -61,50 +61,65 @@
                     font-weight: bold;
                 }
             </style>
-            <div class="mainContent">
-                <div class="row question">
-                    <div class="col-1"></div>
-                    <div class="col-11">
-                        <h4>${questionContent}</h4>
+            <div class="mainContent" style="display: flex;">
+                <div class="col-1"></div>
+                <div class="col-4" style="">
+                    <div class="row question" style="display: flex;">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-11" style="float:right;">
+
+                            <h4>${questionQH.getQuestion().getContent()}</h4>
+                        </div>
+                    </div>
+
+                    <div class="row answers" style="margin-top:10px;">
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                                <ul>
+
+                                    <c:forEach items="${questionQH.getAnswerList()}" var="answer">
+                                        <div class="checkbox-inline" style="display: -webkit-inline-box;">
+                                            <label class="labelA" for="${answer.getAnswerId()}">
+                                                <li>
+                                                    ${answer.getAnswerContent()} 
+                                                </li>
+
+                                                <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} class="radioAnswer">
+                                                <span class="checkmark"></span>
+                                            </label>
+
+                                        </div>
+                                        <br/>
+                                    </c:forEach>
+                                </ul>
+                                <!--                                userid-->     
+                                <input hidden id="formAction" name="finalAction" form="questionForm">
+                                <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
+                                <input hidden id="time" name="time" form="questionForm">
+                            </form>    
+                        </div>
+
+
+                        <div class="col-1"></div>
                     </div>
                 </div>
-                <c:set var="answered" value="${requestScope.answered}"/>
-                <div class="row answers" style="margin-top:10px;">
-
-                    <div class="col-12">
-                        <ul style='margin-left:50px;margin-top: 10px;'>                  
-                            <c:forEach items="${answerList}" var="answer">
-                                <c:if test="${answer.getAnswerId()==answered}">
-                                    <img src="images/youranswer.png" style='width:90px;height: auto;'>
-                                </c:if>
-
-                                <div class="checkbox-inline ${answer.getAnswerId()==answered?"":"wrong"}" style="display: -webkit-inline-box;">
-                                    <label class="labelA" for="${answer.getAnswerId()}">
-                                        <li>
-                                            ${answer.getAnswerContent()} 
-                                        </li>
-                                        <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":"disabled"} id="answertake">
-
-                                        <span class="checkmark ${answer.getAnswerId()==answered?"":"disable"}"></span>
-                                    </label>
-                                </div>
-                                <c:if test="${answer.isIsCorrect()}">
-                                    <img src="images/right.png" style='width:20px;height: auto;'>
-                                </c:if>
-                                <c:if test="${!answer.isIsCorrect()}">
-                                    <img src="images/wrong.png" style='width:20px;height: auto;'>
-                                </c:if>
-
-                                <br/>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                    <style>
-                        .wrong{
-                            margin-left: 94.2px;
-                        }
-                    </style>
-                    <div class="col-1"></div>
+                <div class="right col-7" style="">
+                    <c:if test="${questionQH.getQuestion().getMedia()!=null}">
+                        
+                        <div style="">
+                            <c:if test="${mediaType==2}">
+                            <iframe width="420" height="315" style="width:100%; height:500px;"
+                                    src=${questionQH.getQuestion().getMedia()}>
+                            </iframe>
+                            </c:if>
+                            <c:if test="${mediaType==1}">
+                                <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
+                            </c:if>
+                        </div>
+                    </c:if>
                 </div>
             </div>
             <!--                           end mainContent-->

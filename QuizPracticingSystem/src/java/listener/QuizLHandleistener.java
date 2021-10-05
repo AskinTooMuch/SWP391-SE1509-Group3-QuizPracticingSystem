@@ -6,13 +6,10 @@
 package listener;
 
 import bean.CustomerQuiz;
-import bean.Quiz;
 import bean.QuizQuizHandle;
 import dao.CustomerQuizDAO;
-import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
 import dao.impl.CustomerQuizDAOImpl;
-import dao.impl.QuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -22,7 +19,6 @@ import java.util.TimerTask;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -31,7 +27,7 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author ADMN
  */
-public class NewServletListener implements HttpSessionListener, HttpSessionBindingListener, HttpSessionAttributeListener {
+public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttributeListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
@@ -81,7 +77,7 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
         
         System.out.println("created: " + sdf.format(date.getTime()));
 //        System.out.println("\n###################################\n");
-        if (se.getName().equalsIgnoreCase("questionArray")) {
+        if (se.getName().equalsIgnoreCase("doingQuiz")) {
         QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
         int timeOut = questionArray.getQuiz().getQuizDuration()+4;
         Time(timeOut, se);
@@ -94,20 +90,6 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
         timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
     }
 
-    @Override
-    public void valueBound(HttpSessionBindingEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void valueUnbound(HttpSessionBindingEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void attributeReplaced(HttpSessionBindingEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     class RemindTask extends TimerTask {
 
@@ -119,7 +101,7 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
 
         @Override
         public void run() {
-            se.getSession().removeAttribute("questionArray");
+            se.getSession().removeAttribute("doingQuiz");
             System.out.println("Quiz Expired!");
             timer.cancel(); //Terminate the timer thread
         }
@@ -132,7 +114,7 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
         System.out.println("-- HttpSessionAttributeListener#attributeRemoved() --");
         System.out.printf("removed: " + sdf.format(date.getTime()) + "removed attribute name: %s, value:%s %n", se.getName(),
                 se.getValue());
-        if (se.getName().equalsIgnoreCase("questionArray")) {
+        if (se.getName().equalsIgnoreCase("doingQuiz")) {
             try {
                 QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
                 QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
@@ -143,6 +125,9 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
                 int time = questionArray.getTime();
                 if(time<0){
                     time=0;
+                }
+                if(questionArray.getQuiz().getTestTypeId()==1){
+                    time=questionArray.getQuiz().getQuizDuration()-time;
                 }
                 long millis = System.currentTimeMillis();
                 Timestamp dateSql = new Timestamp(millis);

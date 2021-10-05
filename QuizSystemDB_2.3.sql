@@ -462,6 +462,7 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foo
 ----------dbo.[Quiz]-----------------------
 INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,7200,NULL,2,NULL,10,2,1)
 INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Exam Quiz',3,900,NULL,1,NULL,10,2,1)
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Exam Quiz',3,30,NULL,1,NULL,10,2,1)
 -------------------------------------------
 ----------dbo.[QuizQuestion]---------------
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,1,1)

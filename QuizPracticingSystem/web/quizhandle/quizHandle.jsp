@@ -35,7 +35,7 @@
                         <div class="detail">
                             <div class="detail1">
                                 <img id="questionImage" src="images/question.png"> <label for="questionImage">
-                                    <h3 style="">${questionNumber}/${questionArray.getQuestions().size()}</h3> </label>
+                                    <h3 style="">${questionNumber}/${doingQuiz.getQuestions().size()}</h3> </label>
                             </div>
 
                             <div class="detail1">
