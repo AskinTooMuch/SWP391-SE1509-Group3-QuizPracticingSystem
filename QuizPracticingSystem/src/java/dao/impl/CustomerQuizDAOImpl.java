@@ -8,8 +8,8 @@
     Date        Version     Author          Description
     17/9/21     1.0         ChucNVHE150618  First Deploy
     27/9/21     1.1         NamDHHE150519   update method
-*/
-/*
+ */
+ /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
 quan tới bảng CustomerQuiz, TakeAnswer phục vụ cho các chức năng liên quan tới QuizReview của 
   dự án
@@ -27,6 +27,8 @@ import dao.CustomerQuizDAO;
 import dao.DBConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.sql.Types;
 
 /**
  *
@@ -37,43 +39,68 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
     @Override
     public ArrayList<CustomerQuiz> getAllCustomerQuiz() throws Exception {
         ArrayList<CustomerQuiz> allCustomerQuiz = null;
-
         return allCustomerQuiz;
     }
 
     @Override
     public ArrayList<CustomerQuiz> getQuizByUser(int userId) throws Exception {
         ArrayList<CustomerQuiz> customerQuiz = null;
-
         return customerQuiz;
     }
 
     @Override
-    public CustomerQuiz getQuizById(int quizId) throws Exception {
-        CustomerQuiz customerQuiz = null;
-
-        return customerQuiz;
+    public CustomerQuiz getQuizByTakeQuizId(int quizTakeId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "SELECT * FROM [CustomerQuiz] WHERE quizTakeId=" + quizTakeId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                Timestamp time = new Timestamp(rs.getTimestamp("startedAt").getTime());
+                return new CustomerQuiz(rs.getInt("quizTakeId"),
+                        rs.getInt("quizId"),
+                        rs.getInt("userId"),
+                        rs.getInt("score"),
+                        rs.getInt("time"),
+                        time,
+                        rs.getBoolean("status"));
+            }
+            return null;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 
     @Override
     public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) throws Exception {
         int i = 0;
-
         return i;
     }
 
     /**
      * insert into CustomerQuiz table the quiz that just have taken by user
      *
-     * @param customerQuiz the new CustomerQuiz. It is a <code>CustomerQuiz</code> object
-     * @return number of changes in database. It is a <code>int</code> primitive type.
+     * @param customerQuiz the new CustomerQuiz. It is a
+     * <code>CustomerQuiz</code> object
+     * @return number of changes in database. It is a <code>int</code> primitive
+     * type.
      */
     @Override
     public int addCustomerQuiz(CustomerQuiz customerQuiz) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */ 
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
-        
+
         String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
         try {
             conn = getConnection();
@@ -82,7 +109,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
             pre.setInt(2, customerQuiz.getUserId());
             pre.setInt(3, customerQuiz.getScore());
             pre.setInt(4, customerQuiz.getTime());
-            pre.setDate(5, customerQuiz.getStartedAt());
+            pre.setTimestamp(5, new java.sql.Timestamp(customerQuiz.getStartedAt().getTime()));
             pre.setBoolean(6, true);
             return pre.executeUpdate();
         } catch (Exception ex) {
@@ -103,24 +130,27 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
     @Override
     public CustomerQuiz getLastAddedCustomerQuiz() throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
-        
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
         String sql = "SELECT TOP 1 * FROM [CustomerQuiz] ORDER BY quizTakeId DESC";
         try {
-            conn = getConnection();    
+            conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
+                Timestamp time = new Timestamp(rs.getTimestamp("startedAt").getTime());
                 return new CustomerQuiz(rs.getInt("quizTakeId"),
                         rs.getInt("quizId"),
                         rs.getInt("userId"),
                         rs.getInt("score"),
                         rs.getInt("time"),
-                        rs.getDate("startedAt"),
+                        time,
                         rs.getBoolean("status"));
             }
-        return null;
+            return null;
         } catch (Exception ex) {
             throw ex;
         } finally {
@@ -136,68 +166,39 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
 
         return i;
     }
-/**
+
+    /**
      * add user's answer of the taken quiz into database
      *
-     * @param quiz the id of quiz that user have just taken. It is a <code>QuizQuizHandle</code> object
+     * @param quiz the id of quiz that user have just taken. It is a
+     * <code>QuizQuizHandle</code> object
      * @return number of changes in database <code>int</code> primitive type.
      */
     @Override
     public int addTakeAnswer(QuizQuizHandle quiz) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
-        
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
         int change = 0;
         ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
         int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
         for (QuestionQuizHandle question : questionList) {
-            if (question.getAnsweredId() != 0) {
-                String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
-                try {
-                    conn = getConnection();
-                    pre = conn.prepareStatement(sql);
-                    pre.setInt(1, quizTakeId);
-                    pre.setInt(2, question.getQuestion().getQuestionId());
-                    pre.setInt(3, question.getAnsweredId());
-                    pre.setBoolean(4, true);
-                    pre.executeUpdate();
-                    change++;
-                } catch (Exception ex) {
-                    throw ex;
-                } finally {
-                    closeResultSet(rs);
-                    closePreparedStatement(pre);
-                    closeConnection(conn);
-                }
-            }
-        }
-        
-        return change;
-    }
-/**
-     * insert into the database a list of questions marked by the quiz the user has just taken 
-     *
-    * @param quiz the quiz the user has just taken. It is a <code>QuizQuizHandle</code> object
-     * @return number of changes in database. It is a <code>int</code> primitive type
-     */
-    @Override
-    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception {
-        Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
-        
-        int change = 0;
-        ArrayList<QuestionQuizHandle> questionList = quiz.getQuestions();
-        int quizTakeId = getLastAddedCustomerQuiz().getQuizTakeId();
-        for (QuestionQuizHandle question : questionList) {
-            String sql = "INSERT INTO [MarkQuestion](quizTakeId,questionId,[status]) VALUES(?,?,?)";
+
+            String sql = "INSERT INTO [TakeAnswer](quizTakeId,questionId,answerId,[status]) VALUES(?,?,?,?)";
             try {
-                conn = getConnection();    
+                conn = getConnection();
                 pre = conn.prepareStatement(sql);
                 pre.setInt(1, quizTakeId);
                 pre.setInt(2, question.getQuestion().getQuestionId());
-                pre.setBoolean(3, question.isMarked());
+                if (question.getAnsweredId() != 0) {
+                    pre.setInt(3, question.getAnsweredId());
+                } else {
+                    pre.setNull(3, Types.INTEGER);
+                }
+                pre.setBoolean(4, question.isMarked());
                 pre.executeUpdate();
                 change++;
             } catch (Exception ex) {
@@ -208,13 +209,23 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
                 closeConnection(conn);
             }
         }
+
         return change;
     }
+    /**
+     * insert into the database a list of questions marked by the quiz the user
+     * has just taken
+     *
+     * @param quiz the quiz the user has just taken. It is a
+     * <code>QuizQuizHandle</code> object
+     * @return number of changes in database. It is a <code>int</code> primitive
+     * type
+     */
 
-//    public static void main(String[] args) {
+//    public static void main(String[] args) throws Exception {
 //        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
 //        String[] a = {"1", "2"};
 //        CustomerQuiz list = dao.getLastAddedCustomerQuiz();
-//        System.out.print(list.getQuizTakeId());
+//        System.out.print(list.getStartedAt());
 //    }
 }

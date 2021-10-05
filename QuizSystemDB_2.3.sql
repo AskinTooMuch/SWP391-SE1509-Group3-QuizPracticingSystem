@@ -183,8 +183,10 @@ CREATE TABLE dbo.[CustomerQuiz](
 	userId		int			NOT NULL,
 	score		int,
 	[time]      int,
-	startedAt	datetime	NOT NULL,
+	sumitedAt	datetime	NOT NULL,
 	[status]	bit,
+	
+
 	FOREIGN KEY (quizId) REFERENCES dbo.[Quiz](quizId),
 	FOREIGN KEY (userId) REFERENCES dbo.[User](userId),
 )
@@ -193,7 +195,7 @@ CREATE TABLE dbo.[TakeAnswer](
 	takeAnswerId	int	NOT NULL identity(1,1) PRIMARY KEY,
 	quizTakeId		int	NOT NULL,
 	questionId		int	NOT NULL,
-	answerId		int	NOT NULL,
+	answerId		int	,
 	[status]		bit,
 	FOREIGN KEY (quizTakeId)	REFERENCES dbo.[CustomerQuiz](quizTakeId),
 	FOREIGN KEY (questionId)	REFERENCES dbo.[Question](questionId),
@@ -385,9 +387,9 @@ INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],
 ----------dbo.[PricePackage]---------------
 INSERT INTO dbo.PricePackage(packName,subjectId,duration,listPrice,salePrice,[status]) VALUES('3 months package',1,3,10.0,20,1)
 ----------dbo.[Question]-------------------
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Watashi',NULL,'nihongo',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Neko',NULL,'nihongo',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Ohayo',NULL,'nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Watashi','https://www.youtube.com/embed/0PQ9mgc55ic','nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Neko','https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png','nihongo',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Ohayo','https://www.thoughtco.com/thmb/06i-nrtpR2ZKY7G06_6yY3LktVw=/768x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/aamorning-9cf2e2f4546248899d2020857ce457bb.jpg','nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Anata',NULL,'nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Konbanwa',NULL,'nihongo',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(2,2,5,'Arigatou gozaimasu',NULL,'nihongo',1)
@@ -453,9 +455,8 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foo
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Food',0,1)--10
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
-INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,30,NULL,2,NULL,10,2,1)
-INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Exam Quiz',3,30,NULL,1,NULL,10,2,1)
-
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,7200,NULL,2,NULL,10,2,1)
+INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Exam Quiz',3,900,NULL,1,NULL,10,2,1)
 -------------------------------------------
 ----------dbo.[QuizQuestion]---------------
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(1,1,1)
@@ -529,4 +530,4 @@ insert into Slider(sliderTitle,image,link,note,status) values ('OOP with Java','
 insert into Slider(sliderTitle,image,link,note,status) values ('NiHongo 101','japanese101Slider.png','2','iidesune','1');
 insert into Slider(sliderTitle,image,link,note,status) values ('Physic in Programming','physicInProgramming.png','3','iidesune','1');
 insert into Slider(sliderTitle,image,link,note,status) values ('Photoshop 101','photoshop101Slider.png','4','iidesune','1');
--------------------------------------------
+------------------------------------------

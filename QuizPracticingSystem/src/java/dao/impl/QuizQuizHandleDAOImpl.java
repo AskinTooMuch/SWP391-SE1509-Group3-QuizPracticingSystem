@@ -18,9 +18,14 @@ import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
+import dao.CustomerQuizDAO;
 import dao.DBConnection;
+import dao.QuestionDAO;
 import java.util.ArrayList;
 import dao.QuizQuizHandleDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -112,39 +117,41 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      */
     @Override
     public QuizQuizHandle getReviewQuiz(int quizTakeId) throws Exception {
-        QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
+        QuestionDAO questionDAO = new QuestionDAOImpl();
         QuizQuizHandle reviewQuiz = new QuizQuizHandle();
-        QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         QuizDAOImpl quizDAO = new QuizDAOImpl();
         Quiz quiz = quizDAO.getQuizByQuizTakeId(quizTakeId);
-        ArrayList<QuestionQuizHandle> reviewQuestionList = questionQuizHandleDAO.getReviewQuestion(quizTakeId);     //Questions answered
-        ArrayList<Question> questionList = questionDAO.getQuestionByQuizId(quiz.getQuizId());                             //All question of quiz
-        ArrayList<Boolean> markQuestionList = questionQuizHandleDAO.getMarkQuestionList(quizTakeId);
-        for (int i = 0; i < questionList.size(); i++) {
-            Question question = questionList.get(i);
-            int questionId = question.getQuestionId();
-            boolean skip = false;
-            for (QuestionQuizHandle reviewQuestion : reviewQuestionList) {
-                int reviewQuestionId = reviewQuestion.getQuestion()
-                        .getQuestionId();
-                if (questionId == reviewQuestionId) {                                                                   //If questions answered
-                    reviewQuiz.addQuestion(reviewQuestion);
-                    skip = true;
-                }
+        CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        AnswerDAOImpl answerDAO = new AnswerDAOImpl();
+        ArrayList<QuestionQuizHandle> questionList = new ArrayList();
+        String sql = "SELECT * FROM [TakeAnswer] WHERE quizTakeId=" + quizTakeId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Question question = questionDAO.getQuestionById(rs.getInt("questionId"));
+                ArrayList<Answer> answers = answerDAO.getAnswersByQuenstionId(rs.getInt("questionId"));
+                questionList.add(new QuestionQuizHandle(question,
+                        answers,
+                        rs.getInt("answerId"),
+                        rs.getBoolean("status")));
             }
-            //If question had not answered then not in database
-            if (!skip) {
-                QuestionQuizHandle emptyReviewQuestion = questionQuizHandleDAO.generateQuestionById(questionId);
-                emptyReviewQuestion.setAnsweredId(0);
-                reviewQuiz.addQuestion(emptyReviewQuestion);
-            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
-
-        for (QuestionQuizHandle question : reviewQuiz.getQuestions()) {
-            question.setMarked(markQuestionList.get(reviewQuiz
-                    .getQuestions()
-                    .indexOf(question)));
-        }
+        reviewQuiz.setQuestions(questionList);
+        reviewQuiz.setQuiz(quiz);
+        reviewQuiz.setTime(customerQuizInterface.getQuizByTakeQuizId(quizTakeId).getTime());
         return reviewQuiz;
     }
 

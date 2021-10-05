@@ -14,6 +14,7 @@ import dao.QuizQuizHandleDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
@@ -83,10 +84,10 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
         if (se.getName().equalsIgnoreCase("questionArray")) {
         QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
         int timeOut = questionArray.getQuiz().getQuizDuration()+4;
-        Time(104, se);
+        Time(timeOut, se);
         }
     }
-    Timer timer;
+    public static Timer timer;
 
     public void Time(int seconds, HttpSessionBindingEvent se) {
         timer = new Timer();
@@ -129,15 +130,14 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
                     time=0;
                 }
                 long millis = System.currentTimeMillis();
-                java.sql.Date dateSql = new java.sql.Date(millis);
+                Timestamp dateSql = new Timestamp(millis);
                 //Insert into CustomerQuiz table in database
                 CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, 2, (int) score,time, dateSql, true);
                 CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
                 customerQuizInterface.addCustomerQuiz(customerQuiz);
                 //Insert into TakeAnswer table in database;
                 customerQuizInterface.addTakeAnswer(questionArray);
-                //Inser into MarkQuestion table in database;
-                customerQuizInterface.addMarkQuestion(questionArray);
+                timer.cancel();
             } catch (Exception e) {
 
             }

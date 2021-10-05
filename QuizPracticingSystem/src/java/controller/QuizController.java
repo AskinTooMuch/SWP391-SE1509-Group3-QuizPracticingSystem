@@ -14,6 +14,7 @@ import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Question;
 import bean.QuestionQuizHandle;
+import bean.Quiz;
 import bean.QuizQuizHandle;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
@@ -33,6 +34,9 @@ import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -99,25 +103,25 @@ public class QuizController extends HttpServlet {
                     }
                     QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
 
+                    String media = questionQH.getQuestion().getMedia();
+                    if (media != null) {
+                        int mediaType = 2;
+                        String[] imageExtensions = {".jpg", ".gif", ".jpeg", ".jfif", ".pjpeg", ".png", ".pjps"};
+                        for (String extension : imageExtensions) {
+                            if (media.contains(extension)) {
+                                mediaType = 1;
+                            }
+                        }
+                        request.setAttribute("mediaType", mediaType);
+                    }
                     //send being taking question's information
-                    request.setAttribute("answered", questionQH.getAnsweredId());
                     request.setAttribute("questionQH", questionQH);
-                    String questionContent = questionQH.getQuestion().getContent();
-                    request.setAttribute("questionContent", questionContent);
-                    //answer List of question
-                    ArrayList<Answer> answerList = questionQH.getAnswerList();
-                    request.setAttribute("answerList", answerList);
                     //true answer of question
                     Answer trueAnswer = questionQHInterface.getRightAnswer(questionQH);
                     request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
                     //number of question in this quiz
                     request.setAttribute("questionNumber", questionNumber);
-                    //question id in database
-                    request.setAttribute("questionId", questionQH.getQuestion()
-                            .getQuestionId());
-                    //explanation of this question
-                    request.setAttribute("explanation", questionQH.getQuestion()
-                            .getExplanation());
+
                     //Mark this question 
                     String marked = request.getParameter("marked");
                     if (marked != null && marked.equalsIgnoreCase("yes")) {
@@ -129,7 +133,6 @@ public class QuizController extends HttpServlet {
                     int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
                     request.setAttribute("answeredNumber", answeredQuestionNumber);
                     //length of this quiz
-                    request.setAttribute("quizSize", quiz.size());
                     request.setAttribute("duration", questionArray.getQuiz().getQuizDuration());
                     //Next quiz, Previous quiz, Score Exams handle
                     String action = request.getParameter("action");
@@ -169,6 +172,15 @@ public class QuizController extends HttpServlet {
                             response.sendRedirect("quizController?service=quizSummary");
                         }
                     } else if (finalAction != null) {
+                        String answerTakenIdRaw = request.getParameter("answerTakenId");
+                        String questionTakenNumberRaw = request.getParameter("questionTakenNumber");
+
+                        //set answerId of this question
+                        if (answerTakenIdRaw != null && questionTakenNumberRaw != null) {
+                            int answerTakenId = Integer.parseInt(answerTakenIdRaw);
+                            questionQH.setAnsweredId(answerTakenId);
+                        }
+
                         if (finalAction.equalsIgnoreCase("Finish Exam")) {
                             int time = Integer.parseInt(request.getParameter("time"));
                             questionArray.setTime(time);
@@ -191,15 +203,9 @@ public class QuizController extends HttpServlet {
                 //co roi
                 if (object != null) {
                     questionArray = (QuizQuizHandle) object;
-                    request.setAttribute("quizId", questionArray.getQuiz()
-                            .getQuizId());
-                    request.setAttribute("quizType", questionArray.getQuiz()
-                            .getTestTypeId());
-                    ArrayList<QuestionQuizHandle> quizSummary = questionArray.getQuestions();
-                    request.setAttribute("quizSummary", quizSummary);
+                    request.setAttribute("questionArray", questionArray);
+                    request.setAttribute("quizType", questionArray.getQuiz().getTestTypeId());
                     request.setAttribute("total", questionArray.getTime());
-                    request.setAttribute("quizSize", questionArray.getQuestions()
-                            .size());
                     int answeredQuestionNumber = quizQHInterface.getAnsweredQuestion(questionArray);
                     request.setAttribute("answeredNumber", answeredQuestionNumber);
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
@@ -221,7 +227,6 @@ public class QuizController extends HttpServlet {
                     CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
                     latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
                     //redirect user to review quiz page  
-                    
                     response.sendRedirect("quizController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
                     return;
                 }
@@ -231,10 +236,30 @@ public class QuizController extends HttpServlet {
                 //prepare quiz information
                 int quizTakeId = Integer.parseInt(request.getParameter("quizTakeId"));
                 request.setAttribute("quizTakeId", quizTakeId);
+                CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
+                QuizDAO quizDAOInterface = new QuizDAOImpl();
                 QuizQuizHandle questionArray = quizQHInterface.getReviewQuiz(quizTakeId);
                 ArrayList<QuestionQuizHandle> quizReview = questionArray.getQuestions();
+                Quiz quiz = quizDAOInterface.getQuizByQuizTakeId(quizTakeId);
                 request.setAttribute("quizReview", quizReview);
                 request.setAttribute("quizSize", quizReview.size());
+
+                CustomerQuiz customerQuiz = customerQuizInterface.getLastAddedCustomerQuiz();
+                long startedAt = 0;
+                long submitedAt = 0;
+                if (quiz.getTestTypeId() == 1) {
+                    startedAt = customerQuiz.getStartedAt().getTime() - (quiz.getQuizDuration() - customerQuiz.getTime()) * 1000;
+                } else {
+                    startedAt = customerQuiz.getStartedAt().getTime() - customerQuiz.getTime() * 1000;
+                }
+                submitedAt = customerQuiz.getStartedAt().getTime();
+                Timestamp submitTime = new Timestamp(submitedAt);
+                Timestamp startTime = new Timestamp(startedAt);
+                String startedAtTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(startTime);
+                String submitedAtTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(submitTime);
+                request.setAttribute("submitedAt", submitedAtTime);
+                request.setAttribute("startedAt", startedAtTime);
+                request.setAttribute("score", customerQuiz.getScore());
 
                 int questionNumber;
                 if (request.getParameter("questionNumber") == null) {
@@ -243,7 +268,15 @@ public class QuizController extends HttpServlet {
                     questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
                 }
                 QuestionQuizHandle questionQH = questionArray.getQuestionByNumber(questionNumber);
-
+                String media = questionQH.getQuestion().getMedia();
+                int mediaType = 2;
+                String[] imageExtensions = {".jpg", ".gif", ".jpeg", ".jfif", ".pjpeg", ".png", ".pjps"};
+                for (String extension : imageExtensions) {
+                    if (media.contains(extension)) {
+                        mediaType = 1;
+                    }
+                }
+                request.setAttribute("mediaType", mediaType);
                 //send being reviewing question's information
                 request.setAttribute("answered", questionQH.getAnsweredId());
                 request.setAttribute("questionQH", questionQH);

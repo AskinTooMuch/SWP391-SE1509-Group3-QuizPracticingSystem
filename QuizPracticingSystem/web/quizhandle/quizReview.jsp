@@ -28,11 +28,16 @@
             <!--start header-->
             <div class="infomation">
                 <div class="info row" style="">
-                    <div col-1>
-                        ${requestScope.score}
+                    <div col-1>        
                         <button class="goBack" type="button" class="btn" style=""> Go Back</button>
                     </div>
-                    <div class="col-11">    
+                    <div class="col-6" style="display:flex;">    
+                        <h6>Score: ${requestScope.score}/100</h6>
+
+                        <h6 style="margin-left:30px;">Start: ${requestScope.startedAt}</h6>
+                        <h6 style="margin-left:30px;">Submit: ${requestScope.submitedAt}</h6>
+                    </div>
+                    <div class="col-5">
                         <div class="detail">
                             <div class="detail1">
                                 <img id="questionImage" src="images/question.png"> <label for="questionImage">

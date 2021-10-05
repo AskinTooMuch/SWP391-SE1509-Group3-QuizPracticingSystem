@@ -29,14 +29,13 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>
-                        ${requestScope.score}
                         <button class="goBack" type="button" class="btn" style=""> Go Back</button>
                     </div>
                     <div class="col-11">    
                         <div class="detail">
                             <div class="detail1">
                                 <img id="questionImage" src="images/question.png"> <label for="questionImage">
-                                    <h3 style="">${questionNumber}/${quizSize}</h3> </label>
+                                    <h3 style="">${questionNumber}/${questionArray.getQuestions().size()}</h3> </label>
                             </div>
 
                             <div class="detail1">
@@ -53,7 +52,7 @@
                     <h6 >${questionNumber})</h6>
                 </div>
                 <div class="col-11">
-                    <h6 style=float:right;'>Question ID: ${questionId}</h6>
+                    <h6 style=float:right;'>Question ID: ${questionQH.getQuestion().getQuestionId()}</h6>
                 </div>
             </div>
             <!--end header-->
@@ -62,45 +61,65 @@
                     font-weight: bold;
                 }
             </style>
-            <div class="mainContent">
-                <div class="row question">
-                    <div class="col-1"></div>
-                    <div class="col-11">
-                        <h4>${questionContent}</h4>
+            <div class="mainContent" style="display: flex;">
+                <div class="col-1"></div>
+                <div class="col-4" style="">
+                    <div class="row question" style="display: flex;">
+                        <div class="col-1">
+
+                        </div>
+                        <div class="col-11" style="float:right;">
+
+                            <h4>${questionQH.getQuestion().getContent()}</h4>
+                        </div>
+                    </div>
+
+                    <div class="row answers" style="margin-top:10px;">
+                        <div class="col-1"></div>
+                        <div class="col-11">
+                            <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                                <ul>
+
+                                    <c:forEach items="${questionQH.getAnswerList()}" var="answer">
+                                        <div class="checkbox-inline" style="display: -webkit-inline-box;">
+                                            <label class="labelA" for="${answer.getAnswerId()}">
+                                                <li>
+                                                    ${answer.getAnswerContent()} 
+                                                </li>
+
+                                                <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} class="radioAnswer">
+                                                <span class="checkmark"></span>
+                                            </label>
+
+                                        </div>
+                                        <br/>
+                                    </c:forEach>
+                                </ul>
+                                <!--                                userid-->     
+                                <input hidden id="formAction" name="finalAction" form="questionForm">
+                                <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
+                                <input hidden id="time" name="time" form="questionForm">
+                            </form>    
+                        </div>
+
+
+                        <div class="col-1"></div>
                     </div>
                 </div>
-          
-                <c:set var="answered" value="${requestScope.answered}"/>
-                <div class="row answers" style="margin-top:10px;">
-                    <div class="col-1"></div>
-                    <div class="col-11">
-                        <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
-                            <ul>
-                                
-                                <c:forEach items="${answerList}" var="answer">
-                                    <div class="checkbox-inline" style="display: -webkit-inline-box;">
-                                        <label class="labelA" for="${answer.getAnswerId()}">
-                                            <li>
-                                                ${answer.getAnswerContent()} 
-                                            </li>
-
-                                            <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==answered?"checked":""} class="radioAnswer">
-                                            <span class="checkmark"></span>
-                                        </label>
-
-                                    </div>
-                                    <br/>
-                                </c:forEach>
-                            </ul>
-                            <!--                                userid-->     
-                            <input hidden id="formAction" name="finalAction" form="questionForm">
-                            <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
-                            <input hidden id="time" name="time" form="questionForm">
-                        </form>    
-                    </div>
-
-
-                    <div class="col-1"></div>
+                <div class="right col-7" style="">
+                    <c:if test="${questionQH.getQuestion().getMedia()!=null}">
+                        
+                        <div style="">
+                            <c:if test="${mediaType==2}">
+                            <iframe width="420" height="315" style="width:100%; height:500px;"
+                                    src=${questionQH.getQuestion().getMedia()}>
+                            </iframe>
+                            </c:if>
+                            <c:if test="${mediaType==1}">
+                                <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
+                            </c:if>
+                        </div>
+                    </c:if>
                 </div>
             </div>
             <!--                           end mainContent-->
@@ -130,7 +149,7 @@
                         </div>
                         <div class="modal-body">
                             The correct Answer is: ${trueAnswer}<br/><br/>
-                            Explanation: ${explanation}
+                            Explanation: ${questionQH.getQuestion().getExplanation()}
                         </div>
                         <div class="modal-footer">
                             Source
@@ -145,10 +164,10 @@
                         <c:if test="${questionNumber!=1}">
                             <input class="btn" type="submit" name='action' value='Previous Question' form='questionForm'>
                         </c:if>
-                        <c:if test="${questionNumber!=quizSize}">
+                        <c:if test="${questionNumber!=quiz.size()}">
                             <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
                         </c:if>
-                        <c:if test="${questionNumber==quizSize}">
+                        <c:if test="${questionNumber==quiz.size()}">
                             <input type="submit" class="btn" name="action" value="Finish Exam" form="questionForm" >
                         </c:if>
                     </div>
@@ -219,7 +238,7 @@
             localStorage.setItem('endMiliseconds', endMilisecond);
             setInterval(setTime, 100);
             function setTime() {
-             
+
                 var today2 = new Date();
                 var presentMilisecond = today2.getTime();
 

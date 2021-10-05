@@ -128,7 +128,6 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
 
-        QuestionQuizHandleDAOImpl questionQuizHandleDAO = new QuestionQuizHandleDAOImpl();
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAOImpl answerDAO = new AnswerDAOImpl();
         ArrayList<QuestionQuizHandle> questionList = new ArrayList();
@@ -144,8 +143,7 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
                 questionList.add(new QuestionQuizHandle(question,
                         answers,
                         rs.getInt("answerId"),
-                        false));
-
+                        rs.getBoolean("status")));
             }
         } catch (Exception ex) {
             throw ex;

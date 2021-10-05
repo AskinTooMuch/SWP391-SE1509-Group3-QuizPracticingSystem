@@ -19,7 +19,7 @@ public interface CustomerQuizDAO {
 
     public ArrayList<CustomerQuiz> getQuizByUser(int userId) throws Exception;
 
-    public CustomerQuiz getQuizById(int quizId) throws Exception;
+    public CustomerQuiz getQuizByTakeQuizId(int quizTakeId) throws Exception;
 
     public int editCustomerQuiz(int customerQuizId, CustomerQuiz customerQuiz) throws Exception;
 
@@ -29,7 +29,7 @@ public interface CustomerQuizDAO {
 
     public int deleteCustomerQuiz(int customerQuizId) throws Exception;
     
-    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception;
+//    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception;
     
     public CustomerQuiz getLastAddedCustomerQuiz() throws Exception;
 }

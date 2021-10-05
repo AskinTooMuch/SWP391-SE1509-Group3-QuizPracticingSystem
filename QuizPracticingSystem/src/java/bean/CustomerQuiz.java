@@ -5,7 +5,8 @@
  */
 package bean;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -17,13 +18,13 @@ public class CustomerQuiz {
     private int userId;
     private int score;
     private int time;
-    private Date startedAt;
+    private Timestamp startedAt;
     private boolean status;
 
     public CustomerQuiz() {
     }
 
-    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, int time, Date startedAt, boolean status) {
+    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, int time, Timestamp startedAt, boolean status) {
         this.quizTakeId = quizTakeId;
         this.quizId = quizId;
         this.userId = userId;
@@ -32,6 +33,8 @@ public class CustomerQuiz {
         this.startedAt = startedAt;
         this.status = status;
     }
+
+  
 
     public int getTime() {
         return time;
@@ -74,13 +77,15 @@ public class CustomerQuiz {
         this.score = score;
     }
 
-    public Date getStartedAt() {
+    public Timestamp getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(Date startedAt) {
+    public void setStartedAt(Timestamp startedAt) {
         this.startedAt = startedAt;
     }
+
+   
 
     public boolean isStatus() {
         return status;
