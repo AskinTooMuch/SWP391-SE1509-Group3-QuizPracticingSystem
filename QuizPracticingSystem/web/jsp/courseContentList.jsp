@@ -76,7 +76,7 @@
                                     </div>
                                     <%-- Body part of the card --%>
                                     <div class="cardBody">
-                                        <h5>${subject.getSubjectName()}</h5>
+                                        <h5><a href="subjectController?service=courseContentDetail&subjectId=${subject.getSubjectId()}">${subject.getSubjectName()}</a></h5>
                                         <p style="overflow: hidden">${subject.getDescription()}</p>
                                     </div>
                                 </div>

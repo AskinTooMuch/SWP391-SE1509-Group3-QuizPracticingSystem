@@ -7,6 +7,7 @@
     Record of change:
     Date        Version     Author          Description
     4/10/21     1.0         ChucNVHE150618  First Deploy
+    5/10/21     2.0         ChucNVHE150618  Frontend and overview form
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,12 +27,28 @@
 
     </head>
     <body>
+        <%-- Check If user is logged in or not, if not redirect to error page --%>
+        <c:if test="${sessionScope.currUser == null}">
+            <c:set var = "errorMess" scope="session" value = "User not logged in"/>
+            <c:redirect url="/error.jsp"/>
+        </c:if>--%>
+        
+        <%-- Check If subject is available or not, if not redirect to error page --%>
+        <c:if test="${empty subject}">
+            <c:set var = "errorMess" scope="session" value = "Subject not available"/>
+            <c:redirect url="/error.jsp"/>
+        </c:if>
+        
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
-
+        <%-- Main page --%>
         <div class="row">
+            
             <div class="col-md-2"></div>
+            
+            <%-- Center form --%>
             <div class="col-md-8">
+                <%-- Header nav tab --%>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="tab col-md-6">
@@ -41,14 +58,15 @@
                     </div>
                     <div class="col-md-3"></div>
                 </div>
-
+                <%-- Main tab details --%>
                 <div class="details">
                     <div id="tab1" class="tabcontent" style="display: block">
                         <h4 style="color: #565e64">Subject Overview</h4>
+                        <%-- Form details: The whole tab is a form with the subject's details as set values --%>
                         <form style="padding: 5px;">
+                            <%-- First bootstrap form row: subject name, category, featured subject, status and thumbnail image --%>
                             <div class="form-row">
                                 <div class="form-group col-md-7">
-                                    <%-- Subject Name --%>
                                     <br>
                                     <label for="subjectName">Subject Name</label>
                                     <input type="text" class="form-control" id="inputSubjectName" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
@@ -63,19 +81,19 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-5">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                                <input class="form-check-input" type="checkbox" id="gridCheck" checked="${subject.isFeaturedSubject()}">
                                                 <label class="form-check-label" for="gridCheck">
                                                     Featured Subject
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="inputState">Category</label>
+                                            <label for="inputState">Status</label>
                                         </div>
                                         <div class="form-group col-md-5">
                                             <select id="inputState" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <option>...</option>
+                                                <option selected value="1">Available</option>
+                                                <option value="0">Disabled</option>
                                             </select>
                                         </div>
                                     </div>
@@ -114,6 +132,7 @@
                     </div>
                 </div>
             </div>
+                                
             <div class="col-md-2"></div>
         </div>
         <%-- Include footer page --%>

@@ -90,6 +90,11 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
         timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
     }
 
+    @Override
+    public void attributeReplaced(HttpSessionBindingEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
     class RemindTask extends TimerTask {
 

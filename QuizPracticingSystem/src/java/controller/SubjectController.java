@@ -43,7 +43,7 @@ public class SubjectController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* Get service and initialise the subjectDAO */
             String service = request.getParameter("service");
-            SubjectDAO subjectInterface = new SubjectDAOImpl();
+            SubjectDAO subjectDAO = new SubjectDAOImpl();
             
             /**
              * Service course content list: for admin and expert to check the 
@@ -58,13 +58,13 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "index.jsp");
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
                     /* Get assigned list */
-                    ArrayList<Subject> featuredSubjectList = subjectInterface.getSubjectsAssigned(currUser.getUserId());
+                    ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                     /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
                 }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
                     /* Get all subject */
-                    ArrayList<Subject> allSubject = subjectInterface.getAllSubjects();
+                    ArrayList<Subject> allSubject = subjectDAO.getAllSubjects();
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
@@ -73,6 +73,31 @@ public class SubjectController extends HttpServlet {
                 }
                 
             }
+            
+            /**
+             * Service course content detail: for admin and expert to check the 
+             * subject detail and edit it
+             */
+            if (service.equalsIgnoreCase("courseContentDetail")) {
+                /* Get user and role on session scope */
+                User currUser = (User)request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null) || 
+                        ((!currRole.getUserRoleName().equalsIgnoreCase("admin")) &&
+                        (!currRole.getUserRoleName().equalsIgnoreCase("expert")))){
+                    sendDispatcher(request, response, "error.jsp");
+                } 
+                /* Else: get the subject with the set id and redirect to courseContentDetail page*/
+                else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                    Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
+                    request.setAttribute("subject", courseContent);
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                }
+                
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(SubjectController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());

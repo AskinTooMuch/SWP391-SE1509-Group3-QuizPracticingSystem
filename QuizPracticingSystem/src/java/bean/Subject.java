@@ -99,6 +99,7 @@ public class Subject {
         this.thumbnail = thumbnail;
     }
     
+    @Override
     public String toString(){
         return ("Id: " + this.subjectId +
                 "\nName: " + this.subjectName +
