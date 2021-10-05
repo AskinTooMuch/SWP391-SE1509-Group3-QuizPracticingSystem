@@ -99,13 +99,24 @@ public class UserController extends HttpServlet {
                 String txtGender = request.getParameter("gender").trim();
                 boolean gender;
                 User addUser = new User();
-
+                
                 //check blank input fields
                 if (userName.length() == 0 || password.length() == 0
                         || confirmPass.length() == 0
                         || userMail.length() == 0 || userMobile.length() == 0
                         || txtGender.length() == 0) {
                     mess = "You have to input all information!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/register.jsp").forward(request, response);
+                    return;
+                }
+
+                //check max length
+                if (userName.length() > 63 || password.length() > 255
+                        || confirmPass.length() > 255
+                        || userMail.length() > 255 
+                        || userMobile.length() > 10) {
+                    mess = "Your input have reached max length!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
@@ -278,6 +289,15 @@ public class UserController extends HttpServlet {
                             .forward(request, response);
                     return;
                 }
+                
+                //check max length
+                if (userName.length() > 63 || userMobile.length() > 10) {
+                    mess = "Your input have reached max length!";
+                    request.setAttribute("mess", mess);
+                    request.getRequestDispatcher("login/editProfile.jsp")
+                            .forward(request, response);
+                    return;
+                }
 
                 //check if this Moblie already existed in the system
                 if (userInterface.getUserByMobile(userMobile) != null
@@ -337,7 +357,7 @@ public class UserController extends HttpServlet {
                             String value = item.getString();
                             System.out.println(name + " " + value);
                         } else {
-                            filename = item.getName();
+                            filename ="u_" + currUser.getUserId() +"_" + item.getName();
                             if (filename == null || filename.equals("")) {
                                 break;
                             } else {

@@ -31,7 +31,6 @@
                     <div class="col-md-4">
                         <div class="profile-img">
                             <img src="${contextPath}/upload/${ currUser.getProfilePic() }" alt=""/>
-
                         </div>
                     </div>
                     <div class="col-md-6">

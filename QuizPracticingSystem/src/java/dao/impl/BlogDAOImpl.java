@@ -21,7 +21,6 @@ import bean.Blog;
 import bean.PostCate;
 import bean.User;
 import java.util.ArrayList;
-import dao.MyDAO;
 import java.sql.PreparedStatement;
 import dao.BlogDAO;
 import dao.DBConnection;

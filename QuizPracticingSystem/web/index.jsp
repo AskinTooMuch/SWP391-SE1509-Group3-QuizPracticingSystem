@@ -24,7 +24,7 @@
         <link href="css/font-awesome.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+       
     </head>
     <body>
         <%-- if subjectList is empty redirect to homeController--%>

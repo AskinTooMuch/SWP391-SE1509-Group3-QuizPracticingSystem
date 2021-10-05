@@ -20,7 +20,6 @@ import bean.Question;
 import bean.QuestionQuizHandle;
 import dao.DBConnection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import dao.QuestionQuizHandleDAO;
 import java.sql.Connection;
