@@ -93,6 +93,21 @@ public class NewServletListener implements HttpSessionListener, HttpSessionBindi
         timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
     }
 
+    @Override
+    public void valueBound(HttpSessionBindingEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void valueUnbound(HttpSessionBindingEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void attributeReplaced(HttpSessionBindingEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     class RemindTask extends TimerTask {
 
         private HttpSessionBindingEvent se;

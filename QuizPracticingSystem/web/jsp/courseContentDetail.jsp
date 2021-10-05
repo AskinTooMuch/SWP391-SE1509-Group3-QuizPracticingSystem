@@ -28,31 +28,37 @@
     <body>
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
-        <div class="main" style="min-height: 55vh">
             
-            
-            <div class="tab">
-                <button class="tablinks" onclick="openTab(event, 'tab1')">Tab 1</button>
-                <button class="tablinks" onclick="openTab(event, 'tab2')">Tab 2</button>
-                <button class="tablinks" onclick="openTab(event, 'tab3')">Tab 3</button>
-            </div>
-
-            <div id="tab1" class="tabcontent" style="display: block">
-              <h3>Tab 1</h3>
-              <p>Tab content 1</p>
-            </div>
-
-            <div id="tab2" class="tabcontent">
-              <h3>Tab 2</h3>
-              <p>Tab content 2</p> 
-            </div>
-
-            <div id="tab3" class="tabcontent">
-              <h3>Tab 3</h3>
-              <p>Tab content 3</p>
+            <div class="col-md-12">
+                <div class="col-md-4"></div>
+                <div class="tab col-md-4">
+                    <button class="tablinks" onclick="openTab(event, 'tab1')">Tab 1</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Tab 2</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab3')">Tab 3</button>
+                </div>
+                <div class="col-md-4"></div>
             </div>
             
-        </div>
+            <div class="col-md-12">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div id="tab1" class="tabcontent" style="display: block">
+                      <h3>Tab 1</h3>
+                      <p>Tab content 1</p>
+                    </div>
+
+                    <div id="tab2" class="tabcontent">
+                      <h3>Tab 2</h3>
+                      <p>Tab content 2</p> 
+                    </div>
+
+                    <div id="tab3" class="tabcontent">
+                      <h3>Tab 3</h3>
+                      <p>Tab content 3</p>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
         <%-- Include footer page --%>
         <jsp:include page="footer.jsp"/>
     </body>
