@@ -20,7 +20,6 @@ package dao.impl;
 import bean.CustomerQuiz;
 import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
-import dao.MyDAO;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.CustomerQuizDAO;

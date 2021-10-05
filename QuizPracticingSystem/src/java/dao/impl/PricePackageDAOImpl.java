@@ -8,7 +8,6 @@ package dao.impl;
 import bean.PricePackage;
 import dao.DBConnection;
 import java.util.ArrayList;
-import dao.MyDAO;
 import dao.PricePackageDAO;
 
 /**

@@ -62,10 +62,4 @@ public class SystemEmail {
         }
     }
 
-    public static void main(String[] args) {
-//        SystemEmail se = new SystemEmail();
-//        se.sendEmail("duongnhhe150328@fpt.edu.vn", "hello", "hi");
-        System.out.println(System.currentTimeMillis());
-        
-    }
 }

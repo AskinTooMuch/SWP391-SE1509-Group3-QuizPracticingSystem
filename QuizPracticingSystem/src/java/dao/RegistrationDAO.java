@@ -5,7 +5,7 @@
  */
 package dao;
 
-import bean.Registration;
+import bean.*;
 import java.util.ArrayList;
 
 /**
@@ -23,4 +23,6 @@ public interface RegistrationDAO {
     public int editRegistration(int registrationId,Registration editedRegistration) throws Exception;
     
     public int deleteRegistration(int registrationId) throws Exception;
+    
+    public ArrayList<Subject> getRegistedSubject(int userId) throws Exception;
 }
