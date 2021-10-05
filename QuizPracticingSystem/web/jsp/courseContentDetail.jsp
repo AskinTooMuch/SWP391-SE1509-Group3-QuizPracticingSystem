@@ -32,17 +32,75 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <div class="tab row">
+                <div class="row">
                     <div class="col-md-3"></div>
-                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab1')">Tab 1</button>
-                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab2')">Tab 2</button>
-                    <button class="tablinks col-md-2" onclick="openTab(event, 'tab3')">Tab 3</button>
+                    <div class="tab col-md-6">
+                        <button class="tablinks active" onclick="openTab(event, 'tab1')">Overview</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab2')">Dimension</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab3')">Price Package</button>
+                    </div>
                     <div class="col-md-3"></div>
                 </div>
+
                 <div class="details">
                     <div id="tab1" class="tabcontent" style="display: block">
-                        <h3>Tab 1</h3>
-                        <p>Tab content 1</p>
+                        <h4 style="color: #565e64">Subject Overview</h4>
+                        <form style="padding: 5px;">
+                            <div class="form-row">
+                                <div class="form-group col-md-7">
+                                    <%-- Subject Name --%>
+                                    <br>
+                                    <label for="subjectName">Subject Name</label>
+                                    <input type="text" class="form-control" id="inputSubjectName" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
+
+                                    <label for="subjectCate">Category</label>
+                                    <select class="form-control">
+                                        <option selected>Choose...</option>
+                                        <option>...</option>
+                                    </select>
+
+                                    <br>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-5">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                                <label class="form-check-label" for="gridCheck">
+                                                    Featured Subject
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="inputState">Category</label>
+                                        </div>
+                                        <div class="form-group col-md-5">
+                                            <select id="inputState" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-md-1"></div>
+                                <div class="form-group col-md-4">
+                                    <img src="../images/logo.png" style="height: 100%; width: 100%;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress">Description</label>
+                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" style="min-height: 4em">
+                            </div>
+
+
+                            <div class="form-row">
+                                <div class="form-group" style="margin-right: 1em; margin-left: 1em;">
+                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                </div>
+                                <div class="form-group">
+                                    <a href="${contextPath}/index.jsp" class="btn btn-primary">Back</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                     <div id="tab2" class="tabcontent">
