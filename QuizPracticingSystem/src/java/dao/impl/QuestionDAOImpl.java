@@ -18,10 +18,14 @@
 package dao.impl;
 
 import bean.Question;
+import bean.QuestionManage;
 import dao.DBConnection;
+import dao.DimensionDAO;
+import dao.LessonDAO;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import dao.QuestionDAO;
+import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
@@ -146,27 +150,31 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
     }
 
     @Override
-    public ArrayList<Question> getQuestionByContent(String content) throws Exception{
+    public ArrayList<QuestionManage> getQuestionByContent(String content) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */       
-        ArrayList<Question> listQuestion = new ArrayList<>();
-        String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%" + content + "%'";
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        ArrayList<QuestionManage> questionManageList = new ArrayList<>();
+        QuestionManage questionManage = null;
+        SubjectDAO subjectDAO = new SubjectDAOImpl();
+        LessonDAO lessonDAO = new LessonDAOImpl();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%?%'";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setString(1, "content");
             rs = pre.executeQuery();
             while (rs.next()) {
-                Question question = new Question();
-                question.setQuestionId(rs.getInt("questionId"));
-                question.setSubjectId(rs.getInt("subjectId"));
-                question.setDimensionId(rs.getInt("dimensionId"));
-                question.setLessonId(rs.getInt("lessonId"));
-                question.setContent(rs.getString("content"));
-                question.setMedia(rs.getString("meadia"));
-                question.setExplanation(rs.getString("explanation"));
-                question.setStatus(rs.getBoolean("status"));
-                listQuestion.add(question);
+                questionManage = new QuestionManage(rs.getInt("questionId"),
+                        subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                        dimensionDAO.getDimensionById(rs.getInt("dimensionId")).getDimensionName(),
+                        lessonDAO.getLessonById(rs.getInt("lessonId")).getLessonName(),
+                        rs.getString("content"), rs.getString("media"),
+                        rs.getString("explanation"), true);
+                questionManageList.add(questionManage);
             }
         } catch (Exception ex) {
             throw ex;
@@ -175,17 +183,49 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
             closePreparedStatement(pre);
             closeConnection(conn);
         }
-        return listQuestion;
+        return questionManageList;
+    }
+
+    public ArrayList<Question> getQuestionBySubjectId(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<Question> list = new ArrayList<>();
+        String sql = "SELECT * FROM Question WHERE status=1 and subjectId = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Question pro = new Question();
+                pro.setQuestionId(rs.getInt("questionId"));
+                pro.setSubjectId(rs.getInt("subjectId"));
+                pro.setDimensionId(rs.getInt("dimensionId"));
+                pro.setLessonId(rs.getInt("lessonId"));
+                pro.setContent(rs.getString("content"));
+                pro.setMedia(rs.getString("media"));
+                pro.setStatus(rs.getBoolean("status"));
+                list.add(pro);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return list;
     }
 
     @Override
+
     public int addQuestion(Question newQuestion) throws Exception {
         Connection conn = null;
         ResultSet rs = null;/* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
-        
+
         String sql = "INSERT INTO [Question](subjectId,dimensionId,lessonId,content,media,explanation,status) values (?,?,?,?,?,?,?)";
-        int count =0;
+        int count = 0;
         try {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, newQuestion.getSubjectId());
@@ -221,4 +261,47 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return 0;
     }
 
+    @Override
+    public ArrayList<QuestionManage> getQuestionManage(int subjectId, int lessonId, int dimensionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<QuestionManage> questionManageList = new ArrayList<>();
+        String sql = "SELECT * FROM Question WHERE status=1 ";
+        if (subjectId > 0) {
+            sql = sql.concat("and subjectId = " + subjectId);
+        }
+        if (lessonId > 0) {
+            sql = sql.concat("and lessonId = " + lessonId);
+        }
+        if (dimensionId > 0) {
+            sql = sql.concat("and dimensionId = " + dimensionId);
+        }
+        QuestionManage questionManage = null;
+        SubjectDAO subjectDAO = new SubjectDAOImpl();
+        LessonDAO lessonDAO = new LessonDAOImpl();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                questionManage = new QuestionManage(rs.getInt("questionId"),
+                        subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                        dimensionDAO.getDimensionById(rs.getInt("dimensionId")).getDimensionName(),
+                        lessonDAO.getLessonById(rs.getInt("lessonId")).getLessonName(),
+                        rs.getString("content"), rs.getString("media"),
+                        rs.getString("explanation"), true);
+                questionManageList.add(questionManage);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return questionManageList;
+    }
+    
 }

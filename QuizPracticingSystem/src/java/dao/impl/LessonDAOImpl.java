@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dao.impl;
 
 import bean.Lesson;
 import dao.DBConnection;
 import java.util.ArrayList;
 import dao.LessonDAO;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -32,7 +31,37 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
     
     @Override
     public Lesson getLessonById(int lessonId) throws Exception{
-        return null;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        Lesson lessonById = null;
+        String sql = "SELECT * FROM [Lesson] WHERE [lessonId] = " + lessonId;
+
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String lessonName = rs.getString("lessonName");
+                int lessonOrder = rs.getInt("lessonOrder");
+                int lessonTypeId = rs.getInt("lessonTypeId");
+                String videoLink = rs.getString("videoLink");
+                String content = rs.getString("content");
+                Boolean status = rs.getBoolean("status");
+                lessonById = new Lesson(lessonId, subjectId, lessonName, lessonOrder, lessonTypeId, videoLink, content, true, null);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return lessonById;
     }
     
     @Override

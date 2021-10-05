@@ -5,7 +5,7 @@
  */
 package dao;
 
-import bean.Question;
+import bean.*;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ public interface QuestionDAO {
     
     public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception;
     
-    public ArrayList<Question> getQuestionByContent(String content) throws Exception;
+    public ArrayList<QuestionManage> getQuestionByContent(String content) throws Exception;
 
     public int addQuestion(Question newQuestion) throws Exception;
 
@@ -29,4 +29,6 @@ public interface QuestionDAO {
     public int deleteQuestion(int questionId) throws Exception;
 
     public int importQuestion(ArrayList<Question> questionList) throws Exception;
+    
+    public ArrayList<QuestionManage> getQuestionManage(int subjectId, int lessonId, int dimensionId) throws Exception;
 }

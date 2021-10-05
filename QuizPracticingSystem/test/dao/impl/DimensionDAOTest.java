@@ -72,9 +72,10 @@ public class DimensionDAOTest {
     @Test
     public void testGetDimensionById() throws Exception {
         System.out.println("getDimensionById");
+        int dimensionId = 1;
         DimensionDAOImpl instance = new DimensionDAOImpl();
         Dimension expResult = null;
-        Dimension result = instance.getDimensionById();
+        Dimension result = instance.getDimensionById(dimensionId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

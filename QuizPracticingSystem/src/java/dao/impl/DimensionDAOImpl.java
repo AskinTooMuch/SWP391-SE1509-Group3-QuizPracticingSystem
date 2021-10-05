@@ -7,7 +7,7 @@
  *  Record of change:
  *  Date        Version     Author           Description
  *  23/9/21     1.0         DuongNHHE150328  First Deploy
-*/
+ */
 package dao.impl;
 
 import bean.Dimension;
@@ -22,7 +22,7 @@ import java.sql.ResultSet;
  *
  * @author admin
  */
-public class DimensionDAOImpl extends DBConnection implements DimensionDAO{
+public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
 
     @Override
     public ArrayList<Dimension> getAllDimension() throws Exception {
@@ -32,34 +32,37 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO{
     @Override
     public ArrayList<Dimension> getDimensionBySubject(int subjectId) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
 
-        /* Get dimension list of the subject */
+ /* Get dimension list of the subject */
         ArrayList<Dimension> dimensions = new ArrayList<>();
-        String sql = "SELECT S.[subjectId]\n" +
-                    "      ,D.[dimensionId]\n" +
-                    "      ,D.[subjectId]\n" +
-                    "      ,D.[dimensionTypeId]\n" +
-                    "      ,D.[dimensionName]\n" +
-                    "      ,D.[description]\n" +
-                    "      ,D.[status]\n" +
-                    "	  ,DT.[dimensionTypeName]\n" +
-                    "  FROM [QuizSystem].[dbo].[Subject] S \n" +
-                    "  INNER JOIN [QuizSystem].[dbo].[Dimension] D ON S.subjectId = D.subjectId \n" +
-                    "  INNER JOIN [QuizSystem].[dbo].DimensionType DT ON DT.dimensionTypeId = D.dimensionTypeId\n" +
-                    "  WHERE S.subjectId =" + subjectId;
+        String sql = "SELECT S.[subjectId]\n"
+                + "      ,D.[dimensionId]\n"
+                + "      ,D.[subjectId]\n"
+                + "      ,D.[dimensionTypeId]\n"
+                + "      ,D.[dimensionName]\n"
+                + "      ,D.[description]\n"
+                + "      ,D.[status]\n"
+                + "	  ,DT.[dimensionTypeName]\n"
+                + "  FROM [QuizSystem].[dbo].[Subject] S \n"
+                + "  INNER JOIN [QuizSystem].[dbo].[Dimension] D ON S.subjectId = D.subjectId \n"
+                + "  INNER JOIN [QuizSystem].[dbo].DimensionType DT ON DT.dimensionTypeId = D.dimensionTypeId\n"
+                + "  WHERE S.subjectId =" + subjectId;
         try {
-            conn = getConnection(); pre = conn.prepareStatement(sql);
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
                 dimensions.add(new Dimension(rs.getInt("dimensionId"),
-                    subjectId,
-                    rs.getInt("dimensionTypeId"),
-                    rs.getString("dimensionTypeName"),
-                    rs.getString("dimensionName"),
-                    rs.getString("description"),
-                    rs.getBoolean("status")));
+                        subjectId,
+                        rs.getInt("dimensionTypeId"),
+                        rs.getString("dimensionTypeName"),
+                        rs.getString("dimensionName"),
+                        rs.getString("description"),
+                        rs.getBoolean("status")));
             }
         } catch (Exception ex) {
             throw ex;
@@ -68,12 +71,41 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO{
             closePreparedStatement(pre);
             closeConnection(conn);
         }
-        return dimensions; 
+        return dimensions;
     }
 
     @Override
-    public Dimension getDimensionById() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Dimension getDimensionById(int dimensionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        Dimension dimensionById = null;
+        String sql = "SELECT * FROM [Dimension] WHERE [dimensionId] = " + dimensionId;
+
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                int dimensionTypeId = rs.getInt("dimensionTypeId");
+                String dimensionName = rs.getString("dimensionName");
+                String description = rs.getString("description");
+                Boolean status = rs.getBoolean("status");
+
+                dimensionById = new Dimension(dimensionId, subjectId, dimensionTypeId, dimensionName, dimensionName, description, true);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return dimensionById;
     }
 
     @Override
@@ -90,5 +122,5 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO{
     public int editDimension(int dimensionId, Dimension dimension) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
