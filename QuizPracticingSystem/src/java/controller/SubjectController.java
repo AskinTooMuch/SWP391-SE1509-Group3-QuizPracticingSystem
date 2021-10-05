@@ -11,8 +11,10 @@
 package controller;
 
 import bean.Subject;
+import bean.SubjectCate;
 import bean.User;
 import bean.UserRole;
+import dao.SubjectCateDAO;
 import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.SubjectDAO;
+import dao.impl.SubjectCateDAOImpl;
 
 public class SubjectController extends HttpServlet {
 
@@ -44,6 +47,7 @@ public class SubjectController extends HttpServlet {
             /* Get service and initialise the subjectDAO */
             String service = request.getParameter("service");
             SubjectDAO subjectDAO = new SubjectDAOImpl();
+            SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
             
             /**
              * Service course content list: for admin and expert to check the 
@@ -93,6 +97,7 @@ public class SubjectController extends HttpServlet {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
+//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getAllSubjectCates();
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
                 

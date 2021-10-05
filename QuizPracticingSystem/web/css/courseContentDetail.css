@@ -53,3 +53,5 @@
     border: 2px ridge #ccc;
     min-height: 50vh;
 }
+
+select::-ms-expand { display: block; }

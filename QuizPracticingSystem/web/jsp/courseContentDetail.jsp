@@ -31,7 +31,7 @@
         <c:if test="${sessionScope.currUser == null}">
             <c:set var = "errorMess" scope="session" value = "User not logged in"/>
             <c:redirect url="/error.jsp"/>
-        </c:if>--%>
+        </c:if>
         
         <%-- Check If subject is available or not, if not redirect to error page --%>
         <c:if test="${empty subject}">
@@ -101,18 +101,18 @@
                                 </div>
                                 <div class="form-group col-md-1"></div>
                                 <div class="form-group col-md-4">
-                                    <img src="../images/logo.png" style="height: 100%; width: 100%;">
+                                    <img src="${contextPath}/images/${subject.getThumbnail()}" style="height: 100%; width: 100%;">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputAddress">Description</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" style="min-height: 4em">
+                                <label for="inputDescription">Description</label>
+                                <textarea class="form-control" style="min-height: 4em; overflow: scroll;"><c:out value="${subject.getDescription()}"/></textarea>
                             </div>
 
 
                             <div class="form-row">
                                 <div class="form-group" style="margin-right: 1em; margin-left: 1em;">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                    <a href="${contextPath}/index.jsp" class="btn btn-primary">Submit</a>
                                 </div>
                                 <div class="form-group">
                                     <a href="${contextPath}/index.jsp" class="btn btn-primary">Back</a>
