@@ -147,16 +147,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
     @Override
     public ArrayList<Question> getQuestionByContent(String content) throws Exception{
-        DBConnection dbConn = new DBConnection();
-        Connection conn = dbConn.getConnection();
-        ResultSet rs;
-        /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
-        /* Prepared statement for executing sql queries */        
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */       
         ArrayList<Question> listQuestion = new ArrayList<>();
         String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%" + content + "%'";
-        rs = dbConn.getData(sql);
         try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
             while (rs.next()) {
                 Question question = new Question();
                 question.setQuestionId(rs.getInt("questionId"));
@@ -182,8 +181,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
     @Override
     public int addQuestion(Question newQuestion) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
-        /* Result set returned by the sqlserver */
+        ResultSet rs = null;/* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
         
         String sql = "INSERT INTO [Question](subjectId,dimensionId,lessonId,content,media,explanation,status) values (?,?,?,?,?,?,?)";
@@ -223,12 +221,4 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return 0;
     }
 
-//    public static void main(String[] args) {
-//        QuestionDAOImpl dao = new QuestionDAOImpl();
-//
-//        ArrayList<Question> list = dao.getQuestionByQuizId(1);
-//        for (Question q : list) {
-//            System.out.println(q);
-//        }
-//    }
 }

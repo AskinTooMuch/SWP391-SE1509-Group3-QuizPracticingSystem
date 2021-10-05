@@ -85,8 +85,12 @@
                                     <span class="fas fa-user-alt">Profile
                                     </span> 
                                 </a>
-                                <%-- Change user password--%>
+                               
                                 <div class="dropdown-menu" style="background-color:cyan;padding:10px 5px;">
+                                    <a href="${contextPath}/login/userProfile.jsp" style="text-decoration: none;color:black">
+                                        <span class="fas fa-info-circle">Your Info</span>  
+                                    </a>
+                                     <%-- Change user password--%>
                                     <a href="${contextPath}/login/changePassword.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
