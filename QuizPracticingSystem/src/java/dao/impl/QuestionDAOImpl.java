@@ -8,6 +8,7 @@
     Date        Version     Author          Description
     17/9/21     1.0         NamDHHE150519   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
+    05/10/21    1.2         TuanPAHE150543  update method
  */
  /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
@@ -165,7 +166,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setString(1, "content");
+            pre.setString(1, content);
             rs = pre.executeQuery();
             while (rs.next()) {
                 questionManage = new QuestionManage(rs.getInt("questionId"),
@@ -196,6 +197,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
+            pre.setInt(1, subjectId);
             while (rs.next()) {
                 Question pro = new Question();
                 pro.setQuestionId(rs.getInt("questionId"));
