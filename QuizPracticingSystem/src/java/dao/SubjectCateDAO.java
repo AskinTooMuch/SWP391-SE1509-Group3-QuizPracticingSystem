@@ -19,6 +19,8 @@ public interface SubjectCateDAO {
     
     public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) throws Exception;
     
+    public ArrayList<SubjectCate> getRemainSubjectCateBySubject(int subjectId) throws Exception;
+    
     public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception;
     
     public int deteleSubjectCate(int scId) throws Exception;

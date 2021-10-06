@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import dao.SubjectCateDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 /**
  *
@@ -92,6 +94,37 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         }
         return categories;
     }
+    
+    @Override
+    public ArrayList<SubjectCate> getRemainSubjectCateBySubject(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        /* Getcategory list of the subject */
+        ArrayList<SubjectCate> remainCategories = new ArrayList<>();
+        String sql = "SELECT C.[subjectId]\n"
+                + "      ,C.[cateId]\n"
+                + "	   ,S.[status]\n"
+                + "	   ,S.subjectCateName\n"
+                + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
+                + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
+                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId !=" + subjectId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                remainCategories.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return remainCategories;
+    }
 
     @Override
     public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception {
@@ -107,6 +140,8 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
 //        SubjectCateDAOImpl dao = new SubjectCateDAOImpl();
 //        try {
 //            System.out.println(dao.getAllSubjectCates().size());
+//            System.out.println(dao.getSubjectCateBySubject(1).size());
+//            System.out.println(dao.getRemainSubjectCateBySubject(1).size());
 //        } catch (Exception ex) {
 //            Logger.getLogger(SubjectCateDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
 //        }
