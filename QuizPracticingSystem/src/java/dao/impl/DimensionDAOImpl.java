@@ -7,10 +7,12 @@
  *  Record of change:
  *  Date        Version     Author           Description
  *  23/9/21     1.0         DuongNHHE150328  First Deploy
+ *  05/10/21     1.0        DuongNHHE150328  Add getSubjectDimensionType method
  */
 package dao.impl;
 
 import bean.Dimension;
+import bean.DimensionType;
 import dao.DBConnection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -122,5 +124,36 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
     public int editDimension(int dimensionId, Dimension dimension) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    @Override
+    public ArrayList<DimensionType> getSubjectDimensionType(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        ArrayList<DimensionType> dimensionList = new ArrayList<>();
+        String sql = "SELECT b.[dimensionTypeId],\n"
+                + "  b.[dimensionTypeName]\n"
+                + "  FROM [QuizSystem].[dbo].[Dimension] as A "
+                + "  inner join [QuizSystem].[dbo].[DimensionType] as B\n"
+                + "  on a.dimensionTypeId = b. dimensionTypeId\n"
+                + "  where a.subjectId = ? and b.status = 1";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                dimensionList.add(new DimensionType(rs.getInt("dimensionTypeId"), rs.getString("dimensionTypeName"), true));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return dimensionList;
+    }
 }

@@ -67,7 +67,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             while (rs.next()) {
                 registedSubject.add(subjectDAO.getSubjectbyId(rs.getInt("subjectId")));
             }
-            return registedSubject;
         } catch (Exception ex) {
             throw ex;
         } finally {
@@ -75,5 +74,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             closePreparedStatement(pre);
             closeConnection(conn);
         }
+        return registedSubject;
+
     }
 }

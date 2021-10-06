@@ -5,7 +5,7 @@
  */
 package dao;
 
-import bean.Dimension;
+import bean.*;
 import java.util.ArrayList;
 
 /**
@@ -24,4 +24,6 @@ public interface DimensionDAO {
     public int deleteDimension(int dimensionId) throws Exception;
     
     public int editDimension(int dimensionId, Dimension dimension) throws Exception;
+    
+    public ArrayList<DimensionType> getSubjectDimensionType(int subjectId) throws Exception;
 }

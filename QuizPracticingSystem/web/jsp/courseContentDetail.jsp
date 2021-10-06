@@ -32,20 +32,20 @@
             <c:set var = "errorMess" scope="session" value = "User not logged in"/>
             <c:redirect url="/error.jsp"/>
         </c:if>
-        
+
         <%-- Check If subject is available or not, if not redirect to error page --%>
         <c:if test="${empty subject}">
             <c:set var = "errorMess" scope="session" value = "Subject not available"/>
             <c:redirect url="/error.jsp"/>
         </c:if>
-        
+
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
         <%-- Main page --%>
         <div class="row">
-            
+
             <div class="col-md-2"></div>
-            
+
             <%-- Center form --%>
             <div class="col-md-8">
                 <%-- Header nav tab --%>
@@ -72,10 +72,27 @@
                                     <input type="text" class="form-control" id="inputSubjectName" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
 
                                     <label for="subjectCate">Category</label>
-                                    <select class="form-control">
-                                        <option selected>Choose...</option>
-                                        <option>...</option>
-                                    </select>
+                                    <div class="dropdown">
+                                        
+                                        <button class="btn btn-default dropdown-toggle" type="button" 
+                                                id="dropdownMenu1" data-toggle="dropdown" 
+                                                aria-haspopup="true" aria-expanded="true"
+                                                style="width: 100%; border: 1px solid #ced4da">
+                                            <i class="fas fa-bars"></i>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                            <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox"> <c:out value="${category.getSubjectCateName()}"/>
+                                                    </label>
+                                                </li>
+                                            </c:forEach>
+                                            
+
+                                        </ul>
+                                    </div>
 
                                     <br>
                                     <div class="form-row">
@@ -90,8 +107,8 @@
                                         <div class="form-group col-md-2">
                                             <label for="inputState">Status</label>
                                         </div>
-                                        <div class="form-group col-md-5">
-                                            <select id="inputState" class="form-control">
+                                        <div class="form-group col-md-5" >
+                                            <select id="inputState" class="form-control" style="border: 1px solid #ced4da">
                                                 <option selected value="1">Available</option>
                                                 <option value="0">Disabled</option>
                                             </select>
@@ -132,7 +149,7 @@
                     </div>
                 </div>
             </div>
-                                
+
             <div class="col-md-2"></div>
         </div>
         <%-- Include footer page --%>
@@ -154,5 +171,13 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+        $(".checkbox-menu").on("change", "input[type='checkbox']", function () {
+            $(this).closest("li").toggleClass("active", this.checked);
+        });
+
+        $(document).on('click', '.allow-focus', function (e) {
+            e.stopPropagation();
+        });
     </script>
 </html>
