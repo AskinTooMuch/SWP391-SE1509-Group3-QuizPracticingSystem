@@ -28,40 +28,62 @@
             <div class="row" style="margin: 10px;">
                 <div class="col-md-2" id="form">
                     <h2 class="text-center">Filter</h2>
-                    <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Question By Subject
-                    </button>
-                    <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                        <a class="dropdown-item" href="">
-                            OOP with java</a>
-                            
+                    <div>
+                        <div class="form-group">
+                        <input  class="form-control" type="text" id="content" placeholder="Content... " name="content">
+                        <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
+                        <input type="hidden" name="service" value="searchQuestionByContent">
+                        </div>
+                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
+                            Question By Subject
+                        </button>
+                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
+                            <a class="dropdown-item" href="">
+                                OOP with java</a>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Question By Lesson
-                    </button>
-                    <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                        <a class="dropdown-item" href="">Introduction</a>
+                    <div>
+                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
+                            Question By Lesson
+                        </button>
+                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
+                            <a class="dropdown-item" href="">Introduction</a>
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Question By Dimenson
-                    </button>
-                    <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                        <a class="dropdown-item" href="">
-                          Java Programming </a>
-                            
+                    <div>
+                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
+                            Question By Dimenson
+                        </button>
+                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
+                            <a class="dropdown-item" href="">
+                                Java Programming </a>
+                        </div>
                     </div>
-                    
+
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-9" >
                     <table class="table table-fluid" id="myTable"style="margin-right: 10px;border: solid 1px;border-radius: 5px;">
                         <thead>
-                            <tr><th>Id</th><th>Content</th><th>Subject</th><th>Lesson</th><th>Dimension</th><th>Status</th><th>Action</th></tr>
+                            <tr><th>Id</th>
+                                <th>Content</th>
+                                <th>Subject</th>
+                                <th>Lesson</th>
+                                <th>Dimension</th>
+                                <th>Status</th>
+                                <th>Action</th></tr>
                         </thead>
                         <tbody>
-
-                            <tr><td>1</td><td>What is Object Oriented Programming?</td><td>OOP with Java</td><td>Introduction</td><td>Java Programming</td><td>Available</td><td><a href=""class="btn btn-success">Edit</a></td></tr>
-
+                            <tr>
+                                <c:forEach items="${questionManageList}" var="questionList">
+                                    <td>${questionManageList.getQuestionId}</td>
+                                    <td>${questionManageList.getContent}</td>
+                                    <td>${questionManageList.getSubjectName}</td>
+                                    <td>${questionManageList.getLessonName}</td>
+                                    <td>${questionManageList.getDimensionName}</td>
+                                    <td>${questionManageList.getStatus}</td>
+                                    <td><a href=""class="btn btn-success">Edit</a></td></tr>
+                                </c:forEach>
                         </tbody>
                     </table>
                 </div>

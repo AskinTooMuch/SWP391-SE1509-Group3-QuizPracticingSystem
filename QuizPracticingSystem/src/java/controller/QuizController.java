@@ -16,6 +16,7 @@ package controller;
 import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Question;
+import bean.QuestionManage;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
@@ -328,6 +329,13 @@ public class QuizController extends HttpServlet {
                 } else {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
+            }
+            
+            if (service.equalsIgnoreCase("searchQuestionByContent")) {
+                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionByContent(request.getParameter("content"));
+                request.setAttribute("listQuestionManage", listQuestionManage);
+                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+                
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
