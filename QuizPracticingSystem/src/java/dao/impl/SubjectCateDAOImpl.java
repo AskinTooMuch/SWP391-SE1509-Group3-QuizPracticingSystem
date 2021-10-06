@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import dao.SubjectCateDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,19 +35,16 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
         /* Get category list */
         ArrayList<SubjectCate> allCategory = new ArrayList<>();
-        String sql = "SELECT C.[subjectId]\n"
-                + "      ,C.[cateId]\n"
-                + "	   ,S.[status]\n"
-                + "	   ,S.subjectCateName\n"
-                + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
-                + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
-                + "  ON C.cateId = S.subjectCateId";
+        String sql = "SELECT [subjectCateId]\n" +
+                    "      ,[subjectCateName]\n" +
+                    "      ,[status]\n" +
+                    "  FROM [QuizSystem].[dbo].[SubjectCate]\n";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                allCategory.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
+                allCategory.add(new SubjectCate(rs.getInt("subjectCateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
             }
         } catch (Exception ex) {
             throw ex;
@@ -102,19 +99,20 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
         /* Getcategory list of the subject */
         ArrayList<SubjectCate> remainCategories = new ArrayList<>();
-        String sql = "SELECT C.[subjectId]\n"
-                + "      ,C.[cateId]\n"
-                + "	   ,S.[status]\n"
-                + "	   ,S.subjectCateName\n"
-                + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
-                + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
-                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId !=" + subjectId;
+        String sql = "SELECT [subjectCateId]\n" +
+                    "      ,[subjectCateName]\n" +
+                    "      ,[status]\n" +
+                    "  FROM [QuizSystem].[dbo].[SubjectCate]\n" +
+                    "  WHERE [subjectCateId] NOT IN (SELECT C.[cateId]\n" +
+                    "				FROM [QuizSystem].[dbo].[CategorySubject] C\n" +
+                    "				INNER JOIN [QuizSystem].[dbo].SubjectCate S\n" +
+                    "				ON C.cateId = S.subjectCateId WHERE C.subjectId = "+ subjectId +")";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                remainCategories.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
+                remainCategories.add(new SubjectCate(rs.getInt("subjectCateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
             }
         } catch (Exception ex) {
             throw ex;
@@ -136,14 +134,14 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     /* Test DAO */
-//    public static void main(String[] args) {
-//        SubjectCateDAOImpl dao = new SubjectCateDAOImpl();
-//        try {
-//            System.out.println(dao.getAllSubjectCates().size());
-//            System.out.println(dao.getSubjectCateBySubject(1).size());
-//            System.out.println(dao.getRemainSubjectCateBySubject(1).size());
-//        } catch (Exception ex) {
-//            Logger.getLogger(SubjectCateDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    public static void main(String[] args) {
+        SubjectCateDAOImpl dao = new SubjectCateDAOImpl();
+        try {
+            System.out.println(dao.getAllSubjectCates().size());
+            System.out.println(dao.getSubjectCateBySubject(1).size());
+            System.out.println(dao.getRemainSubjectCateBySubject(1).size());
+        } catch (Exception ex) {
+            Logger.getLogger(SubjectCateDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

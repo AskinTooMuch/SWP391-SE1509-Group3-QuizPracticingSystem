@@ -1,8 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  Subject entity
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  27/9/21     1.0         ChucNVHE150618  First Deploy
+*/
 package bean;
 
 import java.util.ArrayList;
@@ -12,16 +17,25 @@ import java.util.ArrayList;
  * @author admin
  */
 public class Subject {
-    private int subjectId;
-    private String subjectName;
-    private String description;
-    private String thumbnail;
-    private boolean featuredSubject;
-    private boolean status;
-    private ArrayList<Dimension> dimensions;
-    private ArrayList<SubjectCate> categories; 
+    private int subjectId;  /* Subject's id */
+    private String subjectName; /* Subject's Name */
+    private String description; /* Subject's Description */
+    private String thumbnail;   /* Subject's Thumbnail */
+    private boolean featuredSubject;    /* Is featuredSubject or not */
+    private boolean status; /* Subject's Status */
+    private ArrayList<Dimension> dimensions;    /* Subject's dimensions */
+    private ArrayList<SubjectCate> categories;  /* Subject's categories */
 
     public Subject() {
+    }
+
+    public Subject(int subjectId, String subjectName, String description, String thumbnail, boolean featuredSubject, boolean status) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.description = description;
+        this.thumbnail = thumbnail;
+        this.featuredSubject = featuredSubject;
+        this.status = status;
     }
 
     public Subject(int subjectId, String subjectName, String description, String thumbnail, boolean featuredSubject, boolean status, ArrayList<Dimension> dimensions,  ArrayList<SubjectCate> categories) {

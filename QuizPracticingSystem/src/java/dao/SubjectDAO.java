@@ -25,6 +25,8 @@ public interface SubjectDAO {
     
     public int updateSubject(int subjectId, Subject subject) throws Exception;
     
+    public int updateSubjectBasic(int subjectId, Subject subject) throws Exception;
+    
     public int addSubject(Subject subject) throws Exception;
     
     public int deleteSubject(int subjectId) throws Exception;

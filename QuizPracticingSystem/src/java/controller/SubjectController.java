@@ -1,4 +1,4 @@
-/*
+/**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Sep 23, 2021
  *  SubjectController map
@@ -7,6 +7,7 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  27/9/21     1.0         ChucNVHE150618  First Deploy
+ *  6/10/21     1.1         ChucNVHE150618  Add course content detail and update subject
 */
 package controller;
 
@@ -75,7 +76,6 @@ public class SubjectController extends HttpServlet {
                 }   else { /* If the user is logged in but not admin or expert, send back to index.jsp */
                     sendDispatcher(request, response, "index.jsp");
                 }
-                
             }
             
             /**
@@ -91,7 +91,7 @@ public class SubjectController extends HttpServlet {
                         ((!currRole.getUserRoleName().equalsIgnoreCase("admin")) &&
                         (!currRole.getUserRoleName().equalsIgnoreCase("expert")))){
                     sendDispatcher(request, response, "error.jsp");
-                } 
+                }
                 /* Else: get the subject with the set id and redirect to courseContentDetail page*/
                 else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
@@ -103,7 +103,36 @@ public class SubjectController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
-                
+            }
+            
+            /**
+             * Service course content detail: update subject
+             */
+            if (service.equalsIgnoreCase("updateSubject")) {
+                /* Get user and role on session scope */
+                User currUser = (User)request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null) || 
+                        ((!currRole.getUserRoleName().equalsIgnoreCase("admin")) &&
+                        (!currRole.getUserRoleName().equalsIgnoreCase("expert")))){
+                    sendDispatcher(request, response, "error.jsp");
+                }
+                /* Else: get the subject detail  */
+                else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                    String subjectName = request.getParameter("subjectName");
+                    String subjectDescription = request.getParameter("subjectDescription");
+                    String subjectThumbnail = request.getParameter("subjectThumbnail");
+                    boolean isFeatured = request.getParameter("isFeaturedSubject")!=null;
+                    boolean status = request.getParameter("subjectStatus").equals("1");
+                    String[] categoryId = request.getParameterValues("subjectCate");
+                    
+                    Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
+                    int i = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+                    
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                }
             }
             
         } catch (Exception ex) {

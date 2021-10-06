@@ -69,11 +69,10 @@
                                 <div class="form-group col-md-7">
                                     <br>
                                     <label for="subjectName">Subject Name</label>
-                                    <input type="text" class="form-control" id="inputSubjectName" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
+                                    <input type="text" name="subjectName" class="form-control" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
 
                                     <label for="subjectCate">Category</label>
                                     <div class="dropdown">
-                                        
                                         <button class="btn btn-default dropdown-toggle" type="button" 
                                                 id="dropdownMenu1" data-toggle="dropdown" 
                                                 aria-haspopup="true" aria-expanded="true"
@@ -81,7 +80,7 @@
                                             <i class="fas fa-bars"></i>
                                             <span class="caret"></span>
                                         </button>
-                                        <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                        <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1" name="subjectCategory">
                                             <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
                                                 <li>
                                                     <label>
@@ -103,19 +102,34 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-5">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="gridCheck" checked="${subject.isFeaturedSubject()}">
+                                                <c:choose>
+                                                    <c:when test="${subject.isFeaturedSubject()}">
+                                                        <input class="form-check-input" type="checkbox" checked id="gridCheck" name="isFeaturedSubject">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input class="form-check-input" type="checkbox" id="gridCheck" name="isFeaturedSubject">
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <label class="form-check-label" for="gridCheck">
                                                     Featured Subject
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="inputState">Status</label>
+                                            <label for="status">Status</label>
                                         </div>
                                         <div class="form-group col-md-5" >
-                                            <select id="inputState" class="form-control" style="border: 1px solid #ced4da">
-                                                <option selected value="1">Available</option>
-                                                <option value="0">Disabled</option>
+                                            <select id="inputState" class="form-control" style="border: 1px solid #ced4da" name="subjectStatus">
+                                                <c:choose>
+                                                    <c:when test="${subject.isStatus()}">
+                                                        <option selected value="1">Available</option>
+                                                        <option value="0">Disabled</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option  value="1">Available</option>
+                                                        <option selected value="0">Disabled</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </select>
                                         </div>
                                     </div>
@@ -124,17 +138,20 @@
                                 <div class="form-group col-md-1"></div>
                                 <div class="form-group col-md-4">
                                     <img src="${contextPath}/images/${subject.getThumbnail()}" style="height: 100%; width: 100%;">
+                                    <input type="hidden" name="subjectThumbnail" value="${subject.getThumbnail()}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputDescription">Description</label>
-                                <textarea class="form-control" style="min-height: 4em; overflow: scroll;"><c:out value="${subject.getDescription()}"/></textarea>
+                                <label for="subjectDescription">Description</label>
+                                <textarea class="form-control" style="min-height: 4em; overflow: scroll;" name="subjectDescription"><c:out value="${subject.getDescription()}"/></textarea>
                             </div>
-
 
                             <div class="form-row">
                                 <div class="form-group" style="margin-right: 1em; margin-left: 1em;">
-                                    <a href="${contextPath}/index.jsp" class="btn btn-primary">Submit</a>
+                                    <input type="hidden" name="service" value="updateSubject">
+                                    <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
+                                    <input type="hidden" name="sujectDimension" value="${subject.getDimensions()}">
+                                    <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                                 </div>
                                 <div class="form-group">
                                     <a href="${contextPath}/index.jsp" class="btn btn-primary">Back</a>

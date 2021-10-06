@@ -229,10 +229,36 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return subjectByCate;
     }
-
+    
     @Override
     public int updateSubject(int subjectId, Subject subject) throws Exception {
         int i = 0;
+        return i;
+    }
+
+    @Override
+    public int updateSubjectBasic(int subjectId, Subject subject) throws Exception {
+        int i = 0;
+        Connection conn = null;
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
+        String sql = "UPDATE Subject\n"
+                + "  SET subjectName = '" + subject.getSubjectName() + "',\n"
+                + "  description = '" + subject.getDescription() + "',\n"
+                + "  thumbnail = '" + subject.getThumbnail() + "',\n"
+                + "  featuredSubject = " + (subject.isFeaturedSubject()== true ? 1 : 0) + ",\n"
+                + "  status = " + (subject.isStatus()== true ? 1 : 0) + "\n"
+                + "  WHERE subjectId =" + subjectId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            i = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return i;
     }
 
