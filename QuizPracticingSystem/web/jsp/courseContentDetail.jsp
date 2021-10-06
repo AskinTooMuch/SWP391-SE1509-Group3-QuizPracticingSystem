@@ -85,12 +85,17 @@
                                             <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
                                                 <li>
                                                     <label>
+                                                        <input type="checkbox" checked> <c:out value="${category.getSubjectCateName()}"/>
+                                                    </label>
+                                                </li>
+                                            </c:forEach>
+                                            <c:forEach items = "${categoryRemainList}" var="category" begin = "0" end = "${categoryRemainList.size()-1}">
+                                                <li>
+                                                    <label>
                                                         <input type="checkbox"> <c:out value="${category.getSubjectCateName()}"/>
                                                     </label>
                                                 </li>
                                             </c:forEach>
-                                            
-
                                         </ul>
                                     </div>
 
