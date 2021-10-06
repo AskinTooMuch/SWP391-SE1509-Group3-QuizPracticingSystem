@@ -8,6 +8,7 @@
     Date        Version     Author          Description
     20/9/21     1.0         TuanPAHE150543  First Deploy
     29/9/21     1.1         ChucNVHE150618  Add course content
+    6/10/21     1.2         ChucNVHE150618  Update course content
 --%>
 
 <%@page import="bean.User"%>
@@ -51,9 +52,17 @@
                             <p>          </p>
                         </li>
                         <c:if test="${(role.getUserRoleName().equalsIgnoreCase('admin')) || (role.getUserRoleName().equalsIgnoreCase('expert'))}">
-                            <li class="nav-item">
-                                <a class="nav-link" href="${contextPath}/subjectController?service=courseContentList" style="font-weight: bold;">Course Content List</a>
-                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bold;">
+                                  Course Manage
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <a class="dropdown-item" href="${contextPath}/subjectController?service=courseContentList">Course Content List</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                              </li>
                         </c:if>
                         
                     </ul>
