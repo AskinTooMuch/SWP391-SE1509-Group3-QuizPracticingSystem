@@ -97,7 +97,8 @@ public class SubjectController extends HttpServlet {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
-//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getAllSubjectCates();
+                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getAllSubjectCates();
+                    request.setAttribute("categoryList", categoryList);
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
                 
