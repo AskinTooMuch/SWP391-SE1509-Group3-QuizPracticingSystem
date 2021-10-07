@@ -29,6 +29,8 @@ import dao.QuestionDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
@@ -162,11 +164,13 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         SubjectDAO subjectDAO = new SubjectDAOImpl();
         LessonDAO lessonDAO = new LessonDAOImpl();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
-        String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%?%'";
+        String sql = "SELECT * FROM [Question]";
+        if (content!=null) {
+            sql = sql.concat("WHERE content like '%"+ content+"%'");
+        }
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setString(1, content);
             rs = pre.executeQuery();
             while (rs.next()) {
                 questionManage = new QuestionManage(rs.getInt("questionId"),
@@ -174,7 +178,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
                         dimensionDAO.getDimensionById(rs.getInt("dimensionId")).getDimensionName(),
                         lessonDAO.getLessonById(rs.getInt("lessonId")).getLessonName(),
                         rs.getString("content"), rs.getString("media"),
-                        rs.getString("explanation"), true);
+                        rs.getString("explanation"), rs.getBoolean("status"));
                 questionManageList.add(questionManage);
             }
         } catch (Exception ex) {
@@ -199,15 +203,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
             rs = pre.executeQuery();
             pre.setInt(1, subjectId);
             while (rs.next()) {
-                Question pro = new Question();
-                pro.setQuestionId(rs.getInt("questionId"));
-                pro.setSubjectId(rs.getInt("subjectId"));
-                pro.setDimensionId(rs.getInt("dimensionId"));
-                pro.setLessonId(rs.getInt("lessonId"));
-                pro.setContent(rs.getString("content"));
-                pro.setMedia(rs.getString("media"));
-                pro.setStatus(rs.getBoolean("status"));
-                list.add(pro);
+                Question question = new Question();
+                question.setQuestionId(rs.getInt("questionId"));
+                question.setSubjectId(rs.getInt("subjectId"));
+                question.setDimensionId(rs.getInt("dimensionId"));
+                question.setLessonId(rs.getInt("lessonId"));
+                question.setContent(rs.getString("content"));
+                question.setMedia(rs.getString("media"));
+                question.setStatus(rs.getBoolean("status"));
+                list.add(question);
             }
         } catch (Exception ex) {
             throw ex;
@@ -305,5 +309,49 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionManageList;
     }
-    
+
+
+    @Override
+    public ArrayList<Question> getQuestionForCreateQuiz(int numberOfQuestion, int subjectId, int dimensionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<Question> questionList = new ArrayList<>();
+        String sql = "SELECT [questionId]\n"
+                + "      ,[subjectId]\n"
+                + "      ,[dimensionId]\n"
+                + "      ,[lessonId]\n"
+                + "      ,[content]\n"
+                + "      ,[media]\n"
+                + "      ,[explanation]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Question]\n"
+                + "  WHERE subjectId = ? AND dimensionId = ? AND [status] = 1\n"
+                + "  ORDER BY NEWID()";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
+            pre.setInt(2, dimensionId);
+            rs = pre.executeQuery();
+            while (rs.next() && questionList.size() < numberOfQuestion) {
+                Question pro = new Question();
+                pro.setQuestionId(rs.getInt("questionId"));
+                pro.setSubjectId(rs.getInt("subjectId"));
+                pro.setDimensionId(rs.getInt("dimensionId"));
+                pro.setLessonId(rs.getInt("lessonId"));
+                pro.setContent(rs.getString("content"));
+                pro.setMedia(rs.getString("media"));
+                pro.setStatus(rs.getBoolean("status"));
+                questionList.add(pro);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return questionList;
+    }
 }

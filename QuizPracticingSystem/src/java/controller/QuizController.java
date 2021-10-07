@@ -15,11 +15,14 @@ package controller;
 
 import bean.Answer;
 import bean.CustomerQuiz;
+import bean.DimensionType;
 import bean.Question;
 import bean.QuestionManage;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
+import bean.Subject;
+import bean.User;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuestionQuizHandleDAOImpl;
@@ -34,14 +37,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.CustomerQuizDAO;
+import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
+import dao.RegistrationDAO;
+import dao.SubjectDAO;
+import dao.impl.DimensionTypeDAOImpl;
+import dao.impl.RegistrationDAOImpl;
+import dao.UserDAO;
+import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectDAOImpl;
+import dao.impl.UserDAOImpl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -58,9 +71,10 @@ public class QuizController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    static final int EXAM_TYPE = 1;
-    static final int PRACTICE_TYPE = 2;
-    static final int MAX_SESSION_TIME = 7200;
+    static final int IMAGE_MEDIA_TYPE = 1;
+    static final int VIDEO_MEDIA_TYPE = 2;
+    static final int EXAM_TYPE_ID = 1;
+    static final int PRACTICE_TYPE_ID = 2;
     static final int DEFAULT_PAGE = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -72,13 +86,16 @@ public class QuizController extends HttpServlet {
             QuestionDAO questionInterface = new QuestionDAOImpl();
             QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
-
+            String autoSubmit = request.getParameter("autoSubmit");
             if (service.equalsIgnoreCase("quizEntrance")) {
+                HttpSession session = request.getSession();
                 int quizId = Integer.parseInt(request.getParameter("quizId"));
-                ArrayList<Question> questionList = questionInterface.getQuestionByQuizId(quizId);
-                QuizQuizHandle doingQuiz = quizQHInterface.generateQuiz(questionList, quizId);
-                HttpSession session = request.getSession(true);
-                session.setAttribute("doingQuiz", doingQuiz);
+                if (session.getAttribute("doingQuiz") == null) {
+                    User user = (User) session.getAttribute("currUser");
+                    ArrayList<Question> questionList = questionInterface.getQuestionByQuizId(quizId);
+                    QuizQuizHandle doingQuiz = quizQHInterface.generateQuiz(questionList, quizId, user);
+                    session.setAttribute("doingQuiz", doingQuiz);
+                }
                 response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=1");
             }
 
@@ -88,7 +105,7 @@ public class QuizController extends HttpServlet {
                 Object object = session.getAttribute("doingQuiz");
                 if (object != null) {
                     QuizQuizHandle doingQuiz = (QuizQuizHandle) object;
-                    int quizId = Integer.parseInt(request.getParameter("quizId"));
+                    int quizId = doingQuiz.getQuiz().getQuizId();
                     request.setAttribute("quizId", quizId);
                     int quizType = doingQuiz.getQuiz()
                             .getTestTypeId();
@@ -100,7 +117,7 @@ public class QuizController extends HttpServlet {
                     //get question id
                     int questionNumber;
                     if (request.getParameter("questionNumber") == null) {
-                        questionNumber = 1;
+                        questionNumber = DEFAULT_PAGE;
                     } else {
                         questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
                     }
@@ -108,11 +125,11 @@ public class QuizController extends HttpServlet {
 
                     String media = questionQH.getQuestion().getMedia();
                     if (media != null) {
-                        int mediaType = 2;
+                        int mediaType = VIDEO_MEDIA_TYPE;
                         String[] imageExtensions = {".jpg", ".gif", ".jpeg", ".jfif", ".pjpeg", ".png", ".pjps"};
                         for (String extension : imageExtensions) {
                             if (media.contains(extension)) {
-                                mediaType = 1;
+                                mediaType = IMAGE_MEDIA_TYPE;
                             }
                         }
                         request.setAttribute("mediaType", mediaType);
@@ -139,7 +156,7 @@ public class QuizController extends HttpServlet {
                     request.setAttribute("duration", doingQuiz.getQuiz().getQuizDuration());
                     //Next quiz, Previous quiz, Score Exams handle
                     String action = request.getParameter("action");
-                    String finalAction = request.getParameter("finalAction");
+
                     if (action != null) {
                         //information of recently submit question include questionNumber in this quiz and answer id in database
                         String answerTakenIdRaw = request.getParameter("answerTakenId");
@@ -152,16 +169,13 @@ public class QuizController extends HttpServlet {
                         }
 
                         //prepare for next action
-                        int newQuestionNumber = 0;
                         //previous question
                         if (action.equalsIgnoreCase("Previous Question")) {
-                            newQuestionNumber = --questionNumber;
-                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + --questionNumber);
 
                             //next question    
                         } else if (action.equalsIgnoreCase("Next Question")) {
-                            newQuestionNumber = ++questionNumber;
-                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + newQuestionNumber);
+                            response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=" + ++questionNumber);
 
                             //score exam
                         } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
@@ -174,7 +188,8 @@ public class QuizController extends HttpServlet {
                             request.setAttribute("totalsecond", time);
                             response.sendRedirect("quizController?service=quizSummary");
                         }
-                    } else if (finalAction != null) {
+                        request.setAttribute("doingQuiz", doingQuiz);
+                    } else if (autoSubmit != null) {
                         String answerTakenIdRaw = request.getParameter("answerTakenId");
                         String questionTakenNumberRaw = request.getParameter("questionTakenNumber");
 
@@ -184,11 +199,16 @@ public class QuizController extends HttpServlet {
                             questionQH.setAnsweredId(answerTakenId);
                         }
 
-                        if (finalAction.equalsIgnoreCase("Finish Exam")) {
+                        if (autoSubmit.equalsIgnoreCase("yes")) {
+                            doingQuiz = (QuizQuizHandle) object;
                             int time = Integer.parseInt(request.getParameter("time"));
                             doingQuiz.setTime(time);
-                            request.setAttribute("totalsecond", time);
-                            response.sendRedirect("quizController?service=quizSummary");
+                            session.removeAttribute("doingQuiz");
+                            CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
+                            int latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
+                            //redirect user to review quiz page  
+                            response.sendRedirect("quizController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
+                            return;
                         }
                     } else {
                         request.getRequestDispatcher("quizhandle/quizHandle.jsp").forward(request, response);
@@ -250,11 +270,9 @@ public class QuizController extends HttpServlet {
                 CustomerQuiz customerQuiz = customerQuizInterface.getLastAddedCustomerQuiz();
                 long startedAt = 0;
                 long submitedAt = 0;
-                if (quiz.getTestTypeId() == 1) {
-                    startedAt = customerQuiz.getStartedAt().getTime() - (quiz.getQuizDuration() - customerQuiz.getTime()) * 1000;
-                } else {
-                    startedAt = customerQuiz.getStartedAt().getTime() - customerQuiz.getTime() * 1000;
-                }
+
+                startedAt = customerQuiz.getStartedAt().getTime() - customerQuiz.getTime() * 1000;
+
                 submitedAt = customerQuiz.getStartedAt().getTime();
                 Timestamp submitTime = new Timestamp(submitedAt);
                 Timestamp startTime = new Timestamp(startedAt);
@@ -266,18 +284,18 @@ public class QuizController extends HttpServlet {
 
                 int questionNumber;
                 if (request.getParameter("questionNumber") == null) {
-                    questionNumber = 1;
+                    questionNumber = DEFAULT_PAGE;
                 } else {
                     questionNumber = Integer.parseInt(request.getParameter("questionNumber"));
                 }
                 QuestionQuizHandle questionQH = doingQuiz.getQuestionByNumber(questionNumber);
                 String media = questionQH.getQuestion().getMedia();
                 if (media != null) {
-                    int mediaType = 2;
+                    int mediaType = VIDEO_MEDIA_TYPE;
                     String[] imageExtensions = {".jpg", ".gif", ".jpeg", ".jfif", ".pjpeg", ".png", ".pjps"};
                     for (String extension : imageExtensions) {
                         if (media.contains(extension)) {
-                            mediaType = 1;
+                            mediaType = IMAGE_MEDIA_TYPE;
                         }
                     }
                     request.setAttribute("mediaType", mediaType);
@@ -306,17 +324,13 @@ public class QuizController extends HttpServlet {
                 if (action != null) {
 
                     //prepare for next action
-                    int newQuestionNumber = 0;
-
                     //previous question
                     if (action.equalsIgnoreCase("Previous Question")) {
-                        newQuestionNumber = --questionNumber;
-                        response.sendRedirect("quizController?service=quizReview&quizTakeId=" + quizTakeId + "&questionNumber=" + newQuestionNumber);
+                        response.sendRedirect("quizController?service=quizReview&quizTakeId=" + quizTakeId + "&questionNumber=" + --questionNumber);
 
                         //next question    
                     } else if (action.equalsIgnoreCase("Next Question")) {
-                        newQuestionNumber = ++questionNumber;
-                        response.sendRedirect("quizController?service=quizReview&quizTakeId=" + quizTakeId + "&questionNumber=" + newQuestionNumber);
+                        response.sendRedirect("quizController?service=quizReview&quizTakeId=" + quizTakeId + "&questionNumber=" + ++questionNumber);
 
                         //score exam
                     } else if ((action.charAt(0) != 'P') && (action.charAt(0) != 'N')
@@ -330,17 +344,100 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
             }
-            
+
             if (service.equalsIgnoreCase("searchQuestionByContent")) {
-                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionByContent(request.getParameter("content"));
+                String content = request.getParameter("content").trim();
+                ArrayList<QuestionManage> listQuestionManage = new ArrayList<>();
+                if (content.length() == 0) {
+                    listQuestionManage = questionInterface.getQuestionByContent(null);
+                } else {
+                    listQuestionManage = questionInterface.getQuestionByContent(content);
+                }
                 request.setAttribute("listQuestionManage", listQuestionManage);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+
+//                sendDispatcher(request, response, "jsp/questionList.jsp");
+
+
+            }   
                 
+            if (service.equalsIgnoreCase("getPracticeDetail")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                RegistrationDAO registrationDAO = new RegistrationDAOImpl();
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
+                ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                request.setAttribute("registedSubject", registedSubject);
+                request.setAttribute("dimensionTypes", dimensionTypes);
+                request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
             }
+            
+            if(service.equalsIgnoreCase("createPractice")){
+                int subjectId = Integer.parseInt(request.getParameter("subject"));
+                int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimension"));
+                int duration = Integer.parseInt(request.getParameter("duration"));
+                QuestionDAO questionDAO = new QuestionDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+                Quiz quiz = new Quiz();
+                
+                //nam sua lai
+                Subject subject = subjectDAO.getSubjectbyId(subjectId);
+                quiz.setSubject(subject);
+              
+                quiz.setQuizDuration(duration*60);
+                quiz.setTestTypeId(3);
+                quiz.setNumberQuestion(questionList.size());
+                quiz.setDimensionTypeId(dimensionId);
+                quiz.setStatus(true);
+                quizDAO.addQuiz(quiz);
+                Quiz practice = quizDAO.getQuizById(quizDAO.getQuizIdCreated(quiz));
+                for (Question question : questionList) {
+                    quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
+                }
+                response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
+            if (service.equalsIgnoreCase("simulationExam")) {
+                HttpSession session = request.getSession();
+                QuizQuizHandle doingQuiz = (QuizQuizHandle) session.getAttribute("doingQuiz");
+                if (doingQuiz != null) {
+                    request.setAttribute("doingQuiz", doingQuiz);
+                }
+                RegistrationDAO IRegistration = new RegistrationDAOImpl();
+                User currUser = (User)session.getAttribute("currUser");
+                String subjectSearchIdRaw = request.getParameter("subjectSearchId");
+                int subjectSearchId = 0;
+                if (subjectSearchIdRaw != null && !subjectSearchIdRaw.equalsIgnoreCase("")) {
+                    subjectSearchId = Integer.parseInt(subjectSearchIdRaw);
+                    request.setAttribute("subjectSearchId", +subjectSearchId);
+                }
+
+                String searchQuizName = request.getParameter("subjectSearchName");
+                ArrayList<Subject> subjectList = IRegistration.getRegistedSubject(currUser.getUserId());
+                ArrayList<Quiz> simulationList = quizInterface.getAllSimulationQuizByUser(currUser.getUserId(), subjectSearchId, searchQuizName);
+
+                request.setAttribute("subjectList", subjectList);
+                request.setAttribute("simulationList", simulationList);
+                request.getRequestDispatcher("quizhandle/simulationExam.jsp").forward(request, response);
+            }
+        }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
-            response.sendRedirect("error.jsp");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
+
+    /* Forward the request to the destination, catch any unexpected exceptions and log it */
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(SubjectController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

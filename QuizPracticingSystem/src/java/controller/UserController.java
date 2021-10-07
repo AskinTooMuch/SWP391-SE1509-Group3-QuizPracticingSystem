@@ -84,7 +84,7 @@ public class UserController extends HttpServlet {
             }
             /* Log out */
             if (service.equalsIgnoreCase("logout")) {
-                request.getSession().invalidate();
+                request.getSession().removeAttribute("currUser");
                 sendDispatcher(request, response, "index.jsp");
             }
 
@@ -99,7 +99,7 @@ public class UserController extends HttpServlet {
                 String txtGender = request.getParameter("gender").trim();
                 boolean gender;
                 User addUser = new User();
-                
+
                 //check blank input fields
                 if (userName.length() == 0 || password.length() == 0
                         || confirmPass.length() == 0
@@ -114,7 +114,7 @@ public class UserController extends HttpServlet {
                 //check max length
                 if (userName.length() > 63 || password.length() > 255
                         || confirmPass.length() > 255
-                        || userMail.length() > 255 
+                        || userMail.length() > 255
                         || userMobile.length() > 10) {
                     mess = "Your input have reached max length!";
                     request.setAttribute("mess", mess);
@@ -163,7 +163,7 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("login/register.jsp").forward(request, response);
                     return;
                 }
-                
+
                 //convert gender to booolean type
                 if (txtGender.equalsIgnoreCase("Male")) {
                     gender = true;
@@ -289,7 +289,7 @@ public class UserController extends HttpServlet {
                             .forward(request, response);
                     return;
                 }
-                
+
                 //check max length
                 if (userName.length() > 63 || userMobile.length() > 10) {
                     mess = "Your input have reached max length!";
@@ -357,7 +357,7 @@ public class UserController extends HttpServlet {
                             String value = item.getString();
                             System.out.println(name + " " + value);
                         } else {
-                            filename ="u_" + currUser.getUserId() +"_" + item.getName();
+                            filename = "u_" + currUser.getUserId() + "_" + item.getName();
                             if (filename == null || filename.equals("")) {
                                 break;
                             } else {

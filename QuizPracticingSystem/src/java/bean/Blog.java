@@ -36,10 +36,6 @@ public class Blog {
         this.status = status;
     }
 
-    
-    
-    
-
     public int getBlogId() {
         return blogId;
     }

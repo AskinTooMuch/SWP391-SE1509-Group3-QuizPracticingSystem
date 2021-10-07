@@ -26,14 +26,16 @@
             <%-- Include header page --%>
             <jsp:include page="header.jsp"/>
             <div class="row" style="margin: 10px;">
-                <div class="col-md-2" id="form">
+                <div class="col-md-2" id="form" style="height: 330px">
                     <h2 class="text-center">Filter</h2>
-                    <div>
-                        <div class="form-group">
-                        <input  class="form-control" type="text" id="content" placeholder="Content... " name="content">
-                        <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
-                        <input type="hidden" name="service" value="searchQuestionByContent">
-                        </div>
+                    <div style="margin-bottom: 20px;">
+                        <form action = "${contextPath}/quizController" class="navbar-form">
+                            <div class="form-group">
+                                <input  class="form-control" type="text" id="content" placeholder="Content... " name="content">
+                                <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
+                                <input type="hidden" name="service" value="searchQuestionByContent">
+                            </div>
+                        </form>
                         <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
                             Question By Subject
                         </button>
@@ -42,7 +44,7 @@
                                 OOP with java</a>
                         </div>
                     </div>
-                    <div>
+                    <div style="margin-bottom: 20px;">
                         <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
                             Question By Lesson
                         </button>
@@ -50,9 +52,9 @@
                             <a class="dropdown-item" href="">Introduction</a>
                         </div>
                     </div>
-                    <div>
+                    <div style="margin-bottom: 20px;">
                         <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                            Question By Dimenson
+                            Question By Dimension
                         </button>
                         <div class="dropdown-menu" style="background-color: #fff; text-align: center">
                             <a class="dropdown-item" href="">
@@ -63,7 +65,7 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-9" >
-                    <table class="table table-fluid" id="myTable"style="margin-right: 10px;border: solid 1px;border-radius: 5px;">
+                    <table class="table table-fluid" style="margin-right: 10px;border: solid 1px;border-radius: 5px;">
                         <thead>
                             <tr><th>Id</th>
                                 <th>Content</th>
@@ -74,16 +76,24 @@
                                 <th>Action</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <c:forEach items="${questionManageList}" var="questionList">
-                                    <td>${questionManageList.getQuestionId}</td>
-                                    <td>${questionManageList.getContent}</td>
-                                    <td>${questionManageList.getSubjectName}</td>
-                                    <td>${questionManageList.getLessonName}</td>
-                                    <td>${questionManageList.getDimensionName}</td>
-                                    <td>${questionManageList.getStatus}</td>
-                                    <td><a href=""class="btn btn-success">Edit</a></td></tr>
+                            <c:if test="${listQuestionManage!=null}">
+                                <c:forEach items="${listQuestionManage}" var="questionList">
+                                    <tr>
+                                        <td><c:out value="${questionList.getQuestionId()}"/></td>
+                                        <td><c:out value="${questionList.getContent()}"/></td>
+                                        <td><c:out value="${questionList.getSubjectName()}"/></td>
+                                        <td><c:out value="${questionList.getLessonName()}"/></td>
+                                        <td><c:out value="${questionList.getDimensionName()}"/></td>
+                                        <td><c:if test="${questionList.isStatus()}">
+                                                Available
+                                            </c:if>
+                                            <c:if test="${!questionList.isStatus()}">
+                                                Not Available
+                                            </c:if>
+                                          </td>
+                                    </tr>
                                 </c:forEach>
+                            </c:if>
                         </tbody>
                     </table>
                 </div>
@@ -93,11 +103,7 @@
             <jsp:include page="footer.jsp"/>
         </div>
         <script>
-            $(document).ready(function () {
-                $('#myTable').DataTable();
-
-            });
-
+            
         </script>
     </body>
 </html>

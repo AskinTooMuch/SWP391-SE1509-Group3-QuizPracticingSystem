@@ -151,10 +151,10 @@ CREATE TABLE dbo.[Answer](
 -------------------------------------------
 CREATE TABLE dbo.[Quiz](
 	quizId			int				NOT NULL identity(1,1) PRIMARY KEY,
-	lessonId		int				NOT NULL,
+	lessonId		int				,
 	subjectId		int				NOT NULL,
-	quizName		nvarchar(255)	NOT NULL,
-	quizLevelId		int				NOT NULL,
+	quizName		nvarchar(255)	,
+	quizLevelId		int				,
 	quizDuration	int				NOT NULL, --Minutes
 	passRate		int, --1-100?
 	testTypeId		int				NOT NULL,
@@ -313,6 +313,8 @@ INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,use
 				VALUES('Expert1',1,4,'','Expert1@gmail.com',0,'0969044716',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
 				VALUES('Expert2',1,4,'','Expert2@gmail.com',1,'0969044717',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('User1',1,1,'','User1@gmail.com',1,'0969044718',1);
 ----------dbo.[Subject]--------------------
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
 				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','java-oops.png',1,1);--1
@@ -411,10 +413,10 @@ INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanat
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is encapsulation?',NULL,'OOP Details',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(1,1,2,'What is Data Abstraction?',NULL,'OOP Details',1)
 INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What is Adobe Photoshop?',NULL,'Photoshop Introduction',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What is Gradient in Photoshop?',NULL,'Photoshop Introduction',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'What are the Photoshop’s work areas?',NULL,'Photoshop Introduction',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'How you can re-size the image in Photoshop?',NULL,'Photoshop Introduction',1)
-INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'List some important tools in Adobe Photoshop?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'Which of the following can you NOT do with Photoshop?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'Once you build the layers in your graphic design, you cannot rearrange them?',NULL,'Photoshop Introduction',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'Photoshop documents are composed of layers, which can basically be described as single transparent sheets which hold particular pieces of an image?',NULL,'Photoshop Details',1)
+INSERT INTO dbo.Question(subjectId,dimensionId,lessonId,[content],media,explanation,[status]) VALUES(4,4,12,'Primary colors consist of:?',NULL,'Photoshop Details',1)
 
 -------------------------------------------
 ----------dbo.[Answer]---------------------
@@ -458,6 +460,56 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Hai
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Finger',0,1)
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Foot',0,1)
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(10,'Food',0,1)--10
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(11,'Object-oriented programming (OOP) is a fundamental programming paradigm used by nearly every developer at some point in their career.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(11,'Object-oriented programming (OOP) is something.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(11,'Object-oriented programming (OOP) is important in Java.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(11,'All the above.',0,1)--11
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(12,'Classes,Objects,Inheritance,Polymorphism,Data Abstraction and Encapsulation.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(12,'Classes,Objects,Inheritance,Polymorphism,Data Abstraction and Encapsulation,Dynamic Binding,Message Passing.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(12,'Classes,Objects,Inheritance,Polymorphism.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(12,'All the above',0,1)--12
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(13,'An object is a noun (or pronoun) governed by a verb or a preposition.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(13,'Object is an instance of a class. An object in OOPS is nothing but a self-contained component which consists of methods and properties to make a particular type of data useful.A material thing that can be seen and touched.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(13,'A person or thing to which a specified action or feeling is directed.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(13,'All the above',0,1)--13
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(14,'Class in Java determines how an object will behave and what the object will contain.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(14,'It is a basic concept of Object-Oriented Programming which revolve around the real-life entities.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(14,'Class are a blueprint or a set of instructions to build a specific type of object.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(14,'A Class in object oriented programming is a blueprint or prototype that defines the variables and the methods.',0,1)--14
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(15,'The extends keyword extends a class and is an indicator that a class is being inherited by another class.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(15,'It is a basic concept of Object-Oriented Programming which revolve around the real-life entities.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(15,'Inheritance uses the “extends” keyword to create a derived class by reusing base class code.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(15,'Inheritance in Java is a concept that acquires the properties from one class to other classes.',1,1)--15
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(16,'the presence of genetic variation within a population, upon which natural selection can operate.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(16,'Polymorphism is the method in an object-oriented programming language that performs different things as per the objectclass.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(16,'the occurrence of different forms among the members of a population or colony, or in the life cycle of an individual organism.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(16,'Polymorphism in Java is a concept that acquires the properties from one class to other classes.',0,1)--16
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(17,'The extends keyword extends a class and is an indicator that a class is being inherited by another class.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(17,'A variable in a class are set as “private” as shown below. It can only be accessed with the methods defined in the class. No other class or object can access them.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(17,'If a data member is private, it means it can only be accessed within the same class. No outside class can access private data member or variable of other class.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(17,'Encapsulation in Java is a mechanism to wrap up variables(data) and methods(code) together as a single unit.',1,1)--17
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(18,'Abstraction in Programming is about hiding unwanted details while showing most essential information.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(18,'An abstract class can have both abstract and non-abstract methods.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(18,'Abstraction is the concept of object-oriented programming that “shows” only essential attributes and “hides” unnecessary information',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(18,'Inheritance in Java is a concept that acquires the properties from one class to other classes.',0,1)--18
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(19,'Adobe Photoshop is software that is extensively used for raster image editing, graphic design and digital art.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(19,'Shadows and other effects such as alpha compositing can be applied.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(19,'It is also possible of apply several color models to these layers – CMYK, RGB, Spot Color, and Duotone and Lap color space.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(19,'Adobe Photoshop was originally developed in 1987 by Thomas and John Knoll, and then Adobe Systems Inc. bought the license to distribute in 1988.',0,1)--19
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(20,'Restore old photographs.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(20,'Create original artwork.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(20,'Create Flash movies.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(20,'Open JPEG files.',0,1)--20
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(21,'True.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(21,'False.',1,1)--21
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(22,'True.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(22,'False.',0,1)--22
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Yellow, orange and green.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Blue, red and yellow.',1,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'The mix of two complimentary colors.',0,1)
+INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Blue, blue-green, and green.',0,1)--23
+
+
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
 INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,7200,NULL,2,NULL,10,2,1)
@@ -487,15 +539,17 @@ INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,9,1)
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,10,1)
 -------------------------------------------
 ----------dbo.[CustomerQuiz]---------------
-
 -------------------------------------------
 ----------dbo.[TakeAnswer]-----------------
-
 -------------------------------------------
 ----------dbo.[Registration]---------------
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',2,20.0,'2020-12-12','2021-6-12',1,null,1)
-
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',5,20.0,'2020-12-12','2021-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-12','2022-6-12',1,null,1)
+Select * from PricePackage
+
+
+SELECT * from Quiz WHERE subjectId IN(1,2) and subjectId=1
 -------------------------------------------
 ----------dbo.[Blog]-----------------------
 insert into Blog(blogTitle,created,lastEdited,author,detail,thumbnail,status) values('Rita’s Way: Why is it so Effective?','2021-08-10','2021-09-10','1','RMC Learning Solutions was founded in 1991 by Rita Mulcahy, who spent years working as a trainer and consultant. What started off as a project management training company with the intention of helping people pass the PMP® exam eventually grew into what it is today: a trusted and proven resource for training and exam prep courses led by renowned experts in their field.

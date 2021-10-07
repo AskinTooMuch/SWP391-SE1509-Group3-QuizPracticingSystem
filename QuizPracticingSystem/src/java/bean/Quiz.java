@@ -11,8 +11,8 @@ package bean;
  */
 public class Quiz {
     private int quizId;
-    private int lessonId;
-    private int subjectId;
+    private Lesson lesson;
+    private Subject subject;
     private String quizName;
     private int quizLevelId;
     private String quizLevelName;
@@ -26,10 +26,10 @@ public class Quiz {
     private String dimensionTypeName;
     private Boolean status;
 
-    public Quiz(int quizId, int lessonId, int subjectId, String quizName, int quizLevelId, String quizLevelName, int quizDuration, int passRate, int testTypeId, String testTypeName, String description, int numberQuestion, int dimensionTypeId, String dimensionTypeName, Boolean status) {
+    public Quiz(int quizId, Lesson lesson, Subject subject, String quizName, int quizLevelId, String quizLevelName, int quizDuration, int passRate, int testTypeId, String testTypeName, String description, int numberQuestion, int dimensionTypeId, String dimensionTypeName, Boolean status) {
         this.quizId = quizId;
-        this.lessonId = lessonId;
-        this.subjectId = subjectId;
+        this.lesson = lesson;
+        this.subject = subject;
         this.quizName = quizName;
         this.quizLevelId = quizLevelId;
         this.quizLevelName = quizLevelName;
@@ -44,6 +44,10 @@ public class Quiz {
         this.status = status;
     }
 
+
+
+
+
     public Quiz() {
     }
 
@@ -55,21 +59,22 @@ public class Quiz {
         this.quizId = quizId;
     }
 
-    public int getLessonId() {
-        return lessonId;
+    public Lesson getLesson() {
+        return lesson;
     }
 
-    public void setLessonId(int lessonId) {
-        this.lessonId = lessonId;
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 
-    public int getSubjectId() {
-        return subjectId;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjectId(int subjectId) {
-        this.subjectId = subjectId;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
+
 
     public String getQuizName() {
         return quizName;

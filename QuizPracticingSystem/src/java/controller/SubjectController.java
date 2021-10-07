@@ -8,7 +8,7 @@
  *  Date        Version     Author          Description
  *  27/9/21     1.0         ChucNVHE150618  First Deploy
  *  6/10/21     1.1         ChucNVHE150618  Add course content detail and update subject
-*/
+ */
 package controller;
 
 import bean.Subject;
@@ -49,53 +49,54 @@ public class SubjectController extends HttpServlet {
             String service = request.getParameter("service");
             SubjectDAO subjectDAO = new SubjectDAOImpl();
             SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
-            
+
             /**
-             * Service course content list: for admin and expert to check the 
+             * Service course content list: for admin and expert to check the
              * proper subject, depends on the role
              */
             if (service.equalsIgnoreCase("courseContentList")) {
                 /* Get user and role on session scope */
-                User currUser = (User)request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, redirect to index */
-                if ((currUser == null) || (currRole == null)){
+                if ((currUser == null) || (currRole == null)) {
                     sendDispatcher(request, response, "index.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {    /* Role is expert: get the assigned subjects */
-                    /* Get assigned list */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
+                    /* Role is expert: get the assigned subjects */
+ /* Get assigned list */
                     ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                     /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                }   else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {    /* Role is admin: load all subject */
-                    /* Get all subject */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
+                    /* Role is admin: load all subject */
+ /* Get all subject */
                     ArrayList<Subject> allSubject = subjectDAO.getAllSubjects();
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                }   else { /* If the user is logged in but not admin or expert, send back to index.jsp */
+                } else {
+                    /* If the user is logged in but not admin or expert, send back to index.jsp */
                     sendDispatcher(request, response, "index.jsp");
                 }
             }
-            
+
             /**
-             * Service course content detail: for admin and expert to check the 
+             * Service course content detail: for admin and expert to check the
              * subject detail and edit it
              */
             if (service.equalsIgnoreCase("courseContentDetail")) {
                 /* Get user and role on session scope */
-                User currUser = (User)request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null) || 
-                        ((!currRole.getUserRoleName().equalsIgnoreCase("admin")) &&
-                        (!currRole.getUserRoleName().equalsIgnoreCase("expert")))){
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                }
-                /* Else: get the subject with the set id and redirect to courseContentDetail page*/
-                else {
+                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-                    Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
+                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
                     ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
                     request.setAttribute("categoryList", categoryList);
@@ -104,27 +105,25 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-            
+
             /**
              * Service course content detail: update subject
              */
             if (service.equalsIgnoreCase("updateSubject")) {
                 /* Get user and role on session scope */
-                User currUser = (User)request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole)request.getSession().getAttribute("role");
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null) || 
-                        ((!currRole.getUserRoleName().equalsIgnoreCase("admin")) &&
-                        (!currRole.getUserRoleName().equalsIgnoreCase("expert")))){
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                }
-                /* Else: get the subject detail  */
-                else {
+                } /* Else: get the subject detail  */ else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     String subjectName = request.getParameter("subjectName");
                     String subjectDescription = request.getParameter("subjectDescription");
                     String subjectThumbnail = request.getParameter("subjectThumbnail");
-                    boolean isFeatured = request.getParameter("isFeaturedSubject")!=null;
+                    boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
                     boolean status = request.getParameter("subjectStatus").equals("1");
                     String[] categoryId = request.getParameterValues("subjectCategory");
                     
@@ -142,17 +141,26 @@ public class SubjectController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                     
-                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-            
+            if (service.equalsIgnoreCase("subjectDetail")) {
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                Subject subject = subjectDAO.getSubjectbyId(subjectId);
+                request.setAttribute("subject", subject);
+                
+                
+                
+                
+                request.getRequestDispatcher("jsp/subjectDetail.jsp").forward(request, response);
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(SubjectController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
-    
+
     /* Forward the request to the destination, catch any unexpected exceptions and log it */
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {

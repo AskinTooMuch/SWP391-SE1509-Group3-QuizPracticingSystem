@@ -14,6 +14,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>
-                        <button class="goBack" type="button" class="btn" style=""> Go Back</button>
+                        <a href="${contextPath}/quizController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <div class="col-11">    
                         <div class="detail">
@@ -77,7 +78,7 @@
                     <div class="row answers" style="margin-top:10px;">
                         <div class="col-1"></div>
                         <div class="col-11">
-                            <form id='questionForm' action='quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                            <form id='questionForm' action='${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                                 <ul>
 
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
@@ -96,7 +97,7 @@
                                     </c:forEach>
                                 </ul>
                                 <!--                                userid-->     
-                                <input hidden id="formAction" name="finalAction" form="questionForm">
+                                <input hidden id="autoSubmit" name="autoSubmit" form="questionForm">
                                 <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
                                 <input hidden id="time" name="time" form="questionForm">
                             </form>    
@@ -108,12 +109,12 @@
                 </div>
                 <div class="right col-7" style="">
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
-                        
+
                         <div style="">
                             <c:if test="${mediaType==2}">
-                            <iframe width="420" height="315" style="width:100%; height:500px;"
-                                    src=${questionQH.getQuestion().getMedia()}>
-                            </iframe>
+                                <iframe width="420" height="315" style="width:100%; height:500px;"
+                                        src=${questionQH.getQuestion().getMedia()}>
+                                </iframe>
                             </c:if>
                             <c:if test="${mediaType==1}">
                                 <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
@@ -132,7 +133,7 @@
                     <div class="col-3">
                         <div style="float:right; display:flex;">
                             <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
-                            <form id="markForm" action="quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
+                            <form id="markForm" action="${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">
                             </form>
@@ -245,10 +246,10 @@
                 totalSecond = (endMilisecond - presentMilisecond) / 1000;
                 displayTime();
             }
-            setInterval(autoSubmit, 1000);
+            setInterval(autoSubmit, 1500);
             function autoSubmit() {
-                if (totalSecond < 2) {
-                    document.getElementById("formAction").value = "Finish Exam";
+                if (totalSecond < 1) {
+                    document.getElementById("autoSubmit").value = "yes";
                     document.getElementById("questionForm").submit();
                 }
             }
@@ -268,10 +269,10 @@
                 totalSecond = ((presentMilisecond - startMilisecond) / 1000);
                 displayTime();
             }
-            setInterval(autoSubmit, 100);
+            setInterval(autoSubmit, 1000);
             function autoSubmit() {
-                if (totalSecond > 60) {
-                    document.getElementById("formAction").value = "Finish Exam";
+                if (totalSecond > 7198) {
+                    document.getElementById("autoSubmit").value = "yes";
                     document.getElementById('questionForm').submit();
                 }
             }

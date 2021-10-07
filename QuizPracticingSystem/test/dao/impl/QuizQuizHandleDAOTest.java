@@ -7,6 +7,7 @@ package dao.impl;
 
 import bean.Question;
 import bean.QuizQuizHandle;
+import bean.User;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -51,7 +52,8 @@ public class QuizQuizHandleDAOTest {
         int quizId = 0;
         QuizQuizHandleDAOImpl instance = new QuizQuizHandleDAOImpl();
         QuizQuizHandle expResult = null;
-        QuizQuizHandle result = instance.generateQuiz(questionList, 1);
+        User user = new User();
+        QuizQuizHandle result = instance.generateQuiz(questionList, 1,user);
         assertEquals(30, result.getTime());
     }
 
