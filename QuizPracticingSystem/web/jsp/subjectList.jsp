@@ -78,6 +78,7 @@
                                         <h5>${subject.getSubjectName()}</h5>
                                         <p style="overflow: hidden">${subject.getDescription()}</p>
                                     </div>
+                                   <a href="subjectController?service=subjectDetail&subjectId=${subject.getSubjectId()}" class="btn btn-primary">Read More</a>
                                 </div>
                             </c:forEach>
                             <%-- Print Subject placeholder card, same as subject card but the content is default --%>
