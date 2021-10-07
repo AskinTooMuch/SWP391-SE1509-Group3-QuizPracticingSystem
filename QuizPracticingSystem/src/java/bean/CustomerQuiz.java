@@ -17,21 +17,23 @@ public class CustomerQuiz {
     private int userId;
     private int score;
     private int time;
-    private Timestamp startedAt;
+    private Timestamp submitedAt;
     private boolean status;
 
     public CustomerQuiz() {
     }
 
-    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, int time, Timestamp startedAt, boolean status) {
+    public CustomerQuiz(int quizTakeId, int quizId, int userId, int score, int time, Timestamp submitedAt, boolean status) {
         this.quizTakeId = quizTakeId;
         this.quizId = quizId;
         this.userId = userId;
         this.score = score;
         this.time = time;
-        this.startedAt = startedAt;
+        this.submitedAt = submitedAt;
         this.status = status;
     }
+
+ 
 
   
 
@@ -76,13 +78,15 @@ public class CustomerQuiz {
         this.score = score;
     }
 
-    public Timestamp getStartedAt() {
-        return startedAt;
+    public Timestamp getSubmitedAt() {
+        return submitedAt;
     }
 
-    public void setStartedAt(Timestamp startedAt) {
-        this.startedAt = startedAt;
+    public void setSubmitedAt(Timestamp submitedAt) {
+        this.submitedAt = submitedAt;
     }
+
+  
 
    
 

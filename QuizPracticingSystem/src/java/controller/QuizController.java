@@ -7,9 +7,10 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  23/9/21     1.0         NamDHHe510519   First Deploy
- *  24/9/21     1.1         NamDHHE150519   Update quiz handle
- *  25/9/21     1.2         NamDHHE150519   Update quiz review
- *  26/9/21     1.3         NamDHHE150519   Update quiz summary
+ *  24/9/21     1.0         NamDHHE150519   Update quiz handle
+ *  25/9/21     1.0         NamDHHE150519   Update quiz review
+ *  26/9/21     1.0         NamDHHE150519   Update quiz summary
+ *  26/9/21     1.3         NamDHHE150519   Update simulation Exam
  */
 package controller;
 
@@ -86,7 +87,10 @@ public class QuizController extends HttpServlet {
             QuestionDAO questionInterface = new QuestionDAOImpl();
             QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
-            String autoSubmit = request.getParameter("autoSubmit");
+
+            /**
+             * Service quiz entrance: create a session for doing quiz
+             */
             if (service.equalsIgnoreCase("quizEntrance")) {
                 HttpSession session = request.getSession();
                 int quizId = Integer.parseInt(request.getParameter("quizId"));
@@ -99,6 +103,9 @@ public class QuizController extends HttpServlet {
                 response.sendRedirect("quizController?service=quizHandle&quizId=" + quizId + "&questionNumber=1");
             }
 
+            /**
+             * Service quiz handle: handle with all situation happen in a quiz taking session
+             */
             if (service.equalsIgnoreCase("quizHandle")) {
                 //get quiz from session or generate new quiz (not yet have userId)
                 HttpSession session = request.getSession(true);
@@ -156,7 +163,7 @@ public class QuizController extends HttpServlet {
                     request.setAttribute("duration", doingQuiz.getQuiz().getQuizDuration());
                     //Next quiz, Previous quiz, Score Exams handle
                     String action = request.getParameter("action");
-
+                    String autoSubmit = request.getParameter("autoSubmit");
                     if (action != null) {
                         //information of recently submit question include questionNumber in this quiz and answer id in database
                         String answerTakenIdRaw = request.getParameter("answerTakenId");
@@ -218,6 +225,9 @@ public class QuizController extends HttpServlet {
                     response.sendRedirect("homeController");
                 }
             }
+            /**
+             * Service quiz summary: review quiz progress while taking a quiz
+             */
 
             if (service.equalsIgnoreCase("quizSummary")) {
                 HttpSession session = request.getSession();
@@ -254,7 +264,9 @@ public class QuizController extends HttpServlet {
                     return;
                 }
             }
-
+            /**
+             * Service quiz review: review the quiz after taking it
+             */
             if (service.equalsIgnoreCase("quizReview")) {
                 //prepare quiz information
                 int quizTakeId = Integer.parseInt(request.getParameter("quizTakeId"));
@@ -266,14 +278,9 @@ public class QuizController extends HttpServlet {
                 Quiz quiz = quizDAOInterface.getQuizByQuizTakeId(quizTakeId);
                 request.setAttribute("quizReview", quizReview);
                 request.setAttribute("quizSize", quizReview.size());
-
                 CustomerQuiz customerQuiz = customerQuizInterface.getLastAddedCustomerQuiz();
-                long startedAt = 0;
-                long submitedAt = 0;
-
-                startedAt = customerQuiz.getStartedAt().getTime() - customerQuiz.getTime() * 1000;
-
-                submitedAt = customerQuiz.getStartedAt().getTime();
+                long startedAt = customerQuiz.getSubmitedAt().getTime() - customerQuiz.getTime() * 1000;;
+                long submitedAt = submitedAt = customerQuiz.getSubmitedAt().getTime();
                 Timestamp submitTime = new Timestamp(submitedAt);
                 Timestamp startTime = new Timestamp(startedAt);
                 String startedAtTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(startTime);
@@ -344,7 +351,10 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
             }
-
+            /**
+             * Service simulation exam: view all exam quiz avaliable from the subject customer
+             * had registered
+             */
             if (service.equalsIgnoreCase("simulationExam")) {
                 HttpSession session = request.getSession();
                 QuizQuizHandle doingQuiz = (QuizQuizHandle) session.getAttribute("doingQuiz");
@@ -420,7 +430,6 @@ public class QuizController extends HttpServlet {
                     quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
                 }
                 response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
-
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);

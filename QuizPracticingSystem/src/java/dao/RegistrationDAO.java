@@ -24,5 +24,7 @@ public interface RegistrationDAO {
     
     public int deleteRegistration(int registrationId) throws Exception;
     
+    public void convertJson(ArrayList<Subject> registrationList ) throws Exception;
+            
     public ArrayList<Subject> getRegistedSubject(int userId) throws Exception;
 }

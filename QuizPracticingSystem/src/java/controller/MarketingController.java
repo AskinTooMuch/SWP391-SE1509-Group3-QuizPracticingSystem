@@ -52,13 +52,16 @@ public class MarketingController extends HttpServlet {
             String service = request.getParameter("service");
             BlogDAO blogInterface = new BlogDAOImpl();
             PostCateDAO postCateInterface = new PostCateDAOImpl();
-            
+
+            /**
+             * Service blog list: browse all blog in database
+             */
             if (service.equalsIgnoreCase("blogList")) {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
-                
+
                 if ((searchCate != null) || (searchString != null)) {
                     blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
                     //phan trang sau khi tim kiem theo category
@@ -99,13 +102,16 @@ public class MarketingController extends HttpServlet {
                 request.getRequestDispatcher("jsp/blogList.jsp").forward(request, response);
             }
 
+            /**
+             * Service blog detail: show detail of the blog
+             */
             if (service.equalsIgnoreCase("blogDetail")) {
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
                 Blog blog = blogInterface.getBlogById(blogId);
                 request.setAttribute("blog", blog);
                 int blogCate = postCateInterface.getBlogCateByBlogId(blogId);
                 String blogCateName = postCateInterface.getPostCateById(blogCate)
-                                                    .getPostCateName();
+                        .getPostCateName();
                 request.setAttribute("blogCateName", blogCateName);
                 ArrayList<PostCate> postCateList = postCateInterface.getAllPostCates();
                 request.setAttribute("postCateList", postCateList);
@@ -113,7 +119,16 @@ public class MarketingController extends HttpServlet {
                 request.setAttribute("lastBlogs", lastBlogs);
                 request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
-        } catch(Exception ex){
+
+            /**
+             * This is for the Admin, Sale or Marketing to see and lookup for
+             * the relevant management statistics in the system, with the
+             * relevant links to the related screens
+             */
+            if(service.equalsIgnoreCase("dashboard")){
+                
+            }
+        } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");

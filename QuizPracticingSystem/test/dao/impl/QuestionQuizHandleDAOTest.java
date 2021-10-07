@@ -6,7 +6,6 @@
 package dao.impl;
 
 import bean.Answer;
-import bean.Question;
 import bean.QuestionQuizHandle;
 import java.util.ArrayList;
 import org.junit.After;

@@ -335,8 +335,8 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
     public static void main(String[] args) throws Exception {
         QuizDAOImpl dao = new QuizDAOImpl();
-        ArrayList<Quiz> quiz = dao.getAllSimulationQuizByUser(2, 0, null);
-        System.out.print(quiz.size());
+        Quiz quiz = dao.getQuizById(1);
+        System.out.print(quiz.getQuizId());
     }
 
     @Override
@@ -412,4 +412,5 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         }
         return question;
     }
+    
 }

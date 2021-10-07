@@ -60,7 +60,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                Timestamp time = new Timestamp(rs.getTimestamp("startedAt").getTime());
+                Timestamp time = new Timestamp(rs.getTimestamp("sumitedAt").getTime());
                 return new CustomerQuiz(rs.getInt("quizTakeId"),
                         rs.getInt("quizId"),
                         rs.getInt("userId"),
@@ -100,7 +100,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
-        String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],startedAt,[status]) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO [CustomerQuiz](quizId,userId,score,[time],sumitedAt,[status]) VALUES(?,?,?,?,?,?)";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
             pre.setInt(2, customerQuiz.getUserId());
             pre.setInt(3, customerQuiz.getScore());
             pre.setInt(4, customerQuiz.getTime());
-            pre.setTimestamp(5, new java.sql.Timestamp(customerQuiz.getStartedAt().getTime()));
+            pre.setTimestamp(5, new java.sql.Timestamp(customerQuiz.getSubmitedAt().getTime()));
             pre.setBoolean(6, true);
             return pre.executeUpdate();
         } catch (Exception ex) {
@@ -140,7 +140,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                Timestamp time = new Timestamp(rs.getTimestamp("startedAt").getTime());
+                Timestamp time = new Timestamp(rs.getTimestamp("sumitedAt").getTime());
                 return new CustomerQuiz(rs.getInt("quizTakeId"),
                         rs.getInt("quizId"),
                         rs.getInt("userId"),

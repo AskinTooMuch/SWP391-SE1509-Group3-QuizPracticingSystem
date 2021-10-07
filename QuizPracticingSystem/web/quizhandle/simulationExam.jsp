@@ -7,6 +7,7 @@
    Record of change:
    Date        Version     Author          Description
    6/10/21     1.0         NamDHHE150519   First Deploy
+   7/10/21     1.0         NamDHHE150519   90% function
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -121,7 +122,7 @@
                                             <input onclick="resetTime()" type="submit" class="btn btn-primary" value="Take Exam" form="${quiz.getQuizId()}">
                                         </c:otherwise>
                                     </c:choose>
-                                      </div>
+                                </div>
                             </div>
                         </div>
                         <form id="${quiz.getQuizId()}" action="${contextPath}/quizController?service=quizEntrance" method="POST">
@@ -135,9 +136,9 @@
         </div>
     </body>
     <script>
-                                            function resetTime() {
-                                                localStorage.clear();
-                                            }
+        function resetTime() {
+            localStorage.clear();
+        }
 
     </script>
     <jsp:include page="/jsp/footer.jsp"/>

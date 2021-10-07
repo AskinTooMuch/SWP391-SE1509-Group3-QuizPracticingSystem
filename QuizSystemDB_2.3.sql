@@ -247,15 +247,6 @@ CREATE TABLE dbo.[Slider](
 	[status]	bit,
 	FOREIGN KEY (link) REFERENCES dbo.[Subject](subjectId),
 )
-
-CREATE TABLE dbo.[MarkQuestion](
-	quizTakeId		int	NOT NULL,
-	questionId		int	NOT NULL,
-	[status]		bit,
-	FOREIGN KEY (quizTakeId)	REFERENCES dbo.[CustomerQuiz](quizTakeId),
-	FOREIGN KEY (questionId)	REFERENCES dbo.[Question](questionId),
-)
-
 ----------Insert Data----------------------
 ----------dbo.[UserRole]-------------------
 INSERT INTO dbo.UserRole(userRoleName,status) VALUES('Customer',1);
@@ -508,8 +499,6 @@ INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Yel
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Blue, red and yellow.',1,1)
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'The mix of two complimentary colors.',0,1)
 INSERT INTO dbo.Answer(questionId,answerContent,isCorrect,status) VALUES(23,'Blue, blue-green, and green.',0,1)--23
-
-
 -------------------------------------------
 ----------dbo.[Quiz]-----------------------
 INSERT INTO dbo.Quiz(lessonId,subjectId,quizName,quizLevelId,quizDuration,passRate,testTypeId,[description],numberQuestion,dimensionTypeId,[status]) VALUES(5,2,'Practice Quiz',3,7200,NULL,2,NULL,10,2,1)
@@ -537,6 +526,17 @@ INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,7,1)
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,8,1)
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,9,1)
 INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,10,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,1,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,2,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,3,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,4,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,5,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,6,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,7,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,8,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,9,1)
+INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,10,1)
+
 -------------------------------------------
 ----------dbo.[CustomerQuiz]---------------
 -------------------------------------------
