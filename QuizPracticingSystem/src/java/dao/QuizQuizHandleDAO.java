@@ -8,6 +8,7 @@ package dao;
 import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.QuizQuizHandle;
+import bean.User;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  */
 public interface QuizQuizHandleDAO {
 
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId) throws Exception;
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList,int quizId,User user) throws Exception;
 
     public double calculateScore(QuizQuizHandle quiz) throws Exception;
 

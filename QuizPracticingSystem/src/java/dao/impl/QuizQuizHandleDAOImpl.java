@@ -18,6 +18,7 @@ import bean.Question;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
+import bean.User;
 import dao.CustomerQuizDAO;
 import dao.DBConnection;
 import dao.QuestionDAO;
@@ -44,7 +45,7 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      * @return a <code>QuizQuizHandle</code> object.
      */
     @Override
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId) throws Exception {
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId,User user) throws Exception {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAOImpl questionQuizzHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizDAOImpl quizDAO = new QuizDAOImpl();
@@ -54,8 +55,10 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
             QuestionQuizHandle questionQH = questionQuizzHandleDAO.generateQuestionById(questionId);//turn a question into question quiz handle
             quiz.addQuestion(questionQH);                                                           //add question to list           
         }
+        
         quiz.setQuiz(quizInDatabase);
         quiz.setTime(quizInDatabase.getQuizDuration());
+        quiz.setUser(user);
         return quiz;
     }
 

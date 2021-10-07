@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import bean.Quiz;
 import bean.Registration;
 import bean.Subject;
 import dao.DBConnection;
@@ -75,5 +76,10 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             closeConnection(conn);
         }
         return registedSubject;
+    }
+      public static void main(String[] args) throws Exception {
+        RegistrationDAO IRegistration  = new RegistrationDAOImpl();
+        ArrayList<Subject> quiz = IRegistration.getRegistedSubject(2);
+        System.out.print(quiz.size());
     }
 }

@@ -16,13 +16,18 @@ package dao.impl;
 
 import bean.DimensionType;
 import bean.Question;
+import bean.Lesson;
 import bean.Quiz;
 import bean.QuizLevel;
+import bean.Subject;
 import bean.TestType;
 import dao.DBConnection;
+import dao.LessonDAO;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import dao.QuizDAO;
+import dao.RegistrationDAO;
+import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.logging.Level;
@@ -79,9 +84,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
                     DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
                     dimensionTypeName = dimensionType.getDimensionTypeName();
                 }
+                LessonDAO lessonDAO = new LessonDAOImpl();
+                Lesson lesson = lessonDAO.getLessonById(rs.getInt("lessonId"));
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                Subject subject = subjectDAO.getSubjectbyId(rs.getInt("subjectId"));
                 return new Quiz(rs.getInt("quizId"),
-                        rs.getInt("lessonId"),
-                        rs.getInt("subjectId"),
+                        lesson,
+                        subject,
                         rs.getString("quizName"),
                         rs.getInt("quizLevelId"),
                         quizLevelName,
@@ -103,6 +112,75 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
             closeConnection(conn);
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<Quiz> getAllSimulationQuizByUser(int userId, int subjectId, String quizName) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        RegistrationDAO IRegistration = new RegistrationDAOImpl();
+        ArrayList<Subject> subjectList = IRegistration.getRegistedSubject(userId);
+        ArrayList<Quiz> quizList = new ArrayList();
+        if(!subjectList.isEmpty()){
+        String sql = "SELECT * from Quiz WHERE testTypeId=1";
+        if (subjectId == 0) {
+            int subjectIdList[] = new int[subjectList.size()];
+            for(int i =0;i<subjectIdList.length;i++){
+                subjectIdList[i] = subjectList.get(i).getSubjectId();
+            }
+            sql += " AND subjectId IN(";
+            for (int i = 0; i < subjectList.size() - 1; i++) {
+                sql += subjectIdList[i] + ",";
+            }
+            sql += subjectIdList[subjectList.size() - 1] + ")";
+        
+        } else {
+            sql += " AND subjectId=" + subjectId;
+        }
+        if (quizName != null && !quizName.equalsIgnoreCase("")) {
+            sql += " AND quizName like '%" + quizName.toLowerCase().trim() + "%'";
+        }
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
+                QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
+                String quizLevelName = quizLevel.getQuizLevelName();
+                TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
+                TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
+                String testTypeName = testType.getTestTypeName();
+                DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
+                DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
+                String dimensionTypeName = dimensionType.getDimensionTypeName();
+                LessonDAO lessonDAO = new LessonDAOImpl();
+                Lesson lesson = lessonDAO.getLessonById(rs.getInt("lessonId"));
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                Subject subject = subjectDAO.getSubjectbyId(rs.getInt("subjectId"));
+                quizList.add(new Quiz(rs.getInt("quizId"),
+                        lesson,
+                        subject,
+                        rs.getString("quizName"),
+                        rs.getInt("quizLevelId"),
+                        quizLevelName,
+                        rs.getInt("quizDuration"),
+                        rs.getInt("passRate"),
+                        rs.getInt("testTypeId"),
+                        testTypeName,
+                        rs.getString("description"),
+                        rs.getInt("numberQuestion"),
+                        rs.getInt("dimensionTypeId"),
+                        dimensionTypeName,
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception e) {
+        }}
+        return quizList;
     }
 
     /**
@@ -135,9 +213,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
                 DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
                 DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
                 String dimensionTypeName = dimensionType.getDimensionTypeName();
+                LessonDAO lessonDAO = new LessonDAOImpl();
+                Lesson lesson = lessonDAO.getLessonById(rs.getInt("lessonId"));
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                Subject subject = subjectDAO.getSubjectbyId(rs.getInt("subjectId"));
                 return new Quiz(rs.getInt("quizId"),
-                        rs.getInt("lessonId"),
-                        rs.getInt("subjectId"),
+                        lesson,
+                        subject,
                         rs.getString("quizName"),
                         rs.getInt("quizLevelId"),
                         quizLevelName,
@@ -206,13 +288,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
 
-            if (quiz.getLessonId() != 0) {
-                pre.setInt(1, quiz.getLessonId());
+            if (quiz.getLesson().getLessonId() != 0) {
+                pre.setInt(1, quiz.getLesson().getLessonId());
             } else {
                 pre.setObject(1, null);
             }
 
-            pre.setInt(2, quiz.getSubjectId());
+            pre.setInt(2, quiz.getSubject().getSubjectId());
             pre.setString(3, quiz.getQuizName());
 
             if (quiz.getQuizLevelId() != 0) {
@@ -250,11 +332,12 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
         return i;
     }
-//     public static void main(String[] args) {
-//        QuizDAOImpl dao = new QuizDAOImpl();
-//        Quiz quiz = dao.getQuizById(1);
-//        System.out.print(quiz.getQuizDuration());
-//    }
+
+    public static void main(String[] args) throws Exception {
+        QuizDAOImpl dao = new QuizDAOImpl();
+        ArrayList<Quiz> quiz = dao.getAllSimulationQuizByUser(2, 0, null);
+        System.out.print(quiz.size());
+    }
 
     @Override
     public int getQuizIdCreated(Quiz quiz) throws Exception {
@@ -286,7 +369,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setInt(1, quiz.getSubjectId());
+            pre.setInt(1, quiz.getSubject().getSubjectId());
             pre.setInt(2, quiz.getQuizDuration());
             pre.setInt(3, quiz.getTestTypeId());
             pre.setInt(4, quiz.getNumberQuestion());

@@ -14,17 +14,21 @@ import java.util.ArrayList;
 public class QuizQuizHandle {
     private Quiz quiz;
     private ArrayList<QuestionQuizHandle> questions;
+    private User user;
     private int Time;   // thoi gian lam bai quiz tinh bang giay
 
     public QuizQuizHandle() {
         questions = new ArrayList<>();
     }
 
-    public QuizQuizHandle(Quiz quiz, ArrayList<QuestionQuizHandle> questions, int Time) {
+    public QuizQuizHandle(Quiz quiz, ArrayList<QuestionQuizHandle> questions, User user, int Time) {
         this.quiz = quiz;
         this.questions = questions;
+        this.user = user;
         this.Time = Time;
     }
+
+   
     
 
     public QuizQuizHandle(ArrayList<QuestionQuizHandle> questions) {
@@ -37,6 +41,14 @@ public class QuizQuizHandle {
 
     public void setQuestions(ArrayList<QuestionQuizHandle> questions) {
         this.questions = questions;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Quiz getQuiz() {

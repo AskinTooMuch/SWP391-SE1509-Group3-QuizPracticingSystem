@@ -7,6 +7,7 @@ package listener;
 
 import bean.CustomerQuiz;
 import bean.QuizQuizHandle;
+import bean.User;
 import dao.CustomerQuizDAO;
 import dao.QuizQuizHandleDAO;
 import dao.impl.CustomerQuizDAOImpl;
@@ -79,7 +80,7 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
 //        System.out.println("\n###################################\n");
         if (se.getName().equalsIgnoreCase("doingQuiz")) {
         QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
-        int timeOut = questionArray.getQuiz().getQuizDuration()+4;
+        int timeOut = questionArray.getQuiz().getQuizDuration()+2;
         Time(timeOut, se);
         }
     }
@@ -90,10 +91,6 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
         timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
     }
 
-    @Override
-    public void attributeReplaced(HttpSessionBindingEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 
     class RemindTask extends TimerTask {
@@ -121,27 +118,29 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
                 se.getValue());
         if (se.getName().equalsIgnoreCase("doingQuiz")) {
             try {
-                QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
+                
+                QuizQuizHandle doingQuiz = (QuizQuizHandle) se.getValue();
                 QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
-                int quizId = questionArray.getQuiz().getQuizId();
+                int quizId = doingQuiz.getQuiz().getQuizId();
+                User user = doingQuiz.getUser();
                 //Score of this quiz    
-                double score = quizQHInterface.calculateScore(questionArray);
+                double score = quizQHInterface.calculateScore(doingQuiz);
                 //Date of this quiz
-                int time = questionArray.getTime();
+                int time = doingQuiz.getTime();
                 if(time<0){
                     time=0;
                 }
-                if(questionArray.getQuiz().getTestTypeId()==1){
-                    time=questionArray.getQuiz().getQuizDuration()-time;
+                if(doingQuiz.getQuiz().getTestTypeId()==1){
+                    time=doingQuiz.getQuiz().getQuizDuration()-time;
                 }
                 long millis = System.currentTimeMillis();
                 Timestamp dateSql = new Timestamp(millis);
                 //Insert into CustomerQuiz table in database
-                CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, 2, (int) score,time, dateSql, true);
+                CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, user.getUserId(), (int) score,time, dateSql, true);
                 CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
                 customerQuizInterface.addCustomerQuiz(customerQuiz);
                 //Insert into TakeAnswer table in database;
-                customerQuizInterface.addTakeAnswer(questionArray);
+                customerQuizInterface.addTakeAnswer(doingQuiz);
                 timer.cancel();
             } catch (Exception e) {
 

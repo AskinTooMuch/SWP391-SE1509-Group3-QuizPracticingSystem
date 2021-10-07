@@ -12,6 +12,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,7 +26,7 @@
             <div class="infomation" style="">
                 <div class='info row' style='display:flex;'>
                     <div class='col-1'>
-                        <a type="button" class="btn" href="quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
+                        <a type="button" class="btn" href="${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
                            margin-left: 5px;'> Back</a>
                     </div>
                     <div class='col-11'>
@@ -40,7 +41,7 @@
                 <div class="row">
                     <div class="mainContent col-9" style="border-right: 1px solid black;">
                         <c:forEach items="${doingQuiz.getQuestions()}" var="question">
-                            <a href="quizController?service=quizHandle&quizId=${doingQuiz.getQuiz().getQuizId()}&questionNumber=${doingQuiz.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${doingQuiz.getQuestions().indexOf(question)+1}</a>
+                            <a href="${contextPath}/quizController?service=quizHandle&quizId=${doingQuiz.getQuiz().getQuizId()}&questionNumber=${doingQuiz.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${doingQuiz.getQuestions().indexOf(question)+1}</a>
                         </c:forEach>   
                     </div>
                     <div class="col-3" style="display:flex;">
@@ -138,18 +139,13 @@
         displayTime();
 
     }
-    setInterval(autoSubmit, 2000);
+    setInterval(autoSubmit, 1000);
     function autoSubmit() {
-        if (totalSecond < 1) {
+        if (totalSecond < 1.5) {
             resetTime();
             document.getElementById("questionForm").submit();
         }
     }
-
-
-
-
-
         </c:when>
         <c:otherwise>
     var startMilisecond = localStorage.getItem("startMiliseconds");
@@ -162,10 +158,9 @@
         displayTime();
 
     }
-    setInterval(autoSubmit, 2000);
+    setInterval(autoSubmit, 1000);
     function autoSubmit() {
-
-        if (totalSecond > 7200) {
+        if (totalSecond > 7198) {
             resetTime();
             document.getElementById('questionForm').submit();
         }

@@ -24,6 +24,8 @@ public interface QuizDAO {
     
     public ArrayList<Quiz> getQuizByLesson(int lessonId) throws Exception;
     
+    public ArrayList<Quiz> getAllSimulationQuizByUser(int userId, int subjectId, String quizName) throws Exception; 
+    
     public int editQuiz(int quizId, Quiz quiz) throws Exception;
     
     public int addQuiz(Quiz quiz) throws Exception;
