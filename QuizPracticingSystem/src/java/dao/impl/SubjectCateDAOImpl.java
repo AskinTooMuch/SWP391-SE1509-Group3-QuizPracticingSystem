@@ -9,6 +9,7 @@
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
  *  24/9/21     1.1         ChucNVHE150618  Add methods: getSubjectCateBySubject
  *  6/10/21     1.2         ChucNVHE150618  Add methods: getAllSubjectCates
+ *  7/10/21     1.3         ChucNVHE150618  Add methods: getSubjectCateIdBySubject, addCategorySubject, deleteCategorySubject
  */
 package dao.impl;
 
@@ -93,6 +94,36 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
     }
     
     @Override
+    public String[] getSubjectCateIdBySubject(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;    /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        /* Getcategory list of the subject */
+        ArrayList<String> categoryId = new ArrayList<>();
+        String sql = "SELECT C.[cateId]\n"
+                + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
+                + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
+                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId =" + subjectId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                categoryId.add(rs.getString("cateId"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        
+        String[] idString = new String[categoryId.size()];
+        return categoryId.toArray(idString);
+    }
+    
+    @Override
     public ArrayList<SubjectCate> getRemainSubjectCateBySubject(int subjectId) throws Exception {
         Connection conn = null;
         ResultSet rs = null;    /* Result set returned by the sqlserver */
@@ -123,25 +154,115 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         }
         return remainCategories;
     }
-
+    
     @Override
-    public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception {
+    public int addSubjectCate(SubjectCate updatedSubjectCate) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public int addCategorySubject(int subjectId, int categoryId) throws Exception {
+        Connection conn = null;
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
+        String sql = "INSERT INTO dbo.CategorySubject(subjectId,cateId) "
+                + "VALUES(?,?)";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
+            pre.setInt(2, categoryId);
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return check;
+    }
+    
+    @Override
+    public int updateSubjectCate(int subjectCategoryId, SubjectCate updatedSubjectCate) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public int updateSubjectContentCate(int subjectId, String[] updatedSubjectCateId) throws Exception {
+        Connection conn = null;
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
+        String[] currentCategorySubject = getSubjectCateIdBySubject(subjectId);
+        /* Terminates: eliminates all the unchanged tuples */
+        for (int i = 0; i < updatedSubjectCateId.length; i++) {
+            for (int j = 0; j < currentCategorySubject.length; j++) {
+                if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
+                    updatedSubjectCateId[i]= "-1";
+                    currentCategorySubject[j] = "-1";
+                }
+            }
+        }
+        
+        int check = 0;
+        try {
+            for (String categoryId : updatedSubjectCateId) {
+                if (!categoryId.equals("-1"))
+                check += addCategorySubject(subjectId, Integer.parseInt(categoryId));
+            }
+            for (String categoryId : currentCategorySubject) {
+                if (!categoryId.equals("-1"))
+                check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return check;
+    }
+    
     @Override
     public int deteleSubjectCate(int scId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    /* Test DAO */
-    public static void main(String[] args) {
-        SubjectCateDAOImpl dao = new SubjectCateDAOImpl();
+    
+    @Override
+    public int deteleCategorySubject(int subjectId, int categoryId) throws Exception{
+        Connection conn = null;
+        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+
+        String sql = "DELETE FROM dbo.CategorySubject "
+                + "WHERE subjectId = ? AND "
+                + "cateId = ?";
+        int check = 0;
         try {
-            System.out.println(dao.getAllSubjectCates().size());
-            System.out.println(dao.getSubjectCateBySubject(1).size());
-            System.out.println(dao.getRemainSubjectCateBySubject(1).size());
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
+            pre.setInt(2, categoryId);
+            check = pre.executeUpdate();
         } catch (Exception ex) {
-            Logger.getLogger(SubjectCateDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        } finally {
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
+        return check;
     }
+    /* Test DAO */
+//    public static void main(String[] args) {
+//        SubjectCateDAOImpl dao = new SubjectCateDAOImpl();
+//        String[] category = {"2","3"};
+//        try {
+//            System.out.println(dao.updateSubjectContentCate(1, category ));
+//        } catch (Exception ex) {
+//            Logger.getLogger(SubjectCateDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
+    
+
+    
 }

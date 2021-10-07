@@ -126,10 +126,21 @@ public class SubjectController extends HttpServlet {
                     String subjectThumbnail = request.getParameter("subjectThumbnail");
                     boolean isFeatured = request.getParameter("isFeaturedSubject")!=null;
                     boolean status = request.getParameter("subjectStatus").equals("1");
-                    String[] categoryId = request.getParameterValues("subjectCate");
+                    String[] categoryId = request.getParameterValues("subjectCategory");
                     
                     Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
-                    int i = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+                    int basicUpdate = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+                    int categoryUpdate = subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
+                    int updateNumber = basicUpdate+categoryUpdate;
+                    request.setAttribute("updateNumber", updateNumber);
+                    
+                    Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
+                    request.setAttribute("subject", courseContent);
+                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryList", categoryList);
+                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryRemainList", categoryRemainList);
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                     
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }

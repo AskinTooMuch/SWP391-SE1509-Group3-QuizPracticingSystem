@@ -98,9 +98,10 @@ public class SubjectCateDAOTest {
     public void testUpdateSubjectCate() throws Exception {
         System.out.println("updateSubjectCate");
         SubjectCate updatedSubjectCate = null;
+        int subjectCateId = 1;
         SubjectCateDAOImpl instance = new SubjectCateDAOImpl();
         int expResult = 0;
-        int result = instance.updateSubjectCate(updatedSubjectCate);
+        int result = instance.updateSubjectCate(subjectCateId, updatedSubjectCate);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

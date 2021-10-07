@@ -80,18 +80,18 @@
                                             <i class="fas fa-bars"></i>
                                             <span class="caret"></span>
                                         </button>
-                                        <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1" name="subjectCategory">
+                                        <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
                                             <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox" checked> <c:out value="${category.getSubjectCateName()}"/>
+                                                        <input type="checkbox" checked name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
                                                     </label>
                                                 </li>
                                             </c:forEach>
                                             <c:forEach items = "${categoryRemainList}" var="category" begin = "0" end = "${categoryRemainList.size()-1}">
                                                 <li>
                                                     <label>
-                                                        <input type="checkbox"> <c:out value="${category.getSubjectCateName()}"/>
+                                                        <input type="checkbox" name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
                                                     </label>
                                                 </li>
                                             </c:forEach>
@@ -158,6 +158,11 @@
                                 </div>
                             </div>
                         </form>
+                        <h5 style="color: #4CAF50"><c:out value="${mess}"/></h5>
+                        <c:if test="${!empty updateNumber}">
+                            <h6 style="color: #4CAF50">Performed <c:out value="${updateNumber}"/> update(s) successfully.</h6>
+                        </c:if>
+                        
                     </div>
 
                     <div id="tab2" class="tabcontent">
