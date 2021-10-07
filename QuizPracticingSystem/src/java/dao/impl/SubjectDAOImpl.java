@@ -28,8 +28,13 @@ import java.sql.ResultSet;
  */
 public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
 
-    @Override
-    /* Get all subject in the Subject table */
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     * Get all subject in the Subject table 
+     */
+    @Override    
     public ArrayList<Subject> getAllSubjects() throws Exception {
         Connection conn = null;
         ResultSet rs = null;
@@ -47,6 +52,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
             rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
             while (rs.next()) {
                 int subjectId = rs.getInt("subjectId");
                 String subjectName = rs.getString("subjectName");
@@ -70,6 +76,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return allSubject;
     }
 
+    /**
+     * 
+     * @return
+     * @throws Exception 
+     * Get featured subjects 
+     */
     @Override
     public ArrayList<Subject> getFeaturedSubjects() throws Exception {
         Connection conn = null;
@@ -89,6 +101,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
             rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
             while (rs.next()) {
                 int subjectId = rs.getInt("subjectId");
                 String subjectName = rs.getString("subjectName");
@@ -111,8 +124,14 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return featuredSubjects;
     }
-
-    /* Get subjects assigned by certain expert */
+    
+    /**
+     * 
+     * @param userId
+     * @return
+     * @throws Exception 
+     * Get subjects assigned by certain expert
+     */
     @Override
     public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception {
         Connection conn = null;
@@ -124,7 +143,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         ArrayList<Subject> assignedSubjects = new ArrayList();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
-
+        /* Sql query */
         String sqlSubject = "SELECT S.[subjectId],[subjectName],[description],[thumbnail],[featuredSubject],S.[status],SE.[userId]\n"
                 + "  FROM [QuizSystem].[dbo].[Subject] S INNER JOIN [QuizSystem].dbo.[SubjectExpert] SE\n"
                 + "  ON S.subjectId = SE.subjectId WHERE SE.userId = " + userId;
@@ -134,6 +153,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
             rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
             while (rs.next()) {
                 int subjectId = rs.getInt("subjectId");
                 String subjectName = rs.getString("subjectName");
@@ -157,6 +177,13 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return assignedSubjects;
     }
 
+    /**
+     * 
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     * Get subject with a certain Id
+     */
     @Override
     public Subject getSubjectbyId(int subjectId) throws Exception {
         Connection conn = null;
@@ -164,7 +191,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
-
+        
         Subject subjectById = null;
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
@@ -176,6 +203,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
             rs = pre.executeQuery();
+            /* Get information from resultset and set it to the created pointer */
             if (rs.next()) {
                 int subjectIdResult = rs.getInt("subjectId");
                 String subjectName = rs.getString("subjectName");
@@ -198,7 +226,14 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return subjectById;
     }
-
+    
+    /**
+     * 
+     * @param cateId
+     * @return
+     * @throws Exception 
+     * Get the subject list that has a certain category id
+     */
     @Override
     public ArrayList<Subject> getSubjectbyCateId(int cateId) throws Exception {
         Connection conn = null;
@@ -207,16 +242,17 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
         ArrayList<Subject> subjectByCate = new ArrayList();
-
+        
         String sql = "SELECT S.[subjectId]\n"
                 + "  FROM [QuizSystem].[dbo].[Subject] S\n"
                 + "  INNER JOIN [QuizSystem].[dbo].CategorySubject CS ON S.subjectId = CS.subjectId\n"
                 + "  WHERE CS.cateId =" + cateId;
-
+        
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
+            /* Get information from resultset, get the according subject and add it to arrayList */
             while (rs.next()) {
                 subjectByCate.add(getSubjectbyId(rs.getInt("subjectId")));
             }
@@ -236,6 +272,14 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return i;
     }
 
+    /**
+     * 
+     * @param subjectId
+     * @param subject
+     * @return
+     * @throws Exception
+     * Method to perform the single-value parameters of subject
+     */
     @Override
     public int updateSubjectBasic(int subjectId, Subject subject) throws Exception {
         int i = 0;

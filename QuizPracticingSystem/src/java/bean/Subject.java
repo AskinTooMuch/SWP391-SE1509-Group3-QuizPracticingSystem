@@ -28,7 +28,8 @@ public class Subject {
 
     public Subject() {
     }
-
+    
+    /* Constructor without arraylists */
     public Subject(int subjectId, String subjectName, String description, String thumbnail, boolean featuredSubject, boolean status) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;

@@ -61,22 +61,19 @@ public class SubjectController extends HttpServlet {
                 /* If user is not logged in, redirect to index */
                 if ((currUser == null) || (currRole == null)) {
                     sendDispatcher(request, response, "index.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
-                    /* Role is expert: get the assigned subjects */
- /* Get assigned list */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) { /* Role is expert: get the assigned subjects */
+                    /* Get assigned list */
                     ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                     /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
-                    /* Role is admin: load all subject */
- /* Get all subject */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {  /* Role is admin: load all subject */
+                    /* Get all subject */
                     ArrayList<Subject> allSubject = subjectDAO.getAllSubjects();
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else {
-                    /* If the user is logged in but not admin or expert, send back to index.jsp */
+                } else {    /* If the user is logged in but not admin or expert, send back to index.jsp */
                     sendDispatcher(request, response, "index.jsp");
                 }
             }
@@ -118,7 +115,8 @@ public class SubjectController extends HttpServlet {
                         || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
                         && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                } /* Else: get the subject detail  */ else {
+                } else {    /* Else: get the subject detail  */ 
+                    /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     String subjectName = request.getParameter("subjectName");
                     String subjectDescription = request.getParameter("subjectDescription");
@@ -126,31 +124,27 @@ public class SubjectController extends HttpServlet {
                     boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
                     boolean status = request.getParameter("subjectStatus").equals("1");
                     String[] categoryId = request.getParameterValues("subjectCategory");
-                    
+                    /* Perform the updates on subject basic data and categories */
                     Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
                     int basicUpdate = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
                     int categoryUpdate = subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
-                    int updateNumber = basicUpdate+categoryUpdate;
+                    int updateNumber = basicUpdate + categoryUpdate;
                     request.setAttribute("updateNumber", updateNumber);
-                    
-                    Subject courseContent  = subjectDAO.getSubjectbyId(subjectId);
+                    /* Get the needed lists and redirect to the courseContentJsp */
+                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
                     ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
                     request.setAttribute("categoryList", categoryList);
                     ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
-                    
                 }
             }
             if (service.equalsIgnoreCase("subjectDetail")) {
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
                 request.setAttribute("subject", subject);
-                
-                
-                
-                
+
                 request.getRequestDispatcher("jsp/subjectDetail.jsp").forward(request, response);
             }
 
