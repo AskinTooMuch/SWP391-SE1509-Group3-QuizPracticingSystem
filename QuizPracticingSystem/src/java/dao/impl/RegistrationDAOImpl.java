@@ -75,6 +75,5 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             closeConnection(conn);
         }
         return registedSubject;
-
     }
 }

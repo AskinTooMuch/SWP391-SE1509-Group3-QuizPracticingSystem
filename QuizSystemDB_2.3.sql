@@ -151,10 +151,10 @@ CREATE TABLE dbo.[Answer](
 -------------------------------------------
 CREATE TABLE dbo.[Quiz](
 	quizId			int				NOT NULL identity(1,1) PRIMARY KEY,
-	lessonId		int				NOT NULL,
+	lessonId		int				,
 	subjectId		int				NOT NULL,
-	quizName		nvarchar(255)	NOT NULL,
-	quizLevelId		int				NOT NULL,
+	quizName		nvarchar(255)	,
+	quizLevelId		int				,
 	quizDuration	int				NOT NULL, --Minutes
 	passRate		int, --1-100?
 	testTypeId		int				NOT NULL,

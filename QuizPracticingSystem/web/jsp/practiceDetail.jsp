@@ -25,11 +25,13 @@
 
     <body>
         <%-- Check If user is logged in or not, if not redirect to index --%>
+        <c:if test="${sessionScope.currUser == null}">
+            <c:redirect url="/index.jsp"/>
+        </c:if>
+        <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
         <c:if test="${registedSubject == null}">
             <c:redirect url="/quizController?service=getPracticeDetail"/>
-        </c:if>
-        <c:set var="subjectDimension" value="2"/>
-        
+        </c:if>        
         <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
         <div class="main">
@@ -37,7 +39,7 @@
             <%-- Login form --%>
             <div class="container" style="align-self: center; min-height: 50vh">
                 <%-- Start form --%>
-                <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
+                <form action="${contextPath}/quizController" method="POST">
                     <div class="row">
                         <%-- Bootstrap to center form --%>
                         <div class="col-md-3"></div>
@@ -54,22 +56,36 @@
                                     </c:forEach>
                                 </select>
                             </div>
+                            <label class="label control-label">Number Of Question</label>
                             <div class="form-group">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span>
                                 </span>
-                                <%--<select class="form-control" name="subject">
-                                    <c:forEach items="${subjectDimension}" var="dimesion">
-                                        <option value="${ subject.getSubjectId()}"><c:out value="${subject.getSubjectName()}" /></option>
+                                <input class="form-control" type="number" name="numberOfQuestion" min="1" max="30">
+                            </div>
+                            <label class="label control-label"> Dimension </label>
+                            <div class="form-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </span>
+                                <select class="form-control" name="dimension">
+                                    <c:forEach items="${dimensionTypes}" var="dimensionType">
+                                        <option value="${ dimensionType.getDimensionTypeId()}"><c:out value="${dimensionType.getDimensionTypeName()}" /></option>
                                     </c:forEach>
-                                </select> --%>
-                                <c:out value="${subjectDimension}" />
+                                </select>
+                            </div>
+                            <label class="label control-label">Duration (in minute)</label>
+                            <div class="form-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                </span>
+                                <input class="form-control" type="number" name="duration" min="1" max="60">
                             </div>
                             <br>
                             <%-- Submit form --%>
                             <div class="input-group">
-                                <button type="submit" id="submit" class="btn btn-success">Change password!</button>
-                                <input type="hidden" name="service" value="changePassword">
+                                <button type="submit" id="submit" class="btn btn-success">Practice</button>
+                                <input type="hidden" name="service" value="createPractice">
                             </div>
                             <%-- Display messages, if any --%>
                             <div>
@@ -85,9 +101,3 @@
         <jsp:include page="/jsp/footer.jsp"/>
     </body>
 </html>
-
-<script>
-    <%-- Check if new password and re-enter password match or not --%>
-    function () {
-    }
-</script>
