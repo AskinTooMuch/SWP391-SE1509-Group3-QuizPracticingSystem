@@ -15,6 +15,7 @@
 package dao.impl;
 
 import bean.DimensionType;
+import bean.Question;
 import bean.Quiz;
 import bean.QuizLevel;
 import bean.TestType;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import dao.QuizDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,22 +55,30 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
-
+        String quizLevelName = null;
+        String testTypeName = null;
+        String dimensionTypeName = null;
         String sql = "SELECT * FROM [Quiz] WHERE quizId=" + quizId;
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
-                QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
-                String quizLevelName = quizLevel.getQuizLevelName();
-                TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
-                TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
-                String testTypeName = testType.getTestTypeName();
-                DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
-                DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
-                String dimensionTypeName = dimensionType.getDimensionTypeName();
+                if (rs.getObject("quizLevelId") != null) {
+                    QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
+                    QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
+                    quizLevelName = quizLevel.getQuizLevelName();
+                }
+                if (rs.getObject("testTypeId") != null) {
+                    TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
+                    TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
+                    testTypeName = testType.getTestTypeName();
+                }
+                if (rs.getObject("dimensionTypeId") != null) {
+                    DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
+                    DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
+                    dimensionTypeName = dimensionType.getDimensionTypeName();
+                }
                 return new Quiz(rs.getInt("quizId"),
                         rs.getInt("lessonId"),
                         rs.getInt("subjectId"),
@@ -174,7 +185,62 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
     @Override
     public int addQuiz(Quiz quiz) throws Exception {
         int i = 0;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "INSERT INTO dbo.Quiz(lessonId,"
+                + "subjectId,"
+                + "quizName,"
+                + "quizLevelId,"
+                + "quizDuration,"
+                + "passRate,"
+                + "testTypeId,"
+                + "[description],"
+                + "numberQuestion,"
+                + "dimensionTypeId,"
+                + "[status])\n"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
 
+            if (quiz.getLessonId() != 0) {
+                pre.setInt(1, quiz.getLessonId());
+            } else {
+                pre.setObject(1, null);
+            }
+
+            pre.setInt(2, quiz.getSubjectId());
+            pre.setString(3, quiz.getQuizName());
+
+            if (quiz.getQuizLevelId() != 0) {
+                pre.setInt(4, quiz.getQuizLevelId());
+            } else {
+                pre.setObject(4, null);
+            }
+
+            pre.setInt(5, quiz.getQuizDuration());
+
+            if (quiz.getPassRate() != 0) {
+                pre.setInt(6, quiz.getPassRate());
+            } else {
+                pre.setObject(6, null);
+            }
+            pre.setInt(7, quiz.getTestTypeId());
+            pre.setString(8, quiz.getDescription());
+            pre.setInt(9, quiz.getNumberQuestion());
+            pre.setInt(10, quiz.getDimensionTypeId());
+            pre.setInt(11, 1);
+            i = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return i;
     }
 
@@ -190,4 +256,77 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
 //        System.out.print(quiz.getQuizDuration());
 //    }
 
+    @Override
+    public int getQuizIdCreated(Quiz quiz) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        int quizId = -1;
+        String sql = "SELECT TOP 1 [quizId]\n"
+                + "      ,[lessonId]\n"
+                + "      ,[subjectId]\n"
+                + "      ,[quizName]\n"
+                + "      ,[quizLevelId]\n"
+                + "      ,[quizDuration]\n"
+                + "      ,[passRate]\n"
+                + "      ,[testTypeId]\n"
+                + "      ,[description]\n"
+                + "      ,[numberQuestion]\n"
+                + "      ,[dimensionTypeId]\n"
+                + "      ,[status]\n"
+                + "FROM [QuizSystem].[dbo].[Quiz]\n"
+                + "WHERE subjectId = ? \n"
+                + "AND quizDuration = ? \n"
+                + "AND testTypeId = ? \n"
+                + "AND numberQuestion = ? \n"
+                + "AND dimensionTypeId = ?\n"
+                + "ORDER BY [quizId] DESC";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, quiz.getSubjectId());
+            pre.setInt(2, quiz.getQuizDuration());
+            pre.setInt(3, quiz.getTestTypeId());
+            pre.setInt(4, quiz.getNumberQuestion());
+            pre.setInt(5, quiz.getDimensionTypeId());
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                quizId = rs.getInt("quizId");
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return quizId;
+    }
+
+    @Override
+    public int addQuizQuestion(int quizId, int questionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        int question = 0;
+        String sql = "INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(?,?,1)";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, quizId);
+            pre.setInt(2, questionId);
+            question = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return question;
+    }
 }

@@ -39,8 +39,8 @@ public class DimensionTypeDAOImpl extends DBConnection implements DimensionTypeD
             while (rs.next()) {
                 dimensionTypesList.add(
                         new DimensionType(rs.getInt("dimensionTypeId"),
-                                 rs.getString("dimensionTypeName"),
-                                 rs.getBoolean("status")));
+                                rs.getString("dimensionTypeName"),
+                                rs.getBoolean("status")));
             }
         } catch (Exception ex) {
             throw ex;

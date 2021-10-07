@@ -305,5 +305,48 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionManageList;
     }
-    
+
+    @Override
+    public ArrayList<Question> getQuestionForCreateQuiz(int numberOfQuestion, int subjectId, int dimensionId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<Question> questionList = new ArrayList<>();
+        String sql = "SELECT [questionId]\n"
+                + "      ,[subjectId]\n"
+                + "      ,[dimensionId]\n"
+                + "      ,[lessonId]\n"
+                + "      ,[content]\n"
+                + "      ,[media]\n"
+                + "      ,[explanation]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Question]\n"
+                + "  WHERE subjectId = ? AND dimensionId = ? AND [status] = 1\n"
+                + "  ORDER BY NEWID()";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
+            pre.setInt(2, dimensionId);
+            rs = pre.executeQuery();
+            while (rs.next() && questionList.size() < numberOfQuestion) {
+                Question pro = new Question();
+                pro.setQuestionId(rs.getInt("questionId"));
+                pro.setSubjectId(rs.getInt("subjectId"));
+                pro.setDimensionId(rs.getInt("dimensionId"));
+                pro.setLessonId(rs.getInt("lessonId"));
+                pro.setContent(rs.getString("content"));
+                pro.setMedia(rs.getString("media"));
+                pro.setStatus(rs.getBoolean("status"));
+                questionList.add(pro);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return questionList;
+    }
 }

@@ -15,11 +15,14 @@ package controller;
 
 import bean.Answer;
 import bean.CustomerQuiz;
+import bean.DimensionType;
 import bean.Question;
 import bean.QuestionManage;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
 import bean.QuizQuizHandle;
+import bean.Subject;
+import bean.User;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuestionQuizHandleDAOImpl;
@@ -34,10 +37,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.CustomerQuizDAO;
+import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
+import dao.RegistrationDAO;
+import dao.impl.DimensionTypeDAOImpl;
+import dao.impl.RegistrationDAOImpl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -335,7 +342,40 @@ public class QuizController extends HttpServlet {
                 ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionByContent(request.getParameter("content"));
                 request.setAttribute("listQuestionManage", listQuestionManage);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+            }   
                 
+            if (service.equalsIgnoreCase("getPracticeDetail")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                RegistrationDAO registrationDAO = new RegistrationDAOImpl();
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
+                ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                request.setAttribute("registedSubject", registedSubject);
+                request.setAttribute("dimensionTypes", dimensionTypes);
+                request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
+            }
+            
+            if(service.equalsIgnoreCase("createPractice")){
+                int subjectId = Integer.parseInt(request.getParameter("subject"));
+                int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimension"));
+                int duration = Integer.parseInt(request.getParameter("duration"));
+                QuestionDAO questionDAO = new QuestionDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+                Quiz quiz = new Quiz();
+                quiz.setSubjectId(subjectId);
+                quiz.setQuizDuration(duration*60);
+                quiz.setTestTypeId(3);
+                quiz.setNumberQuestion(questionList.size());
+                quiz.setDimensionTypeId(dimensionId);
+                quiz.setStatus(true);
+                quizDAO.addQuiz(quiz);
+                Quiz practice = quizDAO.getQuizById(quizDAO.getQuizIdCreated(quiz));
+                for (Question question : questionList) {
+                    quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
+                }
+                response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);

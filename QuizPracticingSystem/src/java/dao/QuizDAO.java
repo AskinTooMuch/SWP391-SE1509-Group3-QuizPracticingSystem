@@ -5,6 +5,7 @@
  */
 package dao;
 
+import bean.Question;
 import bean.Quiz;
 import java.util.ArrayList;
 
@@ -28,4 +29,8 @@ public interface QuizDAO {
     public int addQuiz(Quiz quiz) throws Exception;
     
     public int deleteQuiz(int quizId) throws Exception;
+    
+    public int getQuizIdCreated(Quiz quiz) throws Exception;
+    
+    public int addQuizQuestion(int quizId,int questionId) throws Exception;
 }

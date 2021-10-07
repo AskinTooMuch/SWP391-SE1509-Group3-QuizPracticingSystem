@@ -31,4 +31,6 @@ public interface QuestionDAO {
     public int importQuestion(ArrayList<Question> questionList) throws Exception;
     
     public ArrayList<QuestionManage> getQuestionManage(int subjectId, int lessonId, int dimensionId) throws Exception;
+    
+    public ArrayList<Question> getQuestionForCreateQuiz(int numberOfQuestion,int subjectId, int dimensionId) throws Exception;
 }
