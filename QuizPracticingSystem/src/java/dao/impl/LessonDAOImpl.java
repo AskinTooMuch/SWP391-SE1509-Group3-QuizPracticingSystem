@@ -38,11 +38,12 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
         /* Prepared statement for executing sql queries */
 
         Lesson lessonById = null;
-        String sql = "SELECT * FROM [Lesson] WHERE [lessonId] = " + lessonId;
-
+        String sql = "SELECT * FROM [Lesson] WHERE [lessonId] = ?";
+        
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, lessonId);
             rs = pre.executeQuery();
             if (rs.next()) {
                 int subjectId = rs.getInt("subjectId");
@@ -52,7 +53,8 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
                 String videoLink = rs.getString("videoLink");
                 String content = rs.getString("content");
                 Boolean status = rs.getBoolean("status");
-                lessonById = new Lesson(lessonId, subjectId, lessonName, lessonOrder, lessonTypeId, videoLink, content, true, null);
+                
+                lessonById = new Lesson(lessonId, subjectId, lessonName, lessonOrder, lessonTypeId, videoLink, content, status, null);
             }
         } catch (Exception ex) {
             throw ex;

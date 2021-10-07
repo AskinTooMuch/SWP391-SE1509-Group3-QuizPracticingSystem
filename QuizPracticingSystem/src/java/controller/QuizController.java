@@ -42,6 +42,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -330,17 +331,36 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
             }
-            
+
             if (service.equalsIgnoreCase("searchQuestionByContent")) {
-                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionByContent(request.getParameter("content"));
+                String content = request.getParameter("content").trim();
+                ArrayList<QuestionManage> listQuestionManage = new ArrayList<>();
+                if (content.length() == 0) {
+                    listQuestionManage = questionInterface.getQuestionByContent(null);
+                } else {
+                    listQuestionManage = questionInterface.getQuestionByContent(content);
+                }
                 request.setAttribute("listQuestionManage", listQuestionManage);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
-                
+//                sendDispatcher(request, response, "jsp/questionList.jsp");
+
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");
+        }
+    }
+
+    /* Forward the request to the destination, catch any unexpected exceptions and log it */
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(SubjectController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

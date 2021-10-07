@@ -85,11 +85,12 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
         /* Prepared statement for executing sql queries */
 
         Dimension dimensionById = null;
-        String sql = "SELECT * FROM [Dimension] WHERE [dimensionId] = " + dimensionId;
+        String sql = "SELECT * FROM [Dimension] WHERE [dimensionId] = ?";
 
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, dimensionId);
             rs = pre.executeQuery();
             if (rs.next()) {
                 int subjectId = rs.getInt("subjectId");
@@ -97,8 +98,7 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
                 String dimensionName = rs.getString("dimensionName");
                 String description = rs.getString("description");
                 Boolean status = rs.getBoolean("status");
-
-                dimensionById = new Dimension(dimensionId, subjectId, dimensionTypeId, dimensionName, dimensionName, description, true);
+                dimensionById = new Dimension(dimensionId, subjectId, dimensionTypeId, dimensionName, dimensionName, description, status);
             }
         } catch (Exception ex) {
             throw ex;

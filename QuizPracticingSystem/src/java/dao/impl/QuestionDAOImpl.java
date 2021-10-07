@@ -29,6 +29,8 @@ import dao.QuestionDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
@@ -162,11 +164,13 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         SubjectDAO subjectDAO = new SubjectDAOImpl();
         LessonDAO lessonDAO = new LessonDAOImpl();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
-        String sql = "SELECT * FROM [Question] WHERE status=1 and content like '%?%'";
+        String sql = "SELECT * FROM [Question]";
+        if (content!=null) {
+            sql = sql.concat("WHERE content like '%"+ content+"%'");
+        }
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setString(1, content);
             rs = pre.executeQuery();
             while (rs.next()) {
                 questionManage = new QuestionManage(rs.getInt("questionId"),
@@ -174,7 +178,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
                         dimensionDAO.getDimensionById(rs.getInt("dimensionId")).getDimensionName(),
                         lessonDAO.getLessonById(rs.getInt("lessonId")).getLessonName(),
                         rs.getString("content"), rs.getString("media"),
-                        rs.getString("explanation"), true);
+                        rs.getString("explanation"), rs.getBoolean("status"));
                 questionManageList.add(questionManage);
             }
         } catch (Exception ex) {
@@ -305,5 +309,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionManageList;
     }
-    
+    public static void main(String[] args) {
+        QuestionDAOImpl dao = new QuestionDAOImpl();
+        try {
+            ArrayList<QuestionManage> ques = dao.getQuestionManage(1, 2, 1);
+            for (QuestionManage que : ques) {
+                
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(QuestionDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
