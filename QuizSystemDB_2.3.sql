@@ -546,10 +546,6 @@ INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(2,10,1)
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',2,20.0,'2020-12-12','2021-6-12',1,null,1)
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',5,20.0,'2020-12-12','2021-6-12',1,null,1)
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-12','2022-6-12',1,null,1)
-Select * from PricePackage
-
-
-SELECT * from Quiz WHERE subjectId IN(1,2) and subjectId=1
 -------------------------------------------
 ----------dbo.[Blog]-----------------------
 insert into Blog(blogTitle,created,lastEdited,author,detail,thumbnail,status) values('Rita’s Way: Why is it so Effective?','2021-08-10','2021-09-10','1','RMC Learning Solutions was founded in 1991 by Rita Mulcahy, who spent years working as a trainer and consultant. What started off as a project management training company with the intention of helping people pass the PMP® exam eventually grew into what it is today: a trusted and proven resource for training and exam prep courses led by renowned experts in their field.
