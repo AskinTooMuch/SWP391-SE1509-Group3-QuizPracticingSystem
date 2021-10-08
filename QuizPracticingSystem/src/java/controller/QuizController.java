@@ -11,6 +11,7 @@
  *  25/9/21     1.0         NamDHHE150519   Update quiz review
  *  26/9/21     1.0         NamDHHE150519   Update quiz summary
  *  26/9/21     1.3         NamDHHE150519   Update simulation Exam
+ *  07/10/21    1.4         DuongNHHE150328 Add create quiz and quiz detail function
  */
 package controller;
 
@@ -393,6 +394,7 @@ public class QuizController extends HttpServlet {
 //                sendDispatcher(request, response, "jsp/questionList.jsp");
             }
 
+            //get all user registed subject
             if (service.equalsIgnoreCase("getPracticeDetail")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
@@ -404,6 +406,7 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
             }
 
+            //create quiz that meet user's requirement
             if (service.equalsIgnoreCase("createPractice")) {
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
                 int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
@@ -413,12 +416,17 @@ public class QuizController extends HttpServlet {
                 QuizDAO quizDAO = new QuizDAOImpl();
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+                
+                // if there isn't any question meet user requirement then display message
+                if(questionList.size() == 0){
+                    request.setAttribute("message", "There isn't any question that meet your require! ");
+                    request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
+                    return;
+                }
+                
                 Quiz quiz = new Quiz();
-
-                //nam sua lai
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
                 quiz.setSubject(subject);
-
                 quiz.setQuizDuration(duration * 60);
                 quiz.setTestTypeId(3);
                 quiz.setNumberQuestion(questionList.size());

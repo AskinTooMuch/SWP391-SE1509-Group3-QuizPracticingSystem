@@ -6,6 +6,7 @@
     Record of change:
     Date        Version     Author          Description
     05/10/21    1.0         DuongNHHE150328 First Deploy
+    07/10/21    1.1         DuongNHHE150328 Complete style
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

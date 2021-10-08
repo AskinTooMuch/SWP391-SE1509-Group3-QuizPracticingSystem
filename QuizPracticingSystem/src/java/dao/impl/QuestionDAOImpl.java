@@ -9,6 +9,7 @@
     17/9/21     1.0         NamDHHE150519   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
     05/10/21    1.2         TuanPAHE150543  update method
+    07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
  */
  /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
@@ -310,7 +311,14 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return questionManageList;
     }
 
-
+    /**
+     * 
+     * @param numberOfQuestion
+     * @param subjectId
+     * @param dimensionId
+     * @return <code>ArrayList<DimensionType></code> object
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Question> getQuestionForCreateQuiz(int numberOfQuestion, int subjectId, int dimensionId) throws Exception {
         Connection conn = null;

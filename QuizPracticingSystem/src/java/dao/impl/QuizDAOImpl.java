@@ -4,8 +4,9 @@
     QuizDAOImpl
     Record of change:
     Date        Version     Author          Description
-    17/9/21     1.0         ChucNVHE150618   First Deploy
+    17/9/21     1.0         ChucNVHE150618  First Deploy
     30/9/21     1.1         NamDHHE150519   update method
+    07/10/21    1.2         DuongNHHE150328 update method
  */
  /*
   Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan tới
@@ -263,7 +264,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
         return i;
     }
-
+    
+    /**
+     * 
+     * @param quiz
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addQuiz(Quiz quiz) throws Exception {
         int i = 0;
@@ -288,7 +295,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
 
-            if (quiz.getLesson().getLessonId() != 0) {
+            if (quiz.getLesson() != null) {
                 pre.setInt(1, quiz.getLesson().getLessonId());
             } else {
                 pre.setObject(1, null);
@@ -339,6 +346,12 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         System.out.print(quiz.getQuizId());
     }
 
+    /**
+     * 
+     * @param quiz
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int getQuizIdCreated(Quiz quiz) throws Exception {
         Connection conn = null;
@@ -388,6 +401,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         return quizId;
     }
 
+    /**
+     * 
+     * @param quizId
+     * @param questionId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addQuizQuestion(int quizId, int questionId) throws Exception {
         Connection conn = null;

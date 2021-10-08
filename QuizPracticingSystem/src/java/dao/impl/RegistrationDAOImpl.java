@@ -82,4 +82,9 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         ArrayList<Subject> quiz = IRegistration.getRegistedSubject(2);
         System.out.print(quiz.size());
     }
+
+    @Override
+    public void convertJson(ArrayList<Subject> registrationList) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

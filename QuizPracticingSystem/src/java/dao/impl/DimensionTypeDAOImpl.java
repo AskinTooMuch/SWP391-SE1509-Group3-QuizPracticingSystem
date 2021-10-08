@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author           Description
+ *  23/9/21     1.0         DuongNHHE150328  First Deploy
+ *  07/10/21    1.1         DuongNHHE150328  Add method
  */
 package dao.impl;
 
@@ -19,6 +25,11 @@ import java.sql.ResultSet;
  */
 public class DimensionTypeDAOImpl extends DBConnection implements DimensionTypeDAO {
 
+    /**
+     * 
+     * @return <code>ArrayList</code>
+     * @throws Exception 
+     */
     @Override
     public ArrayList<DimensionType> getAllDimensionTypes() throws Exception {
         Connection conn = null;

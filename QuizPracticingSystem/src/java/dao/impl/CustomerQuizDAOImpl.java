@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import dao.CustomerQuizDAO;
 import dao.DBConnection;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -41,10 +42,54 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         return allCustomerQuiz;
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     * @throws Exception
+     */
     @Override
     public ArrayList<CustomerQuiz> getQuizByUser(int userId) throws Exception {
-        ArrayList<CustomerQuiz> customerQuiz = null;
-        return customerQuiz;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        CustomerQuiz add = null;
+        ArrayList<CustomerQuiz> custormerQuiz = new ArrayList<>();
+        String sql = "SELECT [quizTakeId]\n"
+                + "      ,[quizId]\n"
+                + "      ,[userId]\n"
+                + "      ,[score]\n"
+                + "      ,[time]\n"
+                + "      ,[sumitedAt]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[CustomerQuiz]\n"
+                + "  WHERE userId = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, userId);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                Timestamp time = new Timestamp(rs.getTimestamp("sumitedAt").getTime());
+                add = new CustomerQuiz(rs.getInt("quizTakeId"),
+                        rs.getInt("quizId"),
+                        rs.getInt("userId"),
+                        rs.getInt("score"),
+                        rs.getInt("time"),
+                        time,
+                        rs.getBoolean("status"));
+                custormerQuiz.add(add);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return custormerQuiz;
     }
 
     @Override
@@ -92,6 +137,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
      * <code>CustomerQuiz</code> object
      * @return number of changes in database. It is a <code>int</code> primitive
      * type.
+     * @throws java.lang.Exception
      */
     @Override
     public int addCustomerQuiz(CustomerQuiz customerQuiz) throws Exception {
@@ -211,6 +257,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
 
         return change;
     }
+
     /**
      * insert into the database a list of questions marked by the quiz the user
      * has just taken
@@ -221,10 +268,12 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
      * type
      */
 
-//    public static void main(String[] args) throws Exception {
-//        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
-//        String[] a = {"1", "2"};
-//        CustomerQuiz list = dao.getLastAddedCustomerQuiz();
-//        System.out.print(list.getStartedAt());
-//    }
+    public static void main(String[] args) throws Exception {
+        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
+        ArrayList<CustomerQuiz> quiz = dao.getQuizByUser(1);
+        for (CustomerQuiz customerQuiz : quiz) {
+            Date date = new Date(customerQuiz.getSubmitedAt().getTime());
+            System.out.println(date);
+        }
+    }
 }
