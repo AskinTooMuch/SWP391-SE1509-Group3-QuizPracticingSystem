@@ -5,7 +5,9 @@
  */
 package bean;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -86,10 +88,6 @@ public class CustomerQuiz {
         this.submitedAt = submitedAt;
     }
 
-  
-
-   
-
     public boolean isStatus() {
         return status;
     }
@@ -97,4 +95,11 @@ public class CustomerQuiz {
     public void setStatus(boolean status) {
         this.status = status;
     } 
+    
+    public String getDateTaken(){
+        Date date = new Date(submitedAt.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dateTaken = simpleDateFormat.format(date);
+        return dateTaken;
+    }
 }

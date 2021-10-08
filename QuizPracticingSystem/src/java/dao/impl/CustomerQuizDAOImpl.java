@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import dao.CustomerQuizDAO;
 import dao.DBConnection;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -92,6 +91,12 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         return custormerQuiz;
     }
 
+    /**
+     * 
+     * @param quizTakeId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public CustomerQuiz getQuizByTakeQuizId(int quizTakeId) throws Exception {
         Connection conn = null;
@@ -256,24 +261,5 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         }
 
         return change;
-    }
-
-    /**
-     * insert into the database a list of questions marked by the quiz the user
-     * has just taken
-     *
-     * @param quiz the quiz the user has just taken. It is a
-     * <code>QuizQuizHandle</code> object
-     * @return number of changes in database. It is a <code>int</code> primitive
-     * type
-     */
-
-    public static void main(String[] args) throws Exception {
-        CustomerQuizDAOImpl dao = new CustomerQuizDAOImpl();
-        ArrayList<CustomerQuiz> quiz = dao.getQuizByUser(1);
-        for (CustomerQuiz customerQuiz : quiz) {
-            Date date = new Date(customerQuiz.getSubmitedAt().getTime());
-            System.out.println(date);
-        }
     }
 }
