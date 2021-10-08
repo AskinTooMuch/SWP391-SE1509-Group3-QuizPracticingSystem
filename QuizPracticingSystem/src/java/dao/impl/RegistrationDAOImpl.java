@@ -79,7 +79,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
       public static void main(String[] args) throws Exception {
         RegistrationDAO IRegistration  = new RegistrationDAOImpl();
-        ArrayList<Subject> quiz = IRegistration.getRegistedSubject(2);
+        ArrayList<Subject> quiz = IRegistration.getRegistedSubject(1);
         System.out.print(quiz.size());
     }
 

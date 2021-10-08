@@ -427,52 +427,8 @@ public class QuizController extends HttpServlet {
                 request.getSession().setAttribute("listFilterLesson", listLesson);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
             }
-            
 
-            if (service.equalsIgnoreCase("getPracticeDetail")) {
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                RegistrationDAO registrationDAO = new RegistrationDAOImpl();
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
-                ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
-                ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                request.setAttribute("registedSubject", registedSubject);
-                request.setAttribute("dimensionTypes", dimensionTypes);
-                request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
-            }
 
-            //create quiz that meet user's requirement
-            if (service.equalsIgnoreCase("createPractice")) {
-                int subjectId = Integer.parseInt(request.getParameter("subject"));
-                int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
-                int dimensionId = Integer.parseInt(request.getParameter("dimension"));
-                int duration = Integer.parseInt(request.getParameter("duration"));
-                QuestionDAO questionDAO = new QuestionDAOImpl();
-                QuizDAO quizDAO = new QuizDAOImpl();
-                SubjectDAO subjectDAO = new SubjectDAOImpl();
-                ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
-                
-                // if there isn't any question meet user requirement then display message
-                if(questionList.size() == 0){
-                    request.setAttribute("message", "There isn't any question that meet your require! ");
-                    request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
-                    return;
-                }
-                
-                Quiz quiz = new Quiz();
-                Subject subject = subjectDAO.getSubjectbyId(subjectId);
-                quiz.setSubject(subject);
-                quiz.setQuizDuration(duration * 60);
-                quiz.setTestTypeId(3);
-                quiz.setNumberQuestion(questionList.size());
-                quiz.setDimensionTypeId(dimensionId);
-                quiz.setStatus(true);
-                quizDAO.addQuiz(quiz);
-                Quiz practice = quizDAO.getQuizById(quizDAO.getQuizIdCreated(quiz));
-                for (Question question : questionList) {
-                    quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
-                }
-                response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
-            }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());

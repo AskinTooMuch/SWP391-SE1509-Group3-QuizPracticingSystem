@@ -31,7 +31,7 @@
         </c:if>
         <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
         <c:if test="${registedSubject == null}">
-            <c:redirect url="/quizController?service=getPracticeDetail"/>
+            <c:redirect url="/practiceController?service=getPracticeDetail"/>
         </c:if>        
         <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
@@ -40,7 +40,7 @@
             <%-- Login form --%>
             <div class="container" style="align-self: center; min-height: 50vh">
                 <%-- Start form --%>
-                <form action="${contextPath}/quizController" method="POST">
+                <form action="${contextPath}/practiceController" method="POST">
                     <div class="row">
                         <%-- Bootstrap to center form --%>
                         <div class="col-md-3"></div>
@@ -82,15 +82,17 @@
                                 </span>
                                 <input class="form-control" type="number" name="duration" min="1" max="60">
                             </div>
+                            <%-- Display messages, if any --%>
+                            <div>
+                                <c:if test="${message != null}" >
+                                    <h4 style="color:red"> <c:out value="${message}"/> </h4>
+                                </c:if>
+                            </div>
                             <br>
                             <%-- Submit form --%>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success">Practice</button>
                                 <input type="hidden" name="service" value="createPractice">
-                            </div>
-                            <%-- Display messages, if any --%>
-                            <div>
-                                <h4 style="color:red"> <c:out value="${message}"/> </h4>
                             </div>
                         </div>
                     </div>
