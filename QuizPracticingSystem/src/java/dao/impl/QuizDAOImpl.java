@@ -198,22 +198,30 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
-
+        String quizLevelName = null;
+        String testTypeName = null;
+        String dimensionTypeName = null;
         String sql = "select * from Quiz as a join CustomerQuiz as b on a.quizId = b.quizId where quizTakeId=" + quizTakeId;
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             if (rs.next()) {
-                QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
-                QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
-                String quizLevelName = quizLevel.getQuizLevelName();
-                TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
-                TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
-                String testTypeName = testType.getTestTypeName();
-                DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
-                DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
-                String dimensionTypeName = dimensionType.getDimensionTypeName();
+                if (rs.getObject("quizLevelId") != null) {
+                    QuizLevelDAOImpl quizLevelDAO = new QuizLevelDAOImpl();
+                    QuizLevel quizLevel = quizLevelDAO.getQuizLevelById(rs.getInt("quizLevelId"));
+                    quizLevelName = quizLevel.getQuizLevelName();
+                }
+                if (rs.getObject("testTypeId") != null) {
+                    TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
+                    TestType testType = testTypeDAO.getTestTypeById(rs.getInt("testTypeId"));
+                    testTypeName = testType.getTestTypeName();
+                }
+                if (rs.getObject("dimensionTypeId") != null) {
+                    DimensionTypeDAOImpl dimensionTypeDAO = new DimensionTypeDAOImpl();
+                    DimensionType dimensionType = dimensionTypeDAO.getDimensionTypeById(rs.getInt("dimensionTypeId"));
+                    dimensionTypeName = dimensionType.getDimensionTypeName();
+                }
                 LessonDAO lessonDAO = new LessonDAOImpl();
                 Lesson lesson = lessonDAO.getLessonById(rs.getInt("lessonId"));
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
