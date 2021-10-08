@@ -8,7 +8,7 @@
     Date        Version     Author          Description
     17/9/21     1.0         NamDHHE150519   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
-    05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage
+    05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage, addQuestion
     07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
  */
  /*
@@ -200,7 +200,6 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
     
     @Override
-
     public int addQuestion(Question newQuestion) throws Exception {
         Connection conn = null;
         ResultSet rs = null;/* Result set returned by the sqlserver */

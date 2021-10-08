@@ -1,9 +1,15 @@
-<%-- 
-    Document   : questionList
-    Created on : Oct 5, 2021, 8:46:40 PM
-    Author     : tuan
---%>
 
+<%-- 
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Oct 5, 2021, 8:46:40 PM
+    questionList
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    5/10/21     1.0         TuanPAHE150543  First Deploy
+    8/10/21     1.1         TuanPAHE150543  Update JSP
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -48,14 +54,15 @@
                     <form action="${contextPath}/quizController" method="POST">
                         <div class="form-group">
                             <h5>Filter by Subject</h5>
-                            <select class="form-control" name="subjectId">
-
+                            <%-- Choose Subject Filter --%>
+                            <select class="form-control" name="subjectId">                                
                                 <option value="0" selected="">Choose...</option>
                                 <c:forEach items="${listFilterSubject}" var="subject">
                                     <option value="${subject.getSubjectId()}" ><c:out value="${subject.getSubjectName()}" /></option>                          
                                 </c:forEach>                          
                             </select>
                             <h5>Filter by Dimension</h5>
+                            <%-- Choose Dimension Filter --%>
                             <select class="form-control" name="dimensionId">
                                 <option value="0" selected="">Choose...</option>
                                 <c:forEach items="${listFilterDimension}" var="dimension">
@@ -63,6 +70,7 @@
                                 </c:forEach>                          
                             </select>
                             <h5>Filter by Lesson</h5>
+                            <%-- Choose Lesson Filter --%>
                             <select class="form-control" name="lessonId">
                                 <option value="0" selected="">Choose...</option>
                                 <c:forEach items="${listFilterLesson}" var="lesson">
@@ -80,9 +88,10 @@
 
                 <div class="col-md-8" >
                     <div class="container">
-
+                        <%-- Table Container --%>
                         <div class="form-group">
                             <h5>Select Number of Rows</h5>
+                            <%-- Select number of Rows show on table --%>
                             <select class  ="form-control" name="state" id="maxRows" style="width: 150px;">
                                 <option value="5000">Show All</option>
                                 <option value="5">5</option>

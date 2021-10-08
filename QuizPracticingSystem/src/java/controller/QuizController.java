@@ -10,15 +10,15 @@
  *  24/9/21     1.0         NamDHHE150519   Update quiz handle
  *  25/9/21     1.0         NamDHHE150519   Update quiz review
  *  26/9/21     1.0         NamDHHE150519   Update quiz summary
- *  26/9/21     1.3         NamDHHE150519   Update simulation Exam
- *  07/10/21    1.4         DuongNHHE150328 Add create quiz and quiz detail function
+ *  26/9/21     1.1         NamDHHE150519   Update simulation Exam
+ *  07/10/21    1.2         TuanPAHE150543  Add service filterQuestion,getFilterInformation
+ *  08/10/21    1.2         TuanPAHE150543  Update service filterQuestion ,getFilterInformation
  */
 package controller;
 
 import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Dimension;
-import bean.DimensionType;
 import bean.Lesson;
 import bean.Question;
 import bean.QuestionManage;
@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.CustomerQuizDAO;
 import dao.DimensionDAO;
-import dao.DimensionTypeDAO;
 import dao.LessonDAO;
 import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
@@ -50,14 +49,10 @@ import dao.QuizDAO;
 import dao.QuizQuizHandleDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
-import dao.impl.DimensionTypeDAOImpl;
-import dao.impl.RegistrationDAOImpl;
-import dao.UserDAO;
 import dao.impl.DimensionDAOImpl;
 import dao.impl.LessonDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
-import dao.impl.UserDAOImpl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -385,7 +380,10 @@ public class QuizController extends HttpServlet {
                 request.setAttribute("simulationList", simulationList);
                 request.getRequestDispatcher("quizhandle/simulationExam.jsp").forward(request, response);
             }
-
+            
+            /**
+             * Service: Search Question by Content
+             */
             if (service.equalsIgnoreCase("searchQuestionByContent")) {
                 String content = request.getParameter("content").trim();
                 ArrayList<QuestionManage> listQuestionManage = new ArrayList<>();
