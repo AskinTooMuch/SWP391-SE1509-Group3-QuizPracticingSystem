@@ -307,9 +307,33 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
     }
 
     @Override
-    public int addSubject(Subject subject) throws Exception {
-        int i = 0;
-        return i;
+    public int addSubject(Subject newSubject) throws Exception {
+        int check = 0;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "  insert into Subject(subjectName, description,thumbnail,featuredSubject,status) values (?,?,?,?,?)";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, newSubject.getSubjectName());
+            pre.setString(2, newSubject.getDescription());
+            pre.setString(3, newSubject.getThumbnail());
+            pre.setBoolean(4, newSubject.isFeaturedSubject());
+            pre.setBoolean(5, newSubject.isStatus());
+            
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
 
     @Override

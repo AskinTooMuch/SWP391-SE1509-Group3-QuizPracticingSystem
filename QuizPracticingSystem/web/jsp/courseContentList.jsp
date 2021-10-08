@@ -87,7 +87,7 @@
                                     <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
                                 </div>
                                 <div class="cardBody">
-                                    <a href="#"><h5> Add new course. </h5></a>
+                                    <a href="subjectController?service=addSubject"><h5> Add new course. </h5></a>
                                 </div>
                             </div>
                         </div>
