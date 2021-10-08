@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 body { 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  color:white;
-  font-family: Times new roman;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color:white;
+    font-family: Times new roman;
 }
 
 h2{
@@ -17,6 +17,28 @@ h2{
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     border-radius: 15px;
+}
+
+
+table th , table td{
+    text-align: center;
+}
+
+table tr:nth-child(even){
+    background-color: #BEF2F5
+}
+table tr:nth-child(odd){
+    background-color: #BEF2F5
+}
+.pagination li:hover{
+    cursor: pointer;
+}
+table tbody tr {
+    display: none;
+}
+.container .form-control{
+    border-radius: 5px;
+    border: solid 1px;
 }
 
 

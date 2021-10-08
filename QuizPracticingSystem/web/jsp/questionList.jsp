@@ -11,99 +11,269 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Subject List</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <title>Question List</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
         <link rel="stylesheet" href="${contextPath}/css/questionList.css">
+        <script src="${contextPath}/js/questionList.js"></script>
     </head>
     <body>
         <div class="wrap">
             <%-- Include header page --%>
             <jsp:include page="header.jsp"/>
-            <div class="row" style="margin: 10px;">
-                <div class="col-md-2" id="form" style="height: 330px">
+
+            <%-- Check If listFilterSubject,listFilterDimension,listFilterLesson is avaiable not, if not redirect to load information --%>
+            <c:if test="${listFilterSubject==null || listFilterDimension==null || listFilterLesson==null}">
+                <c:redirect url="/quizController?service=getFilterInformation"/>
+            </c:if>
+            <div class="row" style="margin-top: 3rem">
+                <div class="col-md-1"></div>
+                <div class="col-md-2" id="form" style="height: 450px">
                     <h2 class="text-center">Filter</h2>
                     <div style="margin-bottom: 20px;">
+                        <%-- Start search form --%>
                         <form action = "${contextPath}/quizController" class="navbar-form">
                             <div class="form-group">
                                 <input  class="form-control" type="text" id="content" placeholder="Content... " name="content">
                                 <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
                                 <input type="hidden" name="service" value="searchQuestionByContent">
                             </div>
-                        </form>
-                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                            Question By Subject
-                        </button>
-                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                            <a class="dropdown-item" href="">
-                                OOP with java</a>
-                        </div>
+                        </form>                     
                     </div>
-                    <div style="margin-bottom: 20px;">
-                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                            Question By Lesson
-                        </button>
-                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                            <a class="dropdown-item" href="">Introduction</a>
+                    <%-- Start filter form --%>
+                    <form action="${contextPath}/quizController" method="POST">
+                        <div class="form-group">
+                            <h5>Filter by Subject</h5>
+                            <select class="form-control" name="subjectId">
+
+                                <option value="0" selected="">Choose...</option>
+                                <c:forEach items="${listFilterSubject}" var="subject">
+                                    <option value="${subject.getSubjectId()}" ><c:out value="${subject.getSubjectName()}" /></option>                          
+                                </c:forEach>                          
+                            </select>
+                            <h5>Filter by Dimension</h5>
+                            <select class="form-control" name="dimensionId">
+                                <option value="0" selected="">Choose...</option>
+                                <c:forEach items="${listFilterDimension}" var="dimension">
+                                    <option value="${dimension.getDimensionId()}" onclick=""><c:out value="${dimension.getDimensionName()}" /></option>                          
+                                </c:forEach>                          
+                            </select>
+                            <h5>Filter by Lesson</h5>
+                            <select class="form-control" name="lessonId">
+                                <option value="0" selected="">Choose...</option>
+                                <c:forEach items="${listFilterLesson}" var="lesson">
+                                    <option value="${lesson.getLessonId()}" onclick=""><c:out value="${lesson.getLessonName()}" /></option>                          
+                                </c:forEach>                          
+                            </select>
                         </div>
-                    </div>
-                    <div style="margin-bottom: 20px;">
-                        <button type="button" class="btn btn-info dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
-                            Question By Dimension
-                        </button>
-                        <div class="dropdown-menu" style="background-color: #fff; text-align: center">
-                            <a class="dropdown-item" href="">
-                                Java Programming </a>
+                        <div class="input-group">
+                            <button type="submit" id="submit" class="btn btn-success" style="width: 100%">Search</button>
+                            <input type="hidden" name="service" value="filterQuestion">
                         </div>
-                    </div>
+                    </form>
 
                 </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-9" >
-                    <table class="table table-fluid" style="margin-right: 10px;border: solid 1px;border-radius: 5px;">
-                        <thead>
-                            <tr><th>Id</th>
-                                <th>Content</th>
-                                <th>Subject</th>
-                                <th>Lesson</th>
-                                <th>Dimension</th>
-                                <th>Status</th>
-                                <th>Action</th></tr>
-                        </thead>
-                        <tbody>
-                            <c:if test="${listQuestionManage!=null}">
-                                <c:forEach items="${listQuestionManage}" var="questionList">
-                                    <tr>
-                                        <td><c:out value="${questionList.getQuestionId()}"/></td>
-                                        <td><c:out value="${questionList.getContent()}"/></td>
-                                        <td><c:out value="${questionList.getSubjectName()}"/></td>
-                                        <td><c:out value="${questionList.getLessonName()}"/></td>
-                                        <td><c:out value="${questionList.getDimensionName()}"/></td>
-                                        <td><c:if test="${questionList.isStatus()}">
-                                                Available
-                                            </c:if>
-                                            <c:if test="${!questionList.isStatus()}">
-                                                Not Available
-                                            </c:if>
-                                          </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
-                        </tbody>
-                    </table>
+
+                <div class="col-md-8" >
+                    <div class="container">
+
+                        <div class="form-group">
+                            <h5>Select Number of Rows</h5>
+                            <select class  ="form-control" name="state" id="maxRows" style="width: 150px;">
+                                <option value="5000">Show All</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="70">70</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <%-- Table of QuestionList--%>
+                        <table id="table-id" class="table table-bordered table-striped"">
+                            <thead>
+                                <%-- Headers of Table--%>
+                                <tr style="background-color: #F0D8D5;">
+                                    <th>QuesId</th>
+                                    <th>Content</th>
+                                    <th>Subject</th>
+                                    <th>Lesson</th>
+                                    <th>Dimension</th>
+                                    <th>Status</th>
+                                    <th>Action</th></tr>
+                            </thead>
+                            <tbody>
+                                <%-- Check if listQuestionManage not null then display listQuestionManage --%>
+                                <c:if test="${listQuestionManage!=null}">
+                                    <c:forEach items="${listQuestionManage}" var="questionList">
+                                        <tr>
+                                            <td><c:out value="${questionList.getQuestionId()}"/></td>
+                                            <td><c:out value="${questionList.getContent()}"/></td>
+                                            <td><c:out value="${questionList.getSubjectName()}"/></td>
+                                            <td><c:out value="${questionList.getLessonName()}"/></td>
+                                            <td><c:out value="${questionList.getDimensionName()}"/></td>
+                                            <%-- Check if questionList status is available or not--%>
+                                            <td><c:if test="${questionList.isStatus()}">
+                                                    Available
+                                                </c:if>
+                                                <c:if test="${!questionList.isStatus()}">
+                                                    Not Available
+                                                </c:if>
+                                            </td>
+                                            <td><div class="btn btn-success">Edit</div></td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:if>
+                            </tbody>
+                        </table>
+                        <%--Start Pagination --%>
+                        <div class='pagination-container'>
+                            <nav>
+                                <ul class="pagination" style="">
+                                    <li data-page="prev" >
+                                        <span>  <button class="btn btn-info">Prev</button></span>
+                                    </li>
+                                    <%--Here the JS Function Will Add the Rows --%>
+                                    <li data-page="next" id="prev">
+                                        <span> <button class="btn btn-info">Next</button><span class=""></span></span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-md-1"></div>
             </div>
             <div class="space" style="min-height: 50vh;"></div>
             <%-- Include footer page --%>
             <jsp:include page="footer.jsp"/>
         </div>
         <script>
-            
+            getPagination('#table-id');
+            function getPagination(table) {
+                var lastPage = 1;
+
+                $('#maxRows')
+                        .on('change', function (evt) {
+                            lastPage = 1;
+                            $('.pagination')
+                                    .find('li')
+                                    .slice(1, -1)
+                                    .remove();
+                            var trnum = 0; // reset tr counter
+                            var maxRows = parseInt($(this).val()); // get Max Rows from select option
+
+                            if (maxRows == 5000) {
+                                $('.pagination').hide();
+                            } else {
+                                $('.pagination').show();
+                            }
+
+                            var totalRows = $(table + ' tbody tr').length; // numbers of rows
+                            $(table + ' tr:gt(0)').each(function () {
+                                // each TR in  table and not the header
+                                trnum++; // Start Counter
+                                if (trnum > maxRows) {
+                                    // if tr number gt maxRows
+
+                                    $(this).hide(); // fade it out
+                                }
+                                if (trnum <= maxRows) {
+                                    $(this).show();
+                                } // else fade in Important in case if it ..
+                            }); //  was fade out to fade it in
+                            if (totalRows > maxRows) {
+                                // if tr total rows gt max rows option
+                                var pagenum = Math.ceil(totalRows / maxRows); // ceil total(rows/maxrows) to get ..
+                                //	numbers of pages
+                                for (var i = 1; i <= pagenum; ) {
+                                    // for each page append pagination li
+                                    $('.pagination #prev')
+                                            .before(
+                                                    '<li class="btn btn-info" data-page="' +
+                                                    i +
+                                                    '">\
+                                                                  <div>' +
+                                                    i++ +
+                                                    '<div></div></div>\
+                                                                </li>'
+                                                    )
+                                            .show();
+                                } // end for i
+                            } // end if row count > max rows
+                            $('.pagination [data-page="1"]').addClass('active'); // add active class to the first li
+                            $('.pagination li').on('click', function (evt) {
+                                // on click each page
+                                evt.stopImmediatePropagation();
+                                evt.preventDefault();
+                                var pageNum = $(this).attr('data-page'); // get it's number
+
+                                var maxRows = parseInt($('#maxRows').val()); // get Max Rows from select option
+
+                                if (pageNum == 'prev') {
+                                    if (lastPage == 1) {
+                                        return;
+                                    }
+                                    pageNum = --lastPage;
+                                }
+                                if (pageNum == 'next') {
+                                    if (lastPage == $('.pagination li').length - 2) {
+                                        return;
+                                    }
+                                    pageNum = ++lastPage;
+                                }
+
+                                lastPage = pageNum;
+                                var trIndex = 0; // reset tr counter
+                                $('.pagination li').removeClass('active'); // remove active class from all li
+                                $('.pagination [data-page="' + lastPage + '"]').addClass('active'); // add active class to the clicked
+                                // $(this).addClass('active');					// add active class to the clicked
+                                limitPagging();
+                                $(table + ' tr:gt(0)').each(function () {
+                                    // each tr in table not the header
+                                    trIndex++; // tr index counter
+                                    // if tr index gt maxRows*pageNum or lt maxRows*pageNum-maxRows fade if out
+                                    if (
+                                            trIndex > maxRows * pageNum ||
+                                            trIndex <= maxRows * pageNum - maxRows
+                                            ) {
+                                        $(this).hide();
+                                    } else {
+                                        $(this).show();
+                                    } //else fade in
+                                }); // end of for each tr in table
+                            }); // end of on click pagination list
+                            limitPagging();
+                        })
+                        .val(5)
+                        .change();
+            }
+
+            function limitPagging() {
+                // alert($('.pagination li').length)
+
+                if ($('.pagination li').length > 7) {
+                    if ($('.pagination li.active').attr('data-page') <= 3) {
+                        $('.pagination li:gt(5)').hide();
+                        $('.pagination li:lt(5)').show();
+                        $('.pagination [data-page="next"]').show();
+                    }
+                    if ($('.pagination li.active').attr('data-page') > 3) {
+                        $('.pagination li:gt(0)').hide();
+                        $('.pagination [data-page="next"]').show();
+                        for (let i = (parseInt($('.pagination li.active').attr('data-page')) - 2); i <= (parseInt($('.pagination li.active').attr('data-page')) + 2); i++) {
+                            $('.pagination [data-page="' + i + '"]').show();
+
+                        }
+
+                    }
+                }
+            }
+
         </script>
     </body>
 </html>

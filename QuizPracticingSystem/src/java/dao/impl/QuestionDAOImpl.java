@@ -8,7 +8,7 @@
     Date        Version     Author          Description
     17/9/21     1.0         NamDHHE150519   First Deploy
     30/9/21     1.1         NamDHHE150519   update method
-    05/10/21    1.2         TuanPAHE150543  update method
+    05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage
     07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
  */
  /*
@@ -30,8 +30,6 @@ import dao.QuestionDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
@@ -153,6 +151,14 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return questionList;
     }
 
+    /**
+     * get list of question by content
+     *
+     * @param content the target questionContent. It is a <code>int</code> primitive
+     * type
+     * @return a list of question. It is a <code>java.util.ArrayList</code>
+     * object.
+     */
     @Override
     public ArrayList<QuestionManage> getQuestionByContent(String content) throws Exception {
         Connection conn = null;
@@ -166,8 +172,8 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         LessonDAO lessonDAO = new LessonDAOImpl();
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         String sql = "SELECT * FROM [Question]";
-        if (content!=null) {
-            sql = sql.concat("WHERE content like '%"+ content+"%'");
+        if (content != null) {
+            sql = sql.concat("WHERE content like '%" + content + "%'");
         }
         try {
             conn = getConnection();
@@ -192,38 +198,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return questionManageList;
     }
 
-    public ArrayList<Question> getQuestionBySubjectId(int subjectId) throws Exception {
-        Connection conn = null;
-        ResultSet rs = null;/* Result set returned by the sqlserver */
-        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
-        ArrayList<Question> list = new ArrayList<>();
-        String sql = "SELECT * FROM Question WHERE status=1 and subjectId = ?";
-        try {
-            conn = getConnection();
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            pre.setInt(1, subjectId);
-            while (rs.next()) {
-                Question question = new Question();
-                question.setQuestionId(rs.getInt("questionId"));
-                question.setSubjectId(rs.getInt("subjectId"));
-                question.setDimensionId(rs.getInt("dimensionId"));
-                question.setLessonId(rs.getInt("lessonId"));
-                question.setContent(rs.getString("content"));
-                question.setMedia(rs.getString("media"));
-                question.setStatus(rs.getBoolean("status"));
-                list.add(question);
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            closeResultSet(rs);
-            closePreparedStatement(pre);
-            closeConnection(conn);
-        }
-        return list;
-    }
-
+    
     @Override
 
     public int addQuestion(Question newQuestion) throws Exception {
@@ -268,13 +243,24 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return 0;
     }
 
+    /**
+     * get list of question by subject,lesson,dimension
+     *
+     * @param subjectId the target questionManage. It is a <code>int</code> primitive
+     * @param lessonId target questionManage. It is a <code>int</code> primitive
+     * @param dimensionId the target questionManage. It is a <code>int</code> primitive
+     * type
+     * @return a list of question. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
-    public ArrayList<QuestionManage> getQuestionManage(int subjectId, int lessonId, int dimensionId) throws Exception {
+    public ArrayList<QuestionManage> getQuestionManage(int subjectId, int dimensionId,int lessonId ) throws Exception {
         Connection conn = null;
         ResultSet rs = null;/* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
         ArrayList<QuestionManage> questionManageList = new ArrayList<>();
-        String sql = "SELECT * FROM Question WHERE status=1 ";
+        String sql = "SELECT * FROM Question WHERE 1=1";
         if (subjectId > 0) {
             sql = sql.concat("and subjectId = " + subjectId);
         }
@@ -298,7 +284,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
                         dimensionDAO.getDimensionById(rs.getInt("dimensionId")).getDimensionName(),
                         lessonDAO.getLessonById(rs.getInt("lessonId")).getLessonName(),
                         rs.getString("content"), rs.getString("media"),
-                        rs.getString("explanation"), true);
+                        rs.getString("explanation"), rs.getBoolean("status"));
                 questionManageList.add(questionManage);
             }
         } catch (Exception ex) {
@@ -311,6 +297,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         return questionManageList;
     }
 
+
     /**
      * 
      * @param numberOfQuestion
@@ -319,6 +306,8 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      * @return <code>ArrayList<DimensionType></code> object
      * @throws Exception 
      */
+
+
     @Override
     public ArrayList<Question> getQuestionForCreateQuiz(int numberOfQuestion, int subjectId, int dimensionId) throws Exception {
         Connection conn = null;
@@ -362,4 +351,6 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionList;
     }
+    
 }
+

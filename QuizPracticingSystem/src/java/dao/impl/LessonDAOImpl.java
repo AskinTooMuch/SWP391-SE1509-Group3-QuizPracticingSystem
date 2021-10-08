@@ -1,4 +1,3 @@
-
 package dao.impl;
 
 import bean.Lesson;
@@ -13,24 +12,65 @@ import java.sql.ResultSet;
  *
  * @author tuan
  */
-public class LessonDAOImpl extends DBConnection implements LessonDAO{
+public class LessonDAOImpl extends DBConnection implements LessonDAO {
+
     @Override
-    public ArrayList<Lesson> getAllLessons() throws Exception{
+    public ArrayList<Lesson> getAllLessons() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Lesson> listLesson = new ArrayList();
+        String sql = "SELECT [lessonId]\n"
+                + "      ,[subjectId]\n"
+                + "      ,[lessonName]\n"
+                + "      ,[lessonOrder]\n"
+                + "      ,[lessonTypeId]\n"
+                + "      ,[videoLink]\n"
+                + "      ,[content]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Lesson]";
+        /* Get the dimension */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int lessonId = rs.getInt("lessonId");
+                int subjectId = rs.getInt("subjectId");
+                String lessonName = rs.getString("lessonName");
+                int lessonOrder = rs.getInt("lessonOrder");
+                int lessonTypeId = rs.getInt("lessonTypeId");
+                String videoLink = rs.getString("videoLink");
+                String content = rs.getString("content");
+                Boolean status = rs.getBoolean("status");
+                listLesson.add(new Lesson(lessonId, subjectId, lessonName, lessonOrder, lessonTypeId, videoLink, content, status, null));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return listLesson;
+    }
+
+    @Override
+    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception {
         return null;
     }
-    
+
     @Override
-    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception{
+    public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception {
         return null;
     }
-    
+
     @Override
-    public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception{
-        return null;
-    }
-    
-    @Override
-    public Lesson getLessonById(int lessonId) throws Exception{
+    public Lesson getLessonById(int lessonId) throws Exception {
         Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
@@ -39,7 +79,7 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
 
         Lesson lessonById = null;
         String sql = "SELECT * FROM [Lesson] WHERE [lessonId] = ?";
-        
+
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -53,7 +93,7 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
                 String videoLink = rs.getString("videoLink");
                 String content = rs.getString("content");
                 Boolean status = rs.getBoolean("status");
-                
+
                 lessonById = new Lesson(lessonId, subjectId, lessonName, lessonOrder, lessonTypeId, videoLink, content, status, null);
             }
         } catch (Exception ex) {
@@ -65,19 +105,19 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO{
         }
         return lessonById;
     }
-    
+
     @Override
-    public int updateLesson(Lesson updatedLesson) throws Exception{
+    public int updateLesson(Lesson updatedLesson) throws Exception {
         return 0;
     }
-    
+
     @Override
-    public int deleteLesson(int lessonId) throws Exception{
+    public int deleteLesson(int lessonId) throws Exception {
         return 0;
     }
-    
+
     @Override
-    public int addLesson(Lesson newLesson) throws Exception{
+    public int addLesson(Lesson newLesson) throws Exception {
         return 0;
     }
 }

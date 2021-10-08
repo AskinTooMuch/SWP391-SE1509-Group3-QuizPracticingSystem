@@ -27,6 +27,7 @@
             .dropdown-menu a :hover{
                 color:red;
             }
+            html,body{ margin:0; padding:0; height:100%; width:100%; }
         </style>
     </head>
     <body>

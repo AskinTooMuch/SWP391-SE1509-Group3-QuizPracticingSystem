@@ -17,7 +17,9 @@ package controller;
 
 import bean.Answer;
 import bean.CustomerQuiz;
+import bean.Dimension;
 import bean.DimensionType;
+import bean.Lesson;
 import bean.Question;
 import bean.QuestionManage;
 import bean.QuestionQuizHandle;
@@ -39,7 +41,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.CustomerQuizDAO;
+import dao.DimensionDAO;
 import dao.DimensionTypeDAO;
+import dao.LessonDAO;
 import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
@@ -49,6 +53,8 @@ import dao.SubjectDAO;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import dao.UserDAO;
+import dao.impl.DimensionDAOImpl;
+import dao.impl.LessonDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import dao.impl.UserDAOImpl;
@@ -390,11 +396,39 @@ public class QuizController extends HttpServlet {
                 }
                 request.setAttribute("listQuestionManage", listQuestionManage);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
-
-//                sendDispatcher(request, response, "jsp/questionList.jsp");
             }
 
-            //get all user registed subject
+
+            /**
+             * Service: filter Question by subjectId, dimensionId, lessonId
+             */
+            if (service.equalsIgnoreCase("filterQuestion")) {
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
+                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionManage(subjectId, dimensionId, lessonId);               
+                request.setAttribute("listQuestionManage", listQuestionManage);
+                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+//                out.println(questionManage.size());
+            }
+            
+            /**
+             * Service: get all Subject, Dimension, Lesson Information
+             */
+            if (service.equalsIgnoreCase("getFilterInformation")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                DimensionDAO dimensionDAO = new DimensionDAOImpl();
+                LessonDAO lessonDAO = new LessonDAOImpl();
+                ArrayList<Subject> listSubject = subjectDAO.getAllSubjects();
+                ArrayList<Dimension> listDimension = dimensionDAO.getAllDimension();
+                ArrayList<Lesson> listLesson = lessonDAO.getAllLessons();
+                request.getSession().setAttribute("listFilterSubject", listSubject);
+                request.getSession().setAttribute("listFilterDimension", listDimension);
+                request.getSession().setAttribute("listFilterLesson", listLesson);
+                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+            }
+            
+
             if (service.equalsIgnoreCase("getPracticeDetail")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
