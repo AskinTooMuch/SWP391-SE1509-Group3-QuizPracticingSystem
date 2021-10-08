@@ -8,6 +8,7 @@ package dao.impl;
 import bean.Quiz;
 import bean.Registration;
 import bean.Subject;
+import com.google.gson.Gson;
 import dao.DBConnection;
 import java.util.ArrayList;
 import dao.RegistrationDAO;
@@ -77,14 +78,22 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return registedSubject;
     }
-      public static void main(String[] args) throws Exception {
-        RegistrationDAO IRegistration  = new RegistrationDAOImpl();
-        ArrayList<Subject> quiz = IRegistration.getRegistedSubject(1);
-        System.out.print(quiz.size());
+    
+      
+    @Override
+    public void convertJson(ArrayList<Subject> registrationList ) throws Exception {
+        // create a new Gson instance
+        Gson gson = new Gson();
+        // convert your list to json
+        String jsonCartList = gson.toJson(registrationList);
+        // print your generated json
+        System.out.println("jsonCartList: " + jsonCartList);
     }
 
-    @Override
-    public void convertJson(ArrayList<Subject> registrationList) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void main(String[] args) throws Exception {
+        RegistrationDAO IRegistration = new RegistrationDAOImpl();
+       IRegistration.convertJson(IRegistration.getRegistedSubject(8));
+       
     }
+
 }

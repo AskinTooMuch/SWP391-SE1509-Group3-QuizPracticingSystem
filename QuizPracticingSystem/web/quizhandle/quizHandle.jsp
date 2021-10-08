@@ -34,11 +34,12 @@
                     </div>
                     <div class="col-11">    
                         <div class="detail">
+                            <%-- index of question --%>
                             <div class="detail1">
                                 <img id="questionImage" src="images/question.png"> <label for="questionImage">
                                     <h3 style="">${questionNumber}/${doingQuiz.getQuestions().size()}</h3> </label>
                             </div>
-
+                            <%-- Clock --%>
                             <div class="detail1">
                                 <img id="clockImage" src="images/timer.png"> <label for="clockImage">
                                     <h3><label id="hours">--</label>:<label id="minutes">--</label>:<label id="seconds">--</label></h3>
@@ -62,6 +63,7 @@
                     font-weight: bold;
                 }
             </style>
+            <%-- Question and Answers --%>
             <div class="mainContent" style="display: flex;">
                 <div class="col-1"></div>
                 <div class="col-4" style="">
@@ -95,10 +97,11 @@
                                         </div>
                                         <br/>
                                     </c:forEach>
-                                </ul>
-                                <!--                                userid-->     
+                                </ul>    
+                                <%-- Neu he thong tu dong nop bai thi value = "yes" --%>
                                 <input hidden id="autoSubmit" name="autoSubmit" form="questionForm">
                                 <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
+                                <%-- Thoi gian lam bai --%>
                                 <input hidden id="time" name="time" form="questionForm">
                             </form>    
                         </div>
@@ -107,9 +110,9 @@
                         <div class="col-1"></div>
                     </div>
                 </div>
+                                <%-- Image or Video linked with the question--%>
                 <div class="right col-7" style="">
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
-
                         <div style="">
                             <c:if test="${mediaType==2}">
                                 <iframe width="420" height="315" style="width:100%; height:500px;"
@@ -181,6 +184,7 @@
                 <style>
 
                 </style>
+                <%-- Review Progress modal --%>
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -248,7 +252,7 @@
             }
             setInterval(autoSubmit, 1500);
             function autoSubmit() {
-                if (totalSecond < 1) {
+                if (totalSecond < 1.5) {
                     document.getElementById("autoSubmit").value = "yes";
                     document.getElementById("questionForm").submit();
                 }

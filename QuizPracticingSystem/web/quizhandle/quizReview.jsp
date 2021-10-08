@@ -26,12 +26,13 @@
     <body>
 
         <div class="container-fluid">
-            <!--start header-->
+            <%-- Start Header --%>
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>        
-                         <a href="${contextPath}/quizController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/quizController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
+                    <%-- Cac thong tin: diem so, thoi gian lam, thoi gian nop --%>
                     <div class="col-6" style="display:flex;">    
                         <h6>Score: ${requestScope.score}/100</h6>
 
@@ -48,6 +49,7 @@
                     </div>
                 </div>
             </div>
+                            <%-- Thong tin cau hoi --%>
             <div class="row infomation1">
                 <div class="col-1">
                     <h6 >${questionNumber})</h6>
@@ -56,21 +58,20 @@
                     <h6 style=float:right;'>Question ID: ${questionId}</h6>
                 </div>
             </div>
-            <!--end header-->
+            <%-- End Header --%>
             <style>
                 ul li::marker {
                     font-weight: bold;
                 }
             </style>
+            <%-- Question and Answers --%>
             <div class="mainContent" style="display: flex;">
                 <div class="col-1"></div>
                 <div class="col-4" style="">
                     <div class="row question" style="display: flex;">
                         <div class="col-1">
-
                         </div>
                         <div class="col-11" style="float:right;">
-
                             <h4>${questionQH.getQuestion().getContent()}</h4>
                         </div>
                     </div>
@@ -87,16 +88,14 @@
                                                 <li>
                                                     ${answer.getAnswerContent()} 
                                                 </li>
-
                                                 <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} class="radioAnswer">
                                                 <span class="checkmark"></span>
                                             </label>
-
                                         </div>
                                         <br/>
                                     </c:forEach>
                                 </ul>
-                                <!--                                userid-->     
+                                     
                                 <input hidden id="formAction" name="finalAction" form="questionForm">
                                 <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
                                 <input hidden id="time" name="time" form="questionForm">
@@ -107,14 +106,14 @@
                         <div class="col-1"></div>
                     </div>
                 </div>
+                                <%-- Video or Image related with this question --%>
                 <div class="right col-7" style="">
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
-                        
                         <div style="">
                             <c:if test="${mediaType==2}">
-                            <iframe width="420" height="315" style="width:100%; height:500px;"
-                                    src=${questionQH.getQuestion().getMedia()}>
-                            </iframe>
+                                <iframe width="420" height="315" style="width:100%; height:500px;"
+                                        src=${questionQH.getQuestion().getMedia()}>
+                                </iframe>
                             </c:if>
                             <c:if test="${mediaType==1}">
                                 <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
@@ -123,12 +122,13 @@
                     </c:if>
                 </div>
             </div>
-            <!--                           end mainContent-->
-            <!--                                       funtion bar-->
+            <%-- End main content --%>
+            <%-- Function bar --%>
             <div class="modal fade eplain" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
+                            <%-- Explaination button --%>
                             <h5 class="modal-title" id="exampleModalLabel">Explanation</h5>                           
                         </div>
                         <div class="modal-body">
@@ -140,6 +140,7 @@
                     </div>
                 </div>
             </div>
+                        <%-- Next,previous question --%>
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
                 <div style="margin-top:20px;margin-right: 20px;">
                     <div style="float:right;">
@@ -163,6 +164,7 @@
                 <style>
 
                 </style>
+                <%-- Review Results modal --%>
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -203,7 +205,7 @@
                     </div>
                 </div>
             </div>
-            <!--            score exam modal-->
+           <%-- Finish Review modal --%>
             <div class="modal fade submit" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

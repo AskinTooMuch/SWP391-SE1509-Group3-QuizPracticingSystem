@@ -16,7 +16,6 @@
 package dao.impl;
 
 import bean.DimensionType;
-import bean.Question;
 import bean.Lesson;
 import bean.Quiz;
 import bean.QuizLevel;
@@ -31,8 +30,6 @@ import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -43,7 +40,6 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
     @Override
     public ArrayList<Quiz> getAllQuiz() throws Exception {
         ArrayList<Quiz> allQuiz = null;
-
         return allQuiz;
     }
 

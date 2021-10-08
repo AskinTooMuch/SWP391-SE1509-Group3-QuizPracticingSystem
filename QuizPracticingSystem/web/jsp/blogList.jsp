@@ -12,13 +12,13 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Blog List</title>
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
             .body{
                 font-family: Source Serif Pro;
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="left col-3" style="margin-top:42px; border-right: 1px solid black;">
                     <div>
-                        <form action="marketingController" method="GET">
+                        <form action="${contextPath}/marketingController" method="GET">
                             <div class="filter" style="">      
                                 <input type="text" name="search" class="form-control" style="border-radius: 5px" placeholder="Search in BlogList">
                                 <div>
@@ -57,16 +57,16 @@
                         </form>
                     </div>
                     <div style="margin-top: 20px;">
-                        <a href="marketingController?service=blogList"><h5>Lastest Posts</h5></a>
+                        <a href="${contextPath}/marketingController?service=blogList"><h5>Lastest Posts</h5></a>
                         <c:forEach items="${lastBlogs}" var="blog">
-                        <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
-                            <div style="width: 104px;border-right:#bccafd 1px solid;">
-                                <img src="${blog.getThumbnail()}" style="height: 70px;width: auto; ">
+                            <div class="lastposts" style=" display: flex;margin-top: 20px; border: 1px #bccafd solid;" >
+                                <div style="width: 104px;border-right:#bccafd 1px solid;">
+                                    <img src="${blog.getThumbnail()}" style="height: 70px;width: auto; ">
+                                </div>
+                                <div>
+                                    <a style="text-decoration: none;color: black;" href="${contextPath}marketingController?service=blogDetail&blogId=${blog.getBlogId()}"><h6>${blog.getBlogTitle()}</h6></a>
+                                </div>
                             </div>
-                            <div>
-                                <a style="text-decoration: none;color: black;" href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}"><h6>${blog.getBlogTitle()}</h6></a>
-                            </div>
-                        </div>
                         </c:forEach>
                     </div>
                 </div>
@@ -74,25 +74,25 @@
                     <div style="margin-left:9%;">
                         <div class ="row">
                             <div>
-                                <a href="marketingController?service=blogList" style="text-decoration:none;color:black;"><h3 class="head col-3">ALL BLOGS</h3></a>
+                                <a href="${contextPath}/marketingController?service=blogList" style="text-decoration:none;color:black;"><h3 class="head col-3">ALL BLOGS</h3></a>
                             </div>             
                         </div>
-                       
+
                         <div class="blogList row">
                             <c:forEach items="${blogList}" var="blog">
-                            <div class="card" style="width: 18rem;margin-bottom: 20px;">
-                                <img class="card-img-top" src="${blog.getThumbnail()}" style="width:100%;height:270px;" alt="Card image cap">
-                                <div class="card-body">
-                                    <h8>Author ${blog.getAuthor().getUserName()}</h8>
-                                    <h5 class="card-title">${blog.getBlogTitle()}</h5>
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                    <a href="marketingController?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                <div class="card" style="width: 18rem;margin-bottom: 20px;">
+                                    <img class="card-img-top" src="${blog.getThumbnail()}" style="width:100%;height:270px;" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h8>Author ${blog.getAuthor().getUserName()}</h8>
+                                        <h5 class="card-title">${blog.getBlogTitle()}</h5>
+                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <a href="${contextPath}/marketingController?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:forEach>
                             <style>
                                 .card-body{
-                                   height: 300px;
+                                    height: 300px;
                                 }
                                 .card-body .btn{
                                     position:absolute;
