@@ -155,12 +155,23 @@ public class SubjectController extends HttpServlet {
                         sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
+            /**
+             * Service subject : subject detail
+             */
             if (service.equalsIgnoreCase("subjectDetail")) {
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
                 request.setAttribute("subject", subject);
 
                 request.getRequestDispatcher("jsp/subjectDetail.jsp").forward(request, response);
+            }
+            /**
+             * Service subject : add subject
+             */
+            if (service.equalsIgnoreCase("addSubject")) {
+                
+
+                request.getRequestDispatcher("jsp/addSubject.jsp").forward(request, response);
             }
 
         } catch (Exception ex) {

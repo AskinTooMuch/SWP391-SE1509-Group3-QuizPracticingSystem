@@ -1,7 +1,13 @@
 <%-- 
-    Document   : addSubject
-    Created on : Oct 7, 2021, 11:40:07 PM
-    Author     : Bùi Thanh Tùng
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+    Created on : Sep 29, 2021, 9:32:27 AM
+    Display subject list in cards
+    Quiz practicing system
+
+    Record of change:
+    Date        Version     Author          Description
+    6/10/21     1.0         TungBTHE150621  First Deploy
+    8/10/21     1.1         TungBTHE150621  Add form
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
