@@ -69,7 +69,7 @@
                                 <div class="form-group col-md-7">
                                     <br>
                                     <label for="subjectName">Subject Name</label>
-                                    <input type="text" name="subjectName" class="form-control" value="${subject.getSubjectName()}" style="margin-bottom: 5px;">
+                                    <input type="text" name="subjectName" class="form-control" value="${subject.getSubjectName()}" style="margin-bottom: 5px;" required>
 
                                     <label for="subjectCate">Category</label>
                                     <div class="dropdown">
@@ -143,7 +143,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="subjectDescription">Description</label>
-                                <textarea class="form-control" style="min-height: 4em; overflow: scroll;" name="subjectDescription"><c:out value="${subject.getDescription()}"/></textarea>
+                                <textarea class="form-control" style="min-height: 4em; overflow: scroll;" name="subjectDescription" required><c:out value="${subject.getDescription()}"/></textarea>
                             </div>
 
                             <div class="form-row">
@@ -158,9 +158,8 @@
                                 </div>
                             </div>
                         </form>
-                        <h5 style="color: #4CAF50"><c:out value="${mess}"/></h5>
-                        <c:if test="${!empty updateNumber}">
-                            <h6 style="color: #4CAF50">Performed <c:out value="${updateNumber}"/> update(s) successfully.</h6>
+                        <c:if test="${!empty message}">
+                            <h6 style="color: ${color}"><c:out value="${message}"/></h6>
                         </c:if>
                         
                     </div>

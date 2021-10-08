@@ -115,29 +115,44 @@ public class SubjectController extends HttpServlet {
                         || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
                         && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                } else {    /* Else: get the subject detail  */ 
+                } else {    /* Else: get the subject detail  */
                     /* Get parameters from jsp */
-                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-                    String subjectName = request.getParameter("subjectName");
-                    String subjectDescription = request.getParameter("subjectDescription");
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
+                    String subjectName = request.getParameter("subjectName").trim();
+                    String subjectDescription = request.getParameter("subjectDescription").trim();
                     String subjectThumbnail = request.getParameter("subjectThumbnail");
                     boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
                     boolean status = request.getParameter("subjectStatus").equals("1");
                     String[] categoryId = request.getParameterValues("subjectCategory");
-                    /* Perform the updates on subject basic data and categories */
-                    Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
-                    int basicUpdate = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
-                    int categoryUpdate = subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
-                    int updateNumber = basicUpdate + categoryUpdate;
-                    request.setAttribute("updateNumber", updateNumber);
-                    /* Get the needed lists and redirect to the courseContentJsp */
-                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                    request.setAttribute("subject", courseContent);
-                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryList", categoryList);
-                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryRemainList", categoryRemainList);
-                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                    /* Check boundaries */
+                    String message = ""; String color = "red";
+                    if (subjectName == null || subjectName.length()==0) {
+                        message = "SubjectName can not be empty";
+                    }   else if (subjectName.length()>255) {
+                        message = "Subject Name is too long";
+                    }   else if (subjectDescription == null || subjectDescription.length() == 0) {
+                        message = "Subject Description can not be empty";
+                    }   else if (subjectDescription.length()>1023) {
+                        message = "Subject Description is too long";
+                    } else {
+                        color = "green";
+                        /* Perform the updates on subject basic data and categories */
+                        Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
+                        int basicUpdate = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+                        int categoryUpdate = subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
+                        int updateNumber = basicUpdate + categoryUpdate;
+                        message = "Performed " + updateNumber + " update(s) successfully.";
+                    }
+                        /* Get the needed lists and redirect to the courseContentJsp */
+                        Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+                        request.setAttribute("subject", courseContent);
+                        ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                        request.setAttribute("categoryList", categoryList);
+                        ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                        request.setAttribute("categoryRemainList", categoryRemainList);
+                        request.setAttribute("color", color);
+                        request.setAttribute("message", message);
+                        sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
             if (service.equalsIgnoreCase("subjectDetail")) {
