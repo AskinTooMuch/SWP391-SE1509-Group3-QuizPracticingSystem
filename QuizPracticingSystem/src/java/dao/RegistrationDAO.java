@@ -6,6 +6,7 @@
 package dao;
 
 import bean.*;
+import dao.impl.RegistrationDAOImpl;
 import java.util.ArrayList;
 
 /**
@@ -23,8 +24,10 @@ public interface RegistrationDAO {
     public int editRegistration(int registrationId,Registration editedRegistration) throws Exception;
     
     public int deleteRegistration(int registrationId) throws Exception;
+
+    public ArrayList<SubjectDashboard> View(String from,String to, ArrayList<Subject> subjectList, String type) throws Exception;
     
-    public void convertJson(ArrayList<Subject> registrationList ) throws Exception;
-            
+    public ArrayList<String> convertJson(ArrayList<SubjectDashboard> viewList ) throws Exception;
+    
     public ArrayList<Subject> getRegistedSubject(int userId) throws Exception;
 }

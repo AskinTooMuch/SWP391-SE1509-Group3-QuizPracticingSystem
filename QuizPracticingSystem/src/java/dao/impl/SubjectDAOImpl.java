@@ -9,6 +9,7 @@
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
  *  24/9/21     1.0         ChucNVHE150618  Add methods: getAllSubjects, getSubjectById, getSubjectByCateId, update-add-delete subject
  *  27/9/21     1.0         ChucNVHE150618  Add methods: getFeaturedSubjects, getAssignedSubject
+ *  9/10/21     1.0         NamDHHE150519   add method: get5LastAddedSubmit
  */
 package dao.impl;
 
@@ -29,12 +30,10 @@ import java.sql.ResultSet;
 public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
 
     /**
-     * 
-     * @return
-     * @throws Exception 
-     * Get all subject in the Subject table 
+     *
+     * @return @throws Exception Get all subject in the Subject table
      */
-    @Override    
+    @Override
     public ArrayList<Subject> getAllSubjects() throws Exception {
         Connection conn = null;
         ResultSet rs = null;
@@ -75,12 +74,55 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return allSubject;
     }
+    /**
+     *
+     * @return @throws Exception Get 5 las added subject in the Subject table
+     */
+    @Override
+    public ArrayList<Subject> get5LastAddedSubject() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> allSubject = new ArrayList();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+
+        String sqlSubject = "SELECT TOP 5 * FROM [Subject] ORDER BY subjectId DESC";
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                allSubject.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status,
+                        dimensionDAO.getDimensionBySubject(subjectId),
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return allSubject;
+    }
 
     /**
-     * 
-     * @return
-     * @throws Exception 
-     * Get featured subjects 
+     *
+     * @return @throws Exception Get featured subjects
      */
     @Override
     public ArrayList<Subject> getFeaturedSubjects() throws Exception {
@@ -124,13 +166,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return featuredSubjects;
     }
-    
+
     /**
-     * 
+     *
      * @param userId
      * @return
-     * @throws Exception 
-     * Get subjects assigned by certain expert
+     * @throws Exception Get subjects assigned by certain expert
      */
     @Override
     public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception {
@@ -178,11 +219,10 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
     }
 
     /**
-     * 
+     *
      * @param subjectId
      * @return
-     * @throws Exception 
-     * Get subject with a certain Id
+     * @throws Exception Get subject with a certain Id
      */
     @Override
     public Subject getSubjectbyId(int subjectId) throws Exception {
@@ -191,7 +231,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
-        
+
         Subject subjectById = null;
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
@@ -226,13 +266,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return subjectById;
     }
-    
+
     /**
-     * 
+     *
      * @param cateId
      * @return
-     * @throws Exception 
-     * Get the subject list that has a certain category id
+     * @throws Exception Get the subject list that has a certain category id
      */
     @Override
     public ArrayList<Subject> getSubjectbyCateId(int cateId) throws Exception {
@@ -242,12 +281,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
         ArrayList<Subject> subjectByCate = new ArrayList();
-        
+
         String sql = "SELECT S.[subjectId]\n"
                 + "  FROM [QuizSystem].[dbo].[Subject] S\n"
                 + "  INNER JOIN [QuizSystem].[dbo].CategorySubject CS ON S.subjectId = CS.subjectId\n"
                 + "  WHERE CS.cateId =" + cateId;
-        
+
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -265,7 +304,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return subjectByCate;
     }
-    
+
     @Override
     public int updateSubject(int subjectId, Subject subject) throws Exception {
         int i = 0;
@@ -273,25 +312,26 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
     }
 
     /**
-     * 
+     *
      * @param subjectId
      * @param subject
      * @return
-     * @throws Exception
-     * Method to perform the single-value parameters of subject
+     * @throws Exception Method to perform the single-value parameters of
+     * subject
      */
     @Override
     public int updateSubjectBasic(int subjectId, Subject subject) throws Exception {
         int i = 0;
         Connection conn = null;
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
 
         String sql = "UPDATE Subject\n"
                 + "  SET subjectName = '" + subject.getSubjectName() + "',\n"
                 + "  description = '" + subject.getDescription() + "',\n"
                 + "  thumbnail = '" + subject.getThumbnail() + "',\n"
-                + "  featuredSubject = " + (subject.isFeaturedSubject()== true ? 1 : 0) + ",\n"
-                + "  status = " + (subject.isStatus()== true ? 1 : 0) + "\n"
+                + "  featuredSubject = " + (subject.isFeaturedSubject() == true ? 1 : 0) + ",\n"
+                + "  status = " + (subject.isStatus() == true ? 1 : 0) + "\n"
                 + "  WHERE subjectId =" + subjectId;
         try {
             conn = getConnection();
@@ -323,7 +363,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
             pre.setString(3, newSubject.getThumbnail());
             pre.setBoolean(4, newSubject.isFeaturedSubject());
             pre.setBoolean(5, newSubject.isStatus());
-            
+
             check = pre.executeUpdate();
         } catch (Exception ex) {
             throw ex;

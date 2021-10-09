@@ -1,3 +1,15 @@
+<!--
+   Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+   Created on : Oct 9, 2021
+   MarketingController map
+   Quiz practicing system
+ 
+   Record of change:
+   Date        Version     Author          Description
+   9/10/21     1.0         NamDHHE150519   First Deploy
+-->
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <html>
 
@@ -11,35 +23,53 @@
 
         <script>
             window.onload = function () {
-                var dataPoints = [];
+                var data = new Array(${jsonString.size()});
+                var i = 0;
+            <c:forEach items="${jsonString}" var="string">
+                data[i] =${string};
+                i++;
+            </c:forEach>
+
+                var dataPointts = new Array(${jsonString.size()});
+                for (var k = 0; k < dataPointts.length; k++) {
+                    dataPointts[k] = [];
+                }
+
                 var chart = new CanvasJS.Chart("chartContainer", {
                     animationEnabled: true,
                     theme: "light2",
                     title: {
-                        text: "Daily Sales Data"
+                        text: "Revenue"
                     },
                     axisY: {
-                        title: "Units",
+                        title: "Revenue",
                         titleFontSize: 24,
                         includeZero: true
                     },
-                    data: [{
-                            type: "column",
-                            yValueFormatString: "#,### Units",
-                            dataPoints: dataPoints
-                        }]
+                    data: [
+            <c:forEach var="k" begin="0" end="4">
+                        {
+                            type: "line",
+                            yValueFormatString: "$#,###",
+                            name: "asd",
+                            showInLegend: true,
+                            dataPoints: dataPointts[${k}]
+                        },
+            </c:forEach>
+                    ]
                 });
-
                 function addData(data) {
-                    for (var i = 0; i < data.length; i++) {
-                        dataPoints.push({
-                            x: new Date(data[i].date),
-                            y: data[i].units
-                        });
+                    for (var k = 0; k < data.length; k++) {
+                        for (var j = 0; j < data[k].length; j++) {
+                            dataPointts[k].push({
+                                x: new Date(data[k][j].date),
+                                y: data[k][j].revenue
+                            });
+                        }
                     }
                     chart.render();
                 }
-                $.getJSON("https://canvasjs.com/data/gallery/javascript/daily-sales-data.json", addData);
+                addData(data);
             }
         </script>
     </head>
@@ -61,49 +91,53 @@
                 </div>
                 <div class="col-md-3"></div>
             </div>
-            <div id="tab1" class="tabcontent" style="display: block">
+            <div id="tab1" class="tabcontent" style="display:block;">
                 <div class="row">
-                    <button class="tablinks active" onclick="openTab(event, 'tab11')">New Subject</button>
-                    <button class="tablinks active" onclick="openTab(event, 'tab12')">New Subject</button>
+                    <div class="row" style="padding-bottom: 100px;">
+                        <div class="col-3" style="display: grid;">
+                            <button class="subtablinks active" onclick="openSubTab(event, 'tab11')">New Subject</button>
+                            <button class="subtablinks active" onclick="openSubTab(event, 'tab12')">New Subject</button>
+                        </div>
+                    </div>
+
                     <div class="col-12" style="width: 100%;height: 700px; background-color: orange;">
-                        <div id="tab11" class="tabcontent" style="display: block">
+                        <div id="tab11" class="subtabcontent" style="">
                             <div class="row">
                                 <div class="col-12" style="width: 100%;height: 100px; background-color: turquoise;">
                                 </div>
                             </div>
-                        </div
-                        <div id="tab12" class="tabcontent" style="display: block">
+                        </div>
+                        <div id="tab12" class="subtabcontent" style="">
                             <div class="row">
                                 <div class="col-12" style="width: 100%;height: 100px; background-color: silver;">
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="tab2" class="tabcontent" style="display: block">
+            <div id="tab2" class="tabcontent" >
                 <div class="row">
                     <div class="col-12" style="width: 100%;height: 700px; background-color: wheat;">
 
                     </div>
                 </div>
             </div>
-            <div id="tab3" class="tabcontent" style="display: block">
+            <div id="tab3" class="tabcontent" >
                 <div class="row">
                     <div class="col-12" style="width: 100%;height: 700px; background-color: yellowgreen;">
 
                     </div>
                 </div>
             </div>
-            <div id="tab4" class="tabcontent" style="display: block">
+            <div id="tab4" class="tabcontent" >
                 <div class="row">
                     <div class="col-12" style="width: 100%;height: 700px; background-color: tomato;">
 
                     </div>
                 </div>
             </div>
-            <div id="tab5" class="tabcontent" style="display: block">
+            <div id="tab5" class="tabcontent">
                 <div class="row">
                     <div class="col-12" style="width: 100%;height: 700px; background-color: skyblue;">
 
@@ -138,8 +172,24 @@
             $(document).on('click', '.allow-focus', function (e) {
                 e.stopPropagation();
             });
+
+            function openSubTab(evt, subtabName) {
+                var i, subtabcontent, subtablinks;
+                subtabcontent = document.getElementsByClassName("subtabcontent");
+                for (i = 0; i < subtabcontent.length; i++) {
+                    subtabcontent[i].style.display = "none";
+                }
+                subtablinks = document.getElementsByClassName("subtablinks");
+
+                for (i = 0; i < subtablinks.length; i++) {
+                    subtablinks[i].className = subtablinks[i].className.replace(" active", "");
+                }
+
+                document.getElementById(subtabName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
         </script>
-        <!--<div id="chartContainer" style="height: 300px; width: 100%;"></div>-->
+        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>

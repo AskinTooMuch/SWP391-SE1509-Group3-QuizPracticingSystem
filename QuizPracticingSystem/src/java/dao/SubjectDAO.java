@@ -27,6 +27,8 @@ public interface SubjectDAO {
     
     public int updateSubjectBasic(int subjectId, Subject subject) throws Exception;
     
+    public ArrayList<Subject> get5LastAddedSubject() throws Exception;
+    
     public int addSubject(Subject subject) throws Exception;
     
     public int deleteSubject(int subjectId) throws Exception;

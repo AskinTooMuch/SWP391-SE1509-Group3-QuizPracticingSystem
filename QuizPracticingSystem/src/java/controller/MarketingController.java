@@ -6,8 +6,9 @@
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  18/9/21     1.0         NamDHHe510519   First Deploy
-    19/9/21     1.1         NamDHHe510519   update service
+ *  18/9/21     1.0         NamDHHe150519   First Deploy
+    19/9/21     1.0         NamDHHe150519   update service
+    9/10/21     1.0         NamDHHe150519   update service dashboard
  */
 package controller;
 
@@ -23,6 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.BlogDAO;
 import dao.PostCateDAO;
+import dao.RegistrationDAO;
+import dao.SubjectDAO;
+import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectDAOImpl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -125,8 +130,13 @@ public class MarketingController extends HttpServlet {
              * the relevant management statistics in the system, with the
              * relevant links to the related screens
              */
-            if(service.equalsIgnoreCase("dashboard")){
-                
+            if (service.equalsIgnoreCase("dashboard")) {
+                RegistrationDAO IRegistration = new RegistrationDAOImpl();
+                SubjectDAO ISubject = new SubjectDAOImpl();
+                ArrayList<Subject> lastSubject = ISubject.get5LastAddedSubject();
+                ArrayList<String> jsonString = IRegistration.convertJson(IRegistration.View("2019-12-12", "2019-12-15", lastSubject,"revenueee"));
+                request.setAttribute("jsonString", jsonString);
+                request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);

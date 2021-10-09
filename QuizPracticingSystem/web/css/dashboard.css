@@ -7,14 +7,15 @@ and open the template in the editor.
     Created on : Oct 7, 2021, 11:56:27 PM
     Author     : ADMN
 */
-
+/* Style the tab */
 .tab {
     overflow: hidden;
     padding: auto;
-    width: 40vw;
+    width: 33vw;
     border-style: none none ridge none;
 }
 
+/* Style the buttons inside the tab */
 /* Style the buttons inside the tab */
 .tab button {
     background-color: inherit;
@@ -40,4 +41,48 @@ and open the template in the editor.
     border-style: none none solid none;
     border-color: #63b8ff;
     color: #63b8ff;
+}
+
+/* Style the tab content */
+.tabcontent {
+    margin-top: 3px;
+    display: none;
+    padding: 6px 12px;
+    border: 2px ridge #ccc;
+    min-height: 50vh;
+}
+.subtabcontent {
+    display: none;
+
+}
+.checkbox-menu li label {
+    display: block;
+    padding: 3px 10px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    margin:0;
+    transition: background-color .4s ease;
+}
+.checkbox-menu li input {
+    margin: 0px 5px;
+    top: 2px;
+    position: relative;
+}
+
+.checkbox-menu li.active label {
+    background-color: #cbcbff;
+    font-weight:bold;
+}
+
+.checkbox-menu li label:hover,
+.checkbox-menu li label:focus {
+    background-color: #f5f5f5;
+}
+
+.checkbox-menu li.active label:hover,
+.checkbox-menu li.active label:focus {
+    background-color: #b8b8ff;
 }
