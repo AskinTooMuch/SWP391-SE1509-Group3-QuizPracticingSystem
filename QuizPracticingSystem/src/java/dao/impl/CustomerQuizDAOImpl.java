@@ -8,6 +8,7 @@
     Date        Version     Author          Description
     17/9/21     1.0         ChucNVHE150618  First Deploy
     27/9/21     1.1         NamDHHE150519   update method
+    08/10/21    1.2         DuongNHHE150328 update method
  */
  /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
@@ -19,6 +20,7 @@ package dao.impl;
 
 import bean.CustomerQuiz;
 import bean.QuestionQuizHandle;
+import bean.Quiz;
 import bean.QuizQuizHandle;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
         CustomerQuiz add = null;
+        QuizDAOImpl quizDAO = new QuizDAOImpl();
+        TestTypeDAOImpl testTypeDAO = new TestTypeDAOImpl();
         ArrayList<CustomerQuiz> custormerQuiz = new ArrayList<>();
         String sql = "SELECT [quizTakeId]\n"
                 + "      ,[quizId]\n"
@@ -79,6 +83,10 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
                         rs.getInt("time"),
                         time,
                         rs.getBoolean("status"));
+                Quiz quiz = quizDAO.getQuizById(rs.getInt("quizId"));
+                add.setQuizName(quiz.getQuizName());
+                add.setSubjectName(quiz.getSubject().getSubjectName());
+                add.setTestTypeName(testTypeDAO.getTestTypeById(quiz.getTestTypeId()).getTestTypeName());
                 custormerQuiz.add(add);
             }
         } catch (Exception ex) {

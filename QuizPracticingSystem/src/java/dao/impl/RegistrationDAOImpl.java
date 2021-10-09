@@ -8,7 +8,6 @@ package dao.impl;
 import bean.Quiz;
 import bean.Registration;
 import bean.Subject;
-import com.google.gson.Gson;
 import dao.DBConnection;
 import java.util.ArrayList;
 import dao.RegistrationDAO;
@@ -82,12 +81,12 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
       
     @Override
     public void convertJson(ArrayList<Subject> registrationList ) throws Exception {
-        // create a new Gson instance
-        Gson gson = new Gson();
-        // convert your list to json
-        String jsonCartList = gson.toJson(registrationList);
-        // print your generated json
-        System.out.println("jsonCartList: " + jsonCartList);
+//        // create a new Gson instance
+//        Gson gson = new Gson();
+//        // convert your list to json
+//        String jsonCartList = gson.toJson(registrationList);
+//        // print your generated json
+//        System.out.println("jsonCartList: " + jsonCartList);
     }
 
     public static void main(String[] args) throws Exception {

@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
  * @author ChucNVHE150618
  */
 public class CustomerQuiz {
+
     private int quizTakeId;
     private int quizId;
     private int userId;
@@ -21,6 +22,9 @@ public class CustomerQuiz {
     private int time;
     private Timestamp submitedAt;
     private boolean status;
+    private String quizName;
+    private String subjectName;
+    private String testTypeName;
 
     public CustomerQuiz() {
     }
@@ -35,9 +39,29 @@ public class CustomerQuiz {
         this.status = status;
     }
 
- 
+    public void setTestTypeName(String testTypeName) {
+        this.testTypeName = testTypeName;
+    }
 
-  
+    public String getTestTypeName() {
+        return testTypeName;
+    }
+
+    public String getQuizName() {
+        return quizName;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setQuizName(String quizName) {
+        this.quizName = quizName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
 
     public int getTime() {
         return time;
@@ -47,7 +71,6 @@ public class CustomerQuiz {
         this.time = time;
     }
 
-    
     public int getQuizTakeId() {
         return quizTakeId;
     }
@@ -94,12 +117,20 @@ public class CustomerQuiz {
 
     public void setStatus(boolean status) {
         this.status = status;
-    } 
-    
-    public String getDateTaken(){
+    }
+
+    public String getDateTaken() {
         Date date = new Date(submitedAt.getTime());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateTaken = simpleDateFormat.format(date);
         return dateTaken;
+    }
+    
+    public String getDurationString(){
+        String durationString = "";
+        int minute = time / 60;
+        int second = time % 60;
+        durationString = minute + ":" + second;
+        return durationString;
     }
 }

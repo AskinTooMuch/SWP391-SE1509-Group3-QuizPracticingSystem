@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  08/10/21    1.0         DuongNHHE150328 First Deploy
+ *  08/10/21    1.0         DuongNHHE150328 Add service
  */
 package controller;
 
@@ -10,11 +16,14 @@ import bean.Question;
 import bean.Quiz;
 import bean.Subject;
 import bean.User;
+import bean.CustomerQuiz;
+import dao.CustomerQuizDAO;
 import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuizDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuizDAOImpl;
@@ -97,6 +106,44 @@ public class PracticeController extends HttpServlet {
                     quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
                 }
                 response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
+            }
+
+            //Get information t display in the practiceList
+            if (service.equalsIgnoreCase("getPracticeListInformation")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                RegistrationDAO registrationDAO = new RegistrationDAOImpl();
+                CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
+                ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
+                ArrayList<CustomerQuiz> customerQuizs = customerQuizDAO.getQuizByUser(currUser.getUserId());
+                request.setAttribute("registedSubject", registedSubject);
+                request.setAttribute("customerQuizs", customerQuizs);
+                request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
+            }
+
+            if (service.equalsIgnoreCase("filterPracticeListInformation")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                RegistrationDAO registrationDAO = new RegistrationDAOImpl();
+                CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                ArrayList<CustomerQuiz> filteredCustomerQuizs = new ArrayList<>();
+                ArrayList<CustomerQuiz> customerQuizs = customerQuizDAO.getQuizByUser(currUser.getUserId());
+                ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
+                request.setAttribute("registedSubject", registedSubject);
+                if (subjectId == 0) {
+                    request.setAttribute("customerQuizs", customerQuizs);
+                    request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
+                    return;
+                } else {
+                    for (CustomerQuiz customerQuiz : customerQuizs) {
+                        if (quizDAO.getQuizById(customerQuiz.getQuizId()).getSubject().getSubjectId() == subjectId) {
+                            filteredCustomerQuizs.add(customerQuiz);
+                        }
+                    }
+                    request.setAttribute("customerQuizs", filteredCustomerQuizs);
+                    request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
+                    return;
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(PracticeController.class.getName()).log(Level.SEVERE, null, ex);
