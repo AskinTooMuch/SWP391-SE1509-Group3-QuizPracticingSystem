@@ -75,10 +75,11 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
                 + "	   ,S.subjectCateName\n"
                 + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
                 + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
-                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId =" + subjectId;
+                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId = ?";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 categories.add(new SubjectCate(rs.getInt("cateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
@@ -103,10 +104,11 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         String sql = "SELECT C.[cateId]\n"
                 + "  FROM [QuizSystem].[dbo].[CategorySubject] C \n"
                 + "  INNER JOIN [QuizSystem].[dbo].SubjectCate S\n"
-                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId =" + subjectId;
+                + "  ON C.cateId = S.subjectCateId WHERE C.subjectId = ?";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 categoryId.add(rs.getString("cateId"));
@@ -137,10 +139,11 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
                     "  WHERE [subjectCateId] NOT IN (SELECT C.[cateId]\n" +
                     "				FROM [QuizSystem].[dbo].[CategorySubject] C\n" +
                     "				INNER JOIN [QuizSystem].[dbo].SubjectCate S\n" +
-                    "				ON C.cateId = S.subjectCateId WHERE C.subjectId = "+ subjectId +")";
+                    "				ON C.cateId = S.subjectCateId WHERE C.subjectId = ?)";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, subjectId);
             rs = pre.executeQuery();
             while (rs.next()) {
                 remainCategories.add(new SubjectCate(rs.getInt("subjectCateId"), rs.getString("subjectCateName"), rs.getBoolean("status")));
@@ -194,32 +197,40 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
 
         String[] currentCategorySubject = getSubjectCateIdBySubject(subjectId);
+        int check = 0;
         /* Terminates: eliminates all the unchanged tuples */
-        for (int i = 0; i < updatedSubjectCateId.length; i++) {
-            for (int j = 0; j < currentCategorySubject.length; j++) {
-                if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
-                    updatedSubjectCateId[i]= "-1";
-                    currentCategorySubject[j] = "-1";
+        if (updatedSubjectCateId != null) {
+            for (int i = 0; i < updatedSubjectCateId.length; i++) {
+                for (int j = 0; j < currentCategorySubject.length; j++) {
+                    if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
+                        updatedSubjectCateId[i]= "-1";
+                        currentCategorySubject[j] = "-1";
+                    }
                 }
             }
+            
+            try {
+                for (String categoryId : updatedSubjectCateId) {
+                    if (!categoryId.equals("-1"))
+                    check += addCategorySubject(subjectId, Integer.parseInt(categoryId));
+                }
+                for (String categoryId : currentCategorySubject) {
+                    if (!categoryId.equals("-1"))
+                    check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+                }
+            } catch (Exception ex) {
+                throw ex;
+            } finally {
+                closePreparedStatement(pre);
+                closeConnection(conn);
+            }
+        } else {
+            for (String categoryId : currentCategorySubject) {
+                    if (!categoryId.equals("-1"))
+                    check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+                }
         }
         
-        int check = 0;
-        try {
-            for (String categoryId : updatedSubjectCateId) {
-                if (!categoryId.equals("-1"))
-                check += addCategorySubject(subjectId, Integer.parseInt(categoryId));
-            }
-            for (String categoryId : currentCategorySubject) {
-                if (!categoryId.equals("-1"))
-                check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            closePreparedStatement(pre);
-            closeConnection(conn);
-        }
         return check;
     }
     

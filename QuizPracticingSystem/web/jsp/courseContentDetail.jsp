@@ -81,6 +81,7 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
+                                            <c:if test="${!empty categoryList}">
                                             <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
                                                 <li>
                                                     <label>
@@ -88,6 +89,8 @@
                                                     </label>
                                                 </li>
                                             </c:forEach>
+                                            </c:if>
+                                            <c:if test="${!empty categoryRemainList}">
                                             <c:forEach items = "${categoryRemainList}" var="category" begin = "0" end = "${categoryRemainList.size()-1}">
                                                 <li>
                                                     <label>
@@ -95,6 +98,7 @@
                                                     </label>
                                                 </li>
                                             </c:forEach>
+                                            </c:if>
                                         </ul>
                                     </div>
 

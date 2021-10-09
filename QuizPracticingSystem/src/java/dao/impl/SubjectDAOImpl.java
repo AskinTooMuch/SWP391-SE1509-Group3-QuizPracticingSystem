@@ -187,12 +187,13 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         /* Sql query */
         String sqlSubject = "SELECT S.[subjectId],[subjectName],[description],[thumbnail],[featuredSubject],S.[status],SE.[userId]\n"
                 + "  FROM [QuizSystem].[dbo].[Subject] S INNER JOIN [QuizSystem].dbo.[SubjectExpert] SE\n"
-                + "  ON S.subjectId = SE.subjectId WHERE SE.userId = " + userId;
+                + "  ON S.subjectId = SE.subjectId WHERE SE.userId = ?";
 
         /* Get the subject */
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, userId);
             rs = pre.executeQuery();
             /* Get information from resultset and add it to arrayList */
             while (rs.next()) {
@@ -236,12 +237,13 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         DimensionDAO dimensionDAO = new DimensionDAOImpl();
         SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
 
-        String sqlSubject = "SELECT * FROM [Subject] WHERE [subjectId] = " + subjectId;
+        String sqlSubject = "SELECT * FROM [Subject] WHERE [subjectId] = ?";
 
         /* Get the subject */
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, subjectId);
             rs = pre.executeQuery();
             /* Get information from resultset and set it to the created pointer */
             if (rs.next()) {
@@ -285,11 +287,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         String sql = "SELECT S.[subjectId]\n"
                 + "  FROM [QuizSystem].[dbo].[Subject] S\n"
                 + "  INNER JOIN [QuizSystem].[dbo].CategorySubject CS ON S.subjectId = CS.subjectId\n"
-                + "  WHERE CS.cateId =" + cateId;
-
+                + "  WHERE CS.cateId = ?";
+        
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setInt(1, cateId);
             rs = pre.executeQuery();
             /* Get information from resultset, get the according subject and add it to arrayList */
             while (rs.next()) {
@@ -327,15 +330,21 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         /* Prepared statement for executing sql queries */
 
         String sql = "UPDATE Subject\n"
-                + "  SET subjectName = '" + subject.getSubjectName() + "',\n"
-                + "  description = '" + subject.getDescription() + "',\n"
-                + "  thumbnail = '" + subject.getThumbnail() + "',\n"
-                + "  featuredSubject = " + (subject.isFeaturedSubject() == true ? 1 : 0) + ",\n"
-                + "  status = " + (subject.isStatus() == true ? 1 : 0) + "\n"
-                + "  WHERE subjectId =" + subjectId;
+                + "  SET subjectName = ?,\n"
+                + "  description = ?,\n"
+                + "  thumbnail = ?,\n"
+                + "  featuredSubject = ?,\n"
+                + "  status = ?\n"
+                + "  WHERE subjectId = ?";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
+            pre.setString(1, subject.getSubjectName());
+            pre.setString(2, subject.getDescription());
+            pre.setString(3, subject.getThumbnail());
+            pre.setBoolean(4, subject.isFeaturedSubject());
+            pre.setBoolean(5, subject.isStatus());
+            pre.setInt(6, subjectId);
             i = pre.executeUpdate();
         } catch (Exception ex) {
             throw ex;
