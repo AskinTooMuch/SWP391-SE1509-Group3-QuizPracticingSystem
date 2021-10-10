@@ -35,12 +35,13 @@
 
             <%-- Login form --%>
             <div class="container" style="align-self: center; min-height: 50vh">
-                <%-- Start form --%>
-                <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
+                
                     <div class="row">
                         <%-- Bootstrap to center form --%>
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
+                            <%-- Start form --%>
+                            <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
                             <%-- Enter old password --%>
                             <label class="label control-label">Old Password</label>
                             <div class="input-group">
@@ -61,21 +62,23 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-lock"></span></span>
                                 <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();' required>
-                                <span id='message'></span>
+                                
                             </div>
+                            <span id='message'></span>
                             <br>
                             <%-- Submit form --%>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success">Change password!</button>
                                 <input type="hidden" name="service" value="changePassword">
                             </div>
+                            </form>
                             <%-- Display messages, if any --%>
                             <div>
-                                <h4 style="color:${color}"> <c:out value="${message}"/> </h4>
+                                <h5 style="color:${color}"><c:out value="${message}"/></h5>
                             </div>
                         </div>
+                        <div class="col-md-3"></div>
                     </div>
-                </form> 
             </div>
 
         </div>

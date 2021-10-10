@@ -8,14 +8,17 @@
  *  Date        Version     Author          Description
  *  27/9/21     1.0         ChucNVHE150618  First Deploy
  *  6/10/21     1.1         ChucNVHE150618  Add course content detail and update subject
+ *  10/10/21    1.2         ChucNVHE150618  Add service of Dimension function: update, add, delete dimension
  */
 package controller;
 
+import bean.Dimension;
 import bean.DimensionType;
 import bean.Subject;
 import bean.SubjectCate;
 import bean.User;
 import bean.UserRole;
+import dao.DimensionDAO;
 import dao.DimensionTypeDAO;
 import dao.SubjectCateDAO;
 import dao.impl.SubjectDAOImpl;
@@ -30,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.SubjectDAO;
+import dao.impl.DimensionDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.SubjectCateDAOImpl;
 
@@ -53,6 +57,7 @@ public class SubjectController extends HttpServlet {
             SubjectDAO subjectDAO = new SubjectDAOImpl();
             SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
             DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+            DimensionDAO dimensionDAO = new DimensionDAOImpl();
             
             /**
              * Service course content list: for admin and expert to check the
@@ -156,11 +161,79 @@ public class SubjectController extends HttpServlet {
                         request.setAttribute("categoryList", categoryList);
                         ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
                         request.setAttribute("categoryRemainList", categoryRemainList);
-                        request.setAttribute("color", color);
-                        request.setAttribute("message", message);
+                        ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                        request.setAttribute("dimensionTypes", dimensionTypes);
+                        request.setAttribute("detailColor", color);
+                        request.setAttribute("detailMessage", message);
                         sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
+            
+            /**
+             * Service course content detail: update subject dimension (edit and delete)
+             */
+            if (service.equalsIgnoreCase("updateDimension")) {
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
+                    String message = "";    
+                    String color = "red";
+                    
+                    /* Check if the sub-service is update or delete */
+                    String subService = request.getParameter("subService").trim();
+                    if (subService.equalsIgnoreCase("Delete")){
+                            
+                        
+                    } else if (subService.equalsIgnoreCase("Update")){
+                        /* Get parameters from jsp */
+                        int dimensionId= Integer.parseInt(request.getParameter("dimensionId").trim());
+                        int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
+                        String dimensionName = request.getParameter("dimensionName").trim();
+                        String description = request.getParameter("description").trim();
+                        /* Check boundaries */
+                        
+                        if (dimensionName == null || dimensionName.length()==0) {
+                            message = "Dimension Name can not be empty";
+                        }   else if (dimensionName.length()>255) {
+                            message = "Dimension Name is too long";
+                        }   else if (description.length()>511) {
+                            message = "Dimension Description is too long";
+                        } else {
+
+                            /* Perform the updates on subject dimension */
+                            Dimension updateDimension = new Dimension(dimensionId, subjectId, dimensionTypeId, "", dimensionName, description, true);
+                            int check = dimensionDAO.editDimension(dimensionId, updateDimension);
+                            if (check>0) {
+                                color = "green";
+                                message = "Update dimension successfully.";
+                            } else {
+                                message = "Update dimension failed.";
+                            }
+                        }
+                    }
+                        
+                        /* Get the needed lists and redirect to the courseContentJsp */
+                        Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+                        request.setAttribute("subject", courseContent);
+                        ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                        request.setAttribute("categoryList", categoryList);
+                        ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                        request.setAttribute("categoryRemainList", categoryRemainList);
+                        ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                        request.setAttribute("dimensionTypes", dimensionTypes);
+                        request.setAttribute("dimensionColor", color);
+                        request.setAttribute("dimensionMessage", message);
+                        sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                }
+            }
+            
             /**
              * Service subject : subject detail
              */

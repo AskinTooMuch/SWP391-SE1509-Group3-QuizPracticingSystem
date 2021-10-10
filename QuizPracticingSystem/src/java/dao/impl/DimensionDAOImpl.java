@@ -5,9 +5,10 @@
  *  Quiz practicing system
  *
  *  Record of change:
- *  Date        Version     Author           Description
- *  23/9/21     1.0         DuongNHHE150328  First Deploy
- *  05/10/21     1.0        DuongNHHE150328  Add getSubjectDimensionType method
+ *  Date        Version     Author              Description
+ *  23/9/21     1.0         DuongNHHE150328     First Deploy
+ *  05/10/21    1.1         DuongNHHE150328     Add getSubjectDimensionType method
+ *  10/10/21    1.2         ChucNVHE150618      Update on edit dimension, add dimension and delete dimension
  */
 package dao.impl;
 
@@ -149,21 +150,116 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
         return dimensionById;
     }
 
+    /**
+     * Add new subject dimension
+     * @param dimension
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addDimension(Dimension dimension) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = "INSERT INTO dbo.Dimension(dimensionName,dimensionTypeId,subjectId,[description],[status]) VALUES(?,?,?,?,?);";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, dimension.getDimensionName());
+            pre.setInt(2, dimension.getDimensionTypeId());
+            pre.setInt(3, dimension.getSubjectId());
+            pre.setString(4, dimension.getDescription());
+            pre.setBoolean(5, dimension.isStatus());
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
 
+    /**
+     * Delete subject's dimension
+     * @param dimensionId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deleteDimension(int dimensionId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = " DELETE FROM [Dimension] WHERE dimensionId = ?";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, dimensionId);
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
 
+    /**
+     * Edit subject's dimension
+     * @param dimensionId
+     * @param dimension
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int editDimension(int dimensionId, Dimension dimension) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = " UPDATE [Dimension] set dimensionTypeId = ?, dimensionName = ?,  [description] = ? where dimensionId = ?";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, dimension.getDimensionTypeId());
+            pre.setString(2, dimension.getDimensionName());
+            pre.setString(3, dimension.getDescription());
+            pre.setInt(4, dimensionId);
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
 
+    /**
+     * 
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<DimensionType> getSubjectDimensionType(int subjectId) throws Exception {
         Connection conn = null;
@@ -196,5 +292,13 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
         return dimensionList;
     }
     
-          
+//    public static void main(String[] args) {
+//        DimensionDAOImpl dao = new DimensionDAOImpl();
+//        Dimension d = new Dimension(1, 1, 1, "", "Java Programming2", "Hello", true);
+//        try {
+//            System.out.println(dao.deleteDimension(5));
+//        } catch (Exception ex) {
+//            Logger.getLogger(DimensionDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }

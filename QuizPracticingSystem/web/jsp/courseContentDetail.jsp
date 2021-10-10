@@ -168,15 +168,19 @@
                             </div>
                         </form>
                         <%-- Display message if available --%>
-                        <c:if test="${!empty message}">
-                            <h6 style="color: ${color}"><c:out value="${message}"/></h6>
+                        <c:if test="${!empty detailMessage}">
+                            <h6 style="color: ${detailColor}"><c:out value="${detailMessage}"/></h6>
                         </c:if>
 
                     </div>
 
                     <div id="tab2" class="tabcontent">
                         <h4 style="color: #565e64">Subject Dimension/ Id <c:out value="${subject.getSubjectId()}"/></h4>
+                        <c:if test="${!empty dimensionMessage}">
+                            <h6 style="color: ${dimensionColor}"><c:out value="${dimensionMessage}"/></h6>
+                        </c:if>
                         <table class="table table-striped table-bordered table-hover">
+                            <%-- Table head --%>
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">#</th>
@@ -186,13 +190,18 @@
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
+                            <%-- Table body --%>
                             <tbody>
+                                <%-- For each dimension, print a row --%>
                                 <c:forEach items = "${subject.getDimensions()}" var="dimension" begin = "0" end = "${subject.getDimensions().size()-1}">
                                     <tr>
                                         <form action="subjectController">
+                                            <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
+                                            <input type="hidden" name="dimensionId" value="${dimension.getDimensionId()}">
                                             <input type="hidden" name="service" value="updateDimension">
                                             <th scope="row"><c:out value="${dimension.getDimensionId()}"/></th>
                                             <td>
+                                                <%-- Print the dimension type select box with the selected value of dimension on top --%>
                                                 <select id="inputState" class="inputBorderless" name="dimensionType">
                                                     <option selected value="${dimension.getDimensionTypeId()}"><c:out value="${dimension.getDimensionTypeName()}"/></option>
                                                     <c:if test = "${!empty dimensionTypes}">
@@ -205,18 +214,18 @@
                                                 </select>
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
-                                            <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Dimension Name"></td>
-                                            <td><button type="submit" id="submit" class="btn btn-secondary">Submit</button>
-                                                <a href="${contextPath}/index.jsp" class="btn btn-secondary">Back</a>
+                                            <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Description"></td>
+                                            <td><input type="submit" class="btn btn-secondary" name="subService" value="Update" />
+                                                <input type="submit" class="btn btn-secondary" name="subService" value="Delete" />
                                             </td>
                                         </form>
                                     </tr>
                                 </c:forEach>
-                                
-                                
+                                <%-- Form to create a new dimension --%>
                                 <tr>
                                     <form action="subjectController">
                                             <input type="hidden" name="service" value="addDimension">
+                                            <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
                                             <th scope="row">New</th>
                                             <td>
                                                 <select id="inputState" class="inputBorderless" name="dimensionType">
@@ -226,7 +235,7 @@
                                                 </select>
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
-                                            <td><input class="inputBorderless" type="text" name="description" placeholder="Dimension Name"></td>
+                                            <td><input class="inputBorderless" type="text" name="description" placeholder="Description"></td>
                                             <td><button type="submit" id="submit" class="btn btn-secondary">Submit</button>
                                                 <a href="${contextPath}/index.jsp" class="btn btn-secondary">Back</a>
                                             </td>
