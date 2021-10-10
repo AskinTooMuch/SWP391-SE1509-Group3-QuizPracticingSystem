@@ -51,7 +51,10 @@
     display: none;
     padding: 6px 12px;
     border: 2px ridge #ccc;
-    min-height: 50vh;
+    min-height: 70vh;
+    max-height: 90vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .checkbox-menu li label {
@@ -84,4 +87,9 @@
 .checkbox-menu li.active label:hover,
 .checkbox-menu li.active label:focus {
     background-color: #b8b8ff;
+}
+
+.inputBorderless{
+    border: none;
+    background-color: transparent;
 }

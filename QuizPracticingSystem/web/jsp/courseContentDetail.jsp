@@ -61,16 +61,17 @@
                 <%-- Main tab details --%>
                 <div class="details">
                     <div id="tab1" class="tabcontent" style="display: block">
-                        <h4 style="color: #565e64">Subject Overview</h4>
+                        <h4 style="color: #565e64">Subject Overview/ Id <c:out value="${subject.getSubjectId()}"/></h4>
                         <%-- Form details: The whole tab is a form with the subject's details as set values --%>
-                        <form style="padding: 5px;">
+                        <form style="padding: 5px;" action="subjectController">
                             <%-- First bootstrap form row: subject name, category, featured subject, status and thumbnail image --%>
                             <div class="form-row">
                                 <div class="form-group col-md-7">
+                                    <%-- Subject name --%>
                                     <br>
                                     <label for="subjectName">Subject Name</label>
                                     <input type="text" name="subjectName" class="form-control" value="${subject.getSubjectName()}" style="margin-bottom: 5px;" required>
-
+                                    <%-- Category list --%>
                                     <label for="subjectCate">Category</label>
                                     <div class="dropdown">
                                         <button class="btn btn-default dropdown-toggle" type="button" 
@@ -82,22 +83,22 @@
                                         </button>
                                         <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
                                             <c:if test="${!empty categoryList}">
-                                            <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" checked name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
-                                                    </label>
-                                                </li>
-                                            </c:forEach>
+                                                <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" checked name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
+                                                        </label>
+                                                    </li>
+                                                </c:forEach>
                                             </c:if>
                                             <c:if test="${!empty categoryRemainList}">
-                                            <c:forEach items = "${categoryRemainList}" var="category" begin = "0" end = "${categoryRemainList.size()-1}">
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox" name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
-                                                    </label>
-                                                </li>
-                                            </c:forEach>
+                                                <c:forEach items = "${categoryRemainList}" var="category" begin = "0" end = "${categoryRemainList.size()-1}">
+                                                    <li>
+                                                        <label>
+                                                            <input type="checkbox" name="subjectCategory" value="${category.getSubjectCateId()}"> <c:out value="${category.getSubjectCateName()}"/>
+                                                        </label>
+                                                    </li>
+                                                </c:forEach>
                                             </c:if>
                                         </ul>
                                     </div>
@@ -105,6 +106,7 @@
                                     <br>
                                     <div class="form-row">
                                         <div class="form-group col-md-5">
+                                            <%-- Featured subject --%>
                                             <div class="form-check">
                                                 <c:choose>
                                                     <c:when test="${subject.isFeaturedSubject()}">
@@ -119,6 +121,7 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <%-- Status --%>
                                         <div class="form-group col-md-2">
                                             <label for="status">Status</label>
                                         </div>
@@ -140,16 +143,18 @@
 
                                 </div>
                                 <div class="form-group col-md-1"></div>
+                                <%-- Thumbnail image --%>
                                 <div class="form-group col-md-4">
                                     <img src="${contextPath}/images/${subject.getThumbnail()}" style="height: 100%; width: 100%;">
                                     <input type="hidden" name="subjectThumbnail" value="${subject.getThumbnail()}">
                                 </div>
                             </div>
+                            <%-- Description --%>
                             <div class="form-group">
                                 <label for="subjectDescription">Description</label>
                                 <textarea class="form-control" style="min-height: 4em; overflow: scroll;" name="subjectDescription" required><c:out value="${subject.getDescription()}"/></textarea>
                             </div>
-
+                            <%-- Submit --%>
                             <div class="form-row">
                                 <div class="form-group" style="margin-right: 1em; margin-left: 1em;">
                                     <input type="hidden" name="service" value="updateSubject">
@@ -162,15 +167,73 @@
                                 </div>
                             </div>
                         </form>
+                        <%-- Display message if available --%>
                         <c:if test="${!empty message}">
                             <h6 style="color: ${color}"><c:out value="${message}"/></h6>
                         </c:if>
-                        
+
                     </div>
 
                     <div id="tab2" class="tabcontent">
-                        <h3>Tab 2</h3>
-                        <p>Tab content 2</p>
+                        <h4 style="color: #565e64">Subject Dimension/ Id <c:out value="${subject.getSubjectId()}"/></h4>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Dimension</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items = "${subject.getDimensions()}" var="dimension" begin = "0" end = "${subject.getDimensions().size()-1}">
+                                    <tr>
+                                        <form action="subjectController">
+                                            <input type="hidden" name="service" value="updateDimension">
+                                            <th scope="row"><c:out value="${dimension.getDimensionId()}"/></th>
+                                            <td>
+                                                <select id="inputState" class="inputBorderless" name="dimensionType">
+                                                    <option selected value="${dimension.getDimensionTypeId()}"><c:out value="${dimension.getDimensionTypeName()}"/></option>
+                                                    <c:if test = "${!empty dimensionTypes}">
+                                                        <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
+                                                            <c:if test="${dimensionTypes.getDimensionTypeId() != dimension.getDimensionId()}">
+                                                                <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </select>
+                                            </td>
+                                            <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
+                                            <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Dimension Name"></td>
+                                            <td><button type="submit" id="submit" class="btn btn-secondary">Submit</button>
+                                                <a href="${contextPath}/index.jsp" class="btn btn-secondary">Back</a>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </c:forEach>
+                                
+                                
+                                <tr>
+                                    <form action="subjectController">
+                                            <input type="hidden" name="service" value="addDimension">
+                                            <th scope="row">New</th>
+                                            <td>
+                                                <select id="inputState" class="inputBorderless" name="dimensionType">
+                                                    <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
+                                                            <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
+                                                    </c:forEach>
+                                                </select>
+                                            </td>
+                                            <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
+                                            <td><input class="inputBorderless" type="text" name="description" placeholder="Dimension Name"></td>
+                                            <td><button type="submit" id="submit" class="btn btn-secondary">Submit</button>
+                                                <a href="${contextPath}/index.jsp" class="btn btn-secondary">Back</a>
+                                            </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div id="tab3" class="tabcontent">

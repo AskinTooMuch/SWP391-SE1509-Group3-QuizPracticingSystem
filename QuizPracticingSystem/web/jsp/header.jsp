@@ -30,7 +30,7 @@
             html,body{ margin:0; padding:0; height:100%; width:100%; }
         </style>
     </head>
-    <body>
+    <body style="overflow-x:hidden">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-label="Toggle navigation">
