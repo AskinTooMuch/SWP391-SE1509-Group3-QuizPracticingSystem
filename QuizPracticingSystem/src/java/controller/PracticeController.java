@@ -108,7 +108,7 @@ public class PracticeController extends HttpServlet {
                 response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
             }
 
-            //Get information t display in the practiceList
+            //Get information to display in the practiceList
             if (service.equalsIgnoreCase("getPracticeListInformation")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
@@ -120,6 +120,7 @@ public class PracticeController extends HttpServlet {
                 request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
             }
 
+            //update practice list information
             if (service.equalsIgnoreCase("filterPracticeListInformation")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));

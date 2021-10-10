@@ -32,7 +32,7 @@
 
                         <div class="u-form-group u-form-name">
                             <p>Enter your user name:</p>
-                            <input type="text" placeholder="Username"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="" value="${param.userName}">
+                            <input type="text" placeholder="Username"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" value="${param.userName}">
                         </div>
                         <div class="u-form-group u-form-name">
                             <p>Enter your password:</p>

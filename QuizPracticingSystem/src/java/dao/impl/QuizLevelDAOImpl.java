@@ -21,7 +21,34 @@ public class QuizLevelDAOImpl extends DBConnection implements QuizLevelDAO {
 
     @Override
     public ArrayList<QuizLevel> getAllQuizLevel() throws Exception {
-        ArrayList<QuizLevel> quizLevels = null;
+        ArrayList<QuizLevel> quizLevels = new ArrayList<>();
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        QuizLevel quizLevel = null;
+        String sql = "SELECT [quizLevelId]\n"
+                + "      ,[quizLevelName]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[QuizLevel]";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                quizLevel =  new QuizLevel(rs.getInt("quizLevelId"),
+                        rs.getString("quizLevelName"),
+                        rs.getBoolean("status"));
+                quizLevels.add(quizLevel);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return quizLevels;
     }
 

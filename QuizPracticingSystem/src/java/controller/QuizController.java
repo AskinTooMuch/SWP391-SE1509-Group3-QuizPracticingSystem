@@ -13,20 +13,25 @@
  *  26/9/21     1.1         NamDHHE150519   Update simulation Exam
  *  07/10/21    1.2         TuanPAHE150543  Add service filterQuestion,getFilterInformation
  *  08/10/21    1.2         TuanPAHE150543  Update service filterQuestion ,getFilterInformation
+ *  10/10/21    1.3         DuongNHHE150328 Update service getQuizDetailInformation,createQuiz
  */
 package controller;
 
 import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Dimension;
+import bean.DimensionType;
 import bean.Lesson;
 import bean.Question;
 import bean.QuestionManage;
 import bean.QuestionQuizHandle;
 import bean.Quiz;
+import bean.QuizLevel;
 import bean.QuizQuizHandle;
 import bean.Subject;
+import bean.TestType;
 import bean.User;
+import bean.UserRole;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuestionQuizHandleDAOImpl;
@@ -42,17 +47,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dao.CustomerQuizDAO;
 import dao.DimensionDAO;
+import dao.DimensionTypeDAO;
 import dao.LessonDAO;
 import dao.QuestionDAO;
 import dao.QuestionQuizHandleDAO;
 import dao.QuizDAO;
+import dao.QuizLevelDAO;
 import dao.QuizQuizHandleDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.TestTypeDAO;
 import dao.impl.DimensionDAOImpl;
+import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.LessonDAOImpl;
+import dao.impl.QuizLevelDAOImpl;
 import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectCateDAOImpl;
 import dao.impl.SubjectDAOImpl;
+import dao.impl.TestTypeDAOImpl;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -106,7 +118,8 @@ public class QuizController extends HttpServlet {
             }
 
             /**
-             * Service quiz handle: handle with all situation happen in a quiz taking session
+             * Service quiz handle: handle with all situation happen in a quiz
+             * taking session
              */
             if (service.equalsIgnoreCase("quizHandle")) {
                 //get quiz from session or generate new quiz (not yet have userId)
@@ -354,8 +367,8 @@ public class QuizController extends HttpServlet {
                 }
             }
             /**
-             * Service simulation exam: view all exam quiz avaliable from the subject customer
-             * had registered
+             * Service simulation exam: view all exam quiz avaliable from the
+             * subject customer had registered
              */
             if (service.equalsIgnoreCase("simulationExam")) {
                 HttpSession session = request.getSession();
@@ -380,7 +393,7 @@ public class QuizController extends HttpServlet {
                 request.setAttribute("simulationList", simulationList);
                 request.getRequestDispatcher("quizhandle/simulationExam.jsp").forward(request, response);
             }
-            
+
             /**
              * Service: Search Question by Content
              */
@@ -396,7 +409,6 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
             }
 
-
             /**
              * Service: filter Question by subjectId, dimensionId, lessonId
              */
@@ -404,12 +416,12 @@ public class QuizController extends HttpServlet {
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 int lessonId = Integer.parseInt(request.getParameter("lessonId"));
                 int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
-                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionManage(subjectId, dimensionId, lessonId);               
+                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionManage(subjectId, dimensionId, lessonId);
                 request.setAttribute("listQuestionManage", listQuestionManage);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
 //                out.println(questionManage.size());
             }
-            
+
             /**
              * Service: get all Subject, Dimension, Lesson Information
              */
@@ -426,6 +438,76 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
             }
 
+            if (service.equalsIgnoreCase("getQuizDetailInformation")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                String message = (String) request.getAttribute("message");
+                String role = ((UserRole) request.getSession().getAttribute("role")).getUserRoleName();
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                QuizLevelDAO quizLevelDAO = new QuizLevelDAOImpl();
+                TestTypeDAO testTypeDAO = new TestTypeDAOImpl();
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                ArrayList<Subject> subjectList = new ArrayList<>();
+                ArrayList<QuizLevel> quizLevelList = quizLevelDAO.getAllQuizLevel();
+                ArrayList<TestType> testTypeList = testTypeDAO.getAllTestTypes();
+                ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllDimensionTypes();
+                if (role.equalsIgnoreCase("admin")) {
+                    subjectList = subjectDAO.getAllSubjects();
+                } else if (role.equalsIgnoreCase("expert")) {
+                    subjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
+                }
+                request.setAttribute("subjectList", subjectList);
+                request.setAttribute("quizLevelList", quizLevelList);
+                request.setAttribute("testTypeList", testTypeList);
+                request.setAttribute("dimensionTypeList", dimensionTypeList);
+                if (message != null) {
+                    request.setAttribute("message", message);
+                }
+                request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
+            }
+
+            if (service.equalsIgnoreCase("createQuiz")) {
+                String quizName = (String) request.getParameter("quizName").trim();
+                int subjectId = Integer.parseInt(request.getParameter("subject"));
+                int duration = Integer.parseInt(request.getParameter("duration")) * 60;
+                int quizLevelId = Integer.parseInt(request.getParameter("examLevel"));
+                int passRate = Integer.parseInt(request.getParameter("passRate"));
+                int testTypeId = Integer.parseInt(request.getParameter("testType"));
+                int numberOfQuestion = Integer.parseInt(request.getParameter("numbetOfQuestion"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimensionType"));
+                String description = request.getParameter("description").trim();
+                QuestionDAO questionDAO = new QuestionDAOImpl();
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                Quiz createdQuiz = new Quiz();
+                ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+                if (quizName.length() == 0) {
+                    request.setAttribute("message", "You have to enter quiz name");
+                    request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
+                            .forward(request, response);
+                }
+                if (questionList.size() == 0) {
+                    request.setAttribute("message", "There aren't any question that meet your requirement");
+                    request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
+                            .forward(request, response);
+                }
+                createdQuiz.setSubject(subjectDAO.getSubjectbyId(subjectId));
+                createdQuiz.setQuizName(quizName);
+                createdQuiz.setQuizLevelId(quizLevelId);
+                createdQuiz.setQuizDuration(duration);
+                createdQuiz.setPassRate(passRate);
+                createdQuiz.setTestTypeId(testTypeId);
+                createdQuiz.setDescription(description);
+                createdQuiz.setNumberQuestion(numberOfQuestion);
+                createdQuiz.setDimensionTypeId(dimensionId);
+                quizDAO.addQuiz(createdQuiz);
+                int quizId = quizDAO.getQuizIdCreated(createdQuiz);
+                for (Question question : questionList) {
+                    quizDAO.addQuizQuestion(quizId, question.getQuestionId());
+                }
+                request.setAttribute("message", "Add quiz successfull!!(" + questionList.size() +" questions)" );
+                request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
+                        .forward(request, response);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
