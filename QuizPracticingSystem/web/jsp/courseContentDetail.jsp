@@ -45,22 +45,22 @@
         <div class="row">
 
             <div class="col-md-2"></div>
-
+            <c:if test="${empty displayTab}"><c:set var="displayTab" value="overview"/></c:if>
             <%-- Center form --%>
             <div class="col-md-8">
                 <%-- Header nav tab --%>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="tab col-md-6">
-                        <button class="tablinks active" onclick="openTab(event, 'tab1')">Overview</button>
-                        <button class="tablinks" onclick="openTab(event, 'tab2')">Dimension</button>
-                        <button class="tablinks" onclick="openTab(event, 'tab3')">Price Package</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab1')" id="overview">Overview</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab2')" id="dimension">Dimension</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab3')" id="pricePackage">Price Package</button>
                     </div>
                     <div class="col-md-3"></div>
                 </div>
                 <%-- Main tab details --%>
                 <div class="details">
-                    <div id="tab1" class="tabcontent" style="display: block">
+                    <div id="tab1" class="tabcontent">
                         <h4 style="color: #565e64">Subject Overview/ Id <c:out value="${subject.getSubjectId()}"/></h4>
                         <%-- Form details: The whole tab is a form with the subject's details as set values --%>
                         <form style="padding: 5px;" action="subjectController">
@@ -254,10 +254,12 @@
 
             <div class="col-md-2"></div>
         </div>
+            
+        
+                                            
         <%-- Include footer page --%>
         <jsp:include page="footer.jsp"/>
     </body>
-
     <script>
         <%-- Javascript for tabs opening --%>
         function openTab(evt, tabName) {
@@ -281,5 +283,9 @@
         $(document).on('click', '.allow-focus', function (e) {
             e.stopPropagation();
         });
+        
+        window.onload = function() {
+            document.getElementById("${displayTab}").click();
+        };
     </script>
 </html>
