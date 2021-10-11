@@ -58,7 +58,7 @@ public class SubjectController extends HttpServlet {
             SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
             DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
             DimensionDAO dimensionDAO = new DimensionDAOImpl();
-            
+
             /**
              * Service course content list: for admin and expert to check the
              * proper subject, depends on the role
@@ -70,19 +70,22 @@ public class SubjectController extends HttpServlet {
                 /* If user is not logged in, redirect to index */
                 if ((currUser == null) || (currRole == null)) {
                     sendDispatcher(request, response, "index.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) { /* Role is expert: get the assigned subjects */
-                    /* Get assigned list */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
+                    /* Role is expert: get the assigned subjects */
+ /* Get assigned list */
                     ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                     /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {  /* Role is admin: load all subject */
-                    /* Get all subject */
+                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
+                    /* Role is admin: load all subject */
+ /* Get all subject */
                     ArrayList<Subject> allSubject = subjectDAO.getAllSubjects();
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else {    /* If the user is logged in but not admin or expert, send back to index.jsp */
+                } else {
+                    /* If the user is logged in but not admin or expert, send back to index.jsp */
                     sendDispatcher(request, response, "index.jsp");
                 }
             }
@@ -126,8 +129,9 @@ public class SubjectController extends HttpServlet {
                         || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
                         && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                } else {    /* Else: get the subject detail  */
-                    /* Get parameters from jsp */
+                } else {
+                    /* Else: get the subject detail  */
+ /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
                     String subjectName = request.getParameter("subjectName").trim();
                     String subjectDescription = request.getParameter("subjectDescription").trim();
@@ -136,14 +140,15 @@ public class SubjectController extends HttpServlet {
                     boolean status = request.getParameter("subjectStatus").equals("1");
                     String[] categoryId = request.getParameterValues("subjectCategory");
                     /* Check boundaries */
-                    String message = ""; String color = "red";
-                    if (subjectName == null || subjectName.length()==0) {
+                    String message = "";
+                    String color = "red";
+                    if (subjectName == null || subjectName.length() == 0) {
                         message = "SubjectName can not be empty";
-                    }   else if (subjectName.length()>255) {
+                    } else if (subjectName.length() > 255) {
                         message = "Subject Name is too long";
-                    }   else if (subjectDescription == null || subjectDescription.length() == 0) {
+                    } else if (subjectDescription == null || subjectDescription.length() == 0) {
                         message = "Subject Description can not be empty";
-                    }   else if (subjectDescription.length()>1023) {
+                    } else if (subjectDescription.length() > 1023) {
                         message = "Subject Description is too long";
                     } else {
                         color = "green";
@@ -154,24 +159,25 @@ public class SubjectController extends HttpServlet {
                         int updateNumber = basicUpdate + categoryUpdate;
                         message = "Performed " + updateNumber + " update(s) successfully.";
                     }
-                        /* Get the needed lists and redirect to the courseContentJsp */
-                        Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                        request.setAttribute("subject", courseContent);
-                        ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                        request.setAttribute("categoryList", categoryList);
-                        ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                        request.setAttribute("categoryRemainList", categoryRemainList);
-                        ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                        request.setAttribute("dimensionTypes", dimensionTypes);
-                        request.setAttribute("detailColor", color);
-                        request.setAttribute("detailMessage", message);
-                        request.setAttribute("displayTab", "overview");
-                        sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                    /* Get the needed lists and redirect to the courseContentJsp */
+                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+                    request.setAttribute("subject", courseContent);
+                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryList", categoryList);
+                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryRemainList", categoryRemainList);
+                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                    request.setAttribute("dimensionTypes", dimensionTypes);
+                    request.setAttribute("detailColor", color);
+                    request.setAttribute("detailMessage", message);
+                    request.setAttribute("displayTab", "overview");
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-            
+
             /**
-             * Service course content detail: update subject dimension (edit and delete)
+             * Service course content detail: update subject dimension (edit and
+             * delete)
              */
             if (service.equalsIgnoreCase("updateDimension")) {
                 /* Get user and role on session scope */
@@ -184,39 +190,39 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
-                    String message = "";    
+                    String message = "";
                     String color = "red";
-                    int dimensionId= Integer.parseInt(request.getParameter("dimensionId").trim());
+                    int dimensionId = Integer.parseInt(request.getParameter("dimensionId").trim());
                     /* Check if the sub-service is update or delete */
                     String subService = request.getParameter("subService").trim();
-                    if (subService.equalsIgnoreCase("Delete")){
-                          /* Perform deletion on subject dimension */
-                            int check = dimensionDAO.deleteDimension(dimensionId);
-                            if (check>0) {
-                                color = "green";
-                                message = "Delete dimension successfully.";
-                            } else {
-                                message = "Delete dimension failed.";
-                            }
-                    } else if (subService.equalsIgnoreCase("Update")){
+                    if (subService.equalsIgnoreCase("Delete")) {
+                        /* Perform deletion on subject dimension */
+                        int check = dimensionDAO.deleteDimension(dimensionId);
+                        if (check > 0) {
+                            color = "green";
+                            message = "Delete dimension successfully.";
+                        } else {
+                            message = "Delete dimension failed.";
+                        }
+                    } else if (subService.equalsIgnoreCase("Update")) {
                         /* Get parameters from jsp */
                         int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
                         String dimensionName = request.getParameter("dimensionName").trim();
                         String description = request.getParameter("description").trim();
                         /* Check boundaries */
-                        
-                        if (dimensionName == null || dimensionName.length()==0) {
+
+                        if (dimensionName == null || dimensionName.length() == 0) {
                             message = "Dimension Name can not be empty";
-                        }   else if (dimensionName.length()>255) {
+                        } else if (dimensionName.length() > 255) {
                             message = "Dimension Name is too long";
-                        }   else if (description.length()>511) {
+                        } else if (description.length() > 511) {
                             message = "Dimension Description is too long";
                         } else {
 
                             /* Perform the updates on subject dimension */
                             Dimension updateDimension = new Dimension(dimensionId, subjectId, dimensionTypeId, "", dimensionName, description, true);
                             int check = dimensionDAO.editDimension(dimensionId, updateDimension);
-                            if (check>0) {
+                            if (check > 0) {
                                 color = "green";
                                 message = "Update dimension successfully.";
                             } else {
@@ -224,7 +230,7 @@ public class SubjectController extends HttpServlet {
                             }
                         }
                     }
-                        
+
                     /* Get the needed lists and redirect to the courseContentJsp */
                     Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
@@ -240,7 +246,7 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-            
+
             /**
              * Service course content detail: add new subject dimension
              */
@@ -255,47 +261,47 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
-                    String message = "";    
+                    String message = "";
                     String color = "red";
-                        /* Get parameters from jsp */
-                        int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
-                        String dimensionName = request.getParameter("dimensionName").trim();
-                        String description = request.getParameter("description").trim();
-                        /* Check boundaries */
-                        if (dimensionName == null || dimensionName.length()==0) {
-                            message = "Dimension Name can not be empty";
-                        }   else if (dimensionName.length()>255) {
-                            message = "Dimension Name is too long";
-                        }   else if (description.length()>511) {
-                            message = "Dimension Description is too long";
+                    /* Get parameters from jsp */
+                    int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
+                    String dimensionName = request.getParameter("dimensionName").trim();
+                    String description = request.getParameter("description").trim();
+                    /* Check boundaries */
+                    if (dimensionName == null || dimensionName.length() == 0) {
+                        message = "Dimension Name can not be empty";
+                    } else if (dimensionName.length() > 255) {
+                        message = "Dimension Name is too long";
+                    } else if (description.length() > 511) {
+                        message = "Dimension Description is too long";
+                    } else {
+                        /* Add new subject dimension */
+                        Dimension updateDimension = new Dimension(0, subjectId, dimensionTypeId, "", dimensionName, description, true);
+                        int check = dimensionDAO.addDimension(updateDimension);
+                        if (check > 0) {
+                            color = "green";
+                            message = "Add dimension successfully.";
                         } else {
-                            /* Add new subject dimension */
-                            Dimension updateDimension = new Dimension(0, subjectId, dimensionTypeId, "", dimensionName, description, true);
-                            int check = dimensionDAO.addDimension(updateDimension);
-                            if (check>0) {
-                                color = "green";
-                                message = "Add dimension successfully.";
-                            } else {
-                                message = "Add dimension failed.";
-                            }
+                            message = "Add dimension failed.";
                         }
-                        
-                        /* Get the needed lists and redirect to the courseContentJsp */
-                        Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                        request.setAttribute("subject", courseContent);
-                        ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                        request.setAttribute("categoryList", categoryList);
-                        ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                        request.setAttribute("categoryRemainList", categoryRemainList);
-                        ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                        request.setAttribute("dimensionTypes", dimensionTypes);
-                        request.setAttribute("dimensionColor", color);
-                        request.setAttribute("dimensionMessage", message);
-                        request.setAttribute("displayTab", "dimension");
-                        sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                    }
+
+                    /* Get the needed lists and redirect to the courseContentJsp */
+                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+                    request.setAttribute("subject", courseContent);
+                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryList", categoryList);
+                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryRemainList", categoryRemainList);
+                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                    request.setAttribute("dimensionTypes", dimensionTypes);
+                    request.setAttribute("dimensionColor", color);
+                    request.setAttribute("dimensionMessage", message);
+                    request.setAttribute("displayTab", "dimension");
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-            
+
             /**
              * Service subject : subject detail
              */
@@ -310,9 +316,21 @@ public class SubjectController extends HttpServlet {
              * Service subject : add subject
              */
             if (service.equalsIgnoreCase("addSubject")) {
-                
-
-                request.getRequestDispatcher("jsp/addSubject.jsp").forward(request, response);
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                    Subject subject = subjectDAO.getSubjectbyId(subjectId);
+//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+//                    request.setAttribute("categoryList", categoryList);
+                    request.getRequestDispatcher("jsp/addSubject.jsp").forward(request, response);
+                }
             }
 
         } catch (Exception ex) {
