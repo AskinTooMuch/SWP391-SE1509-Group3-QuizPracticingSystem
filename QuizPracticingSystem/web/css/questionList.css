@@ -13,23 +13,19 @@ h2{
 }
 
 #form{
-    background: linear-gradient(100deg,cyan,white);
+    background: whitesmoke;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    border-radius: 15px;
+    border: solid #00c6ff 1px;
+    margin: 10px;
+    
 }
-
 
 table th , table td{
     text-align: center;
 }
 
-table tr:nth-child(even){
-    background-color: #BEF2F5
-}
-table tr:nth-child(odd){
-    background-color: #BEF2F5
-}
+
 .pagination li:hover{
     cursor: pointer;
 }

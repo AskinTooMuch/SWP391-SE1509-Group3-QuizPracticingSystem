@@ -38,7 +38,7 @@
             </c:if>
             <div class="row" style="margin-top: 3rem">
                 <div class="col-md-1"></div>
-                <div class="col-md-2" id="form" style="height: 450px">
+                <div class="col-md-2" id="form" style="height: 480px">
                     <h2 class="text-center">Filter</h2>
                     <div style="margin-bottom: 20px;">
                         <%-- Start search form --%>
@@ -79,29 +79,30 @@
                             </select>
                         </div>
                         <div class="input-group">
-                            <button type="submit" id="submit" class="btn btn-success" style="width: 100%">Search</button>
+                            <button type="submit" id="submit" class="btn btn-success" style="width: 100%">Filter</button>
                             <input type="hidden" name="service" value="filterQuestion">
                         </div>
                     </form>
 
                 </div>
 
-                <div class="col-md-8" >
-                    <div class="container">
+                <div class="col-md-8" id="form" style="min-height: 600px; ">
+                    <div class="container" >
                         <%-- Table Container --%>
                         <div class="form-group">
                             <h5>Select Number of Rows</h5>
                             <%-- Select number of Rows show on table --%>
-                            <select class  ="form-control" name="state" id="maxRows" style="width: 150px;">
-                                <option value="5000">Show All</option>
+                            <select class  ="form-control" name="state" id="maxRows" style="width: 150px;">                               
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="70">70</option>
-                                <option value="100">100</option>
+
                             </select>
-                        </div>
+
+                        </div>  
+                        <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
+
+
                         <%-- Table of QuestionList--%>
                         <table id="table-id" class="table table-bordered table-striped"">
                             <thead>
@@ -114,10 +115,14 @@
                                     <th>Dimension</th>
                                     <th>Status</th>
                                     <th>Action</th></tr>
-                            </thead>
+                            </thead> 
                             <tbody>
+                                <c:choose>
+                                    <c:when test="${empty listQuestionManage}">
+                                        <tr style="color: red"><td colspan="8">No Question Available</td></tr>
+                                </c:when>                               
                                 <%-- Check if listQuestionManage not null then display listQuestionManage --%>
-                                <c:if test="${listQuestionManage!=null}">
+                                <c:otherwise>
                                     <c:forEach items="${listQuestionManage}" var="questionList">
                                         <tr>
                                             <td><c:out value="${questionList.getQuestionId()}"/></td>
@@ -135,8 +140,10 @@
                                             </td>
                                             <td><div class="btn btn-success">Edit</div></td>
                                         </tr>
-                                    </c:forEach>
-                                </c:if>
+                                    </c:forEach> 
+
+                                </c:otherwise>
+                            </c:choose>
                             </tbody>
                         </table>
                         <%--Start Pagination --%>
@@ -144,11 +151,11 @@
                             <nav>
                                 <ul class="pagination" style="">
                                     <li data-page="prev" >
-                                        <span>  <button class="btn btn-info">Prev</button></span>
+                                        <span> <button class="btn btn-light" style="border: solid 1px">Prev</button></span>
                                     </li>
                                     <%--Here the JS Function Will Add the Rows --%>
                                     <li data-page="next" id="prev">
-                                        <span> <button class="btn btn-info">Next</button><span class=""></span></span>
+                                        <span> <button class="btn btn-light" style="border: solid 1px">Next</button><span class=""></span></span>
                                     </li>
                                 </ul>
                             </nav>
@@ -203,7 +210,7 @@
                                     // for each page append pagination li
                                     $('.pagination #prev')
                                             .before(
-                                                    '<li class="btn btn-info" data-page="' +
+                                                    '<li class="btn btn-light "style="" data-page="' +
                                                     i +
                                                     '">\
                                                                   <div>' +
