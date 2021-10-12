@@ -172,5 +172,11 @@ public class Quiz {
         this.status = status;
     }
     
-    
+    public String getDurationString(){
+        String durationString = "";
+        int minute = quizDuration / 60;
+        int second = quizDuration % 60;
+        durationString = minute + ":" + second;
+        return durationString;
+    }
 }

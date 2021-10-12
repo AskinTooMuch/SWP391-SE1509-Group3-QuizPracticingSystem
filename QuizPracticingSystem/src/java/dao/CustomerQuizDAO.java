@@ -32,4 +32,6 @@ public interface CustomerQuizDAO {
 //    public int addMarkQuestion(QuizQuizHandle quiz) throws Exception;
     
     public CustomerQuiz getLastAddedCustomerQuiz() throws Exception;
+    
+    public boolean checkTeakedQuiz(int quizId) throws Exception;
 }

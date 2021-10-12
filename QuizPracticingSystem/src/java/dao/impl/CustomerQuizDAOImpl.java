@@ -9,6 +9,7 @@
     17/9/21     1.0         ChucNVHE150618  First Deploy
     27/9/21     1.1         NamDHHE150519   update method
     08/10/21    1.2         DuongNHHE150328 update method
+    11/10/21    1.3         DuongNHHE150328 update checkTeakedQuiz method
  */
  /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
@@ -100,10 +101,10 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
     }
 
     /**
-     * 
+     *
      * @param quizTakeId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public CustomerQuiz getQuizByTakeQuizId(int quizTakeId) throws Exception {
@@ -269,5 +270,47 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
         }
 
         return change;
+    }
+
+    /**
+     * check if this test have already been take
+     *
+     * @param quizId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean checkTeakedQuiz(int quizId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        boolean check = false;
+        String sql = "SELECT [quizTakeId]\n"
+                + "      ,[quizId]\n"
+                + "      ,[userId]\n"
+                + "      ,[score]\n"
+                + "      ,[time]\n"
+                + "      ,[sumitedAt]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[CustomerQuiz]\n"
+                + "  WHERE quizId = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, quizId);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                check = true;
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return check;
     }
 }

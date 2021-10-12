@@ -35,4 +35,10 @@ public interface QuizDAO {
     public int getQuizIdCreated(Quiz quiz) throws Exception;
     
     public int addQuizQuestion(int quizId,int questionId) throws Exception;
+    
+    public ArrayList<Quiz> getFilteredQuiz(int subjectId,int quizTypeId) throws Exception;
+    
+    public ArrayList<Quiz> getQuizByName(String searchName) throws Exception;
+    
+    public int removeQuizQuestion(int quizId) throws Exception;
 }

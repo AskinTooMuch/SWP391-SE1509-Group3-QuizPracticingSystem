@@ -1,12 +1,12 @@
 <%-- 
     Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Oct 10, 2021, 3:17:54 PM
+    Created on : Oct 11, 2021, 11:33:41 PM
     Quiz practicing system
 
     Record of change:
     Date        Version     Author          Description
-    10/10/21    1.0         DuongNHHE150328 First Deploy
-    10/10/21    1.1         DuongNHHE150328 Complete style
+    11/10/21    1.0         DuongNHHE150328 First Deploy
+    11/10/21    1.1         DuongNHHE150328 Complete style
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,14 +33,14 @@
         <jsp:include page="/jsp/header.jsp"/>
         <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
             <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
-            <c:if test="${subjectList == null}">
-                <c:redirect url="/quizController?service=getQuizDetailInformation"/>
+            <c:if test="${updateQuiz == null}">
+                <c:redirect url="jsp/quizList.jsp"/>
             </c:if>        
             <div class="main">
                 <%-- Login form --%>
                 <div class="container" style="align-self: center; min-height: 50vh">
                     <%-- Start form --%>
-                    <form action="${contextPath}/quizController" method="POST">
+                    <form action="${contextPath}/practiceController" method="POST">
                         <div class="row">
                             <%-- Bootstrap to center form --%>
                             <div class="col-md-3"></div>
@@ -51,7 +51,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="text" name="quizName" required>
+                                    <input class="form-control" type="text" name="quizName" required value="${updateQuiz.getQuizName()}">
                                 </div>
 
                                 <label class="label control-label">Subject</label>
@@ -60,9 +60,11 @@
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
                                     <select class="form-control" name="subject">
-                                        <option value="0">Choose</option>
+                                        <option value="0" >Choose</option>
                                         <c:forEach items="${subjectList}" var="subject">
-                                            <option value="${ subject.getSubjectId()}"><c:out value="${subject.getSubjectName()}" /></option>
+                                            <option  value="${ subject.getSubjectId()}" <c:if test="${updateQuiz.getSubject().getSubjectId() == subject.getSubjectId()}">selected</c:if>>
+                                                <c:out value="${subject.getSubjectName()}" />
+                                            </option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -73,7 +75,7 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="number" name="duration" min="1" max="90" required>
+                                        <input class="form-control" type="number" name="duration" min="1" required value="<c:out value="${Math.round(updateQuiz.getQuizDuration()/60)}"/>">
                                     </div>
                                 </div>
 
@@ -86,7 +88,9 @@
                                         <select class="form-control" name="examLevel">
                                             <option value="0">Choose</option>
                                             <c:forEach items="${quizLevelList}" var="quizLevel">
-                                                <option value="${ quizLevel.getQuizLevelId()}"><c:out value="${quizLevel.getQuizLevelName()}" /></option>
+                                                <option value="${ quizLevel.getQuizLevelId()}" <c:if test="${updateQuiz.getQuizLevelId() == quizLevel.getQuizLevelId()}">selected</c:if>>
+                                                    <c:out value="${quizLevel.getQuizLevelName()}" />
+                                                </option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -98,7 +102,7 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="number" name="passRate" min="1" max="100" required>
+                                        <input class="form-control" type="number" name="passRate" min="0" max="100" required value="${updateQuiz.getPassRate()}">
                                     </div>
                                 </div>
 
@@ -111,7 +115,9 @@
                                         <select class="form-control" name="testType">
                                             <option value="0">Choose</option>
                                             <c:forEach items="${testTypeList}" var="testType">
-                                                <option value="${ testType.getTestTypeId()}"><c:out value="${testType.getTestTypeName()}" /></option>
+                                                <option value="${ testType.getTestTypeId()}" <c:if test="${updateQuiz.getTestTypeId() == testType.getTestTypeId()}">selected</c:if>>
+                                                    <c:out value="${testType.getTestTypeName()}" />
+                                                </option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -123,7 +129,7 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="number" name="numbetOfQuestion" min="1" max="50" required>
+                                        <input class="form-control" type="number" name="numberOfQuestion" min="1" max="50" required value="${updateQuiz.getNumberQuestion()}">
                                     </div>
                                 </div>
 
@@ -136,7 +142,9 @@
                                         <select class="form-control" name="dimensionType">
                                             <option value="0">Choose</option>
                                             <c:forEach items="${dimensionTypeList}" var="dimensionType">
-                                                <option value="${ dimensionType.getDimensionTypeId()}"><c:out value="${dimensionType.getDimensionTypeName()}" /></option>
+                                                <option value="${ dimensionType.getDimensionTypeId()}" <c:if test="${updateQuiz.getDimensionTypeId() == dimensionType.getDimensionTypeId()}">selected</c:if>>
+                                                    <c:out value="${dimensionType.getDimensionTypeName()}" />
+                                                </option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -147,7 +155,7 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" style="height: 100px;" type="textarea" name="description" >
+                                        <input class="form-control" style="height: 100px;" type="textarea" name="description" value="${updateQuiz.getDescription()}">
                                     </div>
                                 </div>
                                 <%-- Display messages, if any --%>
@@ -159,14 +167,15 @@
                                 <br>
                                 <%-- Submit form --%>
                                 <div class="input-group" >
+                                    <input type="hidden" name="updateQuizId" value="${updateQuiz.getQuizId()}">
+                                    <input type="hidden" name="service" value="updateQuizInformation">
                                     <button style="margin-left: auto; margin-right: auto; " type="submit" id="submit" class="btn btn-success">Submit</button>
-                                    <input type="hidden" name="service" value="createQuiz">
+                                    
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-
             </c:if>
             <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
                 <h2 style="text-align: center;">You don't have the right to access this page</h2>

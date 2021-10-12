@@ -62,7 +62,6 @@ import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.LessonDAOImpl;
 import dao.impl.QuizLevelDAOImpl;
 import dao.impl.RegistrationDAOImpl;
-import dao.impl.SubjectCateDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import dao.impl.TestTypeDAOImpl;
 import java.sql.Timestamp;
@@ -438,6 +437,9 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
             }
 
+            /**
+             * Get information to display in the quizDetail page
+             */
             if (service.equalsIgnoreCase("getQuizDetailInformation")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 String message = (String) request.getAttribute("message");
@@ -465,6 +467,9 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
             }
 
+            /**
+             * Get information from quizDetail to create quiz then add to the database
+             */
             if (service.equalsIgnoreCase("createQuiz")) {
                 String quizName = (String) request.getParameter("quizName").trim();
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
@@ -480,11 +485,13 @@ public class QuizController extends HttpServlet {
                 QuizDAO quizDAO = new QuizDAOImpl();
                 Quiz createdQuiz = new Quiz();
                 ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+                //if quizNmae have yet been enter, return mesaage
                 if (quizName.length() == 0) {
                     request.setAttribute("message", "You have to enter quiz name");
                     request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
                             .forward(request, response);
                 }
+                // if the aren't any question that meet user requirement return message
                 if (questionList.size() == 0) {
                     request.setAttribute("message", "There aren't any question that meet your requirement");
                     request.getRequestDispatcher("quizController?service=getQuizDetailInformation")

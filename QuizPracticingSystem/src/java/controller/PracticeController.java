@@ -7,7 +7,8 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  08/10/21    1.0         DuongNHHE150328 First Deploy
- *  08/10/21    1.0         DuongNHHE150328 Add service
+ *  08/10/21    1.1         DuongNHHE150328 Add service
+ *  11/10/21    1.2         DuongNHHE150328 Add service
  */
 package controller;
 
@@ -17,18 +18,24 @@ import bean.Quiz;
 import bean.Subject;
 import bean.User;
 import bean.CustomerQuiz;
+import bean.QuizLevel;
+import bean.TestType;
 import dao.CustomerQuizDAO;
 import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuizDAO;
+import dao.QuizLevelDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.TestTypeDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuizDAOImpl;
+import dao.impl.QuizLevelDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
+import dao.impl.TestTypeDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -145,6 +152,123 @@ public class PracticeController extends HttpServlet {
                     request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
                     return;
                 }
+            }
+
+            //Get information to display in the quizList page
+            if (service.equalsIgnoreCase("getQuizListInformation")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                TestTypeDAO testTypeDAO = new TestTypeDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                ArrayList<Subject> subjectList = subjectDAO.getAllSubjects();
+                ArrayList<TestType> testTypeList = testTypeDAO.getAllTestTypes();
+                ArrayList<Quiz> quizList = quizDAO.getAllQuiz();
+                String message = request.getParameter("message");
+                request.getSession().setAttribute("subjectQuizList", subjectList);
+                request.getSession().setAttribute("testTypeQuizList", testTypeList);
+                request.setAttribute("quizQuizList", quizList);
+                if (message != null) {
+                    request.setAttribute("message", message);
+                }
+                request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
+            }
+
+            //Get all quiz that have name contain search value
+            if (service.equalsIgnoreCase("searchQuizByName")) {
+                String quizName = request.getParameter("quizName").trim();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                ArrayList<Quiz> quizList = new ArrayList<>();
+                if (quizName.length() == 0) {
+                    quizList = quizDAO.getQuizByName(null);
+                } else {
+                    quizList = quizDAO.getQuizByName(quizName);
+                }
+                request.setAttribute("quizQuizList", quizList);
+                request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
+            }
+
+            //Filter quiz according to user requirement
+            if (service.equalsIgnoreCase("filterQuiz")) {
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                int testTypeId = Integer.parseInt(request.getParameter("testTypeId"));
+                QuizDAO quizDAO = new QuizDAOImpl();
+                ArrayList<Quiz> quizList = quizDAO.getFilteredQuiz(subjectId, testTypeId);
+                request.setAttribute("quizQuizList", quizList);
+                request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
+            }
+
+            //if quiz can be editted redirect user to update page or delete quiz from database 
+            if (service.equalsIgnoreCase("editQuiz")) {
+                int quizId = Integer.parseInt(request.getParameter("quizId"));
+                String editTYpe = request.getParameter("type");
+                CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                if (!customerQuizDAO.checkTeakedQuiz(quizId)) {
+                    if (editTYpe.equalsIgnoreCase("update")) {
+                        SubjectDAO subjectDAO = new SubjectDAOImpl();
+                        QuizLevelDAO quizLevelDAO = new QuizLevelDAOImpl();
+                        TestTypeDAO testTypeDAO = new TestTypeDAOImpl();
+                        DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                        Quiz updateQuiz = quizDAO.getQuizById(quizId);
+                        ArrayList<Subject> subjectList = subjectDAO.getAllSubjects();
+                        ArrayList<QuizLevel> quizLevelList = quizLevelDAO.getAllQuizLevel();
+                        ArrayList<TestType> testTypeList = testTypeDAO.getAllTestTypes();
+                        ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllDimensionTypes();
+                        request.setAttribute("subjectList", subjectList);
+                        request.setAttribute("quizLevelList", quizLevelList);
+                        request.setAttribute("testTypeList", testTypeList);
+                        request.setAttribute("dimensionTypeList", dimensionTypeList);
+                        request.setAttribute("updateQuiz", updateQuiz);
+                        request.getRequestDispatcher("jsp/updateQuiz.jsp").forward(request, response);
+                    } else if (editTYpe.equalsIgnoreCase("delete")) {
+                        quizDAO.removeQuizQuestion(quizId);
+                        quizDAO.deleteQuiz(quizId);
+                        request.setAttribute("message", "Update quiz successfull!!");
+                        request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                                .forward(request, response);
+                    }
+                } else {
+                    ArrayList<Quiz> quizList = quizDAO.getAllQuiz();
+                    request.setAttribute("quizQuizList", quizList);
+                    request.setAttribute("message", "You can't change this quiz!");
+                    request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
+                }
+
+            }
+
+            //edit quiz information then update to the database
+            if (service.equalsIgnoreCase("updateQuizInformation")) {
+                String quizName = (String) request.getParameter("quizName").trim();
+                int updateQuizId = Integer.parseInt(request.getParameter("updateQuizId"));
+                int subjectId = Integer.parseInt(request.getParameter("subject"));
+                int duration = Integer.parseInt(request.getParameter("duration")) * 60;
+                int quizLevelId = Integer.parseInt(request.getParameter("examLevel"));
+                int passRate = Integer.parseInt(request.getParameter("passRate"));
+                int testTypeId = Integer.parseInt(request.getParameter("testType"));
+                int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimensionType"));
+                String description = request.getParameter("description").trim();
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
+                Quiz updateQuiz = quizDAO.getQuizById(updateQuizId);
+                //if quizNmae have yet been enter, return mesaage
+                if (quizName.length() == 0) {
+                    request.setAttribute("message", "You have to enter quiz name");
+                    request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                            .forward(request, response);
+                }
+                updateQuiz.setSubject(subjectDAO.getSubjectbyId(subjectId));
+                updateQuiz.setQuizName(quizName);
+                updateQuiz.setQuizLevelId(quizLevelId);
+                updateQuiz.setQuizDuration(duration);
+                updateQuiz.setPassRate(passRate);
+                updateQuiz.setTestTypeId(testTypeId);
+                updateQuiz.setDescription(description);
+                updateQuiz.setNumberQuestion(numberOfQuestion);
+                updateQuiz.setDimensionTypeId(dimensionId);
+                quizDAO.editQuiz(updateQuiz.getQuizId(), updateQuiz);
+                request.setAttribute("message", "Update quiz successfull!!");
+                request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                        .forward(request, response);
             }
         } catch (Exception ex) {
             Logger.getLogger(PracticeController.class.getName()).log(Level.SEVERE, null, ex);

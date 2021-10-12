@@ -25,6 +25,11 @@ import java.sql.ResultSet;
  */
 public class TestTypeDAOImpl extends DBConnection implements TestTypeDAO {
 
+    /**
+     * Get all testType in the database
+     * @return <code>ArrayList<TestType></code>
+     * @throws Exception 
+     */
     @Override
     public ArrayList<TestType> getAllTestTypes() throws Exception {
         Connection conn = null;
