@@ -64,10 +64,10 @@ public class UserController extends HttpServlet {
                 String mess = "";
                 String password = request.getParameter("password");
                 User log = null;
-                UserDAO t = new UserDAOImpl();
+
                 UserRoleDAO userRoleDAO = new UserRoleDAOImpl();
 
-                log = t.getUserLogin(userMail, password);
+                log = userInterface.getUserLogin(userMail, password);
                 //validate user log in, if wrong, re-login
                 if (log == null) {
                     mess = "Sorry, username and/or password are/is invalid!";

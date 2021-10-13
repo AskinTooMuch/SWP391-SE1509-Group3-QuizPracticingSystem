@@ -14,12 +14,15 @@ package controller;
 
 import bean.Dimension;
 import bean.DimensionType;
+import bean.PricePackage;
 import bean.Subject;
 import bean.SubjectCate;
 import bean.User;
 import bean.UserRole;
 import dao.DimensionDAO;
 import dao.DimensionTypeDAO;
+import dao.PricePackageDAO;
+import dao.RegistrationDAO;
 import dao.SubjectCateDAO;
 import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
@@ -35,6 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import dao.SubjectDAO;
 import dao.impl.DimensionDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
+import dao.impl.PricePackageDAOImpl;
+import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectCateDAOImpl;
 
 public class SubjectController extends HttpServlet {
@@ -58,6 +63,8 @@ public class SubjectController extends HttpServlet {
             SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
             DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
             DimensionDAO dimensionDAO = new DimensionDAOImpl();
+            PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
+            RegistrationDAO registrationDAO = new RegistrationDAOImpl();
 
             /**
              * Service course content list: for admin and expert to check the
@@ -309,6 +316,8 @@ public class SubjectController extends HttpServlet {
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
                 request.setAttribute("subject", subject);
+                ArrayList<PricePackage> pricePackage = pricePackageDAO.getAllPricePackagesBySubject(subjectId);
+                request.setAttribute("pricePackage", pricePackage);
 
                 request.getRequestDispatcher("jsp/subjectDetail.jsp").forward(request, response);
             }
@@ -332,7 +341,24 @@ public class SubjectController extends HttpServlet {
                     request.getRequestDispatcher("jsp/addSubject.jsp").forward(request, response);
                 }
             }
+            /**
+             * Service subject : My Registration
+             */
+            if (service.equalsIgnoreCase("myRegistration")) {
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, redirect to index */
+                if ((currUser == null) || (currRole == null)) {
+                    sendDispatcher(request, response, "index.jsp");
+                } else {
+                    ArrayList<Subject> registrationList = registrationDAO.getRegistedSubjectbyUserId(currUser.getUserId());
+                    request.setAttribute("registrationList", registrationList);
 
+                    request.getRequestDispatcher("jsp/myRegistration.jsp").forward(request, response);
+
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(SubjectController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());

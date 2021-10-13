@@ -104,6 +104,9 @@
                                     <a href="${contextPath}/login/changePassword.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
+                                        <a href="${contextPath}/jsp/myRegistration.jsp" style="text-decoration: none;color:black">
+                                        <span class="fas fa-book-open">My Registration</span>  
+                                    </a>
                                     <%-- If role is admin or owner--%>
                                     <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
                                         <a href="#" style="text-decoration: none;color:black" >

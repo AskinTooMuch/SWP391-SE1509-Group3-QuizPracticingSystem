@@ -35,10 +35,12 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     @Override
     public ArrayList<Registration> getAllRegistration() throws Exception {
         return null;
+
     }
 
     @Override
     public Registration getRegistrationById(int registrationId) throws Exception {
+
         return null;
     }
 
@@ -89,6 +91,59 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
+    public ArrayList<Subject> getRegistedSubjectbyUserId(int userId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> registedSubjectbyUserId = new ArrayList();
+
+        /* Sql query */
+        String sqlSubject = "SELECT  Subject.[subjectId]\n"
+                + "      ,Subject.[subjectName]\n"
+                + "      ,Subject.[description]\n"
+                + "      ,Subject.[thumbnail]\n"
+                + "      ,Subject.[featuredSubject]\n"
+                + "      ,Subject.status\n"
+                
+                + "  FROM ([QuizSystem].[dbo].[Subject]\n"
+                + "inner JOIN PricePackage\n"
+                + "ON Subject.subjectId = PricePackage.subjectId)\n"
+                + "inner join Registration on Registration.packId=PricePackage.packId\n"
+                + "where Registration.userId=? and Subject.status=1";
+
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, userId);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                registedSubjectbyUserId.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status
+                ));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return registedSubjectbyUserId;
+    }
+
+    @Override
     public ArrayList<SubjectDashboard> View(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
         ArrayList<SubjectDashboard> list = new ArrayList();
         Connection conn = null;
@@ -100,19 +155,19 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             subjectIdList[i] = subjectList.get(i).getSubjectId();
         }
         String string;
-        if(type.equalsIgnoreCase("revenue")){
+        if (type.equalsIgnoreCase("revenue")) {
             string = "SUM(a.cost) AS revenue";
-        }else{
+        } else {
             string = "COUNT(regId) AS registrationCount";
         }
-        String sql = "SELECT a.validFrom,"+string+",c.subjectName FROM "
+        String sql = "SELECT a.validFrom," + string + ",c.subjectName FROM "
                 + "[Registration] AS a join [PricePackage] AS b ON a.packId = b.packId "
                 + "join [Subject] AS c ON b.subjectId=c.subjectId "
                 + "WHERE b.subjectId IN(";
-        for (int i = 0; i < subjectIdList.length-1; i++) {
+        for (int i = 0; i < subjectIdList.length - 1; i++) {
             sql += subjectIdList[i] + ",";
         }
-        sql += subjectIdList[subjectIdList.length-1] + ")";
+        sql += subjectIdList[subjectIdList.length - 1] + ")";
 
         sql += " AND (a.validFrom >= '" + from + "' AND a.validFrom <= '" + to + "')  GROUP BY c.subjectName,a.validFrom order By a.validFrom ";
         try {
@@ -164,7 +219,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
 //    public static void main(String[] args) throws Exception {
 //        RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
 //        SubjectDAO i  = new SubjectDAOImpl();
-//        System.out.print(IRegistration.convertJson(IRegistration.View("2019-12-12", "2019-12-15",i.get5LastAddedSubject() )).get(0));
+//        
+//        
 //    }
-
 }
