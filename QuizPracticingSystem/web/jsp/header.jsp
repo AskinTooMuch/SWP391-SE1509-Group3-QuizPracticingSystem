@@ -55,17 +55,17 @@
                         <c:if test="${(role.getUserRoleName().equalsIgnoreCase('admin')) || (role.getUserRoleName().equalsIgnoreCase('expert'))}">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bold;">
-                                  Course Manage
+                                    Course Manage
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item" href="${contextPath}/subjectController?service=courseContentList">Course Content List</a>
-                                  <a class="dropdown-item" href="${contextPath}/jsp/questionList.jsp">Question List</a>
-                                  <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="${contextPath}/subjectController?service=courseContentList">Course Content List</a>
+                                    <a class="dropdown-item" href="${contextPath}/jsp/questionList.jsp">Question List</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
-                              </li>
+                            </li>
                         </c:if>
-                        
+
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="input-group">
@@ -95,21 +95,29 @@
                                     <span class="fas fa-user-alt">Profile
                                     </span> 
                                 </a>
-                               
+
                                 <div class="dropdown-menu" style="background-color:cyan;padding:10px 5px;">
                                     <a href="${contextPath}/login/userProfile.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-info-circle">Your Info</span>  
                                     </a>
-                                     <%-- Change user password--%>
+                                    <%-- Change user password--%>
                                     <a href="${contextPath}/login/changePassword.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-unlock-alt">Change Password</span>  
                                     </a>
-                                        <a href="${contextPath}/jsp/myRegistration.jsp" style="text-decoration: none;color:black">
+                                    <a href="${contextPath}/jsp/myRegistration.jsp" style="text-decoration: none;color:black">
                                         <span class="fas fa-book-open">My Registration</span>  
+                                    </a>
+                                    </a>
+                                    <a href="${contextPath}/jsp/practiceList.jsp" style="text-decoration: none;color:black">
+                                        <span class="fas fa-book-open">My Taken Quiz</span>  
+                                    </a>
+                                    </a>
+                                    <a href="${contextPath}/jsp/practiceDetail.jsp" style="text-decoration: none;color:black">
+                                        <span class="fas fa-book-open">Create quiz</span>  
                                     </a>
                                     <%-- If role is admin or owner--%>
                                     <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
-                                        <a href="#" style="text-decoration: none;color:black" >
+                                        <a href="${contextPath}/jsp/adminPage.jsp" style="text-decoration: none;color:black" >
                                             <span class="fas fa-user-shield">Admin Page</span>  
                                         </a>
                                     </c:if>
