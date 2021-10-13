@@ -452,9 +452,9 @@ public class QuizController extends HttpServlet {
                 ArrayList<QuizLevel> quizLevelList = quizLevelDAO.getAllQuizLevel();
                 ArrayList<TestType> testTypeList = testTypeDAO.getAllTestTypes();
                 ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllDimensionTypes();
-                if (role.equalsIgnoreCase("admin")) {
+                if (role.equalsIgnoreCase("admin")) { //if user is a admin then get all subject
                     subjectList = subjectDAO.getAllSubjects();
-                } else if (role.equalsIgnoreCase("expert")) {
+                } else if (role.equalsIgnoreCase("expert")) { //if user is a expert then get all asigned subject
                     subjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                 }
                 request.setAttribute("subjectList", subjectList);
@@ -471,6 +471,7 @@ public class QuizController extends HttpServlet {
              * Get information from quizDetail to create quiz then add to the database
              */
             if (service.equalsIgnoreCase("createQuiz")) {
+                // get all parameter that user input
                 String quizName = (String) request.getParameter("quizName").trim();
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
                 int duration = Integer.parseInt(request.getParameter("duration")) * 60;
@@ -497,6 +498,7 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
                             .forward(request, response);
                 }
+                //prepare quiz information to add to database
                 createdQuiz.setSubject(subjectDAO.getSubjectbyId(subjectId));
                 createdQuiz.setQuizName(quizName);
                 createdQuiz.setQuizLevelId(quizLevelId);
@@ -506,8 +508,9 @@ public class QuizController extends HttpServlet {
                 createdQuiz.setDescription(description);
                 createdQuiz.setNumberQuestion(numberOfQuestion);
                 createdQuiz.setDimensionTypeId(dimensionId);
-                quizDAO.addQuiz(createdQuiz);
+                quizDAO.addQuiz(createdQuiz);//add quiz to the database
                 int quizId = quizDAO.getQuizIdCreated(createdQuiz);
+                // add all quiz's questions
                 for (Question question : questionList) {
                     quizDAO.addQuizQuestion(quizId, question.getQuestionId());
                 }

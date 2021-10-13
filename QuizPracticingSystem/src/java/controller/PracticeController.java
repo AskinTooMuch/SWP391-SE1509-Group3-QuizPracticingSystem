@@ -68,10 +68,12 @@ public class PracticeController extends HttpServlet {
             //get all user registed subject
             String service = request.getParameter("service");
 
+            //Get all information to display in the practiceDetail page
             if (service.equalsIgnoreCase("getPracticeDetail")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
                 DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                //Get all subject that user have registed
                 ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
                 ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                 request.getSession().setAttribute("registedSubject", registedSubject);
@@ -81,6 +83,7 @@ public class PracticeController extends HttpServlet {
 
             //create quiz that meet user's requirement
             if (service.equalsIgnoreCase("createPractice")) {
+                //Get user's input values
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
                 int numberOfQuestion = Integer.parseInt(request.getParameter("numberOfQuestion"));
                 int dimensionId = Integer.parseInt(request.getParameter("dimension"));
@@ -88,6 +91,7 @@ public class PracticeController extends HttpServlet {
                 QuestionDAO questionDAO = new QuestionDAOImpl();
                 QuizDAO quizDAO = new QuizDAOImpl();
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
+                //select question that meet user requirement
                 ArrayList<Question> questionList = questionDAO.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
 
                 // if there isn't any question meet user requirement then display message
@@ -97,7 +101,8 @@ public class PracticeController extends HttpServlet {
                     request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
                     return;
                 }
-
+                
+                //setup quiz information to create new ppractice
                 Quiz quiz = new Quiz();
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
                 quiz.setQuizName("Practice Quiz");
@@ -107,7 +112,8 @@ public class PracticeController extends HttpServlet {
                 quiz.setNumberQuestion(questionList.size());
                 quiz.setDimensionTypeId(dimensionId);
                 quiz.setStatus(true);
-                quizDAO.addQuiz(quiz);
+                quizDAO.addQuiz(quiz);// add practice
+                // add practice questions
                 Quiz practice = quizDAO.getQuizById(quizDAO.getQuizIdCreated(quiz));
                 for (Question question : questionList) {
                     quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
@@ -135,14 +141,17 @@ public class PracticeController extends HttpServlet {
                 CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
                 QuizDAO quizDAO = new QuizDAOImpl();
                 ArrayList<CustomerQuiz> filteredCustomerQuizs = new ArrayList<>();
+                //get all quiz of the user
                 ArrayList<CustomerQuiz> customerQuizs = customerQuizDAO.getQuizByUser(currUser.getUserId());
                 ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
                 request.setAttribute("registedSubject", registedSubject);
+                //if user not enter any thing return all quiz
                 if (subjectId == 0) {
                     request.setAttribute("customerQuizs", customerQuizs);
                     request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
                     return;
                 } else {
+                    //filer quiz by userId
                     for (CustomerQuiz customerQuiz : customerQuizs) {
                         if (quizDAO.getQuizById(customerQuiz.getQuizId()).getSubject().getSubjectId() == subjectId) {
                             filteredCustomerQuizs.add(customerQuiz);
@@ -178,6 +187,7 @@ public class PracticeController extends HttpServlet {
                 QuizDAO quizDAO = new QuizDAOImpl();
                 ArrayList<Quiz> quizList = new ArrayList<>();
                 if (quizName.length() == 0) {
+                    //if user don't enter anything then get all quiz
                     quizList = quizDAO.getQuizByName(null);
                 } else {
                     quizList = quizDAO.getQuizByName(quizName);
@@ -191,6 +201,7 @@ public class PracticeController extends HttpServlet {
                 int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 int testTypeId = Integer.parseInt(request.getParameter("testTypeId"));
                 QuizDAO quizDAO = new QuizDAOImpl();
+                //get all quiz that have the same subject and test type
                 ArrayList<Quiz> quizList = quizDAO.getFilteredQuiz(subjectId, testTypeId);
                 request.setAttribute("quizQuizList", quizList);
                 request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
@@ -202,8 +213,9 @@ public class PracticeController extends HttpServlet {
                 String editTYpe = request.getParameter("type");
                 CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
                 QuizDAO quizDAO = new QuizDAOImpl();
-                if (!customerQuizDAO.checkTeakedQuiz(quizId)) {
-                    if (editTYpe.equalsIgnoreCase("update")) {
+                if (!customerQuizDAO.checkTeakedQuiz(quizId)) { // if this test haven't been taken then allow change
+                    if (editTYpe.equalsIgnoreCase("update")) {//if admin want to edit quiz
+                        //get information to display in the update page
                         SubjectDAO subjectDAO = new SubjectDAOImpl();
                         QuizLevelDAO quizLevelDAO = new QuizLevelDAOImpl();
                         TestTypeDAO testTypeDAO = new TestTypeDAOImpl();
@@ -219,14 +231,14 @@ public class PracticeController extends HttpServlet {
                         request.setAttribute("dimensionTypeList", dimensionTypeList);
                         request.setAttribute("updateQuiz", updateQuiz);
                         request.getRequestDispatcher("jsp/updateQuiz.jsp").forward(request, response);
-                    } else if (editTYpe.equalsIgnoreCase("delete")) {
-                        quizDAO.removeQuizQuestion(quizId);
-                        quizDAO.deleteQuiz(quizId);
+                    } else if (editTYpe.equalsIgnoreCase("delete")) {//if admin want to delete quiz
+                        quizDAO.removeQuizQuestion(quizId);//delete all quiz's questions
+                        quizDAO.deleteQuiz(quizId);//delete quiz
                         request.setAttribute("message", "Update quiz successfull!!");
                         request.getRequestDispatcher("practiceController?service=getQuizListInformation")
                                 .forward(request, response);
                     }
-                } else {
+                } else {// if this test have already been taken then don't allow change
                     ArrayList<Quiz> quizList = quizDAO.getAllQuiz();
                     request.setAttribute("quizQuizList", quizList);
                     request.setAttribute("message", "You can't change this quiz!");
@@ -237,6 +249,7 @@ public class PracticeController extends HttpServlet {
 
             //edit quiz information then update to the database
             if (service.equalsIgnoreCase("updateQuizInformation")) {
+                //get all parameter from updateQuiz page
                 String quizName = (String) request.getParameter("quizName").trim();
                 int updateQuizId = Integer.parseInt(request.getParameter("updateQuizId"));
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
@@ -250,12 +263,13 @@ public class PracticeController extends HttpServlet {
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 QuizDAO quizDAO = new QuizDAOImpl();
                 Quiz updateQuiz = quizDAO.getQuizById(updateQuizId);
-                //if quizNmae have yet been enter, return mesaage
+                //if quizName have yet been enter, return mesaage
                 if (quizName.length() == 0) {
                     request.setAttribute("message", "You have to enter quiz name");
                     request.getRequestDispatcher("practiceController?service=getQuizListInformation")
                             .forward(request, response);
                 }
+                // setup quiz information to edit
                 updateQuiz.setSubject(subjectDAO.getSubjectbyId(subjectId));
                 updateQuiz.setQuizName(quizName);
                 updateQuiz.setQuizLevelId(quizLevelId);
