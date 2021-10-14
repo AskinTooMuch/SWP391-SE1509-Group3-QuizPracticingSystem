@@ -14,7 +14,7 @@
  *  07/10/21    1.2         TuanPAHE150543  Add service filterQuestion,getFilterInformation
  *  08/10/21    1.2         TuanPAHE150543  Update service filterQuestion ,getFilterInformation
  *  10/10/21    1.3         DuongNHHE150328 Update service getQuizDetailInformation,createQuiz
- *  14/10/21    1.4         TuanPAHE150543  Update service addQuestion, editQuestion
+ *  14/10/21    1.4         TuanPAHE150543  Update service addQuestion, editQuestion, addAnswer
  */
 package controller;
 
@@ -494,7 +494,10 @@ public class QuizController extends HttpServlet {
                 }
                 request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
             }
-
+            
+            /**
+             * Service question: add new question, answer to database
+             */
             if (service.equalsIgnoreCase("addQuestion")) {
                 /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
@@ -551,6 +554,7 @@ public class QuizController extends HttpServlet {
                                     || wrongAnswer2.length() > 1023 || wrongAnswer3.length() > 1023) {
                                 message = "content is too long";
                             } else {
+                                /* Add new answer */
                                 answerDAO.addAnswer(new Answer(0, questionId, trueAnswer, true, true));
                                 answerDAO.addAnswer(new Answer(0, questionId, wrongAnswer1, false, true));
                                 answerDAO.addAnswer(new Answer(0, questionId, wrongAnswer2, false, true));
@@ -565,6 +569,10 @@ public class QuizController extends HttpServlet {
                     sendDispatcher(request, response, "jsp/questionDetail.jsp");
                 }
             }
+            
+            /**
+             * Service: get edit question information
+             */
             if (service.equalsIgnoreCase("editQuestion")) {
                 int questionId = Integer.parseInt(request.getParameter("questionId"));
                 String type = request.getParameter("type");
@@ -584,6 +592,10 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("jsp/updateQuestion.jsp").forward(request, response);
                 }
             }
+            
+            /**
+             * Service: update edit Question information
+             */
             if (service.equalsIgnoreCase("updateQuestionInformation")) {
                 int updateQuestionId = Integer.parseInt(request.getParameter("updateQuestionId"));
                 int subjectId = Integer.parseInt(request.getParameter("subject"));
@@ -619,6 +631,10 @@ public class QuizController extends HttpServlet {
                         .forward(request, response);
                 
             }
+            
+            /**
+             * Service: get Question Details Information
+             */
             if (service.equalsIgnoreCase("getQuestionDetailsInformation")) {
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 DimensionDAO dimensionDAO = new DimensionDAOImpl();
@@ -631,6 +647,7 @@ public class QuizController extends HttpServlet {
                 request.getSession().setAttribute("listLesson", listLesson);
                 request.getRequestDispatcher("jsp/questionDetail.jsp").forward(request, response);
             }
+            
             /**
              * Get information from quizDetail to create quiz then add to the
              * database

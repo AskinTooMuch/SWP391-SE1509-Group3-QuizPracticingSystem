@@ -28,7 +28,13 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     public ArrayList<Answer> getAllAnswers() throws Exception {
         return null;
     }
-
+    
+    /**
+     * get Answer by QuestionId
+     * @param questionId the target question id. It is a <code>int</code> primitive
+     * @return a list of Answer. It is a <code>java.util.ArrayList</code>
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Answer> getAnswersByQuenstionId(int questionId) throws Exception {
         Connection conn = null;
@@ -70,7 +76,15 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     public int deleteAnswerByQuestionId(int qId) throws Exception {
         return 0;
     }
-
+    
+    
+    /**
+     * Update Answer
+     * @param answerId It is a <code>int</code>
+     * @param updatedAnswer It is a <code>object</code>
+     * @return check. It is a <code>int</code>
+     * @throws Exception 
+     */
     @Override
     public int updateAnswer(int answerId, Answer updatedAnswer) throws Exception {
         Connection conn = null;
@@ -101,7 +115,15 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
         }
         return check;
     }
-
+    
+    /**
+     * Add New Answer
+     *
+     * @param newAnswer It is a <code>Object</code>
+     * primitive type
+     * @return count. It is a <code>int</code>
+     * @throws Exception 
+     */
     @Override
     public int addAnswer(Answer newAnswer) throws Exception {
         Connection conn = null;

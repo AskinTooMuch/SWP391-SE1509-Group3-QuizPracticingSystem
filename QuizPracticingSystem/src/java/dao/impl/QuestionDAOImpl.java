@@ -197,7 +197,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionManageList;
     }
-
+    
+    /**
+     * get New QuestionId added
+     *
+     * @param question It is a <code>Object</code>
+     * primitive type
+     * @return questionId. It is a <code>int</code>
+     * object.
+     */
     @Override
     public int getQuestionIdCreated(Question question) throws Exception {
         Connection conn = null;
@@ -242,7 +250,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionId;
     }
-
+    
+    /**
+     * get New QuestionId added
+     *
+     * @param newQuestion It is a <code>Object</code>
+     * primitive type
+     * @return count. It is a <code>int</code>
+     * object.
+     */
     @Override
     public int addQuestion(Question newQuestion) throws Exception {
         Connection conn = null;
@@ -272,7 +288,15 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return count;
     }
-
+    
+    
+    /**
+     * edit Question 
+     * @param questionId the target questionId. It is a <code>int</code>
+     * @param question the target questionId. It is a <code>Object</code>
+     * @return i. It is a <code>int</code>
+     * @throws Exception 
+     */
     @Override
     public int editQuestion(int questionId, Question question) throws Exception {
         int i = 0;
