@@ -1,26 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  Dimension entity
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  23/9/21     1.0         ChucNVHE150618      First Deploy
+ *  14/10/21    1.0         ChucNVHE150618      Comment
+*/
 package bean;
 
 /**
  *
- * @author admin
+ * @author ChucNVHE150618
  */
 public class Dimension {
-    private int dimensionId;
-    private int subjectId;
-    private int dimensionTypeId;
-    private String dimensionTypeName;
-    private String dimensionName;
-    private String description;
-    private boolean status;
+    private int dimensionId; /*Dimension Id*/
+    private int subjectId; /*Subject's Id*/
+    private int dimensionTypeId; /*Dimension Type Id*/
+    private String dimensionTypeName; /*Dimension Type Name*/
+    private String dimensionName; /*Dimension Name*/
+    private String description; /*Dimension Description*/
+    private boolean status; /*Dimension Status*/
 
+    /**
+     * Blank constructor
+     */
     public Dimension() {
     }
 
+    /**
+     * Complete constructor
+     * @param dimensionId
+     * @param subjectId
+     * @param dimensionTypeId
+     * @param dimensionTypeName
+     * @param dimensionName
+     * @param description
+     * @param status 
+     */
     public Dimension(int dimensionId, int subjectId, int dimensionTypeId, String dimensionTypeName, String dimensionName, String description, boolean status) {
         this.dimensionId = dimensionId;
         this.subjectId = subjectId;
@@ -31,58 +50,114 @@ public class Dimension {
         this.status = status;
     }
 
+    /**
+     * Get dimension Id
+     * @return 
+     */
     public int getDimensionId() {
         return dimensionId;
     }
 
+    /**
+     * Set Dimension ID
+     * @param dimensionId 
+     */
     public void setDimensionId(int dimensionId) {
         this.dimensionId = dimensionId;
     }
 
+    /**
+     * Get subject Id
+     * @return 
+     */
     public int getSubjectId() {
         return subjectId;
     }
 
+    /**
+     * Set Subject Id
+     * @param subjectId 
+     */
     public void setSubjectId(int subjectId) {
         this.subjectId = subjectId;
     }
 
+    /**
+     * Get dimension Type Id
+     * @return 
+     */
     public int getDimensionTypeId() {
         return dimensionTypeId;
     }
-
+   
+    /**
+     * Set dimension Type Id
+     * @param dimensionTypeId 
+     */
     public void setDimensionTypeId(int dimensionTypeId) {
         this.dimensionTypeId = dimensionTypeId;
     }
 
+    /**
+     * Get dimension Type Id
+     * @return 
+     */
     public String getDimensionTypeName() {
         return dimensionTypeName;
     }
 
-    public void setDimensionType(String dimensionTypeName) {
+    /**
+     * Set dimension type Name
+     * @param dimensionTypeName 
+     */
+    public void setDimensionTypeName(String dimensionTypeName) {
         this.dimensionTypeName = dimensionTypeName;
     }
 
+    /**
+     * get Dimension Name
+     * @return 
+     */
     public String getDimensionName() {
         return dimensionName;
     }
 
+    /**
+     * Set dimension Name
+     * @param dimensionName 
+     */
     public void setDimensionName(String dimensionName) {
         this.dimensionName = dimensionName;
     }
 
+    /**
+     * Get dimension Description
+     * @return 
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set dimension description
+     * @param description 
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Get dimension status
+     * @return 
+     */
     public boolean isStatus() {
         return status;
     }
 
+    /**
+     * Set dimension status
+     * @param status 
+     */
     public void setStatus(boolean status) {
         this.status = status;
     }
