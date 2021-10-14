@@ -162,7 +162,7 @@ public class QuizController extends HttpServlet {
                     request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
                     //number of question in this quiz
                     request.setAttribute("questionNumber", questionNumber);
-
+                    
                     //Mark this question 
                     String marked = request.getParameter("marked");
                     if (marked != null && marked.equalsIgnoreCase("yes")) {
@@ -294,7 +294,7 @@ public class QuizController extends HttpServlet {
                 request.setAttribute("quizSize", quizReview.size());
                 CustomerQuiz customerQuiz = customerQuizInterface.getLastAddedCustomerQuiz();
                 long startedAt = customerQuiz.getSubmitedAt().getTime() - customerQuiz.getTime() * 1000;;
-                long submitedAt = submitedAt = customerQuiz.getSubmitedAt().getTime();
+                long submitedAt = customerQuiz.getSubmitedAt().getTime();
                 Timestamp submitTime = new Timestamp(submitedAt);
                 Timestamp startTime = new Timestamp(startedAt);
                 String startedAtTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(startTime);

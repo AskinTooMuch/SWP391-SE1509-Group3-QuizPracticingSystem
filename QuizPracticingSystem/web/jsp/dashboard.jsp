@@ -29,13 +29,11 @@
                 data[i] =${string};
                 i++;
             </c:forEach>
-
-                var dataPointts = new Array(${jsonString.size()});
-                for (var k = 0; k < dataPointts.length; k++) {
-                    dataPointts[k] = [];
+                var dataPoint = new Array(${jsonString.size()});
+                for (var k = 0; k < dataPoint.length; k++) {
+                    dataPoint[k] = [];
                 }
-
-                var chart = new CanvasJS.Chart("chartContainer", {
+                var chartRevenue = new CanvasJS.Chart("chart", {
                     animationEnabled: true,
                     theme: "light2",
                     title: {
@@ -47,29 +45,30 @@
                         includeZero: true
                     },
                     data: [
-            <c:forEach var="k" begin="0" end="4">
+            <c:forEach var="k" begin="0" end="${subjectName.size()-1}">
                         {
                             type: "line",
                             yValueFormatString: "$#,###",
-                            name: "asd",
+                            name: "${subjectName.get(k)}",
                             showInLegend: true,
-                            dataPoints: dataPointts[${k}]
+                            dataPoints: dataPoint[${k}]
                         },
             </c:forEach>
                     ]
-                });
+                }
+                );
                 function addData(data) {
                     for (var k = 0; k < data.length; k++) {
                         for (var j = 0; j < data[k].length; j++) {
-                            dataPointts[k].push({
+                            dataPoint[k].push({
                                 x: new Date(data[k][j].date),
                                 y: data[k][j].revenue
                             });
                         }
                     }
-                    chart.render();
+                    chartRevenue.render();
                 }
-                addData(data);
+                addData(data);       
             }
         </script>
     </head>
@@ -92,58 +91,55 @@
                 <div class="col-md-3"></div>
             </div>
             <div id="tab1" class="tabcontent" style="display:block;">
-                <div class="row">
-                    <div class="row" style="padding-bottom: 100px;">
-                        <div class="col-3" style="display: grid;">
-                            <button class="subtablinks active" onclick="openSubTab(event, 'tab11')">New Subject</button>
-                            <button class="subtablinks active" onclick="openSubTab(event, 'tab12')">New Subject</button>
+
+                <div class="row" style="padding-bottom: 100px;">
+                    <div class="col-3" style="display: grid;">
+                        <button class="subtablinks active" onclick="openSubTab(event, 'tab11')">Revenue</button>
+                        <button class="subtablinks active" onclick="openSubTab(event, 'tab12')">Register</button>
+                    </div>
+                </div>
+
+
+                <div class='row' style="height: 300px; width: 100%;">
+                    <div>
+                        <div id="tab11" class="subtabcontent" style='display:block;'>
+                            <div id="chart" style="height: 300px; width: 100%;">
+                            </div>
+                        </div>
+                        <div id="tab12" class="subtabcontent" >
+                            <div id="chartRegister" style="height: 300px; width: 100%;"></div>
                         </div>
                     </div>
-
-                    <div class="col-12" style="width: 100%;height: 700px; background-color: orange;">
-                        <div id="tab11" class="subtabcontent" style="">
+                </div>
+            </div>
+            <!--            <div id="tab2" class="tabcontent" >
                             <div class="row">
-                                <div class="col-12" style="width: 100%;height: 100px; background-color: turquoise;">
+                                <div class="col-12" style="width: 100%;height: 700px; background-color: wheat;">
+            
                                 </div>
                             </div>
                         </div>
-                        <div id="tab12" class="subtabcontent" style="">
+                        <div id="tab3" class="tabcontent" >
                             <div class="row">
-                                <div class="col-12" style="width: 100%;height: 100px; background-color: silver;">
+                                <div class="col-12" style="width: 100%;height: 700px; background-color: yellowgreen;">
+            
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id="tab2" class="tabcontent" >
-                <div class="row">
-                    <div class="col-12" style="width: 100%;height: 700px; background-color: wheat;">
-
-                    </div>
-                </div>
-            </div>
-            <div id="tab3" class="tabcontent" >
-                <div class="row">
-                    <div class="col-12" style="width: 100%;height: 700px; background-color: yellowgreen;">
-
-                    </div>
-                </div>
-            </div>
-            <div id="tab4" class="tabcontent" >
-                <div class="row">
-                    <div class="col-12" style="width: 100%;height: 700px; background-color: tomato;">
-
-                    </div>
-                </div>
-            </div>
-            <div id="tab5" class="tabcontent">
-                <div class="row">
-                    <div class="col-12" style="width: 100%;height: 700px; background-color: skyblue;">
-
-                    </div>
-                </div>
-            </div>
+                        <div id="tab4" class="tabcontent" >
+                            <div class="row">
+                                <div class="col-12" style="width: 100%;height: 700px; background-color: tomato;">
+            
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab5" class="tabcontent">
+                            <div class="row">
+                                <div class="col-12" style="width: 100%;height: 700px; background-color: skyblue;">
+            
+                                </div>
+                            </div>
+                        </div>-->
         </div>
 
 
@@ -173,7 +169,12 @@
                 e.stopPropagation();
             });
 
+            const context = canvas.getContext('2d');
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
             function openSubTab(evt, subtabName) {
+
                 var i, subtabcontent, subtablinks;
                 subtabcontent = document.getElementsByClassName("subtabcontent");
                 for (i = 0; i < subtabcontent.length; i++) {
@@ -184,12 +185,16 @@
                 for (i = 0; i < subtablinks.length; i++) {
                     subtablinks[i].className = subtablinks[i].className.replace(" active", "");
                 }
-
+                document.getElementById(subtabName).style.width = "100%";
+                document.getElementById(subtabName).style.height = "300px";
                 document.getElementById(subtabName).style.display = "block";
+
                 evt.currentTarget.className += " active";
+
             }
+
         </script>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>

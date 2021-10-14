@@ -61,6 +61,7 @@
             <style>
                 ul li::marker {
                     font-weight: bold;
+                    
                 }
             </style>
             <%-- Question and Answers --%>
@@ -86,7 +87,7 @@
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
                                         <div class="checkbox-inline" style="display: -webkit-inline-box;">
                                             <label class="labelA" for="${answer.getAnswerId()}">
-                                                <li>
+                                                <li style="margin-left: 30px;">
                                                     ${answer.getAnswerContent()} 
                                                 </li>
 
@@ -115,7 +116,7 @@
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
                         <div style="">
                             <c:if test="${mediaType==2}">
-                                <iframe width="420" height="315" style="width:100%; height:500px;"
+                                <iframe width="420" height="315" style="width:100%; height:450px;"
                                         src=${questionQH.getQuestion().getMedia()}>
                                 </iframe>
                             </c:if>
@@ -135,7 +136,9 @@
                     </div>
                     <div class="col-3">
                         <div style="float:right; display:flex;">
+                            <c:if test="${quizType!=1}">                               
                             <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
+                            </c:if>
                             <form id="markForm" action="${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">

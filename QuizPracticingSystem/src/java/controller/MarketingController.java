@@ -134,8 +134,12 @@ public class MarketingController extends HttpServlet {
                 RegistrationDAO IRegistration = new RegistrationDAOImpl();
                 SubjectDAO ISubject = new SubjectDAOImpl();
                 ArrayList<Subject> lastSubject = ISubject.get5LastAddedSubject();
-                ArrayList<String> jsonString = IRegistration.convertJson(IRegistration.View("2019-12-12", "2019-12-15", lastSubject,"revenueee"));
+                ArrayList<SubjectDashboard> revenue = IRegistration.View("2019-12-12", "2019-12-15", lastSubject, "revenue");
+                  ArrayList<String> jsonString = IRegistration.convertJson(revenue);
                 request.setAttribute("jsonString", jsonString);
+                ArrayList<String> subjectName = IRegistration.getListSubjectName(revenue);
+                request.setAttribute("subjectName", subjectName);
+                
                 request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
             }
         } catch (Exception ex) {

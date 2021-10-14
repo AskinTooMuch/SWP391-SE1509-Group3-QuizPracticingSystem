@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-                            <%-- Thong tin cau hoi --%>
+            <%-- Thong tin cau hoi --%>
             <div class="row infomation1">
                 <div class="col-1">
                     <h6 >${questionNumber})</h6>
@@ -66,52 +66,61 @@
             </style>
             <%-- Question and Answers --%>
             <div class="mainContent" style="display: flex;">
-                <div class="col-1"></div>
+
                 <div class="col-4" style="">
                     <div class="row question" style="display: flex;">
-                        <div class="col-1">
+                        <div class="col-2">
                         </div>
-                        <div class="col-11" style="float:right;">
+                        <div class="col-10" style="float:right;">
                             <h4>${questionQH.getQuestion().getContent()}</h4>
                         </div>
                     </div>
-
                     <div class="row answers" style="margin-top:10px;">
-                        <div class="col-1"></div>
-                        <div class="col-11">
-                            <form id='questionForm' action='${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
-                                <ul>
 
+                        <div class="col-12" >
+                            <form id='questionForm' action='${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                                <ul style=''>
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
-                                        <div class="checkbox-inline" style="display: -webkit-inline-box;">
-                                            <label class="labelA" for="${answer.getAnswerId()}">
-                                                <li>
-                                                    ${answer.getAnswerContent()} 
-                                                </li>
-                                                <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} class="radioAnswer">
-                                                <span class="checkmark"></span>
-                                            </label>
+                                        <div class='row'>
+                                            <div class='col-3' style="">
+                                                <c:if test="${answer.getAnswerId()==answered}">
+                                                    <img src="images/youranswer.png" style='width:80px;height: auto;'>
+                                                </c:if>
+                                            </div>
+                                            <div class="col-9 ${answer.getAnswerId()==answered?"":"wrong"}" style="display: -webkit-inline-box;">
+                                                <label class="labelA" for="${answer.getAnswerId()}">
+                                                    <li style="margin-left: 30px;">
+                                                        ${answer.getAnswerContent()} 
+                                                    </li>
+                                                    <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} ${answer.getAnswerId()==answered?"":"disabled"} class="radioAnswer">
+                                                    <span class="checkmark"></span>
+                                                </label>                                          
+                                            <c:if test="${answer.isIsCorrect()}">
+                                                <img src="images/right.png" style='width:25px;height: 25px;'>
+                                            </c:if>
+                                            <c:if test="${!answer.isIsCorrect()}">
+                                                <img src="images/wrong.png" style='width:25px;height: 25px;'>
+                                            </c:if>
+                                                </div>
+                                            <br/>
                                         </div>
-                                        <br/>
                                     </c:forEach>
                                 </ul>
-                                     
+
                                 <input hidden id="formAction" name="finalAction" form="questionForm">
                                 <input hidden name="questionTakenNumber" value="${questionNumber}" form="questionForm">
                                 <input hidden id="time" name="time" form="questionForm">
                             </form>    
                         </div>
-
-
                         <div class="col-1"></div>
                     </div>
                 </div>
-                                <%-- Video or Image related with this question --%>
-                <div class="right col-7" style="">
+                <%-- Video or Image related with this question --%>
+                <div class="right col-8" style="">
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
                         <div style="">
                             <c:if test="${mediaType==2}">
-                                <iframe width="420" height="315" style="width:100%; height:500px;"
+                                <iframe width="420" height="315" style="width:100%; height:450px;"
                                         src=${questionQH.getQuestion().getMedia()}>
                                 </iframe>
                             </c:if>
@@ -140,7 +149,7 @@
                     </div>
                 </div>
             </div>
-                        <%-- Next,previous question --%>
+            <%-- Next,previous question --%>
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
                 <div style="margin-top:20px;margin-right: 20px;">
                     <div style="float:right;">
@@ -205,7 +214,7 @@
                     </div>
                 </div>
             </div>
-           <%-- Finish Review modal --%>
+            <%-- Finish Review modal --%>
             <div class="modal fade submit" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

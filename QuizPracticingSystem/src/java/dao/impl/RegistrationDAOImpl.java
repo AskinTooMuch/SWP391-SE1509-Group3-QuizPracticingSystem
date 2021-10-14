@@ -107,7 +107,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
                 + "      ,Subject.[thumbnail]\n"
                 + "      ,Subject.[featuredSubject]\n"
                 + "      ,Subject.status\n"
-                
                 + "  FROM ([QuizSystem].[dbo].[Subject]\n"
                 + "inner JOIN PricePackage\n"
                 + "ON Subject.subjectId = PricePackage.subjectId)\n"
@@ -175,9 +174,15 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                list.add(new SubjectDashboard(rs.getString("subjectName"),
-                        rs.getDouble("registrationCount"),
-                        rs.getDate("validFrom").getTime()));
+                if (type.equals("revenue")) {
+                    list.add(new SubjectDashboard(rs.getString("subjectName"),
+                            rs.getDouble("revenue"),
+                            rs.getDate("validFrom").getTime()));
+                } else {
+                    list.add(new SubjectDashboard(rs.getString("subjectName"),
+                            rs.getDouble("registrationCount"),
+                            rs.getDate("validFrom").getTime()));
+                }
             }
         } catch (Exception ex) {
             throw ex;
@@ -186,7 +191,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             closePreparedStatement(pre);
             closeConnection(conn);
         }
-
         return list;
     }
 
@@ -216,10 +220,28 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return ret;
     }
 
+    @Override
+    public ArrayList<String> getListSubjectName(ArrayList<SubjectDashboard> viewList) throws Exception {
+        ArrayList<String> ret = new ArrayList();
+        HashMap<String, Integer> map = new HashMap<>();
+        int j = 0;
+        for (SubjectDashboard subject : viewList) {
+            if (!map.containsKey(subject.getSubjectName())) {
+                map.put(subject.getSubjectName(), j);
+                ret.add(subject.getSubjectName());
+                j++;
+            }
+        }
+
+        return ret;
+    }
+
 //    public static void main(String[] args) throws Exception {
 //        RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
-//        SubjectDAO i  = new SubjectDAOImpl();
-//        
-//        
+//        SubjectDAO i = new SubjectDAOImpl();
+//        ArrayList<SubjectDashboard> list = IRegistration.View("2019-12-12", "2019-12-15", i.get5LastAddedSubject(), "revenue");
+//        ArrayList<String> a = IRegistration.getListSubjectName(list);
+//        System.out.print(a.size());
+//
 //    }
 }

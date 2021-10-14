@@ -29,6 +29,8 @@ public interface RegistrationDAO {
     
     public ArrayList<String> convertJson(ArrayList<SubjectDashboard> viewList ) throws Exception;
     
+    public ArrayList<String> getListSubjectName(ArrayList<SubjectDashboard> viewList) throws Exception;
+    
     public ArrayList<Subject> getRegistedSubject(int userId) throws Exception;
     public ArrayList<Subject> getRegistedSubjectbyUserId(int userId) throws Exception;
 }
