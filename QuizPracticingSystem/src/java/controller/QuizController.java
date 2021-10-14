@@ -14,6 +14,7 @@
  *  07/10/21    1.2         TuanPAHE150543  Add service filterQuestion,getFilterInformation
  *  08/10/21    1.2         TuanPAHE150543  Update service filterQuestion ,getFilterInformation
  *  10/10/21    1.3         DuongNHHE150328 Update service getQuizDetailInformation,createQuiz
+ *  14/10/21    1.4         TuanPAHE150543  Update service addQuestion, editQuestion
  */
 package controller;
 
@@ -32,6 +33,7 @@ import bean.Subject;
 import bean.TestType;
 import bean.User;
 import bean.UserRole;
+import dao.AnswerDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuestionQuizHandleDAOImpl;
@@ -57,6 +59,7 @@ import dao.QuizQuizHandleDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import dao.TestTypeDAO;
+import dao.impl.AnswerDAOImpl;
 import dao.impl.DimensionDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.LessonDAOImpl;
@@ -162,7 +165,7 @@ public class QuizController extends HttpServlet {
                     request.setAttribute("trueAnswer", trueAnswer.getAnswerContent());
                     //number of question in this quiz
                     request.setAttribute("questionNumber", questionNumber);
-                    
+
                     //Mark this question 
                     String marked = request.getParameter("marked");
                     if (marked != null && marked.equalsIgnoreCase("yes")) {
@@ -397,34 +400,56 @@ public class QuizController extends HttpServlet {
              * Service: Search Question by Content
              */
             if (service.equalsIgnoreCase("searchQuestionByContent")) {
-                String content = request.getParameter("content").trim();
-                ArrayList<QuestionManage> listQuestionManage = new ArrayList<>();
-                if (content.length() == 0) {
-                    listQuestionManage = questionInterface.getQuestionByContent(null);
-                } else {
-                    listQuestionManage = questionInterface.getQuestionByContent(content);
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject with the set id and redirect to page*/ else {
+                    String content = request.getParameter("content").trim();
+                    ArrayList<QuestionManage> listQuestionManage = new ArrayList<>();
+                    if (content.length() == 0) {
+                        listQuestionManage = questionInterface.getQuestionByContent(null);
+                    } else {
+                        listQuestionManage = questionInterface.getQuestionByContent(content);
+                    }
+                    request.setAttribute("listQuestionManage", listQuestionManage);
+                    request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
                 }
-                request.setAttribute("listQuestionManage", listQuestionManage);
-                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
             }
 
             /**
              * Service: filter Question by subjectId, dimensionId, lessonId
              */
             if (service.equalsIgnoreCase("filterQuestion")) {
-                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
-                int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
-                ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionManage(subjectId, dimensionId, lessonId);
-                request.setAttribute("listQuestionManage", listQuestionManage);
-                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject with the set id and redirect to page*/ else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                    int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+                    int dimensionId = Integer.parseInt(request.getParameter("dimensionId"));
+                    ArrayList<QuestionManage> listQuestionManage = questionInterface.getQuestionManage(subjectId, dimensionId, lessonId);
+                    request.setAttribute("listQuestionManage", listQuestionManage);
+                    request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
 //                out.println(questionManage.size());
+                }
             }
 
             /**
              * Service: get all Subject, Dimension, Lesson Information
              */
             if (service.equalsIgnoreCase("getFilterInformation")) {
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                String message = (String) request.getAttribute("message");
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 DimensionDAO dimensionDAO = new DimensionDAOImpl();
                 LessonDAO lessonDAO = new LessonDAOImpl();
@@ -435,6 +460,9 @@ public class QuizController extends HttpServlet {
                 request.getSession().setAttribute("listFilterDimension", listDimension);
                 request.getSession().setAttribute("listFilterLesson", listLesson);
                 request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+                if (message != null) {
+                    request.setAttribute("message", message);
+                }
             }
 
             /**
@@ -467,8 +495,145 @@ public class QuizController extends HttpServlet {
                 request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
             }
 
+            if (service.equalsIgnoreCase("addQuestion")) {
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } else {
+                    /* Else: get the Question detail  */
+ /* Get parameters from jsp */
+                    int subjectId = Integer.parseInt(request.getParameter("subject"));
+                    int dimensionId = Integer.parseInt(request.getParameter("dimension"));
+                    int lessonId = Integer.parseInt(request.getParameter("lesson"));
+                    boolean status = request.getParameter("questionStatus").equals("1");
+                    String content = (String) request.getParameter("content").trim();
+                    String media = (String) request.getParameter("media").trim();
+                    String explanation = (String) request.getParameter("explanation").trim();
+                    //get parameters answer contents
+                    String trueAnswer = (String) request.getParameter("trueAnswer").trim();
+                    String wrongAnswer1 = (String) request.getParameter("wrongAnswer1").trim();
+                    String wrongAnswer2 = (String) request.getParameter("wrongAnswer2").trim();
+                    String wrongAnswer3 = (String) request.getParameter("wrongAnswer3").trim();
+                    AnswerDAO answerDAO = new AnswerDAOImpl();
+                    QuestionDAO questionDAO = new QuestionDAOImpl();
+                    String message = "";
+                    String color = "red";
+                    if (content == null || content.length() == 0) {
+                        message = "content can not be empty";
+                    } else if (content.length() > 255) {
+                        message = "content is too long";
+                    } else if (content.length() > 511) {
+                        message = "explanation is too long";
+                    } else if (subjectId == 0) {
+                        message = "subject can not be empty";
+                    } else if (dimensionId == 0) {
+                        message = "dimension can not be empty";
+                    } else if (lessonId == 0) {
+                        message = "lesson can not be empty";
+                    } else {
+                        /* Add new question */
+                        Question question = new Question(0, subjectId, dimensionId, lessonId, content, media, explanation, status);
+                        int check = questionDAO.addQuestion(question);
+                        if (check > 0) {
+                            color = "green";
+                            message = "Add question successfully.";
+                            int questionId = questionDAO.getQuestionIdCreated(question);
+                            if (trueAnswer == null || trueAnswer.length() == 0) {
+                                message = "content can not be empty";
+                            } else if (wrongAnswer1 == null || wrongAnswer1.length() == 0) {
+                                message = "content can not be empty";
+                            } else if (trueAnswer.length() > 1023 || wrongAnswer1.length() > 1023
+                                    || wrongAnswer2.length() > 1023 || wrongAnswer3.length() > 1023) {
+                                message = "content is too long";
+                            } else {
+                                answerDAO.addAnswer(new Answer(0, questionId, trueAnswer, true, true));
+                                answerDAO.addAnswer(new Answer(0, questionId, wrongAnswer1, false, true));
+                                answerDAO.addAnswer(new Answer(0, questionId, wrongAnswer2, false, true));
+                                answerDAO.addAnswer(new Answer(0, questionId, wrongAnswer3, false, true));
+                            }
+                        } else {
+                            message = "Add question failed.";
+                        }
+                    }
+                    request.setAttribute("questionColor", color);
+                    request.setAttribute("questionMessage", message);
+                    sendDispatcher(request, response, "jsp/questionDetail.jsp");
+                }
+            }
+            if (service.equalsIgnoreCase("editQuestion")) {
+                int questionId = Integer.parseInt(request.getParameter("questionId"));
+                String type = request.getParameter("type");
+                QuestionDAO questionDAO = new QuestionDAOImpl();
+                if (type.equalsIgnoreCase("update")) {
+                    SubjectDAO subjectDAO = new SubjectDAOImpl();
+                    DimensionDAO dimensionDAO = new DimensionDAOImpl();
+                    LessonDAO lessonDAO = new LessonDAOImpl();
+                    Question updateQuestion = questionDAO.getQuestionById(questionId);
+                    ArrayList<Subject> subjectList = subjectDAO.getAllSubjects();
+                    ArrayList<Dimension> dimensionList = dimensionDAO.getAllDimension();
+                    ArrayList<Lesson> lessonList = lessonDAO.getAllLessons();
+                    request.setAttribute("listSubject", subjectList);
+                    request.setAttribute("listDimension", dimensionList);
+                    request.setAttribute("listLesson", lessonList);
+                    request.setAttribute("updateQuestion", updateQuestion); 
+                    request.getRequestDispatcher("jsp/updateQuestion.jsp").forward(request, response);
+                }
+            }
+            if (service.equalsIgnoreCase("updateQuestionInformation")) {
+                int updateQuestionId = Integer.parseInt(request.getParameter("updateQuestionId"));
+                int subjectId = Integer.parseInt(request.getParameter("subject"));
+                int dimensionId = Integer.parseInt(request.getParameter("dimension"));
+                int lessonId = Integer.parseInt(request.getParameter("lesson"));
+                boolean status = request.getParameter("questionStatus").equals("1");
+                String content = (String) request.getParameter("content").trim();
+                String media = (String) request.getParameter("media").trim();
+                String explanation = (String) request.getParameter("explanation").trim();
+                String trueAnswer = (String) request.getParameter("trueAnswer").trim();
+                String wrongAnswer1 = (String) request.getParameter("wrongAnswer1").trim();
+                String wrongAnswer2 = (String) request.getParameter("wrongAnswer2").trim();
+                String wrongAnswer3 = (String) request.getParameter("wrongAnswer3").trim();
+                AnswerDAO answerDAO = new AnswerDAOImpl();
+                QuestionDAO questionDAO = new QuestionDAOImpl();
+                Question updateQuestion = questionDAO.getQuestionById(updateQuestionId);
+                if (content.length() == 0) {
+                    request.setAttribute("message", "You have to enter question content");
+                    request.getRequestDispatcher("quizController?service=getQuestionDetailsInformation")
+                            .forward(request, response);
+                }
+                // setup quiz information to edit
+                updateQuestion.setSubjectId(subjectId);
+                updateQuestion.setDimensionId(dimensionId);
+                updateQuestion.setLessonId(lessonId);
+                updateQuestion.setContent(content);
+                updateQuestion.setMedia(media);
+                updateQuestion.setStatus(status);
+                updateQuestion.setExplanation(explanation);
+                questionDAO.editQuestion(updateQuestion.getQuestionId(), updateQuestion);
+                request.setAttribute("message", "Update question successfully!!");
+                request.getRequestDispatcher("quizController?service=getQuestionDetailsInformation")
+                        .forward(request, response);
+                
+            }
+            if (service.equalsIgnoreCase("getQuestionDetailsInformation")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                DimensionDAO dimensionDAO = new DimensionDAOImpl();
+                LessonDAO lessonDAO = new LessonDAOImpl();
+                ArrayList<Subject> listSubject = subjectDAO.getAllSubjects();
+                ArrayList<Dimension> listDimension = dimensionDAO.getAllDimension();
+                ArrayList<Lesson> listLesson = lessonDAO.getAllLessons();
+                request.getSession().setAttribute("listSubject", listSubject);
+                request.getSession().setAttribute("listDimension", listDimension);
+                request.getSession().setAttribute("listLesson", listLesson);
+                request.getRequestDispatcher("jsp/questionDetail.jsp").forward(request, response);
+            }
             /**
-             * Get information from quizDetail to create quiz then add to the database
+             * Get information from quizDetail to create quiz then add to the
+             * database
              */
             if (service.equalsIgnoreCase("createQuiz")) {
                 // get all parameter that user input
@@ -514,7 +679,7 @@ public class QuizController extends HttpServlet {
                 for (Question question : questionList) {
                     quizDAO.addQuizQuestion(quizId, question.getQuestionId());
                 }
-                request.setAttribute("message", "Add quiz successfull!!(" + questionList.size() +" questions)" );
+                request.setAttribute("message", "Add quiz successfull!!(" + questionList.size() + " questions)");
                 request.getRequestDispatcher("quizController?service=getQuizDetailInformation")
                         .forward(request, response);
             }

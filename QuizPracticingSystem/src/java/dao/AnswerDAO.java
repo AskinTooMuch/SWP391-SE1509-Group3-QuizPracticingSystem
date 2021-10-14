@@ -22,7 +22,7 @@ public interface AnswerDAO {
     
     public int deleteAnswerByQuestionId( int qId) throws Exception;
     
-    public int updateAnswer(Answer updatedAns) throws Exception;
+    public int updateAnswer(int answerId, Answer updatedAnswer) throws Exception;
     
     public int addAnswer(Answer newAns) throws Exception;
 }

@@ -9,6 +9,7 @@
     Date        Version     Author          Description
     5/10/21     1.0         TuanPAHE150543  First Deploy
     8/10/21     1.1         TuanPAHE150543  Update JSP
+    14/10/21    1.2         TuanPAHE150543  Update Edit button
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
@@ -31,6 +32,13 @@
         <div class="wrap">
             <%-- Include header page --%>
             <jsp:include page="header.jsp"/>
+
+            <%-- Check If user is logged in or not, if not redirect to error page --%>
+            <c:if test="${(sessionScope.currUser == null)||(!sessionScope.role.getUserRoleName().equalsIgnoreCase('Admin')
+                          &&!sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert'))}">
+                <c:set var = "errorMess" scope="session" value = "User not logged in"/>
+                <c:redirect url="/error.jsp"/>
+            </c:if>
 
             <%-- Check If listFilterSubject,listFilterDimension,listFilterLesson is avaiable not, if not redirect to load information --%>
             <c:if test="${listFilterSubject==null || listFilterDimension==null || listFilterLesson==null}">
@@ -86,7 +94,7 @@
 
                 </div>
 
-                <div class="col-md-8" id="form" style="min-height: 600px; ">
+                <div class="col-md-8" id="form" style="min-height: 600px; min-width: 1000px">
                     <div class="container" >
                         <%-- Table Container --%>
                         <div class="form-group">
@@ -100,9 +108,8 @@
                             </select>
 
                         </div>  
+                            <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="floar:left;margin: 5px">Add new Question</button></a>
                         <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
-
-
                         <%-- Table of QuestionList--%>
                         <table id="table-id" class="table table-bordered table-striped"">
                             <thead>
@@ -120,30 +127,30 @@
                                 <c:choose>
                                     <c:when test="${empty listQuestionManage}">
                                         <tr style="color: red"><td colspan="8">No Question Available</td></tr>
-                                </c:when>                               
-                                <%-- Check if listQuestionManage not null then display listQuestionManage --%>
-                                <c:otherwise>
-                                    <c:forEach items="${listQuestionManage}" var="questionList">
-                                        <tr>
-                                            <td><c:out value="${questionList.getQuestionId()}"/></td>
-                                            <td><c:out value="${questionList.getContent()}"/></td>
-                                            <td><c:out value="${questionList.getSubjectName()}"/></td>
-                                            <td><c:out value="${questionList.getLessonName()}"/></td>
-                                            <td><c:out value="${questionList.getDimensionName()}"/></td>
-                                            <%-- Check if questionList status is available or not--%>
-                                            <td><c:if test="${questionList.isStatus()}">
-                                                    Available
-                                                </c:if>
-                                                <c:if test="${!questionList.isStatus()}">
-                                                    Not Available
-                                                </c:if>
-                                            </td>
-                                            <td><div class="btn btn-success">Edit</div></td>
-                                        </tr>
-                                    </c:forEach> 
+                                    </c:when>                               
+                                    <%-- Check if listQuestionManage not null then display listQuestionManage --%>
+                                    <c:otherwise>
+                                        <c:forEach items="${listQuestionManage}" var="questionList">
+                                            <tr>
+                                                <td><c:out value="${questionList.getQuestionId()}"/></td>
+                                                <td><c:out value="${questionList.getContent()}"/></td>
+                                                <td><c:out value="${questionList.getSubjectName()}"/></td>
+                                                <td><c:out value="${questionList.getLessonName()}"/></td>
+                                                <td><c:out value="${questionList.getDimensionName()}"/></td>
+                                                <%-- Check if questionList status is available or not--%>
+                                                <td><c:if test="${questionList.isStatus()}">
+                                                        Available
+                                                    </c:if>
+                                                    <c:if test="${!questionList.isStatus()}">
+                                                        Not Available
+                                                    </c:if>
+                                                </td>
+                                                <td><a href="quizController?service=editQuestion&type=update&questionId=${questionList.getQuestionId()}"><div class="btn btn-success">Edit</div></a></td>
+                                            </tr>
+                                        </c:forEach> 
 
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                             </tbody>
                         </table>
                         <%--Start Pagination --%>
@@ -160,6 +167,7 @@
                                 </ul>
                             </nav>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-1"></div>

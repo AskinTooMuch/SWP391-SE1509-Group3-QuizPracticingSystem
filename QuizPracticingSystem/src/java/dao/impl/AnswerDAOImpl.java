@@ -32,11 +32,14 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     @Override
     public ArrayList<Answer> getAnswersByQuenstionId(int questionId) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;    /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
 
         ArrayList<Answer> answerList = new ArrayList();
-        String sql = "SELECT * FROM Answer WHERE questionId=" + questionId; /* Sql query */
+        String sql = "SELECT * FROM Answer WHERE questionId=" + questionId;
+        /* Sql query */
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -69,13 +72,62 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     }
 
     @Override
-    public int updateAnswer(Answer updatedAns) throws Exception {
-        return 0;
+    public int updateAnswer(int answerId, Answer updatedAnswer) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        int check = 0;
+        String sql = "UPDATE [Answer]\n"
+                + "SET [questionId] = ?\n"
+                + "      ,[answerContent] =? \n"
+                + "      ,[isCorrect] = ?\n"
+                + "      ,[status] = ?\n"
+                + " WHERE [answerId] = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, updatedAnswer.getQuestionId());
+            pre.setString(2, updatedAnswer.getAnswerContent());
+            pre.setBoolean(3, updatedAnswer.isIsCorrect());
+            pre.setBoolean(4, updatedAnswer.isStatus());
+            pre.setInt(5, updatedAnswer.getAnswerId());
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return check;
     }
 
     @Override
-    public int addAnswer(Answer newAns) throws Exception {
-        return 0;
+    public int addAnswer(Answer newAnswer) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
+        String sql = "INSERT INTO [Answer](questionId,answerContent,isCorrect,status) "
+                + "values (?,?,?,?)";
+        int count = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, newAnswer.getQuestionId());
+            pre.setString(2, newAnswer.getAnswerContent());
+            pre.setBoolean(3, newAnswer.isIsCorrect());
+            pre.setBoolean(4, newAnswer.isStatus());
+            count = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return count;
+
     }
 
 }
