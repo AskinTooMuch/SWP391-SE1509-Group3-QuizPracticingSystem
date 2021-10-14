@@ -79,14 +79,14 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "index.jsp");
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
                     /* Role is expert: get the assigned subjects */
- /* Get assigned list */
+                    /* Get assigned list */
                     ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
                     /* Set attribute and send it to course Content page */
                     request.setAttribute("courseContentSubjectList", featuredSubjectList);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
                     /* Role is admin: load all subject */
- /* Get all subject */
+                    /* Get all subject */
                     ArrayList<Subject> allSubject = subjectDAO.getAllSubjects();
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
@@ -138,7 +138,7 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     /* Else: get the subject detail  */
- /* Get parameters from jsp */
+                    /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
                     String subjectName = request.getParameter("subjectName").trim();
                     String subjectDescription = request.getParameter("subjectDescription").trim();

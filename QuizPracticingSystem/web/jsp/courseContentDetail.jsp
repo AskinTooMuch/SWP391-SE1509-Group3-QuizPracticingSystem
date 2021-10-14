@@ -81,6 +81,7 @@
                                             <i class="fas fa-bars"></i>
                                             <span class="caret"></span>
                                         </button>
+                                        <%-- Dropdown for category --%>
                                         <ul class="dropdown-menu checkbox-menu allow-focus" aria-labelledby="dropdownMenu1">
                                             <c:if test="${!empty categoryList}">
                                                 <c:forEach items = "${categoryList}" var="category" begin = "0" end = "${categoryList.size()-1}">
@@ -174,16 +175,19 @@
 
                     </div>
 
+                    <%-- Subject dimension --%>
                     <div id="tab2" class="tabcontent">
                         <h4 style="color: #565e64">Subject Dimension/ Id <c:out value="${subject.getSubjectId()}"/></h4>
+                        <%-- Display message if available --%>
                         <c:if test="${!empty dimensionMessage}">
                             <h6 style="color: ${dimensionColor}"><c:out value="${dimensionMessage}"/></h6>
                         </c:if>
+                        <%-- Dimension table: each row is a form that allows admin/expert to edit/delete the dimension --%>
                         <table class="table table-striped table-bordered table-hover">
                             <%-- Table head --%>
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Id</th>
                                     <th scope="col">Type</th>
                                     <th scope="col">Dimension</th>
                                     <th scope="col">Description</th>
@@ -275,7 +279,7 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-
+        <%-- JS to activate sellect element --%>
         $(".checkbox-menu").on("change", "input[type='checkbox']", function () {
             $(this).closest("li").toggleClass("active", this.checked);
         });
@@ -284,6 +288,7 @@
             e.stopPropagation();
         });
         
+        <%-- JS to click on (display) proper tab --%>
         window.onload = function() {
             document.getElementById("${displayTab}").click();
         };
