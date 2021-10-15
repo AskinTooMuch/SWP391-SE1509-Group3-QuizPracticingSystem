@@ -113,7 +113,7 @@
                                     </a>
                                     </a>
                                     <a href="${contextPath}/jsp/practiceDetail.jsp" style="text-decoration: none;color:black">
-                                        <span class="fas fa-book-open">Create quiz</span>  
+                                        <span class="fas fa-book-open">Create practice</span>  
                                     </a>
                                     <%-- If role is admin or owner--%>
                                     <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
