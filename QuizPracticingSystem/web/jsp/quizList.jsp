@@ -35,7 +35,7 @@
             <jsp:include page="header.jsp"/>
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
 
-                <%-- Check If listFilterSubject,listFilterDimension,listFilterLesson is avaiable not, if not redirect to load information --%>
+                <%-- Check If subjectQuizList,testTypeQuizListis avaiable not, if not redirect to load information --%>
                 <c:if test="${subjectQuizList==null || testTypeQuizList==null}">
                     <c:redirect url="/practiceController?service=getQuizListInformation"/>
                 </c:if>
