@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 3, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author           Description
+ *  3/10/21     1.0         NamDHHE150519    First Deploy
+ *  4/10/21     1.1         NamDHHE150519    Add quiz session listener
  */
 package listener;
 
@@ -24,7 +30,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 /**
- * Web application lifecycle listener.
+ * Class này có mục đích theo dõi các session(còn hoạt động hay đã hết hạn).
  *
  * @author ADMN
  */
@@ -90,14 +96,6 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
         timer = new Timer();
         timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
     }
-
-    @Override
-    public void attributeReplaced(HttpSessionBindingEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-
     class RemindTask extends TimerTask {
 
         private HttpSessionBindingEvent se;
@@ -152,4 +150,9 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
             }
         }
     }
+       @Override
+    public void attributeReplaced(HttpSessionBindingEvent event) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

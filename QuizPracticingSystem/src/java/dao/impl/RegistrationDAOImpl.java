@@ -11,10 +11,11 @@
  */
 package dao.impl;
 
+import bean.ItemDashboard;
 import bean.Quiz;
 import bean.Registration;
 import bean.Subject;
-import bean.SubjectDashboard;
+import bean.ItemDashboard;
 import com.google.gson.Gson;
 import dao.DBConnection;
 import java.util.ArrayList;
@@ -143,11 +144,10 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
-    public ArrayList<SubjectDashboard> View(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
-        ArrayList<SubjectDashboard> list = new ArrayList();
+    public ArrayList<ItemDashboard> getSubjectStasistic(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
+        ArrayList<ItemDashboard> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
-        /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         int[] subjectIdList = new int[subjectList.size()];
         for (int i = 0; i < subjectList.size(); i++) {
@@ -168,21 +168,17 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         sql += subjectIdList[subjectIdList.length - 1] + ")";
 
-        sql += " AND (a.validFrom >= '" + from + "' AND a.validFrom <= '" + to + "')  GROUP BY c.subjectName,a.validFrom order By a.validFrom ";
+        sql += " AND (a.validFrom >= '" + from + "' AND a.validFrom <= '" + to + "') GROUP BY c.subjectName,a.validFrom order By a.validFrom ";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                if (type.equals("revenue")) {
-                    list.add(new SubjectDashboard(rs.getString("subjectName"),
-                            rs.getDouble("revenue"),
-                            rs.getDate("validFrom").getTime()));
-                } else {
-                    list.add(new SubjectDashboard(rs.getString("subjectName"),
-                            rs.getDouble("registrationCount"),
-                            rs.getDate("validFrom").getTime()));
-                }
+
+                list.add(new ItemDashboard(rs.getString("subjectName"),
+                        rs.getDouble(type),
+                        rs.getDate("validFrom").getTime()));
+
             }
         } catch (Exception ex) {
             throw ex;
@@ -195,25 +191,79 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
-    public ArrayList<String> convertJson(ArrayList<SubjectDashboard> viewList) throws Exception {
+    public ArrayList<ItemDashboard> getRevenueStasistic(String from, String to) {
+        ArrayList<ItemDashboard> list = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "select SUM(cost) as revenue, validFrom FROM [Registration] "
+                + "WHERE validFrom <= ? AND validFrom >= ? GROUP BY validFrom ORDER BY validFrom";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, to);
+            pre.setString(2, from);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ItemDashboard("", rs.getDouble("revenue"),
+                        rs.getDate("validFrom").getTime()));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    @Override
+    public ArrayList<ItemDashboard> getRegistrationStasistic(String from, String to) throws Exception{
+        
+    }
+    @Override
+    public ArrayList<ItemDashboard> getRevenueStasisticBySubjectCate(String from, String to) throws Exception {
+        String sql="SELECT SUM(cost) AS revenue,a.validFrom,e.subjectCateName FROM (Registration AS a "
+                + "JOIN PricePackage AS b ON a.packId = b.packId) "
+                + "JOIN [Subject] AS c ON b.subjectId = c.subjectId "
+                + "JOIN CategorySubject AS d ON c.subjectId=d.subjectId "
+                + "JOIN SubjectCate AS e ON d.cateId = e.subjectCateId "
+                + "WHERE validFrom <= ? AND validFrom >= ? "
+                + "GROUP BY a.validFrom,e.subjectCateName ORDER BY a.validFrom";
+        ArrayList<ItemDashboard> list = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, to);
+            pre.setString(2, from);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new ItemDashboard(rs.getString("subjectCateName"), rs.getDouble("revenue"),
+                        rs.getDate("validFrom").getTime()));
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    
+    @Override 
+    public ArrayList<String> convertJson(ArrayList<ItemDashboard> viewList) throws Exception {
         // create a new Gson instance
         ArrayList<String> ret = new ArrayList();
         Gson gson = new Gson();
         HashMap<String, Integer> map = new HashMap<>();
         int j = 0;
-        ArrayList<ArrayList<SubjectDashboard>> list = new ArrayList();
+        ArrayList<ArrayList<ItemDashboard>> list = new ArrayList();
 
-        for (SubjectDashboard subject : viewList) {
-            if (!map.containsKey(subject.getSubjectName())) {
-                map.put(subject.getSubjectName(), j);
+        for (ItemDashboard item : viewList) {
+            if (!map.containsKey(item.getName())) {
+                map.put(item.getName(), j);
                 j++;
                 list.add(new ArrayList<>());
             }
-            list.get(map.get(subject.getSubjectName())).add(subject);
+            list.get(map.get(item.getName())).add(item);
         }
 
         // convert your list to json
-        for (ArrayList<SubjectDashboard> item : list) {
+        for (ArrayList<ItemDashboard> item : list) {
             ret.add(gson.toJson(item));
         }
         // print your generated json
@@ -221,27 +271,28 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
-    public ArrayList<String> getListSubjectName(ArrayList<SubjectDashboard> viewList) throws Exception {
-        ArrayList<String> ret = new ArrayList();
+    public ArrayList<String> getNameList(ArrayList<ItemDashboard> viewList) throws Exception {
+        ArrayList<String> nameList = new ArrayList();
         HashMap<String, Integer> map = new HashMap<>();
         int j = 0;
-        for (SubjectDashboard subject : viewList) {
-            if (!map.containsKey(subject.getSubjectName())) {
-                map.put(subject.getSubjectName(), j);
-                ret.add(subject.getSubjectName());
+        for (ItemDashboard subject : viewList) {
+            if (!map.containsKey(subject.getName())) {
+                map.put(subject.getName(), j);
+                nameList.add(subject.getName());
                 j++;
             }
         }
-
-        return ret;
+        return nameList;
     }
+    
+    
+    
+    public static void main(String[] args) throws Exception {
+        RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
+        SubjectDAO i = new SubjectDAOImpl();
+        ArrayList<ItemDashboard> list = IRegistration.getSubjectStasistic("2019-12-12", "2019-12-15", i.get5LastAddedSubject(), "revenue");
+        ArrayList<String> a = IRegistration.getNameList(list);
+        System.out.print(a.size());
 
-//    public static void main(String[] args) throws Exception {
-//        RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
-//        SubjectDAO i = new SubjectDAOImpl();
-//        ArrayList<SubjectDashboard> list = IRegistration.View("2019-12-12", "2019-12-15", i.get5LastAddedSubject(), "revenue");
-//        ArrayList<String> a = IRegistration.getListSubjectName(list);
-//        System.out.print(a.size());
-//
-//    }
+    }
 }

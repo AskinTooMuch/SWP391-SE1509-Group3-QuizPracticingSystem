@@ -28,6 +28,8 @@ import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,6 +50,7 @@ public class MarketingController extends HttpServlet {
      */
     static final int CARD_PER_PAGE = 9;
     static final int DEFAULT_PAGE = 1;
+    static final long MILISECOND_PER_WEEK = 604800000;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -133,14 +136,88 @@ public class MarketingController extends HttpServlet {
             if (service.equalsIgnoreCase("dashboard")) {
                 RegistrationDAO IRegistration = new RegistrationDAOImpl();
                 SubjectDAO ISubject = new SubjectDAOImpl();
-                ArrayList<Subject> lastSubject = ISubject.get5LastAddedSubject();
-                ArrayList<SubjectDashboard> revenue = IRegistration.View("2019-12-12", "2019-12-15", lastSubject, "revenue");
-                  ArrayList<String> jsonString = IRegistration.convertJson(revenue);
-                request.setAttribute("jsonString", jsonString);
-                ArrayList<String> subjectName = IRegistration.getListSubjectName(revenue);
-                request.setAttribute("subjectName", subjectName);
-                
+
+                String option = request.getParameter("option");
+                String target = request.getParameter("target");
+                String attribute = request.getParameter("attribute");
+                String from = request.getParameter("from");
+                String to = request.getParameter("to");
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String currentDate = formatter.format(date.getTime());
+                if (to == null) {
+                    to = currentDate;
+                }
+                if (from == null) {
+                    from = formatter.format(date.getTime() - MILISECOND_PER_WEEK);
+                }
+                request.setAttribute("currentDate", currentDate);
+                request.setAttribute("from", from);
+                request.setAttribute("to", to);
+
+                if (option == null) {
+                    option = "subject";
+                    target = "new";
+                    attribute = "revenue";
+                }
+
+                request.setAttribute("option", option);
+                request.setAttribute("target", target);
+
+                if (option.equals("subject")) {
+                    request.setAttribute("attribute", attribute);
+                    ArrayList<Subject> subjectList = new ArrayList();
+                    if (target.equals("new")) {
+                        subjectList = ISubject.get5LastAddedSubject();
+                    } else if (target.equals("all")) {
+                        subjectList = ISubject.getAllSubjects();
+                    }
+
+                    ArrayList<ItemDashboard> stasistic = IRegistration.getSubjectStasistic(from, to, subjectList, attribute);
+                    ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
+                    request.setAttribute("subjectStasistic", subjectStasistic);
+                    ArrayList<String> nameList = IRegistration.getNameList(stasistic);
+                    request.setAttribute("nameList", nameList);
+                }
+
+                if (option.equals("registration")) {
+                    ArrayList<Registration> registrationList = IRegistration.getAllRegistration();
+                    request.setAttribute("registrationList", registrationList);
+                }
+
+                if (option.equals("revenue")) {
+                    if (target.equals("total")) {
+                        ArrayList<ItemDashboard> stasistic = IRegistration.getRevenueStasistic(from, to);
+                        ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
+                        request.setAttribute("subjectStasistic", subjectStasistic);
+                        ArrayList<String> nameList = IRegistration.getNameList(stasistic);
+                        request.setAttribute("nameList", nameList);
+                    } else if (target.equals("bySubjectCate")) {
+                        ArrayList<ItemDashboard> stasistic = IRegistration.getRevenueStasisticBySubjectCate(from, to);
+                        ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
+                        request.setAttribute("subjectStasistic", subjectStasistic);
+                        ArrayList<String> nameList = IRegistration.getNameList(stasistic);
+                        request.setAttribute("nameList", nameList);
+                    }
+                }
+
+                if (option.equals("customer")) {
+                    if (target.equals("newlyRegistered")) {
+                        
+                    } else if (target.equals("newlyBought")) {
+
+                    }
+                }
+
+                if (option.equals("trendOfOrderCounts")) {
+                    if (target.equals("success")) {
+
+                    } else if (target.equals("all")) {
+
+                    }
+                }
                 request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
+
             }
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);

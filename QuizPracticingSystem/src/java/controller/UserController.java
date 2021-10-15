@@ -179,7 +179,7 @@ public class UserController extends HttpServlet {
                 addUser.setGender(gender);
                 userInterface.addUser(addUser);
 
-                SystemEmail se = new SystemEmail();
+                ItemDashboard se = new ItemDashboard();
                 String confirmLink = "http://localhost:8080/QuizPracticingSystem"
                         + "/userController?service=confirmAccount&userMail="
                         + userMail;
@@ -391,7 +391,7 @@ public class UserController extends HttpServlet {
 
     //create reset password link and send to the email address
     public void sendResetMail(String userMail) {
-        SystemEmail se = new SystemEmail();
+        ItemDashboard se = new ItemDashboard();
         long milis = System.currentTimeMillis();
         String resetPassLink = "http://localhost:8080/QuizPracticingSystem/login/resetPass.jsp?userMail="
                 + userMail + "&createTime=" + milis;

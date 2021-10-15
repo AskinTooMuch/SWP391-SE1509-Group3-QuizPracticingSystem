@@ -7,196 +7,233 @@
    Record of change:
    Date        Version     Author          Description
    9/10/21     1.0         NamDHHE150519   First Deploy
+   14/10/21    1.0         NamDHHE150519   update subject stasistic
 -->
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
 <html>
 
     <head>   
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">     
         <link rel="stylesheet" href="${contextPath}/css/dashboard.css">
+        <title>Dashboard</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-        <script>
-            window.onload = function () {
-                var data = new Array(${jsonString.size()});
-                var i = 0;
-            <c:forEach items="${jsonString}" var="string">
-                data[i] =${string};
-                i++;
-            </c:forEach>
-                var dataPoint = new Array(${jsonString.size()});
-                for (var k = 0; k < dataPoint.length; k++) {
-                    dataPoint[k] = [];
-                }
-                var chartRevenue = new CanvasJS.Chart("chart", {
-                    animationEnabled: true,
-                    theme: "light2",
-                    title: {
-                        text: "Revenue"
-                    },
-                    axisY: {
-                        title: "Revenue",
-                        titleFontSize: 24,
-                        includeZero: true
-                    },
-                    data: [
-            <c:forEach var="k" begin="0" end="${subjectName.size()-1}">
-                        {
-                            type: "line",
-                            yValueFormatString: "$#,###",
-                            name: "${subjectName.get(k)}",
-                            showInLegend: true,
-                            dataPoints: dataPoint[${k}]
-                        },
-            </c:forEach>
-                    ]
-                }
-                );
-                function addData(data) {
-                    for (var k = 0; k < data.length; k++) {
-                        for (var j = 0; j < data[k].length; j++) {
-                            dataPoint[k].push({
-                                x: new Date(data[k][j].date),
-                                y: data[k][j].revenue
-                            });
-                        }
+        <c:if test="${nameList.size()>0}">
+            <script>
+                window.onload = function () {
+                    var data = new Array(${subjectStasistic.size()});
+                    var i = 0;
+                <c:forEach items="${subjectStasistic}" var="string">
+                    data[i] =${string};
+                    i++;
+                </c:forEach>
+                    var dataPoint = new Array(${subjectStasistic.size()});
+                    for (var k = 0; k < dataPoint.length; k++) {
+                        dataPoint[k] = [];
                     }
-                    chartRevenue.render();
+                    var chartRevenue = new CanvasJS.Chart("chart", {
+                        animationEnabled: true,
+                        theme: "light2",
+                        title: {
+                            text: "${option}"
+                        },
+                        axisY: {
+                            title: "${target}",
+                            titleFontSize: 24,
+                            includeZero: true
+                        },
+                        data: [
+                <c:forEach var="k" begin="0" end="${nameList.size()-1}">
+                            {
+                                type: "line",
+                                yValueFormatString: "#,###",
+                                name: "${nameList.get(k)}",
+                                showInLegend: true,
+                                dataPoints: dataPoint[${k}]
+                            },
+                </c:forEach>
+                        ]
+                    }
+                    );
+                    function addData(data) {
+                        for (var k = 0; k < data.length; k++) {
+                            for (var j = 0; j < data[k].length; j++) {
+                                dataPoint[k].push({
+                                    x: new Date(data[k][j].date),
+                                    y: data[k][j].value
+                                });
+                            }
+                        }
+                        chartRevenue.render();
+                    }
+                    addData(data);
                 }
-                addData(data);       
-            }
-        </script>
+            </script>
+        </c:if>
     </head>
 
     <body>
-        <div class="container-fluid">
-            <jsp:include page="header.jsp"/>
+        <jsp:include page="header.jsp"/>
+        <div class="container-fluid" style="border-top: 1px solid black;">
+
             <div class="row">
                 <h4>Dashboard</h4>
             </div>
             <div class="row">
-                <div class="col-md-3"></div>
-                <div class="tab col-md-9">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">New Subject</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">New Registration</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab3')">Revenues</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab4')">Customer</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab5')">Trend of order counts</button>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-            <div id="tab1" class="tabcontent" style="display:block;">
-
-                <div class="row" style="padding-bottom: 100px;">
-                    <div class="col-3" style="display: grid;">
-                        <button class="subtablinks active" onclick="openSubTab(event, 'tab11')">Revenue</button>
-                        <button class="subtablinks active" onclick="openSubTab(event, 'tab12')">Register</button>
+                <div class="col-md-2"></div>
+                <div class="tab col-md-8" style="border:none;">
+                    <div style="margin-left:125px;">
+                        <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=subject&target=new&attribute=revenue">Subjects</a>
+                        <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=registration">Registrations</a>
+                        <a class="btn ${option=="revenue"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=revenue&target=total">Revenues</a>
+                        <a class="btn ${option=="customer"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=customer&target=newlyRegistered">Customers</a>
+                        <a class="btn ${option=="trendOfOrder"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=trendOfOrder&target=success">Trend Of Order</a>
                     </div>
                 </div>
-
-
-                <div class='row' style="height: 300px; width: 100%;">
-                    <div>
-                        <div id="tab11" class="subtabcontent" style='display:block;'>
-                            <div id="chart" style="height: 300px; width: 100%;">
-                            </div>
-                        </div>
-                        <div id="tab12" class="subtabcontent" >
-                            <div id="chartRegister" style="height: 300px; width: 100%;"></div>
-                        </div>
-                    </div>
+                <div class="col-md-2">
                 </div>
             </div>
-            <!--            <div id="tab2" class="tabcontent" >
-                            <div class="row">
-                                <div class="col-12" style="width: 100%;height: 700px; background-color: wheat;">
-            
+            <div class="" class="tabcontent" style="border-top:1px solid black;">
+                <c:if test="${option=='subject'}">
+                    <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
+                        <div class="choose col-3" style="display: grid;">
+                            <a class="btn ${attribute=="revenue"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=subject&target=${target}&attribute=revenue">Revenue</a>
+                            <a class="btn ${attribute=="registrationCount"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=subject&target=${target}&attribute=registrationCount">Registration</a>                 
+                        </div>
+                        <div class="choose col-3" style="display: grid;">
+                            <a class="btn ${target=="new"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=new&attribute=${attribute}">New Subject</a>
+                            <a class="btn ${target=="all"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=all&attribute=${attribute}">All Subject</a>
+                        </div>
+                        <div class="date col-6">
+                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                                <input hidden name="service" value="dashboard">
+
+                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
+                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
+
+                                <input hidden name="option" value=${option}>
+                                <input hidden name="target" value="${target}">
+                                <input hidden name="attribute" value="${attribute}">
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${option=='registration'}">
+                    
+                </c:if>
+                <c:if test="${option=='revenue'}">
+                    <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
+                        <div class="choose col-3" style="display: grid;">
+                            <a class="btn ${target=="total"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=total">Total</a>
+                            <a class="btn ${target=="bySubjectCate"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=bySubjectCate">By Subject Category</a>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="date col-6">
+                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                                <input hidden name="service" value="dashboard">
+                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
+                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
+                                <input hidden name="option" value=${option}>
+                                <input hidden name="target" value="${target}">
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${option=='customer'}">
+                    <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
+                        <div class="choose col-3" style="display: grid;">
+                            <a class="btn ${target=="newlyRegistered"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=newlyRegistered">Newly Registered</a>
+                            <a class="btn ${target=="newlyBought"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=newlyBought">Newly Bought</a>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="date col-6">
+                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                                <input hidden name="service" value="dashboard">
+                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
+                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
+                                <input hidden name="option" value=${option}>
+                                <input hidden name="target" value="${target}">
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${option=='trendOfOrder'}">
+                    <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
+                        <div class="choose col-3" style="display: grid;">
+                            <a class="btn ${target=="success"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=success">Success</a>
+                            <a class="btn ${target=="all"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=all">All</a>
+                        </div>
+                        <div class="col-3"></div>
+                        <div class="date col-6">
+                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                                <input hidden name="service" value="dashboard">
+                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
+                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
+                                <input hidden name="option" value=${option}>
+                                <input hidden name="target" value="${target}">
+                            </form>
+                        </div>
+                    </div>
+                </c:if>
+                <c:choose>
+                    <c:when test="${nameList.size()>0}">
+                        <div class='row' style="height: 300px; width: 100%;">
+                            <div>
+                                <div class="subtabcontent" style='display:block;'>
+                                    <div id="chart" style="height: 300px; width: 100%;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="tab3" class="tabcontent" >
-                            <div class="row">
-                                <div class="col-12" style="width: 100%;height: 700px; background-color: yellowgreen;">
-            
+                    </c:when>
+                    <c:otherwise>
+                        <div class='row' style="height: 300px; width: 100%;">
+                            <div>
+                                <div class="subtabcontent" style='display:block;'>
+                                    <h4>Khong co thong ke nao</h4>
                                 </div>
                             </div>
                         </div>
-                        <div id="tab4" class="tabcontent" >
-                            <div class="row">
-                                <div class="col-12" style="width: 100%;height: 700px; background-color: tomato;">
-            
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab5" class="tabcontent">
-                            <div class="row">
-                                <div class="col-12" style="width: 100%;height: 700px; background-color: skyblue;">
-            
-                                </div>
-                            </div>
-                        </div>-->
+                    </c:otherwise>
+                </c:choose>
+
+
+            </div>
+
         </div>
-
-
-
-
-
-        <script>
-            function openTab(evt, tabName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(tabName).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
-
-            $(".checkbox-menu").on("change", "input[type='checkbox']", function () {
-                $(this).closest("li").toggleClass("active", this.checked);
-            });
-
-            $(document).on('click', '.allow-focus', function (e) {
-                e.stopPropagation();
-            });
-
-            const context = canvas.getContext('2d');
-
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
-            function openSubTab(evt, subtabName) {
-
-                var i, subtabcontent, subtablinks;
-                subtabcontent = document.getElementsByClassName("subtabcontent");
-                for (i = 0; i < subtabcontent.length; i++) {
-                    subtabcontent[i].style.display = "none";
-                }
-                subtablinks = document.getElementsByClassName("subtablinks");
-
-                for (i = 0; i < subtablinks.length; i++) {
-                    subtablinks[i].className = subtablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(subtabName).style.width = "100%";
-                document.getElementById(subtabName).style.height = "300px";
-                document.getElementById(subtabName).style.display = "block";
-
-                evt.currentTarget.className += " active";
-
-            }
-
-        </script>
-
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>
     <jsp:include page="footer.jsp"/>
+    <style>
+        .choose .active,.tab .active{
+            border: #4472c4 3px solid;
+            background-color: white;
+            color:#4472c4;
+            font-weight: bold;
+            opacity:1;
+            font-size:120%;
+        }
+        .choose a, .tab a{
+            border: 1px solid black;
+            margin-bottom: 10px;
+            opacity: 0.7;
+            font-size:120%;
+        }
+        .choose a:hover, .tab a:hover{
+            color: #4472c4;
+            font-weight: bold;
+            opacity:1;
+            font-size:120%;
+        }
+        .date input{
+            border:2px solid #4472c4;
+            font-weight: 600;
+        }
+    </style>
 </html>
