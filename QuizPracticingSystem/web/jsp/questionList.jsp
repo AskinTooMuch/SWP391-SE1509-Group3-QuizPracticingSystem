@@ -108,7 +108,7 @@
                             </select>
 
                         </div>  
-                            <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="floar:left;margin: 5px">Add new Question</button></a>
+                        <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="floar:left;margin: 5px">Add new Question</button></a>
                         <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
                         <%-- Table of QuestionList--%>
                         <table id="table-id" class="table table-bordered table-striped"">
@@ -148,9 +148,11 @@
                                                 <td><a href="quizController?service=editQuestion&type=update&questionId=${questionList.getQuestionId()}"><div class="btn btn-success">Edit</div></a></td>
                                             </tr>
                                         </c:forEach> 
-
                                     </c:otherwise>
                                 </c:choose>
+                                <c:if test="${message != null}">
+                                    <tr style="color: red"><td colspan="8"><c:out value="${message}" /></td></tr>
+                                    </c:if>
                             </tbody>
                         </table>
                         <%--Start Pagination --%>

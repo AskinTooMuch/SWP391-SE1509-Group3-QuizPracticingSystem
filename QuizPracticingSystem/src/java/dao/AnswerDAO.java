@@ -25,4 +25,6 @@ public interface AnswerDAO {
     public int updateAnswer(int answerId, Answer updatedAnswer) throws Exception;
     
     public int addAnswer(Answer newAns) throws Exception;
+    
+    public Answer getAnswersById(int answerId) throws Exception;
 }

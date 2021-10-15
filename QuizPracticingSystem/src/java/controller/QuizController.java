@@ -494,7 +494,7 @@ public class QuizController extends HttpServlet {
                 }
                 request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
             }
-            
+
             /**
              * Service question: add new question, answer to database
              */
@@ -569,7 +569,7 @@ public class QuizController extends HttpServlet {
                     sendDispatcher(request, response, "jsp/questionDetail.jsp");
                 }
             }
-            
+
             /**
              * Service: get edit question information
              */
@@ -581,18 +581,33 @@ public class QuizController extends HttpServlet {
                     SubjectDAO subjectDAO = new SubjectDAOImpl();
                     DimensionDAO dimensionDAO = new DimensionDAOImpl();
                     LessonDAO lessonDAO = new LessonDAOImpl();
+                    AnswerDAO answerDAO = new AnswerDAOImpl();
                     Question updateQuestion = questionDAO.getQuestionById(questionId);
                     ArrayList<Subject> subjectList = subjectDAO.getAllSubjects();
                     ArrayList<Dimension> dimensionList = dimensionDAO.getAllDimension();
                     ArrayList<Lesson> lessonList = lessonDAO.getAllLessons();
+                    ArrayList<Answer> answerList = answerDAO.getAnswersByQuenstionId(questionId);
+                    ArrayList<Answer> wrongAnswer = new ArrayList<>();
+                    Answer trueAnswer = new Answer();
+                    for (Answer answer : answerList) {
+                        if (answer.isIsCorrect()) {
+                            trueAnswer = answer;
+                        } else {
+                            wrongAnswer.add(answer);
+                        }
+                    }
+
+                    request.setAttribute("trueAnswer", trueAnswer);
+                    request.setAttribute("wrongAnswer", wrongAnswer);
                     request.setAttribute("listSubject", subjectList);
                     request.setAttribute("listDimension", dimensionList);
                     request.setAttribute("listLesson", lessonList);
-                    request.setAttribute("updateQuestion", updateQuestion); 
+                    request.setAttribute("listAnswer", answerList);
+                    request.setAttribute("updateQuestion", updateQuestion);
                     request.getRequestDispatcher("jsp/updateQuestion.jsp").forward(request, response);
                 }
             }
-            
+
             /**
              * Service: update edit Question information
              */
@@ -605,11 +620,17 @@ public class QuizController extends HttpServlet {
                 String content = (String) request.getParameter("content").trim();
                 String media = (String) request.getParameter("media").trim();
                 String explanation = (String) request.getParameter("explanation").trim();
-                String trueAnswer = (String) request.getParameter("trueAnswer").trim();
-                String wrongAnswer1 = (String) request.getParameter("wrongAnswer1").trim();
-                String wrongAnswer2 = (String) request.getParameter("wrongAnswer2").trim();
-                String wrongAnswer3 = (String) request.getParameter("wrongAnswer3").trim();
+                String trueAnswerContent = (String) request.getParameter("trueAnswer").trim();
+                String wrongAnswer1Content = (String) request.getParameter("wrongAnswer1").trim();
+                String wrongAnswer2Content = (String) request.getParameter("wrongAnswer2").trim();
+                String wrongAnswer3Content = (String) request.getParameter("wrongAnswer3").trim();
+                int trueAnswerId = Integer.parseInt(request.getParameter("trueAnswerId"));
+                int wrongAnswer1Id = Integer.parseInt(request.getParameter("wrongAnswer1Id"));
+                int wrongAnswer2Id = Integer.parseInt(request.getParameter("wrongAnswer2Id"));
+                int wrongAnswer3Id = Integer.parseInt(request.getParameter("wrongAnswer3Id"));
                 AnswerDAO answerDAO = new AnswerDAOImpl();
+                String message = "";
+                String color = "red";
                 QuestionDAO questionDAO = new QuestionDAOImpl();
                 Question updateQuestion = questionDAO.getQuestionById(updateQuestionId);
                 if (content.length() == 0) {
@@ -617,7 +638,28 @@ public class QuizController extends HttpServlet {
                     request.getRequestDispatcher("quizController?service=getQuestionDetailsInformation")
                             .forward(request, response);
                 }
-                // setup quiz information to edit
+                if (trueAnswerContent == null || trueAnswerContent.length() == 0) {
+                    message = "content can not be empty";
+                } else if (wrongAnswer1Content == null || wrongAnswer1Content.length() == 0) {
+                    message = "content can not be empty";
+                } else if (trueAnswerContent.length() > 1023 || wrongAnswer1Content.length() > 1023
+                        || wrongAnswer2Content.length() > 1023 || wrongAnswer3Content.length() > 1023) {
+                    message = "content is too long";
+                } else {
+                    /* update answer */
+                    Answer trueAnswer = answerDAO.getAnswersById(trueAnswerId);
+                    trueAnswer.setAnswerContent(trueAnswerContent);
+                    Answer wrongAnswer1 = answerDAO.getAnswersById(wrongAnswer1Id);
+                    wrongAnswer1.setAnswerContent(wrongAnswer1Content);
+                    Answer wrongAnswer2 = answerDAO.getAnswersById(wrongAnswer2Id);
+                    wrongAnswer2.setAnswerContent(wrongAnswer2Content);
+                    Answer wrongAnswer3 = answerDAO.getAnswersById(wrongAnswer3Id);
+                    wrongAnswer3.setAnswerContent(wrongAnswer3Content);
+                    answerDAO.updateAnswer(trueAnswerId, trueAnswer);
+                    answerDAO.updateAnswer(trueAnswerId, wrongAnswer1);
+                    answerDAO.updateAnswer(trueAnswerId, wrongAnswer2);
+                    answerDAO.updateAnswer(trueAnswerId, wrongAnswer3);
+                }
                 updateQuestion.setSubjectId(subjectId);
                 updateQuestion.setDimensionId(dimensionId);
                 updateQuestion.setLessonId(lessonId);
@@ -626,16 +668,17 @@ public class QuizController extends HttpServlet {
                 updateQuestion.setStatus(status);
                 updateQuestion.setExplanation(explanation);
                 questionDAO.editQuestion(updateQuestion.getQuestionId(), updateQuestion);
-                request.setAttribute("message", "Update question successfully!!");
+                request.setAttribute("message", "Update successfully!!");
                 request.getRequestDispatcher("quizController?service=getQuestionDetailsInformation")
                         .forward(request, response);
-                
+
             }
-            
+
             /**
              * Service: get Question Details Information
              */
             if (service.equalsIgnoreCase("getQuestionDetailsInformation")) {
+                String message = (String) request.getAttribute("message");
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 DimensionDAO dimensionDAO = new DimensionDAOImpl();
                 LessonDAO lessonDAO = new LessonDAOImpl();
@@ -645,9 +688,12 @@ public class QuizController extends HttpServlet {
                 request.getSession().setAttribute("listSubject", listSubject);
                 request.getSession().setAttribute("listDimension", listDimension);
                 request.getSession().setAttribute("listLesson", listLesson);
-                request.getRequestDispatcher("jsp/questionDetail.jsp").forward(request, response);
+                request.getRequestDispatcher("jsp/questionList.jsp").forward(request, response);
+                if (message != null) {
+                    request.setAttribute("message", message);
+                }
             }
-            
+
             /**
              * Get information from quizDetail to create quiz then add to the
              * database

@@ -28,12 +28,45 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     public ArrayList<Answer> getAllAnswers() throws Exception {
         return null;
     }
-    
+
+    @Override
+    public Answer getAnswersById(int answerId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        
+        String sql = "SELECT * FROM Answer WHERE answerId= ? ";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, answerId);
+            rs = pre.executeQuery();   
+           if (rs.next()) {
+                return new Answer(rs.getInt("answerId"), 
+                        rs.getInt("questionId"), 
+                        rs.getString("answerContent"), 
+                        rs.getBoolean("isCorrect"), 
+                        rs.getBoolean("status"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return null;
+    }
+
     /**
      * get Answer by QuestionId
-     * @param questionId the target question id. It is a <code>int</code> primitive
+     *
+     * @param questionId the target question id. It is a <code>int</code>
+     * primitive
      * @return a list of Answer. It is a <code>java.util.ArrayList</code>
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public ArrayList<Answer> getAnswersByQuenstionId(int questionId) throws Exception {
@@ -76,14 +109,14 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     public int deleteAnswerByQuestionId(int qId) throws Exception {
         return 0;
     }
-    
-    
+
     /**
      * Update Answer
+     *
      * @param answerId It is a <code>int</code>
      * @param updatedAnswer It is a <code>object</code>
      * @return check. It is a <code>int</code>
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int updateAnswer(int answerId, Answer updatedAnswer) throws Exception {
@@ -115,14 +148,13 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
         }
         return check;
     }
-    
+
     /**
      * Add New Answer
      *
-     * @param newAnswer It is a <code>Object</code>
-     * primitive type
+     * @param newAnswer It is a <code>Object</code> primitive type
      * @return count. It is a <code>int</code>
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int addAnswer(Answer newAnswer) throws Exception {

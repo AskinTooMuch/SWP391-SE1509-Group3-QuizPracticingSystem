@@ -144,7 +144,8 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="textarea" name="trueAnswer" >
+                                        <input type="hidden" name="trueAnswerId" value="${trueAnswer.getAnswerId()}">
+                                        <input class="form-control" type="textarea" name="trueAnswer" value="${trueAnswer.getAnswerContent()}">
                                     </div>
                                 </div>
                                 <div>
@@ -153,7 +154,8 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="textarea" name="wrongAnswer1" >
+                                        <input type="hidden" name="wrongAnswer1Id" value="${wrongAnswer.get(0).getAnswerId()}">
+                                        <input class="form-control" type="textarea" name="wrongAnswer1" value="${wrongAnswer.get(0).getAnswerContent()}">
                                     </div>
                                 </div>
                                 <div>
@@ -162,24 +164,26 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="textarea" name="wrongAnswer2" >
+                                        <input type="hidden" name="wrongAnswer2Id" value="${wrongAnswer.get(1).getAnswerId()}">
+                                        <input class="form-control" type="textarea" name="wrongAnswer2" <c:if test="${wrongAnswer.size() >= 2}"> value="${wrongAnswer.get(1).getAnswerContent()}"</c:if>>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="label control-label">Wrong Answer</label>
+                                        <div class="form-group">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                            </span>
+                                            <input type="hidden" name="wrongAnswer3Id" value="${wrongAnswer.get(2).getAnswerId()}">
+                                        <input class="form-control" type="textarea" name="wrongAnswer3" <c:if test="${wrongAnswer.size() == 3}"> value="${wrongAnswer.get(2).getAnswerContent()}"</c:if>>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="label control-label">Wrong Answer</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <input class="form-control" type="textarea" name="wrongAnswer3" >
-                                    </div>
-                                </div>
-                            </div>
 
                             <%-- Display messages, if any --%>
                             <div>
-                                <c:if test="${message != null}" >
-                                    <h5 style="color:red"> <c:out value="${message}"/> </h5>
+                                <c:if test="${!empty message}">
+                                    <h6 style="color: green"><c:out value="${message}"/></h6>
                                 </c:if>
                             </div>
                             <br>

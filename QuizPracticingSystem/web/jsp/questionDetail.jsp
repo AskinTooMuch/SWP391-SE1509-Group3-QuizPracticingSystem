@@ -111,7 +111,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="textarea" name="content" >
+                                    <input class="form-control" type="textarea" name="content" required>
                                 </div>
                             </div>
 
@@ -143,7 +143,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="textarea" name="trueAnswer" >
+                                    <input class="form-control" type="textarea" name="trueAnswer" required>
                                 </div>
                             </div>
                             <div>
@@ -152,7 +152,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="textarea" name="wrongAnswer1" >
+                                    <input class="form-control" type="textarea" name="wrongAnswer1" required>
                                 </div>
                             </div>
                             <div>
