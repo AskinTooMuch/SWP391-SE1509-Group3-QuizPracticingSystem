@@ -145,7 +145,7 @@ public class SubjectController extends HttpServlet {
                     String subjectThumbnail = request.getParameter("subjectThumbnail");
                     boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
                     boolean status = request.getParameter("subjectStatus").equals("1");
-                    String[] categoryId = request.getParameterValues("subjectCategory");
+                    String[] updatedSubjectCateId = request.getParameterValues("subjectCategory");
                     /* Check boundaries */
                     String message = "";
                     String color = "red";
@@ -161,9 +161,37 @@ public class SubjectController extends HttpServlet {
                         color = "green";
                         /* Perform the updates on subject basic data and categories */
                         Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
-                        int basicUpdate = subjectDAO.updateSubjectBasic(subjectId, updateSubject);
-                        int categoryUpdate = subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
-                        int updateNumber = basicUpdate + categoryUpdate;
+                        int updateNumber = 0;
+                        updateNumber += subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+                        String[] currentCategorySubject = subjectCateDAO.getSubjectCateIdBySubject(subjectId);
+                        /* Terminates: eliminates all the unchanged tuples */
+                        if (updatedSubjectCateId != null) { /* If the updated subject category list is not null */
+                            for (int i = 0; i < updatedSubjectCateId.length; i++) {
+                                for (int j = 0; j < currentCategorySubject.length; j++) {
+                                    if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
+                                        updatedSubjectCateId[i]= "-1";
+                                        currentCategorySubject[j] = "-1";
+                                    }
+                                }
+                            }
+                            /* Add categories in the updated list */
+                            for (String categoryId : updatedSubjectCateId) {
+                                if (!categoryId.equals("-1"))
+                                updateNumber += subjectCateDAO.addCategorySubject(subjectId, Integer.parseInt(categoryId));
+                            }
+                            /* Delete categories in the current list */
+                            for (String categoryId : currentCategorySubject) {
+                                if (!categoryId.equals("-1"))
+                                updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+                            }
+                        } else { /* If the updated subject category list is null: delete all category */
+                            for (String categoryId : currentCategorySubject) {
+                                    if (!categoryId.equals("-1"))
+                                    updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+                                }
+                        }
+//                         subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
+//                        int updateNumber = basicUpdate + categoryUpdate;
                         message = "Performed " + updateNumber + " update(s) successfully.";
                     }
                     /* Get the needed lists and redirect to the courseContentJsp */
