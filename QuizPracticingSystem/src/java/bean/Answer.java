@@ -23,13 +23,13 @@ public class Answer {
     private boolean status; /* Answer's status */
     
     /**
-     * Constructor
+     * Blank Constructor
      */
     public Answer() {
     }
 
     /**
-     * Constructor
+     * Complete Constructor
      * @param answerId
      * @param questionId
      * @param answerContent
