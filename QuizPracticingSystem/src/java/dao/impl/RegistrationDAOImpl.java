@@ -213,10 +213,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
     @Override
-    public ArrayList<ItemDashboard> getRegistrationStasistic(String from, String to) throws Exception{
-        
-    }
-    @Override
     public ArrayList<ItemDashboard> getRevenueStasisticBySubjectCate(String from, String to) throws Exception {
         String sql="SELECT SUM(cost) AS revenue,a.validFrom,e.subjectCateName FROM (Registration AS a "
                 + "JOIN PricePackage AS b ON a.packId = b.packId) "

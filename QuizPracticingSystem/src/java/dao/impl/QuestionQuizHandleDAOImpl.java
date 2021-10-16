@@ -76,42 +76,6 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
         }
         return null;
     }
-
-    /**
-     * get list of mark question from taken quiz
-     *
-     * @param quizTakeId the target taken quiz's id. It is a <code>int</code>
-     * primitive type
-     * @return a list of boolean. It is a <code>java.util.ArrayList</code>
-     * object.
-     */
-    @Override
-    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) throws Exception {
-        Connection conn = null;
-        ResultSet rs = null;
-        /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
-        /* Prepared statement for executing sql queries */
-
-        ArrayList<Boolean> markQuestionList = new ArrayList();
-        String sql = "SELECT * FROM [MarkQuestion] WHERE quizTakeId =" + quizTakeId;
-        try {
-            conn = getConnection();
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                markQuestionList.add(rs.getBoolean("status"));
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            closeResultSet(rs);
-            closePreparedStatement(pre);
-            closeConnection(conn);
-        }
-        return markQuestionList;
-    }
-
     /**
      * get the taken quiz for review action
      *

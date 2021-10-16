@@ -22,7 +22,5 @@ public interface QuestionQuizHandleDAO {
 
     public Answer getRightAnswer(QuestionQuizHandle question) throws Exception;
 
-    public ArrayList<Boolean> getMarkQuestionList(int quizTakeId) throws Exception;
-
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) throws Exception;
 }
