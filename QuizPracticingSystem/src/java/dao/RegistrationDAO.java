@@ -27,8 +27,6 @@ public interface RegistrationDAO {
 
     public ArrayList<ItemDashboard> getSubjectStasistic(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception;
 
-    public ArrayList<ItemDashboard> getRegistrationStasistic(String from, String to) throws Exception;
-
     public ArrayList<ItemDashboard> getRevenueStasistic(String from, String to) throws Exception;
 
     public ArrayList<ItemDashboard> getRevenueStasisticBySubjectCate(String from, String to) throws Exception;
