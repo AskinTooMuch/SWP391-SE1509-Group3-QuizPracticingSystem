@@ -509,7 +509,7 @@ public class QuizController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     /* Else: get the Question detail  */
- /* Get parameters from jsp */
+                    /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subject"));
                     int dimensionId = Integer.parseInt(request.getParameter("dimension"));
                     int lessonId = Integer.parseInt(request.getParameter("lesson"));
@@ -528,9 +528,9 @@ public class QuizController extends HttpServlet {
                     String color = "red";
                     if (content == null || content.length() == 0) {
                         message = "content can not be empty";
-                    } else if (content.length() > 255) {
+                    } else if (content.length() > 1023 || media.length()>255) {
                         message = "content is too long";
-                    } else if (content.length() > 511) {
+                    } else if (content.length() > 1023) {
                         message = "explanation is too long";
                     } else if (subjectId == 0) {
                         message = "subject can not be empty";

@@ -90,8 +90,7 @@ public class QuestionDAOTest {
         QuestionDAOImpl instance = new QuestionDAOImpl();
         int expResult = 0;
         int result = instance.addQuestion(newQuestion);
-        assertEquals(1, result);
-        fail("The test case is a prototype.");
+        assertNotEquals(expResult, result);    
     }
 
     /**
@@ -100,13 +99,14 @@ public class QuestionDAOTest {
     @Test
     public void testEditQuestion() throws Exception {
         System.out.println("editQuestion");
-        int questionId = 0;
-        Question editedQuestion = null;
+        int questionId = 1;
+        
         QuestionDAOImpl instance = new QuestionDAOImpl();
+        Question editedQuestion = instance.getQuestionById(questionId);
         int expResult = 0;
         int result = instance.editQuestion(questionId, editedQuestion);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        assertNotEquals(expResult, result);
+        
 
     }
 
@@ -146,13 +146,12 @@ public class QuestionDAOTest {
     @Test
     public void testGetQuestionByContent() throws Exception {
         System.out.println("getQuestionByContent");
-        String content = "";
+        String content = "OOPs";
         QuestionDAOImpl instance = new QuestionDAOImpl();
         ArrayList<QuestionManage> expResult = null;
         ArrayList<QuestionManage> result = instance.getQuestionByContent(content);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.size()>0);
+       
     }
 
     /**
@@ -176,15 +175,14 @@ public class QuestionDAOTest {
     @Test
     public void testGetQuestionManage() throws Exception {
         System.out.println("getQuestionManage");
-        int subjectId = 0;
-        int dimensionId = 0;
-        int lessonId = 0;
+        int subjectId = 1;
+        int dimensionId = 1;
+        int lessonId = 1;
         QuestionDAOImpl instance = new QuestionDAOImpl();
         ArrayList<QuestionManage> expResult = null;
         ArrayList<QuestionManage> result = instance.getQuestionManage(subjectId, dimensionId, lessonId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(5, result.size());
+        
     }
 
     /**
