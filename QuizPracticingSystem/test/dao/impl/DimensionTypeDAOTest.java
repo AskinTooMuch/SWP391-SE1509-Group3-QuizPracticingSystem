@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
 /**
  *
  * @author admin
@@ -49,11 +48,9 @@ public class DimensionTypeDAOTest {
         try {
             System.out.println("getAllDimensionTypes");
             DimensionTypeDAOImpl instance = new DimensionTypeDAOImpl();
-            ArrayList<DimensionType> expResult = null;
+            int expResult = 0;
             ArrayList<DimensionType> result = instance.getAllDimensionTypes();
-            assertEquals(expResult, result);
-            // TODO review the generated test code and remove the default call to fail.
-            fail("The test case is a prototype.");
+            assertTrue(expResult <= result.size());
         } catch (Exception ex) {
             Logger.getLogger(DimensionTypeDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }

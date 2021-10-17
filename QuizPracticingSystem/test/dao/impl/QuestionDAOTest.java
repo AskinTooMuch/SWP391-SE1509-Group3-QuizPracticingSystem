@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.Question;
+import bean.QuestionManage;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -137,6 +138,68 @@ public class QuestionDAOTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getQuestionByContent method, of class QuestionDAOImpl.
+     */
+    @Test
+    public void testGetQuestionByContent() throws Exception {
+        System.out.println("getQuestionByContent");
+        String content = "";
+        QuestionDAOImpl instance = new QuestionDAOImpl();
+        ArrayList<QuestionManage> expResult = null;
+        ArrayList<QuestionManage> result = instance.getQuestionByContent(content);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getQuestionIdCreated method, of class QuestionDAOImpl.
+     */
+    @Test
+    public void testGetQuestionIdCreated() throws Exception {
+        System.out.println("getQuestionIdCreated");
+        Question question = null;
+        QuestionDAOImpl instance = new QuestionDAOImpl();
+        int expResult = 0;
+        int result = instance.getQuestionIdCreated(question);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getQuestionManage method, of class QuestionDAOImpl.
+     */
+    @Test
+    public void testGetQuestionManage() throws Exception {
+        System.out.println("getQuestionManage");
+        int subjectId = 0;
+        int dimensionId = 0;
+        int lessonId = 0;
+        QuestionDAOImpl instance = new QuestionDAOImpl();
+        ArrayList<QuestionManage> expResult = null;
+        ArrayList<QuestionManage> result = instance.getQuestionManage(subjectId, dimensionId, lessonId);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getQuestionForCreateQuiz method, of class QuestionDAOImpl.
+     */
+    @Test
+    public void testGetQuestionForCreateQuiz() throws Exception {
+        System.out.println("getQuestionForCreateQuiz");
+        int numberOfQuestion = 10;
+        int subjectId = 2;
+        int dimensionId = 2;
+        QuestionDAOImpl instance = new QuestionDAOImpl();
+        int expResult = 0;
+        ArrayList<Question> result = instance.getQuestionForCreateQuiz(numberOfQuestion, subjectId, dimensionId);
+        assertNotEquals(expResult, result);
     }
 
     /**

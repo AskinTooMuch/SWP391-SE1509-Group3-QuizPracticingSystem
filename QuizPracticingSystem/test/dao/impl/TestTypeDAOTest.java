@@ -46,11 +46,9 @@ public class TestTypeDAOTest {
     public void testGetAllTestTypes() throws Exception {
         System.out.println("getAllTestTypes");
         TestTypeDAOImpl instance = new TestTypeDAOImpl();
-        ArrayList<TestType> expResult = null;
+        int expResult = 0;
         ArrayList<TestType> result = instance.getAllTestTypes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(expResult <= result.size());
     }
 
     /**

@@ -60,13 +60,11 @@ public class CustomerQuizDAOTest {
     @Test
     public void testGetQuizByUser() throws Exception {
         System.out.println("getQuizByUser");
-        int userId = 0;
+        int userId = 1;
         CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
-        ArrayList<CustomerQuiz> expResult = null;
+        int expResult = 0;
         ArrayList<CustomerQuiz> result = instance.getQuizByUser(userId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(expResult < result.size());
     }
 
     /**
@@ -157,5 +155,33 @@ public class CustomerQuizDAOTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getQuizByTakeQuizId method, of class CustomerQuizDAOImpl.
+     */
+    @Test
+    public void testGetQuizByTakeQuizId() throws Exception {
+        System.out.println("getQuizByTakeQuizId");
+        int quizTakeId = 0;
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
+        CustomerQuiz expResult = null;
+        CustomerQuiz result = instance.getQuizByTakeQuizId(quizTakeId);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of checkTeakedQuiz method, of class CustomerQuizDAOImpl.
+     */
+    @Test
+    public void testCheckTeakedQuiz() throws Exception {
+        System.out.println("checkTeakedQuiz");
+        int quizId = 4;
+        CustomerQuizDAOImpl instance = new CustomerQuizDAOImpl();
+        boolean expResult = true;
+        boolean result = instance.checkTeakedQuiz(quizId);
+        assertEquals(expResult, result);
     }
 }

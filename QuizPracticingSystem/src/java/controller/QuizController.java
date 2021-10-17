@@ -475,11 +475,11 @@ public class QuizController extends HttpServlet {
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 QuizLevelDAO quizLevelDAO = new QuizLevelDAOImpl();
                 TestTypeDAO testTypeDAO = new TestTypeDAOImpl();
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                DimensionDAO dimensionDAO = new DimensionDAOImpl();
                 ArrayList<Subject> subjectList = new ArrayList<>();
                 ArrayList<QuizLevel> quizLevelList = quizLevelDAO.getAllQuizLevel();
                 ArrayList<TestType> testTypeList = testTypeDAO.getAllTestTypes();
-                ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllDimensionTypes();
+                ArrayList<Dimension> dimensionList = dimensionDAO.getAllDimension();
                 if (role.equalsIgnoreCase("admin")) { //if user is a admin then get all subject
                     subjectList = subjectDAO.getAllSubjects();
                 } else if (role.equalsIgnoreCase("expert")) { //if user is a expert then get all asigned subject
@@ -488,7 +488,7 @@ public class QuizController extends HttpServlet {
                 request.setAttribute("subjectList", subjectList);
                 request.setAttribute("quizLevelList", quizLevelList);
                 request.setAttribute("testTypeList", testTypeList);
-                request.setAttribute("dimensionTypeList", dimensionTypeList);
+                request.setAttribute("dimensionTypeList", dimensionList);
                 if (message != null) {
                     request.setAttribute("message", message);
                 }

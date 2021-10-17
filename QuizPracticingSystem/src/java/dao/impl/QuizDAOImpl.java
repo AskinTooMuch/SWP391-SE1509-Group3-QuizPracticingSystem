@@ -787,7 +787,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
-        int check = -1;
+        int check = 0;
         String sql = "  delete from [QuizSystem].[dbo].[QuizQuestion] where quizId = ?";
         try {
             conn = getConnection();

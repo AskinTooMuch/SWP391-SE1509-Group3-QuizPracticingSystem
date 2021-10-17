@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.Dimension;
+import bean.DimensionType;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -125,6 +126,19 @@ public class DimensionDAOTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getSubjectDimensionType method, of class DimensionDAOImpl.
+     */
+    @Test
+    public void testGetSubjectDimensionType() throws Exception {
+        System.out.println("getSubjectDimensionType");
+        int subjectId = 1;
+        DimensionDAOImpl instance = new DimensionDAOImpl();
+        int expResult = 0;
+        ArrayList<DimensionType> result = instance.getSubjectDimensionType(subjectId);
+        assertTrue(expResult <= result.size());
     }
     
 }

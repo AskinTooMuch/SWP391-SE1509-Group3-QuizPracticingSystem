@@ -46,11 +46,9 @@ public class QuizLevelDAOTest {
     public void testGetAllQuizLevel() throws Exception {
         System.out.println("getAllQuizLevel");
         QuizLevelDAOImpl instance = new QuizLevelDAOImpl();
-        ArrayList<QuizLevel> expResult = null;
+        int expResult = 0;
         ArrayList<QuizLevel> result = instance.getAllQuizLevel();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(expResult <= result.size());
     }
 
     /**

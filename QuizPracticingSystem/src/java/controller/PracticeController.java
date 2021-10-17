@@ -18,9 +18,11 @@ import bean.Quiz;
 import bean.Subject;
 import bean.User;
 import bean.CustomerQuiz;
+import bean.Dimension;
 import bean.QuizLevel;
 import bean.TestType;
 import dao.CustomerQuizDAO;
+import dao.DimensionDAO;
 import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuizDAO;
@@ -29,6 +31,7 @@ import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import dao.TestTypeDAO;
 import dao.impl.CustomerQuizDAOImpl;
+import dao.impl.DimensionDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuizDAOImpl;
@@ -72,12 +75,12 @@ public class PracticeController extends HttpServlet {
             if (service.equalsIgnoreCase("getPracticeDetail")) {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                DimensionDAO dimensionDAO = new DimensionDAOImpl();
                 //Get all subject that user have registed
                 ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
-                ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                ArrayList<Dimension> dimension = dimensionDAO.getAllDimension();
                 request.getSession().setAttribute("registedSubject", registedSubject);
-                request.getSession().setAttribute("dimensionTypes", dimensionTypes);
+                request.getSession().setAttribute("dimensionTypes", dimension);
                 request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
             }
 
