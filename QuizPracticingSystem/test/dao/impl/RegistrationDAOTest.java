@@ -21,22 +21,22 @@ import static org.junit.Assert.*;
  * @author Admin
  */
 public class RegistrationDAOTest {
-    
+
     public RegistrationDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -48,11 +48,9 @@ public class RegistrationDAOTest {
     public void testGetAllRegistration() throws Exception {
         System.out.println("getAllRegistration");
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<Registration> expResult = null;
         ArrayList<Registration> result = instance.getAllRegistration();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(13, result.size());
+
     }
 
     /**
@@ -61,11 +59,10 @@ public class RegistrationDAOTest {
     @Test
     public void testGetRegistrationById() throws Exception {
         System.out.println("getRegistrationById");
-        int registrationId = 0;
+        int registrationId = 1;
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        Registration expResult = null;
         Registration result = instance.getRegistrationById(registrationId);
-        assertEquals(expResult, result);
+        assertEquals(2, result.getUserId());
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -135,13 +132,11 @@ public class RegistrationDAOTest {
     @Test
     public void testGetRegistedSubjectbyUserId() throws Exception {
         System.out.println("getRegistedSubjectbyUserId");
-        int userId = 0;
+        int userId = 8;
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
         ArrayList<Subject> expResult = null;
         ArrayList<Subject> result = instance.getRegistedSubjectbyUserId(userId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(11, result.size());
     }
 
     /**
@@ -150,16 +145,13 @@ public class RegistrationDAOTest {
     @Test
     public void testGetSubjectStasistic() throws Exception {
         System.out.println("getSubjectStasistic");
-        String from = "";
-        String to = "";
-        ArrayList<Subject> subjectList = null;
-        String type = "";
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> expResult = null;
+        String from = "2018-1-1";
+        String to = "2022-1-1";
+        ArrayList<Subject> subjectList = instance.getRegistedSubjectbyUserId(8);
+        String type = "revenue";
         ArrayList<ItemDashboard> result = instance.getSubjectStasistic(from, to, subjectList, type);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Elementary Japanese 101", result.get(0).getName());
     }
 
     /**
@@ -168,30 +160,25 @@ public class RegistrationDAOTest {
     @Test
     public void testGetRevenueStasistic() {
         System.out.println("getRevenueStasistic");
-        String from = "";
-        String to = "";
+        String from = "2018-1-1";
+        String to = "2022-1-1";
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> expResult = null;
         ArrayList<ItemDashboard> result = instance.getRevenueStasistic(from, to);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("", result.get(0).getName());
     }
 
     /**
-     * Test of getRevenueStasisticBySubjectCate method, of class RegistrationDAOImpl.
+     * Test of getRevenueStasisticBySubjectCate method, of class
+     * RegistrationDAOImpl.
      */
     @Test
     public void testGetRevenueStasisticBySubjectCate() throws Exception {
         System.out.println("getRevenueStasisticBySubjectCate");
-        String from = "";
-        String to = "";
+        String from = "2018-1-1";
+        String to = "2022-1-1";
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> expResult = null;
         ArrayList<ItemDashboard> result = instance.getRevenueStasisticBySubjectCate(from, to);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Japanese", result.get(0).getName());
     }
 
     /**
@@ -200,13 +187,10 @@ public class RegistrationDAOTest {
     @Test
     public void testConvertJson() throws Exception {
         System.out.println("convertJson");
-        ArrayList<ItemDashboard> viewList = null;
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<String> expResult = null;
+        ArrayList<ItemDashboard> viewList = instance.getRevenueStasisticBySubjectCate("2018-1-1", "2022-1-1");
         ArrayList<String> result = instance.convertJson(viewList);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(0 <= result.size());
     }
 
     /**
@@ -215,25 +199,10 @@ public class RegistrationDAOTest {
     @Test
     public void testGetNameList() throws Exception {
         System.out.println("getNameList");
-        ArrayList<ItemDashboard> viewList = null;
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
+        ArrayList<ItemDashboard> viewList = instance.getRevenueStasisticBySubjectCate("2018-1-1", "2022-1-1");
         ArrayList<String> expResult = null;
         ArrayList<String> result = instance.getNameList(viewList);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(0 <= result.size());
     }
-
-    /**
-     * Test of main method, of class RegistrationDAOImpl.
-     */
-    @Test
-    public void testMain() throws Exception {
-        System.out.println("main");
-        String[] args = null;
-        RegistrationDAOImpl.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

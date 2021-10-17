@@ -50,8 +50,7 @@ public class QuestionQuizHandleDAOTest {
         QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
         QuestionQuizHandle expResult = null;
         QuestionQuizHandle result = instance.generateQuestionById(questionId);
-        assertEquals("nihongo", result.getQuestion().getExplanation());
-       
+        assertEquals("nihongo", result.getQuestion().getExplanation());       
     }
 
     /**
@@ -77,22 +76,7 @@ public class QuestionQuizHandleDAOTest {
         Answer expResult = null;
         String result = questionQH.getAnswerList().get(0).getAnswerContent();
         assertEquals("I", result);
-     
     }
-
-    /**
-     * Test of getMarkQuestionList method, of class QuestionQuizHandleDAO.
-     */
-    @Test
-    public void testGetMarkQuestionList() throws Exception {
-        System.out.println("getMarkQuestionList");
-        int quizTakeId = 1;
-        QuestionQuizHandleDAOImpl instance = new QuestionQuizHandleDAOImpl();
-        ArrayList<Boolean> expResult = null;
-        ArrayList<Boolean> result = instance.getMarkQuestionList(quizTakeId);
-        assertEquals(false, result.get(0));
-    }
-
     /**
      * Test of getReviewQuestion method, of class QuestionQuizHandleDAO.
      */
@@ -105,9 +89,4 @@ public class QuestionQuizHandleDAOTest {
         ArrayList<QuestionQuizHandle> result = instance.getReviewQuestion(quizTakeId);
         assertEquals(1, result.get(0).getQuestion().getQuestionId());
     }   
-
-    /**
-     * Test of main method, of class QuestionQuizHandleDAO.
-     */
-    
 }

@@ -54,7 +54,7 @@ public class QuizQuizHandleDAOTest {
         QuizQuizHandle expResult = null;
         User user = new User();
         QuizQuizHandle result = instance.generateQuiz(questionList, 1,user);
-        assertEquals(30, result.getTime());
+        assertEquals(7200, result.getTime());
     }
 
     /**

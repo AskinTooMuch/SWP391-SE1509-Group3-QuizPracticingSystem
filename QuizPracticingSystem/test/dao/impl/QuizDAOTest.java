@@ -73,9 +73,8 @@ public class QuizDAOTest {
         System.out.println("getQuizByQuizTakeId");
         int quizTakeId = 1;
         QuizDAOImpl instance = new QuizDAOImpl();
-        Quiz expResult = null;
         Quiz result = instance.getQuizByQuizTakeId(quizTakeId);
-        assertEquals(30, result.getQuizDuration());
+        assertEquals(900, result.getQuizDuration());
     }
 
     /**
@@ -163,15 +162,10 @@ public class QuizDAOTest {
     @Test
     public void testGetAllSimulationQuizByUser() throws Exception {
         System.out.println("getAllSimulationQuizByUser");
-        int userId = 0;
-        int subjectId = 0;
-        String quizName = "";
         QuizDAOImpl instance = new QuizDAOImpl();
-        ArrayList<Quiz> expResult = null;
-        ArrayList<Quiz> result = instance.getAllSimulationQuizByUser(userId, subjectId, quizName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        ArrayList<Quiz> result = instance.getAllSimulationQuizByUser(8, 0, "");
+        assertEquals(2, result.size());
+       
     }
 
     /**
