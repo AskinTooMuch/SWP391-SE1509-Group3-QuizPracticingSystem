@@ -60,6 +60,10 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return 0;
     }
 
+    /**
+     *
+     * @return @throws Exception get registed subject by user's Id
+     */
     @Override
     public ArrayList<Subject> getRegistedSubject(int userId) throws Exception {
         Connection conn = null;
@@ -91,6 +95,10 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return registedSubject;
     }
 
+    /**
+     *
+     * @return @throws Exception get registed subject by user's Id
+     */
     @Override
     public ArrayList<Subject> getRegistedSubjectbyUserId(int userId) throws Exception {
         Connection conn = null;
@@ -143,8 +151,12 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return registedSubjectbyUserId;
     }
 
+    /**
+     *
+     * @return @throws Exception Get statistics
+     */
     @Override
-    public ArrayList<ItemDashboard> getSubjectStasistic(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
+    public ArrayList<ItemDashboard> getSubjectStatistics(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
         ArrayList<ItemDashboard> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
@@ -191,7 +203,52 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
-    public ArrayList<ItemDashboard> getRevenueStasistic(String from, String to) {
+    public ArrayList<ItemDashboard> getRegistrationStatistics(String from, String to) throws Exception {
+        ArrayList<ItemDashboard> list = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT COUNT(regId) AS number, regTime, status "
+                + "FROM [Registration] "
+                + "WHERE regTime <= ? AND regTime >= ? "
+                + "GROUP BY regTime, status "
+                + "ORDER BY regTime";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, to);
+            pre.setString(2, from);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                ItemDashboard item = new ItemDashboard();
+                boolean status = rs.getBoolean("status");
+                if (rs.wasNull()) {
+                    item = new ItemDashboard("Submitted",
+                            rs.getDouble("number"),
+                            rs.getDate("regTime").getTime());
+                } else if (status) {
+                    item = new ItemDashboard("Paid",
+                            rs.getDouble("number"),
+                            rs.getDate("regTime").getTime());
+                } else if (!status) {
+                    item = new ItemDashboard("Unpaid",
+                            rs.getDouble("number"),
+                            rs.getDate("regTime").getTime());
+                }
+                list.add(item);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return list;
+    }
+
+    @Override
+    public ArrayList<ItemDashboard> getRevenueStatistics(String from, String to) throws Exception {
         ArrayList<ItemDashboard> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
@@ -208,19 +265,25 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
                 list.add(new ItemDashboard("", rs.getDouble("revenue"),
                         rs.getDate("validFrom").getTime()));
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
         return list;
     }
+
     @Override
-    public ArrayList<ItemDashboard> getRevenueStasisticBySubjectCate(String from, String to) throws Exception {
-        String sql="SELECT SUM(cost) AS revenue,a.validFrom,e.subjectCateName FROM (Registration AS a "
+    public ArrayList<ItemDashboard> getRevenueStatisticsBySubjectCate(String from, String to) throws Exception {
+        String sql = "SELECT SUM(cost) AS revenue,a.validFrom,e.subjectCateName FROM (Registration AS a "
                 + "JOIN PricePackage AS b ON a.packId = b.packId) "
                 + "JOIN [Subject] AS c ON b.subjectId = c.subjectId "
                 + "JOIN CategorySubject AS d ON c.subjectId=d.subjectId "
                 + "JOIN SubjectCate AS e ON d.cateId = e.subjectCateId "
                 + "WHERE validFrom <= ? AND validFrom >= ? "
-                + "GROUP BY a.validFrom,e.subjectCateName ORDER BY a.validFrom";
+                + "GROUP BY a.validFrom,e.subjectCateName ORDER BY a.validFrom ";
         ArrayList<ItemDashboard> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
@@ -235,12 +298,51 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
                 list.add(new ItemDashboard(rs.getString("subjectCateName"), rs.getDouble("revenue"),
                         rs.getDate("validFrom").getTime()));
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
         }
         return list;
     }
-    
-    @Override 
+
+    @Override
+    public ArrayList<Registration> get10NewRegistration() throws Exception {
+        ArrayList<Registration> list = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT top 10 * FROM [Registration] ORDER BY regTime DESC";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Registration(rs.getInt("regId"),
+                        rs.getInt("userId"),
+                        rs.getDate("regTime"),
+                        rs.getInt("packId"),
+                        rs.getDouble("cost"),
+                        rs.getDate("validFrom"),
+                        rs.getDate("validTo"),
+                        rs.getInt("lastUpdateBy"),
+                        rs.getString("note"),
+                        rs.getBoolean("status"))
+                );
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return list;
+    }
+
+    @Override
     public ArrayList<String> convertJson(ArrayList<ItemDashboard> viewList) throws Exception {
         // create a new Gson instance
         ArrayList<String> ret = new ArrayList();
@@ -280,15 +382,12 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return nameList;
     }
-    
-    
-    
+
     public static void main(String[] args) throws Exception {
         RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
         SubjectDAO i = new SubjectDAOImpl();
-        ArrayList<ItemDashboard> list = IRegistration.getSubjectStasistic("2019-12-12", "2019-12-15", i.get5LastAddedSubject(), "revenue");
+        ArrayList<ItemDashboard> list = IRegistration.getRegistrationStatistics("2018-1-1", "2022-1-1");
         ArrayList<String> a = IRegistration.getNameList(list);
-        System.out.print(a.size());
-
+        System.out.print(a.get(1));
     }
 }

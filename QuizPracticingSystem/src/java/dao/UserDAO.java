@@ -16,6 +16,8 @@ public interface UserDAO {
     
     public ArrayList<User> getUserAllUser() throws Exception;
     
+    public ArrayList<User> get10NewUser() throws Exception;
+    
     public User getUserLogin(String userMail, String password) throws Exception;
     
     public User getUserById(int userId) throws Exception;

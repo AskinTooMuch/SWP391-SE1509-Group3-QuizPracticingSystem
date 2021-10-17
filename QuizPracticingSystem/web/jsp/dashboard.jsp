@@ -7,7 +7,7 @@
    Record of change:
    Date        Version     Author          Description
    9/10/21     1.0         NamDHHE150519   First Deploy
-   14/10/21    1.0         NamDHHE150519   update subject stasistic
+   14/10/21    1.0         NamDHHE150519   update subject statistics
 -->
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -26,13 +26,13 @@
         <c:if test="${nameList.size()>0}">
             <script>
                 window.onload = function () {
-                    var data = new Array(${subjectStasistic.size()});
+                    var data = new Array(${statistics.size()});
                     var i = 0;
-                <c:forEach items="${subjectStasistic}" var="string">
+                <c:forEach items="${statistics}" var="string">
                     data[i] =${string};
                     i++;
                 </c:forEach>
-                    var dataPoint = new Array(${subjectStasistic.size()});
+                    var dataPoint = new Array(${statistics.size()});
                     for (var k = 0; k < dataPoint.length; k++) {
                         dataPoint[k] = [];
                     }
@@ -81,21 +81,20 @@
         <jsp:include page="header.jsp"/>
         <div class="container-fluid" style="border-top: 1px solid black;">
 
-            <div class="row">
+            <div class="row" style="text-align: center;">
                 <h4>Dashboard</h4>
             </div>
             <div class="row">
-                <div class="col-md-2"></div>
-                <div class="tab col-md-8" style="border:none;">
-                    <div style="margin-left:125px;">
+                <div class="col-md-4"></div>
+                <div class="tab col-md-5" style="border:none;">
+                    <div >
                         <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=subject&target=new&attribute=revenue">Subjects</a>
                         <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=registration">Registrations</a>
                         <a class="btn ${option=="revenue"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=revenue&target=total">Revenues</a>
                         <a class="btn ${option=="customer"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=customer&target=newlyRegistered">Customers</a>
-                        <a class="btn ${option=="trendOfOrder"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=trendOfOrder&target=success">Trend Of Order</a>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                 </div>
             </div>
             <div class="" class="tabcontent" style="border-top:1px solid black;">
@@ -124,7 +123,18 @@
                     </div>
                 </c:if>
                 <c:if test="${option=='registration'}">
-                    
+                    <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
+                        <div class="choose col-6" style="display: grid;">
+                        </div>
+                        <div class="date col-6">
+                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                                <input hidden name="service" value="dashboard">
+                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
+                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
+                                <input hidden name="option" value=${option}>                              
+                            </form>
+                        </div>
+                    </div>
                 </c:if>
                 <c:if test="${option=='revenue'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
@@ -151,15 +161,34 @@
                             <a class="btn ${target=="newlyBought"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=newlyBought">Newly Bought</a>
                         </div>
                         <div class="col-3"></div>
-                        <div class="date col-6">
-                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
-                                <input hidden name="service" value="dashboard">
-                                <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
-                                <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
-                                <input hidden name="option" value=${option}>
-                                <input hidden name="target" value="${target}">
-                            </form>
-                        </div>
+                    </div>
+                    <div class="row">
+                        <table>
+                            <c:if test="${target=='newlyRegistered'}">
+                                <tr class="table-primary">
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th> 
+                                </tr>
+                                <c:forEach items="${userList}" var="user">
+                                    <tr>
+                                        <td>${user.getUserId()}</td>
+                                        <td>${user.getUserName()}</td>
+                                        <td>
+                                            <c:if test="${user.getRoleId()==1}">Customer</c:if>
+                                            <c:if test="${user.getRoleId()==2}">Sale</c:if>
+                                            <c:if test="${user.getRoleId()==3}">Marketing</c:if>
+                                            <c:if test="${user.getRoleId()==4}">Expert</c:if>
+                                            <c:if test="${user.getRoleId()==5}">Admin</c:if>
+                                        </td>
+                                        <td>${user.getUserMail()}</td>
+                                        <td>${user.getUserMobile()}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
+                        </table>
                     </div>
                 </c:if>
                 <c:if test="${option=='trendOfOrder'}">
@@ -180,6 +209,7 @@
                         </div>
                     </div>
                 </c:if>
+                <c:if test="${option!='customer'}">
                 <c:choose>
                     <c:when test="${nameList.size()>0}">
                         <div class='row' style="height: 300px; width: 100%;">
@@ -201,6 +231,7 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
+                </c:if>
 
 
             </div>
@@ -223,7 +254,7 @@
             border: 1px solid black;
             margin-bottom: 10px;
             opacity: 0.7;
-            font-size:120%;
+            font-size:110%;
         }
         .choose a:hover, .tab a:hover{
             color: #4472c4;

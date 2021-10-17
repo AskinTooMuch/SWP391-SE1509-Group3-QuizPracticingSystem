@@ -25,11 +25,15 @@ public interface RegistrationDAO {
 
     public int deleteRegistration(int registrationId) throws Exception;
 
-    public ArrayList<ItemDashboard> getSubjectStasistic(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception;
+    public ArrayList<ItemDashboard> getSubjectStatistics(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception;
+    
+    public ArrayList<ItemDashboard> getRegistrationStatistics(String from, String to) throws Exception;
 
-    public ArrayList<ItemDashboard> getRevenueStasistic(String from, String to) throws Exception;
+    public ArrayList<ItemDashboard> getRevenueStatistics(String from, String to) throws Exception;
 
-    public ArrayList<ItemDashboard> getRevenueStasisticBySubjectCate(String from, String to) throws Exception;
+    public ArrayList<ItemDashboard> getRevenueStatisticsBySubjectCate(String from, String to) throws Exception;
+    
+    public ArrayList<Registration> get10NewRegistration() throws Exception;
 
     public ArrayList<String> convertJson(ArrayList<ItemDashboard> viewList) throws Exception;
 

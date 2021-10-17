@@ -200,7 +200,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         ArrayList<Subject> subjectList = IRegistration.getRegistedSubject(userId);
         ArrayList<Quiz> quizList = new ArrayList();
         if (!subjectList.isEmpty()) {
-            String sql = "SELECT * from Quiz WHERE testTypeId=1";
+            String sql = "SELECT * from Quiz WHERE testTypeId=1 AND status =1";
             if (subjectId == 0) {
                 int subjectIdList[] = new int[subjectList.size()];
                 for (int i = 0; i < subjectIdList.length; i++) {

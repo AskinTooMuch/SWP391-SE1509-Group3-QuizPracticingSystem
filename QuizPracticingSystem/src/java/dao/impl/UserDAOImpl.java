@@ -25,6 +25,44 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     }
 
     /**
+     * get new users
+     *
+     * @return <code>ArrayList<Use>r</code> object.
+     * @throws java.lang.Exception
+     */
+    @Override
+    public ArrayList<User> get10NewUser() throws Exception {
+        ArrayList<User> newUserList = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT TOP 10 * FROM [User] ORDER BY userId DESC";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                newUserList.add(new User(rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return newUserList;
+    }
+
+    /**
      * get user from User table Using mail and password
      *
      * @param userMail is an String

@@ -26,8 +26,10 @@ import dao.BlogDAO;
 import dao.PostCateDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.UserDAO;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
+import dao.impl.UserDAOImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -136,7 +138,6 @@ public class MarketingController extends HttpServlet {
             if (service.equalsIgnoreCase("dashboard")) {
                 RegistrationDAO IRegistration = new RegistrationDAOImpl();
                 SubjectDAO ISubject = new SubjectDAOImpl();
-
                 String option = request.getParameter("option");
                 String target = request.getParameter("target");
                 String attribute = request.getParameter("attribute");
@@ -154,7 +155,7 @@ public class MarketingController extends HttpServlet {
                 request.setAttribute("currentDate", currentDate);
                 request.setAttribute("from", from);
                 request.setAttribute("to", to);
-
+                
                 if (option == null) {
                     option = "subject";
                     target = "new";
@@ -163,7 +164,8 @@ public class MarketingController extends HttpServlet {
 
                 request.setAttribute("option", option);
                 request.setAttribute("target", target);
-
+                ArrayList<String> statistics = new ArrayList();
+                ArrayList<String> nameList = new ArrayList();
                 if (option.equals("subject")) {
                     request.setAttribute("attribute", attribute);
                     ArrayList<Subject> subjectList = new ArrayList();
@@ -173,42 +175,38 @@ public class MarketingController extends HttpServlet {
                         subjectList = ISubject.getAllSubjects();
                     }
 
-                    ArrayList<ItemDashboard> stasistic = IRegistration.getSubjectStasistic(from, to, subjectList, attribute);
-                    ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
-                    request.setAttribute("subjectStasistic", subjectStasistic);
-                    ArrayList<String> nameList = IRegistration.getNameList(stasistic);
-                    request.setAttribute("nameList", nameList);
+                    ArrayList<ItemDashboard> subjectStatistics = IRegistration.getSubjectStatistics(from, to, subjectList, attribute);
+                    statistics = IRegistration.convertJson(subjectStatistics);
+                    nameList = IRegistration.getNameList(subjectStatistics);
                 }
 
                 if (option.equals("registration")) {
-                    ArrayList<Registration> registrationList = IRegistration.getAllRegistration();
-                    request.setAttribute("registrationList", registrationList);
+                    ArrayList<ItemDashboard> registrationStatistics = IRegistration.getRegistrationStatistics(from, to);
+                    statistics = IRegistration.convertJson(registrationStatistics);
+                    nameList = IRegistration.getNameList(registrationStatistics);
                 }
 
                 if (option.equals("revenue")) {
+                    ArrayList<ItemDashboard> revenueStatistics = new ArrayList();
                     if (target.equals("total")) {
-                        ArrayList<ItemDashboard> stasistic = IRegistration.getRevenueStasistic(from, to);
-                        ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
-                        request.setAttribute("subjectStasistic", subjectStasistic);
-                        ArrayList<String> nameList = IRegistration.getNameList(stasistic);
-                        request.setAttribute("nameList", nameList);
+                        revenueStatistics = IRegistration.getRevenueStatistics(from, to);
                     } else if (target.equals("bySubjectCate")) {
-                        ArrayList<ItemDashboard> stasistic = IRegistration.getRevenueStasisticBySubjectCate(from, to);
-                        ArrayList<String> subjectStasistic = IRegistration.convertJson(stasistic);
-                        request.setAttribute("subjectStasistic", subjectStasistic);
-                        ArrayList<String> nameList = IRegistration.getNameList(stasistic);
-                        request.setAttribute("nameList", nameList);
+                        revenueStatistics = IRegistration.getRevenueStatisticsBySubjectCate(from, to);
                     }
+                    statistics = IRegistration.convertJson(revenueStatistics);
+                    nameList = IRegistration.getNameList(revenueStatistics);
                 }
 
                 if (option.equals("customer")) {
+                    UserDAO IUser = new UserDAOImpl();
                     if (target.equals("newlyRegistered")) {
-                        
+                        ArrayList<User> userList = IUser.get10NewUser();
+                        request.setAttribute("userList", userList);
                     } else if (target.equals("newlyBought")) {
-
+                        ArrayList<Registration> registrationList = IRegistration.get10NewRegistration();
+                        request.setAttribute("registrationList", registrationList);
                     }
                 }
-
                 if (option.equals("trendOfOrderCounts")) {
                     if (target.equals("success")) {
 
@@ -216,6 +214,8 @@ public class MarketingController extends HttpServlet {
 
                     }
                 }
+                request.setAttribute("statistics", statistics);
+                request.setAttribute("nameList", nameList);
                 request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
 
             }

@@ -140,44 +140,44 @@ public class RegistrationDAOTest {
     }
 
     /**
-     * Test of getSubjectStasistic method, of class RegistrationDAOImpl.
+     * Test of getSubjectStatistics method, of class RegistrationDAOImpl.
      */
     @Test
-    public void testGetSubjectStasistic() throws Exception {
-        System.out.println("getSubjectStasistic");
+    public void testGetSubjectStatistics() throws Exception {
+        System.out.println("getSubjectStatistics");
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
         String from = "2018-1-1";
         String to = "2022-1-1";
         ArrayList<Subject> subjectList = instance.getRegistedSubjectbyUserId(8);
         String type = "revenue";
-        ArrayList<ItemDashboard> result = instance.getSubjectStasistic(from, to, subjectList, type);
+        ArrayList<ItemDashboard> result = instance.getSubjectStatistics(from, to, subjectList, type);
         assertEquals("Elementary Japanese 101", result.get(0).getName());
     }
 
     /**
-     * Test of getRevenueStasistic method, of class RegistrationDAOImpl.
+     * Test of getRevenueStatistics method, of class RegistrationDAOImpl.
      */
     @Test
-    public void testGetRevenueStasistic() {
-        System.out.println("getRevenueStasistic");
+    public void testGetRevenueStatistics() throws Exception {
+        System.out.println("getRevenueStatistics");
         String from = "2018-1-1";
         String to = "2022-1-1";
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> result = instance.getRevenueStasistic(from, to);
+        ArrayList<ItemDashboard> result = instance.getRevenueStatistics(from, to);
         assertEquals("", result.get(0).getName());
     }
 
     /**
-     * Test of getRevenueStasisticBySubjectCate method, of class
+     * Test of getRevenueStatisticsBySubjectCate method, of class
      * RegistrationDAOImpl.
      */
     @Test
-    public void testGetRevenueStasisticBySubjectCate() throws Exception {
-        System.out.println("getRevenueStasisticBySubjectCate");
+    public void testGetRevenueStatisticsBySubjectCate() throws Exception {
+        System.out.println("getRevenueStatisticsBySubjectCate");
         String from = "2018-1-1";
         String to = "2022-1-1";
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> result = instance.getRevenueStasisticBySubjectCate(from, to);
+        ArrayList<ItemDashboard> result = instance.getRevenueStatisticsBySubjectCate(from, to);
         assertEquals("Japanese", result.get(0).getName());
     }
 
@@ -188,7 +188,7 @@ public class RegistrationDAOTest {
     public void testConvertJson() throws Exception {
         System.out.println("convertJson");
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> viewList = instance.getRevenueStasisticBySubjectCate("2018-1-1", "2022-1-1");
+        ArrayList<ItemDashboard> viewList = instance.getRevenueStatisticsBySubjectCate("2018-1-1", "2022-1-1");
         ArrayList<String> result = instance.convertJson(viewList);
         assertTrue(0 <= result.size());
     }
@@ -200,7 +200,7 @@ public class RegistrationDAOTest {
     public void testGetNameList() throws Exception {
         System.out.println("getNameList");
         RegistrationDAOImpl instance = new RegistrationDAOImpl();
-        ArrayList<ItemDashboard> viewList = instance.getRevenueStasisticBySubjectCate("2018-1-1", "2022-1-1");
+        ArrayList<ItemDashboard> viewList = instance.getRevenueStatisticsBySubjectCate("2018-1-1", "2022-1-1");
         ArrayList<String> expResult = null;
         ArrayList<String> result = instance.getNameList(viewList);
         assertTrue(0 <= result.size());
