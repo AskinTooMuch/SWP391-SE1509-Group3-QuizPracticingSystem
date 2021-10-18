@@ -93,7 +93,9 @@
                                     <option value="20">20</option>
 
                                 </select>
-
+                                <c:if test="${message != null}">
+                                    <h5 style="color: red"><c:out value="${message}" /></h5>
+                                </c:if>
                             </div>  
                             <a href="jsp/quizDetail.jsp"><button class="btn btn-info" style="float: right; margin: 5px">Add quiz</button></a>
 
@@ -149,9 +151,6 @@
 
                                         </c:otherwise>
                                     </c:choose>
-                                    <c:if test="${message != null}">
-                                        <tr style="color: red"><td colspan="10"><c:out value="${message}" /></td></tr>
-                                    </c:if>
                                 </tbody>
                             </table>
                             <%--Start Pagination --%>

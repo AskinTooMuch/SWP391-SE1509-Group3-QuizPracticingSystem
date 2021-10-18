@@ -216,7 +216,7 @@ public class QuizListController extends HttpServlet {
                         quizDAO.removeQuizQuestion(quizId);//delete all quiz's questions
                         quizDAO.deleteQuiz(quizId);//delete quiz
                         request.setAttribute("message", "Update quiz successfull!!");
-                        request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                        request.getRequestDispatcher("QuizListController?service=getQuizListInformation")
                                 .forward(request, response);
                     }
                 } else {// if this test have already been taken then don't allow change
@@ -247,7 +247,7 @@ public class QuizListController extends HttpServlet {
                 //if quizName have yet been enter, return mesaage
                 if (quizName.length() == 0) {
                     request.setAttribute("message", "You have to enter quiz name");
-                    request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                    request.getRequestDispatcher("QuizListController?service=getQuizListInformation")
                             .forward(request, response);
                 }
                 // setup quiz information to edit
@@ -262,7 +262,7 @@ public class QuizListController extends HttpServlet {
                 updateQuiz.setDimensionTypeId(dimensionId);
                 quizDAO.editQuiz(updateQuiz.getQuizId(), updateQuiz);
                 request.setAttribute("message", "Update quiz successfull!!");
-                request.getRequestDispatcher("practiceController?service=getQuizListInformation")
+                request.getRequestDispatcher("QuizListController?service=getQuizListInformation")
                         .forward(request, response);
             }
         } catch (Exception ex) {
