@@ -13,7 +13,6 @@ import dao.PricePackageDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javafx.print.Printer;
 
 /**
  *

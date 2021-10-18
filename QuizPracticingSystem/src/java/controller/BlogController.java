@@ -52,14 +52,18 @@ public class BlogController extends HttpServlet {
             String service = request.getParameter("service");
             BlogDAO blogInterface = new BlogDAOImpl();
             PostCateDAO postCateInterface = new PostCateDAOImpl();
-            
+
             if (service.equalsIgnoreCase("blogList")) {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
+
                 String searchString = request.getParameter("search");
 
                 if ((searchCate != null) || (searchString != null)) {
+                    if(searchString.length()>100){
+                        request.setAttribute("errorMess", "invalid length");
+                    }else{
                     blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
                     //phan trang sau khi tim kiem theo category
                     String pagingUrl = "";                                                               //url connect to ...?page=          
@@ -67,11 +71,17 @@ public class BlogController extends HttpServlet {
                         for (String category : searchCate) {
                             pagingUrl += "&category=" + category;                                        //Add category parameter
                         }
+                        int[] cateList = new int[searchCate.length];
+                        for (int i = 0; i < searchCate.length; i++) {
+                            cateList[i] = Integer.parseInt(searchCate[i]);
+                        }
+                        request.setAttribute("cateList", cateList);
                     }
                     if (searchString != null) {
-                        pagingUrl += "&search=" + searchString;                                          //Add search parameter
+                        pagingUrl += "&search=" + searchString; //Add search parameter
+                        request.setAttribute("search", searchString);
                     }
-                    request.setAttribute("pagingUrl", pagingUrl);
+                    request.setAttribute("pagingUrl", pagingUrl);}
                 }
 
                 //xu li phan trang
@@ -102,8 +112,7 @@ public class BlogController extends HttpServlet {
             /**
              * Service blog detail: show detail of the blog
              */
-            if (service.equalsIgnoreCase(
-                    "blogDetail")) {
+            if (service.equalsIgnoreCase("blogDetail")) {
                 int blogId = Integer.parseInt(request.getParameter("blogId"));
                 Blog blog = blogInterface.getBlogById(blogId);
                 request.setAttribute("blog", blog);
@@ -117,7 +126,7 @@ public class BlogController extends HttpServlet {
                 request.setAttribute("lastBlogs", lastBlogs);
                 request.getRequestDispatcher("jsp/blogDetail.jsp").forward(request, response);
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");

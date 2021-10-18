@@ -26,6 +26,7 @@
         <jsp:include page="header.jsp"/>
 
         <div class="container-fluid" style="border-top: 1px black solid;">
+            <%-- search box --%>
             <div class="row">
                 <div class="left col-3" style="margin-top:42px; border-right: 1px black solid;">
                     <div>
@@ -64,7 +65,7 @@
                         </c:forEach>
                     </div>
                 </div>
-
+<%-- mainContent --%>
                 <div class="right col-9">
                     <c:set var="thisBlog" value="${blog}"/>
                     <div class="info row">
@@ -91,6 +92,7 @@
                 </div>
             </div>
         </div>
+<%-- end mainContent --%>
 
     </body>
     <jsp:include page="footer.jsp"/>

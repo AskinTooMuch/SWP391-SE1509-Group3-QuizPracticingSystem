@@ -207,13 +207,6 @@ public class MarketingController extends HttpServlet {
                         request.setAttribute("registrationList", registrationList);
                     }
                 }
-                if (option.equals("trendOfOrderCounts")) {
-                    if (target.equals("success")) {
-
-                    } else if (target.equals("all")) {
-
-                    }
-                }
                 request.setAttribute("statistics", statistics);
                 request.setAttribute("nameList", nameList);
                 request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);

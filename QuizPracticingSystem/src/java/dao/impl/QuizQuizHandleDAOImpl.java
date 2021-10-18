@@ -1,15 +1,10 @@
-/* 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 17, 2021, 9:33:11 PM
-    Record of change:
-    Date        Version     Author          Description
-    17/9/21     1.0         NamDHHE150519   First Deploy
-    30/9/21     1.1         NamDHHE150519   update method
- */
- /*
-  Lớp này có các phương thức thực hiện tạo ra những bài quiz từ các câu hỏi 
-  lấy từ database phục vụ funtion QuizHandle hoặc QuizReview
-  @author Đinh Hải Nam
+/**
+ * Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ * Created on : Sep 17, 2021, 9:33:11 PM
+ * Record of change:
+ * Date        Version     Author          Description
+ * 17/9/21     1.0         NamDHHE150519   First Deploy
+ * 30/9/21     1.1         NamDHHE150519   update method
  */
 package dao.impl;
 
@@ -29,8 +24,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
+ * Lớp này có các phương thức thực hiện tạo ra những bài quiz từ các câu hỏi lấy
+ * từ database phục vụ funtion QuizHandle hoặc QuizReview
  *
- * @author ADMN
+ * @author Đinh Hải Nam
  */
 public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandleDAO {
 
@@ -41,11 +38,13 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      * <code>java.util.ArrayList</code> object
      * @param quizId the Id of the quiz whose above questionList. It is
      * <code>int</code> primitive type
+     * @param user user doing quiz. <code>User</code> object
      *
      * @return a <code>QuizQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
     @Override
-    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId,User user) throws Exception {
+    public QuizQuizHandle generateQuiz(ArrayList<Question> questionList, int quizId, User user) throws Exception {
         QuizQuizHandle quiz = new QuizQuizHandle();
         QuestionQuizHandleDAOImpl questionQuizzHandleDAO = new QuestionQuizHandleDAOImpl();
         QuizDAOImpl quizDAO = new QuizDAOImpl();
@@ -55,7 +54,7 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
             QuestionQuizHandle questionQH = questionQuizzHandleDAO.generateQuestionById(questionId);//turn a question into question quiz handle
             quiz.addQuestion(questionQH);                                                           //add question to list           
         }
-        
+
         quiz.setQuiz(quizInDatabase);
         quiz.setTime(quizInDatabase.getQuizDuration());
         quiz.setUser(user);
@@ -68,6 +67,7 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      * @param quiz the target calculateScore quiz. It is a
      * <code>QuizQuizHandle</code> object
      * @return a <code>QuizQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public double calculateScore(QuizQuizHandle quiz) throws Exception {
@@ -98,6 +98,7 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      *
      * @param quiz the target quiz. It is a <code>QuizQuizHandle</code> object
      * @return a <code>QuizQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public int getAnsweredQuestion(QuizQuizHandle quiz) throws Exception {
@@ -117,6 +118,7 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
      * @param quizTakeId the target quiz's id. It is a <code>int</code>
      * primitive type
      * @return a <code>QuizQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public QuizQuizHandle getReviewQuiz(int quizTakeId) throws Exception {

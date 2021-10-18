@@ -63,6 +63,10 @@
     <servlet>
         <servlet-name>QuizListController</servlet-name>
         <servlet-class>controller.QuizListController</servlet-class>
+</servlet>
+    <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>controller.chucnv.ChangePassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
@@ -123,6 +127,11 @@
     <servlet-mapping>
         <servlet-name>QuizListController</servlet-name>
         <url-pattern>/QuizListController</url-pattern>
+</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>

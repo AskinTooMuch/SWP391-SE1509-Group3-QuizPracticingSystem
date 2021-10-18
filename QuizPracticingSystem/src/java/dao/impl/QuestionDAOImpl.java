@@ -1,4 +1,4 @@
-    /* 
+/* 
     Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Sep 17, 2021, 9:33:11 PM
     PostCateDAO
@@ -10,12 +10,6 @@
     30/9/21     1.1         NamDHHE150519   update method
     05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage, addQuestion
     07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
- */
- /*
-  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
-  quan tới bảng Question phục vụ cho các chức năng liên quan tới Question của 
-  dự án
-  @author Đinh Hải Nam
  */
 package dao.impl;
 
@@ -31,6 +25,13 @@ import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+/**
+ * Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database
+ * liên quan tới bảng Question phục vụ cho các chức năng liên quan tới Question
+ * của dự án
+ *
+ * @author Đinh Hải Nam
+ */
 public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
 
     /**
@@ -197,14 +198,12 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionManageList;
     }
-    
+
     /**
      * get New QuestionId added
      *
-     * @param question It is a <code>Object</code>
-     * primitive type
-     * @return questionId. It is a <code>int</code>
-     * object.
+     * @param question It is a <code>Object</code> primitive type
+     * @return questionId. It is a <code>int</code> object.
      */
     @Override
     public int getQuestionIdCreated(Question question) throws Exception {
@@ -250,14 +249,12 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return questionId;
     }
-    
+
     /**
      * get New QuestionId added
      *
-     * @param newQuestion It is a <code>Object</code>
-     * primitive type
-     * @return count. It is a <code>int</code>
-     * object.
+     * @param newQuestion It is a <code>Object</code> primitive type
+     * @return count. It is a <code>int</code> object.
      */
     @Override
     public int addQuestion(Question newQuestion) throws Exception {
@@ -288,14 +285,14 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
         }
         return count;
     }
-    
-    
+
     /**
-     * edit Question 
+     * edit Question
+     *
      * @param questionId the target questionId. It is a <code>int</code>
      * @param question the target questionId. It is a <code>Object</code>
      * @return i. It is a <code>int</code>
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int editQuestion(int questionId, Question question) throws Exception {
@@ -315,7 +312,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
                 + " WHERE [questionId] = ?";
         try {
             conn = getConnection();
-            pre = conn.prepareStatement(sql);            
+            pre = conn.prepareStatement(sql);
             pre.setInt(1, question.getSubjectId());
             pre.setInt(2, question.getDimensionId());
             pre.setInt(3, question.getLessonId());

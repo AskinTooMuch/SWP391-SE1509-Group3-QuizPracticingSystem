@@ -1,17 +1,11 @@
-/* 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 17, 2021, 9:33:11 PM
-    QuestionQuizHandleDAO
-    Record of change:
-    Date        Version     Author          Description
-    17/9/21     1.0         NamDHHE150519   First Deploy
-    30/9/21     1.1         NamDHHE150519   update method
- */
- /*
-  Lớp này có các phương thức thực hiện tạo ra những câu hỏi trong bài quiz bằng 
-  các câu hỏi lấy từ database, kết hợp với QuizQuizHandle để
-  phục vụ funtion QuizHandle hoặc QuizReview
-  @author Đinh Hải Nam
+/**
+ * Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ * Created on : Sep 17, 2021, 9:33:11 PM
+ * QuestionQuizHandleDAO
+ * Record of change:
+ * Date        Version     Author          Description
+ * 17/9/21     1.0         NamDHHE150519   First Deploy
+ * 30/9/21     1.1         NamDHHE150519   update method
  */
 package dao.impl;
 
@@ -25,6 +19,13 @@ import dao.QuestionQuizHandleDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+/**
+ * Lớp này có các phương thức thực hiện tạo ra những câu hỏi trong bài quiz bằng
+ * các câu hỏi lấy từ database, kết hợp với QuizQuizHandle để phục vụ funtion
+ * QuizHandle hoặc QuizReview
+ *
+ * @author Đinh Hải Nam
+ */
 public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQuizHandleDAO {
 
     @Override
@@ -76,6 +77,7 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
         }
         return null;
     }
+
     /**
      * get the taken quiz for review action
      *

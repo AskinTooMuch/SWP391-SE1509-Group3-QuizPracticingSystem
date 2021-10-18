@@ -1,8 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  DBConnection
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  23/9/21     1.0         ChucNVHE150618      First Deploy
+*/
 package dao;
 
 import java.sql.*;
@@ -10,8 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Lớp này khởi tạo connection tới database
  *
- * @author dungd
+ * @author NamDH
  */
 public class DBConnection {
     Connection connection = null;

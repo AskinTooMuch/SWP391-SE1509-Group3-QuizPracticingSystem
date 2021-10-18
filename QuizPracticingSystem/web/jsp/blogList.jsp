@@ -30,26 +30,34 @@
 
         <jsp:include page="header.jsp"/>
         <hr>
-
+        
         <div class="container-fluid">
             <div class="row">
+                <%-- search box --%>
                 <div class="left col-3" style="margin-top:42px; border-right: 1px solid black;">
                     <div>
-                        <form action="${contextPath}/marketingController" method="GET">
-                            <div class="filter" style="">      
-                                <input type="text" name="search" class="form-control" style="border-radius: 5px" placeholder="Search in BlogList">
+                        <form action="${contextPath}/blog" method="GET">
+                            <div class="filter" style=""> 
+                                <h6 style="color:red;">${errorMess}</h6>
+                                <input type="text" name="search" class="form-control" style="border-radius: 5px" placeholder="Search in BlogList" value="${search}">
                                 <div>
                                     <h5>Category</h5>
                                 </div>
                                 <div>
                                     <c:forEach items="${requestScope.postCateList}" var="category">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="category" value="${category.getPostCateId()}">
+                                            <input class="form-check-input" type="checkbox" name="category" value="${category.getPostCateId()}" 
+                                                   <c:forEach items="${cateList}" var="cate">
+                                                       <c:if test="${category.getPostCateId()==cate}">
+                                                           checked
+                                                       </c:if>
+                                                   </c:forEach>
+                                                   >
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 ${category.getPostCateName()}
                                             </label>
                                         </div>
-                                    </c:forEach>
+                                    </c:forEach>    
                                 </div>
                                 <input type="submit" class="btn btn-primary" value="Search"/>
                                 <input hidden name="service" value="blogList"/>
@@ -70,6 +78,7 @@
                         </c:forEach>
                     </div>
                 </div>
+                <%-- main content --%>
                 <div class="right col-9">
                     <div style="margin-left:9%;">
                         <div class ="row">
@@ -86,7 +95,7 @@
                                         <h8>Author ${blog.getAuthor().getUserName()}</h8>
                                         <h5 class="card-title">${blog.getBlogTitle()}</h5>
                                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="${contextPath}/marketingController?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                        <a href="${contextPath}/blog?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -101,6 +110,7 @@
                                 }
                             </style>
                         </div>
+                        <%-- pagination --%>
                         <c:set var="page" value="${requestScope.page}"/>  
                         <ul class="pagination" style="margin:auto;">
                             <c:forEach begin="${1}" end="${requestScope.pagenum}" var="i">

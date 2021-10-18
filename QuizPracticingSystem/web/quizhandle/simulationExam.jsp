@@ -45,8 +45,9 @@
                     <div class="input-group">
                         <form action="quizHandleController" method="GET">
                             <div style="display: flex;">
+                                <h6 style="color:red;">${errorMess}</h6>
                                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                                       aria-describedby="search-addon" name="subjectSearchName" />
+                                       aria-describedby="search-addon" name="searchQuizName" value="${searchQuizName}" />
                                 <input hidden name="subjectSearchId" value="${subjectSearchId}">
                                 <input hidden name="service" value="simulationExam">
                                 <button onclick="submit()" type="button" class="btn btn-outline-primary">search</button>
@@ -66,7 +67,6 @@
                         <th>Duration</th>
                         <th>Pass Rate</th>   
                         <th>Action</th>
-
                     </tr>
                     <c:forEach items="${simulationList}" var="quiz">
                         <tr>

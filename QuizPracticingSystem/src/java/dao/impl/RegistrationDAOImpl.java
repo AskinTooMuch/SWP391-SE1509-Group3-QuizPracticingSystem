@@ -11,8 +11,6 @@
  */
 package dao.impl;
 
-import bean.ItemDashboard;
-import bean.Quiz;
 import bean.Registration;
 import bean.Subject;
 import bean.ItemDashboard;
@@ -24,7 +22,6 @@ import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -62,6 +59,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
 
     /**
      *
+     * @param userId
      * @return @throws Exception get registed subject by user's Id
      */
     @Override
@@ -97,6 +95,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
 
     /**
      *
+     * @param userId
      * @return @throws Exception get registed subject by user's Id
      */
     @Override

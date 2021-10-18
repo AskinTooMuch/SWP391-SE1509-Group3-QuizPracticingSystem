@@ -245,30 +245,30 @@ public class UserController extends HttpServlet {
                 }
             }
 
-            if (service.equalsIgnoreCase("changePassword")) {
-                String password = request.getParameter("oldPassword");
-                String newPassword = request.getParameter("newPassword");
-                User currUser = (User) request.getSession().getAttribute("currUser");
-
-                if (currUser.getPassword().equals(password)) {
-                    currUser.setPassword(newPassword);
-                    int i = userInterface.updateUser(currUser);
-                    if (i != 0) {
-                        request.setAttribute("message", "Password changed successfully.");
-                        request.setAttribute("color", "green");
-                        sendDispatcher(request, response, "login/changePassword.jsp");
-                    } else {
-                        request.setAttribute("message", "Password changed failed.");
-                        request.setAttribute("color", "red");
-                        sendDispatcher(request, response, "login/changePassword.jsp");
-                    }
-                } else {
-                    request.setAttribute("message", "Password incorrect.");
-                    request.setAttribute("color", "red");
-                    sendDispatcher(request, response, "login/changePassword.jsp");
-                }
-
-            }
+//            if (service.equalsIgnoreCase("changePassword")) {
+//                String password = request.getParameter("oldPassword");
+//                String newPassword = request.getParameter("newPassword");
+//                User currUser = (User) request.getSession().getAttribute("currUser");
+//
+//                if (currUser.getPassword().equals(password)) {
+//                    currUser.setPassword(newPassword);
+//                    int i = userInterface.updateUser(currUser);
+//                    if (i != 0) {
+//                        request.setAttribute("message", "Password changed successfully.");
+//                        request.setAttribute("color", "green");
+//                        sendDispatcher(request, response, "login/changePassword.jsp");
+//                    } else {
+//                        request.setAttribute("message", "Password changed failed.");
+//                        request.setAttribute("color", "red");
+//                        sendDispatcher(request, response, "login/changePassword.jsp");
+//                    }
+//                } else {
+//                    request.setAttribute("message", "Password incorrect.");
+//                    request.setAttribute("color", "red");
+//                    sendDispatcher(request, response, "login/changePassword.jsp");
+//                }
+//
+//            }
 
             //update user information
             if (service.equalsIgnoreCase("editProfile")) {

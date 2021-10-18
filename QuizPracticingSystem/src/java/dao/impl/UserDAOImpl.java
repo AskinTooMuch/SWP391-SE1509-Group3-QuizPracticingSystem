@@ -68,6 +68,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
      * @param userMail is an String
      * @param password is an String
      * @return <code>User</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public User getUserLogin(String userMail, String password) throws Exception {
@@ -111,6 +112,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
      *
      * @param userId is an int
      * @return <code>User</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public User getUserById(int userId) throws Exception {
@@ -197,7 +199,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
      * @return <code>User</code> object.
      */
     @Override
-    public User getUserByMobile(String Moblie) throws Exception {
+    public User getUserByMobile(String userMobile) throws Exception {
         Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
@@ -207,7 +209,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setString(1, Moblie);
+            pre.setString(1, userMobile);
             rs = pre.executeQuery();
             while (rs.next()) {
                 return new User(rs.getInt("userId"),

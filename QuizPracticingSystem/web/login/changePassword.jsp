@@ -34,47 +34,46 @@
         <div class="main">
 
             <%-- Login form --%>
-            <div class="container" style="align-self: center; min-height: 50vh">
-                
+            <div class="container" style="align-self: center; min-height: 50vh; margin-top: 3vh;">
                     <div class="row">
                         <%-- Bootstrap to center form --%>
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <%-- Start form --%>
-                            <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
-                            <%-- Enter old password --%>
-                            <label class="label control-label">Old Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-user"></span></span>
-                                <input type="password" class="form-control" name="oldPassword" placeholder="" required>
-                            </div>
-                            <%-- Enter new password --%>
-                            <label class="label control-label">New Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="" onkeyup='check();' required>
-                            </div>
-                            <%-- Confirm new password --%>
-                            <label class="label control-label">Confirm Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();' required>
-                                
-                            </div>
-                            <span id='message'></span>
-                            <br>
-                            <%-- Submit form --%>
-                            <div class="input-group">
-                                <button type="submit" id="submit" class="btn btn-success">Change password!</button>
-                                <input type="hidden" name="service" value="changePassword">
-                            </div>
+                            <form action="${contextPath}/changePassword" method="GET" name="changePassword" id="changePassword">
+                                <div class="row" style="margin-top: 3vh;">
+                                    <div class="col-md-4" style="text-align: right"><label class="label control-label">Old Password</label></div>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" name="oldPassword" placeholder="" required>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 3vh;">
+                                    <div class="col-md-4" style="text-align: right"><label class="label control-label">New Password</label></div>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="" onkeyup='check();' required>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 3vh;">
+                                    <div class="col-md-4" style="text-align: right"><label class="label control-label">Confirm Password</label></div>
+                                    <div class="col-md-8">
+                                        <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();' required>
+                                    </div>
+                                </div>
+                                <div id="message" style="text-align: center; margin-top: 2vh"></div>
+                                <br>
+                                <%-- Submit form --%>
+                                <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <button type="submit" id="submit" class="btn btn-success">Change password!</button>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            
                             </form>
                             <%-- Display messages, if any --%>
-                            <div>
-                                <h5 style="color:${color}"><c:out value="${message}"/></h5>
+                            <div style="text-align: center; margin-top: 2vh">
+                                <h6 style="color:${color}"><c:out value="${message}"/></h6>
                             </div>
                         </div>
                         <div class="col-md-3"></div>
