@@ -38,7 +38,7 @@
                         <c:set var="createTime" value="${ param.createTime }"/>
                         <c:choose>
                             <c:when test = "${ ((currentTim - createTime) / 1000 / 60) < 3 }">
-                                <form action="${contextPath}/userController" method="post">
+                                <form action="${contextPath}/ResetPasswordController" method="post">
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-6">
@@ -78,7 +78,7 @@
                         </c:choose>
                     </c:when>
                     <c:otherwise>
-                        <form action="${contextPath}/userController" method="post">
+                        <form action="${contextPath}/ResetPasswordController" method="post">
                             <div class="row">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-6">

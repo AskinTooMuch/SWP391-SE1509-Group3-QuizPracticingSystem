@@ -34,13 +34,13 @@
         <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
             <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
             <c:if test="${subjectList == null}">
-                <c:redirect url="/quizController?service=getQuizDetailInformation"/>
+                <c:redirect url="/QuizListController?service=getQuizDetailInformation"/>
             </c:if>        
             <div class="main">
                 <%-- Login form --%>
                 <div class="container" style="align-self: center; min-height: 50vh">
                     <%-- Start form --%>
-                    <form action="${contextPath}/quizController" method="POST">
+                    <form action="${contextPath}/QuizListController" method="POST">
                         <div class="row">
                             <%-- Bootstrap to center form --%>
                             <div class="col-md-3"></div>

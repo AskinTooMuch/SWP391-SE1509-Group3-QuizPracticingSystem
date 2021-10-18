@@ -243,7 +243,6 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
                 }
-
             }
 
             if (service.equalsIgnoreCase("changePassword")) {

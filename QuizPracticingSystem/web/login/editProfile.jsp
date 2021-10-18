@@ -36,7 +36,7 @@
             <img class="u-image u-image-default u-image-2" src="${contextPath}/images/login/logo-login.png" alt="" data-image-width="492" data-image-height="93">
 
             <div class="u-form u-form-1">
-                <form action="${contextPath}/userController?service=editProfile" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
+                <form action="${contextPath}/UserProfileController?service=editProfile" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
 
                     <div class="u-form-group u-form-name">
                         <p>Enter your user name:</p>

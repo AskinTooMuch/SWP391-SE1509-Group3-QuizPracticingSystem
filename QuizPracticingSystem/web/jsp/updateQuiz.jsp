@@ -40,7 +40,7 @@
                 <%-- Login form --%>
                 <div class="container" style="align-self: center; min-height: 50vh">
                     <%-- Start form --%>
-                    <form action="${contextPath}/practiceController" method="POST">
+                    <form action="${contextPath}/QuizListController" method="POST">
                         <div class="row">
                             <%-- Bootstrap to center form --%>
                             <div class="col-md-3"></div>

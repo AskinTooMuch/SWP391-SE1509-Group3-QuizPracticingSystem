@@ -37,7 +37,7 @@
 
                 <%-- Check If subjectQuizList,testTypeQuizListis avaiable not, if not redirect to load information --%>
                 <c:if test="${subjectQuizList==null || testTypeQuizList==null}">
-                    <c:redirect url="/practiceController?service=getQuizListInformation"/>
+                    <c:redirect url="/QuizListController?service=getQuizListInformation"/>
                 </c:if>
                 <div class="row" style="margin-top: 3rem">
                     <div class="col-md-1"></div>
@@ -45,7 +45,7 @@
                         <h2 class="text-center">Filter</h2>
                         <div style="margin-bottom: 20px;">
                             <%-- Start search form --%>
-                            <form action = "${contextPath}/practiceController" method="POST" class="navbar-form">
+                            <form action = "${contextPath}/QuizListController" method="POST" class="navbar-form">
                                 <div class="form-group">
                                     <input  class="form-control" type="text" id="content" placeholder="Content... " name="quizName">
                                     <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
@@ -54,7 +54,7 @@
                             </form>                     
                         </div>
                         <%-- Start filter form --%>
-                        <form action="${contextPath}/practiceController" method="POST">
+                        <form action="${contextPath}/QuizListController" method="POST">
                             <div class="form-group">
                                 <h5>Filter by Subject</h5>
                                 <%-- Choose Subject Filter --%>
@@ -141,8 +141,8 @@
                                                         </c:if>
                                                     </td>
                                                     <td>
-                                                        <a href="practiceController?service=editQuiz&type=update&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Edit</div></a>
-                                                        <a href="practiceController?service=editQuiz&type=delete&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Delete</div></a>
+                                                        <a href="QuizListController?service=editQuiz&type=update&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Edit</div></a>
+                                                        <a href="QuizListController?service=editQuiz&type=delete&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Delete</div></a>
                                                     </td>
                                                 </tr>
                                             </c:forEach> 

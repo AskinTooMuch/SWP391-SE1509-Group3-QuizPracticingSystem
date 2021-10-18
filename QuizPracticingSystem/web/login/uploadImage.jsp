@@ -30,7 +30,7 @@
     </head>
     <body>
 
-        <form method="post" action="${contextPath}/userController?service=uploadImage" enctype="multipart/form-data">
+        <form method="post" action="${contextPath}/UserProfileController?service=uploadImage" enctype="multipart/form-data">
             <div class="container">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
