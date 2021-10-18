@@ -34,16 +34,16 @@
                             Search by Subject
                         </a> 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="${contextPath}/quizHandleController?service=simulationExam">All</a>
+                            <a class="dropdown-item" href="${contextPath}/simulationExamController">All</a>
                             <c:forEach items="${subjectList}" var="subject">
-                                <a class="dropdown-item" href="${contextPath}/quizHandleController?service=simulationExam&subjectSearchId=${subject.getSubjectId()}">${subject.getSubjectName()}</a>
+                                <a class="dropdown-item" href="${contextPath}/simulationExamController?subjectSearchId=${subject.getSubjectId()}">${subject.getSubjectName()}</a>
                             </c:forEach>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="input-group">
-                        <form action="quizHandleController" method="GET">
+                        <form action="simulationExamController" method="GET">
                             <div style="display: flex;">
                                 <h6 style="color:red;">${errorMess}</h6>
                                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"

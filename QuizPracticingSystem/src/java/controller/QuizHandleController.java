@@ -67,7 +67,6 @@ public class QuizHandleController extends HttpServlet {
             QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
             QuestionQuizHandleDAO questionQHInterface = new QuestionQuizHandleDAOImpl();
             QuestionDAO questionInterface = new QuestionDAOImpl();
-            QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
 
             if (service.equalsIgnoreCase("quizEntrance")) {
@@ -203,7 +202,7 @@ public class QuizHandleController extends HttpServlet {
 
                 } else {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("systemConfig/error.jsp");
+                    response.sendRedirect("error.jsp");
                 }
             }
             /**
@@ -225,7 +224,7 @@ public class QuizHandleController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
                 } else {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("systemConfig/error.jsp");
+                    response.sendRedirect("error.jsp");
                 }
             }
 
@@ -246,7 +245,7 @@ public class QuizHandleController extends HttpServlet {
                     return;
                 } else if (object == null) {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("systemConfig/error.jsp");
+                    response.sendRedirect("error.jsp");
                 }
 
             }
@@ -335,39 +334,6 @@ public class QuizHandleController extends HttpServlet {
                 } else {
                     request.getRequestDispatcher("quizhandle/quizReview.jsp").forward(request, response);
                 }
-            }
-            /**
-             * Service simulation exam: view all exam quiz avaliable from the
-             * subject customer had registered
-             */
-            if (service.equalsIgnoreCase("simulationExam")) {
-                HttpSession session = request.getSession();
-                QuizQuizHandle doingQuiz = (QuizQuizHandle) session.getAttribute("doingQuiz");
-                //check if user currently taking a quiz
-                if (doingQuiz != null) {
-                    request.setAttribute("doingQuiz", doingQuiz);
-                }
-
-                //information of simulation exam
-                RegistrationDAO IRegistration = new RegistrationDAOImpl();
-                User currUser = (User) session.getAttribute("currUser");
-                String subjectSearchIdRaw = request.getParameter("subjectSearchId");
-                int subjectSearchId = 0;
-                if (subjectSearchIdRaw != null && !subjectSearchIdRaw.equalsIgnoreCase("")) {
-                    subjectSearchId = Integer.parseInt(subjectSearchIdRaw);
-                    request.setAttribute("subjectSearchId", +subjectSearchId);
-                }
-
-                String searchQuizName = request.getParameter("searchQuizName");
-                if(searchQuizName!=null && searchQuizName.length()>100){
-                    request.setAttribute("errorMess", "invalid length");
-                }
-                request.setAttribute("searchQuizName", searchQuizName);
-                ArrayList<Subject> subjectList = IRegistration.getRegistedSubject(currUser.getUserId());
-                ArrayList<Quiz> simulationList = quizInterface.getAllSimulationQuizByUser(currUser.getUserId(), subjectSearchId, searchQuizName);
-                request.setAttribute("subjectList", subjectList);
-                request.setAttribute("simulationList", simulationList);
-                request.getRequestDispatcher("quizhandle/simulationExam.jsp").forward(request, response);
             }
 
         } catch (Exception ex) {
