@@ -26,6 +26,7 @@ import dao.BlogDAO;
 import dao.DBConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -38,6 +39,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @return a list of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getAllBlog() throws Exception {
@@ -81,6 +83,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * String
      * @return a list of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getBlogByCategory(String[] postCateIdList) throws Exception {
@@ -173,6 +176,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @param blogId blog's ID. It is a <code>Integer</code>
      * @return a <code>Blog</code> objects
+     * @throws java.lang.Exception
      */
     @Override
     public Blog getBlogById(int blogId) throws Exception {
@@ -213,6 +217,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @param title blog's title. It is a <code>String</code>
      * @return a <code>Blog</code> objects
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getBlogByTitle(String title) throws Exception {
@@ -254,6 +259,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @return List of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getAllTrueBlog() throws Exception {
@@ -296,6 +302,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @return List of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getLastBlogs() throws Exception {
@@ -339,6 +346,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * @param search search string. It is a <code>String</code>
      * @return List of <code>Blog</code> objects. It is a
      * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> getBlogByCategoryAndTitle(String[] postCateIdList, String search) throws Exception {
@@ -398,6 +406,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * @param blogId id of the target blog. It is a <code>int</code>
      * @param blog carry edited information. It is a <code>Blog</code> object
      * @return number of changes in database. It is a <code>int</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public int editBlog(int blogId, Blog blog) throws Exception {
@@ -431,8 +440,8 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * add new blog into database
      *
      * @param blog adding target. It is a <code>Blog</code> object
-     * @param sql the sql query. It is a <code>String</code>
      * @return number of changes in database. It is a <code>int</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public int addBlog(Blog blog) throws Exception {
@@ -468,6 +477,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @param blogId the target blog. It is a <code>int</code>
      * @return number of changes in database. It is a <code>int</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public int deleteBlog(int blogId) throws Exception {
@@ -481,7 +491,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             return pre.executeUpdate();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw ex;
         } finally {
             closeResultSet(rs);
@@ -496,6 +506,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @param blogId blog target. It is a <code>int</code> object
      * @return blog's author. It is a <code>User</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public User getAuthor(int blogId) throws Exception {
@@ -536,6 +547,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      *
      * @param blogId blog target. It is a <code>int</code> object
      * @return blog's category. It is a <code>PostCate</code> object
+     * @throws java.lang.Exception
      */
     @Override
     public PostCate getBlogCategory(int blogId) throws Exception {
@@ -571,6 +583,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * @param list the target list. It is a <code>java.util.ArrayList</code>
      *
      * @return sublist of blog list. It is a <code>java.util.ArrayList</code>
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) throws Exception {

@@ -1,21 +1,15 @@
- /* 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 17, 2021, 9:33:11 PM
-    CustomerQuizDAOImpl
-    Quiz practicing system
-
-    Record of change:
-    Date        Version     Author          Description
-    17/9/21     1.0         ChucNVHE150618  First Deploy
-    27/9/21     1.1         NamDHHE150519   update method
-    08/10/21    1.2         DuongNHHE150328 update method
-    11/10/21    1.3         DuongNHHE150328 update checkTeakedQuiz method
- */
- /*
-  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
-quan tới bảng CustomerQuiz, TakeAnswer phục vụ cho các chức năng liên quan tới QuizReview của 
-  dự án
-  @author Đinh Hải Nam
+/**
+ * Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ * Created on : Sep 17, 2021, 9:33:11 PM
+ * CustomerQuizDAOImpl
+ * Quiz practicing system
+ *
+ * Record of change:
+ * Date        Version     Author          Description
+ * 17/9/21     1.0         ChucNVHE150618  First Deploy
+ * 27/9/21     1.1         NamDHHE150519   update method
+ * 08/10/21    1.2         DuongNHHE150328 update method
+ * 11/10/21    1.3         DuongNHHE150328 update checkTeakedQuiz method
  */
 package dao.impl;
 
@@ -33,8 +27,11 @@ import java.sql.Timestamp;
 import java.sql.Types;
 
 /**
+ * Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database
+ * liên quan tới bảng CustomerQuiz, TakeAnswer phục vụ cho các chức năng liên
+ * quan tới QuizReview của dự án
  *
- * @author ChucNVHE150618
+ * @author Đinh Hải Nam
  */
 public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO {
 
@@ -101,9 +98,10 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
     }
 
     /**
+     * get user's taken quiz
      *
-     * @param quizTakeId
-     * @return
+     * @param quizTakeId target quiz. It is a <code>int</code> primitive type
+     * @return a quiz. It is a <code>CustomerQuiz</code> object
      * @throws Exception
      */
     @Override
@@ -232,6 +230,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
      * @param quiz the id of quiz that user have just taken. It is a
      * <code>QuizQuizHandle</code> object
      * @return number of changes in database <code>int</code> primitive type.
+     * @throws java.lang.Exception
      */
     @Override
     public int addTakeAnswer(QuizQuizHandle quiz) throws Exception {

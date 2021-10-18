@@ -1,18 +1,13 @@
-/* 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 17, 2021, 9:33:11 PM
-    QuizDAOImpl
-    Record of change:
-    Date        Version     Author          Description
-    17/9/21     1.0         ChucNVHE150618  First Deploy
-    30/9/21     1.1         NamDHHE150519   update method
-    07/10/21    1.2         DuongNHHE150328 update method
-    11/10/21    1.3         DuongNHHE150328 update method
- */
- /*
-  Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan tới
-  bảng Quiz.
-  @author Đinh Hải Nam
+/**
+ * Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ * Created on : Sep 17, 2021, 9:33:11 PM
+ * QuizDAOImpl
+ * Record of change:
+ * Date        Version     Author          Description
+ * 17/9/21     1.0         ChucNVHE150618  First Deploy
+ * 30/9/21     1.1         NamDHHE150519   update method
+ * 07/10/21    1.2         DuongNHHE150328 update method
+ * 11/10/21    1.3         DuongNHHE150328 update method
  */
 package dao.impl;
 
@@ -33,8 +28,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
+ * Lớp này có các phương thức truy xuất và thêm dữ liệu vào database liên quan
+ * tới bảng Quiz.
  *
- * @author ChucNVHE150618
+ * @author Đinh Hải Nam
  */
 public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
@@ -126,6 +123,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
      * @param quizId the target quiz's id. It is a <code>int</code> primitive
      * type
      * @return a quiz <code>Quiz</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public Quiz getQuizById(int quizId) throws Exception {
@@ -188,6 +186,14 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         return null;
     }
 
+    /**
+     *
+     * @param userId user's id. <code>int</code> primitive type
+     * @param subjectId user's registered subject's id. <code>int</code> primitive type
+     * @param quizName search string to search quiz by name. <code>String</code> primitive type
+     * @return all simulation quiz by user. <code>ArrayList<Quiz></code> object
+     * @throws Exception
+     */
     @Override
     public ArrayList<Quiz> getAllSimulationQuizByUser(int userId, int subjectId, String quizName) throws Exception {
         Connection conn = null;
@@ -342,10 +348,11 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
 
     /**
      * edit existed quiz in the database
+     *
      * @param quizId
      * @param quiz
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int editQuiz(int quizId, Quiz quiz) throws Exception {
@@ -476,12 +483,12 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         return i;
     }
 
-    
     /**
      * delete a quiz from the database
+     *
      * @param quizId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int deleteQuiz(int quizId) throws Exception {
@@ -772,13 +779,13 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         }
         return allQuiz;
     }
-    
-    
+
     /**
      * delete all question of a quiz
+     *
      * @param quizId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int removeQuizQuestion(int quizId) throws Exception {

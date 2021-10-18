@@ -61,11 +61,11 @@
             <style>
                 ul li::marker {
                     font-weight: bold;
-                    
+
                 }
             </style>
             <%-- Question and Answers --%>
-            <div class="mainContent" style="display: flex;">
+            <div class="mainContent" style="display: flex; height:1000%;">
                 <div class="col-1"></div>
                 <div class="col-4" style="">
                     <div class="row question" style="display: flex;">
@@ -111,17 +111,17 @@
                         <div class="col-1"></div>
                     </div>
                 </div>
-                                <%-- Image or Video linked with the question--%>
+                <%-- Image or Video linked with the question--%>
                 <div class="right col-7" style="">
                     <c:if test="${questionQH.getQuestion().getMedia()!=null}">
                         <div style="">
                             <c:if test="${mediaType==2}">
-                                <iframe width="420" height="315" style="width:100%; height:450px;"
+                                <iframe width="420" height="315" style="width:100%; height:400px;"
                                         src=${questionQH.getQuestion().getMedia()}>
                                 </iframe>
                             </c:if>
                             <c:if test="${mediaType==1}">
-                                <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
+                                <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:400px;">
                             </c:if>
                         </div>
                     </c:if>
@@ -130,20 +130,32 @@
             <!--                           end mainContent-->
             <!--            peek and mark question-->
 
-            <div class="funtion fixed-bottom" style="margin-bottom: 100px;margin-right: 30px;"> 
+            <div class="funtion fixed-bottom" style="margin-bottom: 75px; margin-left: 10px;"> 
                 <div class='row'>
-                    <div class="col-9">                   
-                    </div>
-                    <div class="col-3">
-                        <div style="float:right; display:flex;">
-                            <c:if test="${quizType!=1}">                               
-                            <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
-                            </c:if>
+                    <div class="col-4">
+                        <div style="float:left; display:flex;">
+                            
                             <form id="markForm" action="${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">
                             </form>
-                        </div>                       
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div style="margin-left: 50px;display: flex;">                    
+                            <c:if test="${questionNumber!=1}">
+                                <input class="btn" type="submit" name='action' value='Previous Question' form='questionForm'>
+                            </c:if>
+                            <c:if test="${questionNumber!=quiz.size()}">
+                                <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
+                            </c:if>
+                            <c:if test="${questionNumber==quiz.size()}">
+                                <input type="submit" class="btn" name="action" value="Finish Exam" form="questionForm" >
+                            </c:if>
+                        </div>
+                    </div>
+                    <div class="col-3">
+
                     </div>
                 </div>
             </div>
@@ -166,19 +178,13 @@
             </div>
             <!--                        end peek modal-->
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
-                <div style="margin-top:20px;margin-right: 20px;">
-                    <div style="float:right;">                    
-                        <c:if test="${questionNumber!=1}">
-                            <input class="btn" type="submit" name='action' value='Previous Question' form='questionForm'>
-                        </c:if>
-                        <c:if test="${questionNumber!=quiz.size()}">
-                            <input class="btn" type='submit' name='action' value='Next Question' form="questionForm">
-                        </c:if>
-                        <c:if test="${questionNumber==quiz.size()}">
-                            <input type="submit" class="btn" name="action" value="Finish Exam" form="questionForm" >
-                        </c:if>
+                <div style="margin-top:20px;margin-left: 43%;">
+                    <div>
+                        <c:if test="${quizType!=1}">                               
+                                <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
+                            </c:if>
                     </div>
-                    <div >
+                    <div>
                         <button  type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                      
                     </div>
                 </div>

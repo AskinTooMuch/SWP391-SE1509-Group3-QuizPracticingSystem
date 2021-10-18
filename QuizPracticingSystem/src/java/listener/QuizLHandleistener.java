@@ -86,7 +86,7 @@ public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttri
 //        System.out.println("\n###################################\n");
         if (se.getName().equalsIgnoreCase("doingQuiz")) {
         QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
-        int timeOut = questionArray.getQuiz().getQuizDuration()+2;
+        int timeOut = questionArray.getQuiz().getQuizDuration()+3;
         Time(timeOut, se);
         }
     }

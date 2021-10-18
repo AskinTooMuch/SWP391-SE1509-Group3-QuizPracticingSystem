@@ -47,7 +47,7 @@
                             <a class="nav-link" href="${contextPath}/homeController?service=subjectList" style="font-weight: bold;">All Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${contextPath}/marketingController?service=blogList" style="font-weight: bold;">Blog</a>
+                            <a class="nav-link" href="${contextPath}/blog?service=blogList" style="font-weight: bold;">Blog</a>
                         </li>
                         <li class="nav-item">
                             <p>          </p>

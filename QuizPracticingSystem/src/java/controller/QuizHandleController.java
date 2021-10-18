@@ -59,16 +59,17 @@ public class QuizHandleController extends HttpServlet {
     static final int EXAM_TYPE_ID = 1;
     static final int PRACTICE_TYPE_ID = 2;
     static final int DEFAULT_PAGE = 1;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
+            QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
             QuestionQuizHandleDAO questionQHInterface = new QuestionQuizHandleDAOImpl();
             QuestionDAO questionInterface = new QuestionDAOImpl();
             QuizDAO quizInterface = new QuizDAOImpl();
             String service = request.getParameter("service");
-            
+
             if (service.equalsIgnoreCase("quizEntrance")) {
                 HttpSession session = request.getSession();
                 int quizId = Integer.parseInt(request.getParameter("quizId"));
@@ -201,7 +202,8 @@ public class QuizHandleController extends HttpServlet {
                     }
 
                 } else {
-                    response.sendRedirect("homeController");
+                    request.setAttribute("errorMess", "Co loi Co loi");
+                    response.sendRedirect("systemConfig/error.jsp");
                 }
             }
             /**
@@ -222,7 +224,8 @@ public class QuizHandleController extends HttpServlet {
                     request.setAttribute("answeredNumber", answeredQuestionNumber);
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect("homeController");
+                    request.setAttribute("errorMess", "Co loi Co loi");
+                    response.sendRedirect("systemConfig/error.jsp");
                 }
             }
 
@@ -241,7 +244,11 @@ public class QuizHandleController extends HttpServlet {
                     //redirect user to review quiz page  
                     response.sendRedirect("quizHandleController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
                     return;
+                } else if (object == null) {
+                    request.setAttribute("errorMess", "Co loi Co loi");
+                    response.sendRedirect("systemConfig/error.jsp");
                 }
+
             }
             /**
              * Service quiz review: review the quiz after taking it
@@ -308,7 +315,6 @@ public class QuizHandleController extends HttpServlet {
 
                 String action = request.getParameter("action");
                 if (action != null) {
-
                     //prepare for next action
                     //previous question
                     if (action.equalsIgnoreCase("Previous Question")) {
@@ -337,9 +343,12 @@ public class QuizHandleController extends HttpServlet {
             if (service.equalsIgnoreCase("simulationExam")) {
                 HttpSession session = request.getSession();
                 QuizQuizHandle doingQuiz = (QuizQuizHandle) session.getAttribute("doingQuiz");
+                //check if user currently taking a quiz
                 if (doingQuiz != null) {
                     request.setAttribute("doingQuiz", doingQuiz);
                 }
+
+                //information of simulation exam
                 RegistrationDAO IRegistration = new RegistrationDAOImpl();
                 User currUser = (User) session.getAttribute("currUser");
                 String subjectSearchIdRaw = request.getParameter("subjectSearchId");
@@ -349,16 +358,19 @@ public class QuizHandleController extends HttpServlet {
                     request.setAttribute("subjectSearchId", +subjectSearchId);
                 }
 
-                String searchQuizName = request.getParameter("subjectSearchName");
+                String searchQuizName = request.getParameter("searchQuizName");
+                if(searchQuizName!=null && searchQuizName.length()>100){
+                    request.setAttribute("errorMess", "invalid length");
+                }
+                request.setAttribute("searchQuizName", searchQuizName);
                 ArrayList<Subject> subjectList = IRegistration.getRegistedSubject(currUser.getUserId());
                 ArrayList<Quiz> simulationList = quizInterface.getAllSimulationQuizByUser(currUser.getUserId(), subjectSearchId, searchQuizName);
-
                 request.setAttribute("subjectList", subjectList);
                 request.setAttribute("simulationList", simulationList);
                 request.getRequestDispatcher("quizhandle/simulationExam.jsp").forward(request, response);
             }
-            
-        } catch (Exception ex){
+
+        } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             response.sendRedirect("error.jsp");

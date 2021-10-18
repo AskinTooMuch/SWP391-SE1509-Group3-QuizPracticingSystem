@@ -56,7 +56,7 @@
                             <button type="submit" id="submit" class="btn btn-success" style="float: left;">Search</button>
                         </form>
                         <a href="${contextPath}/jsp/practiceDetail.jsp"><button class="btn btn-success" style="float: right;margin: 10px;">New Practice</button></a>
-                        <a href="#"><button class="btn btn-success" style="float: right;margin: 10px;">Simulation Exam</button></a>
+                        <a href="${contextPath}/quizHandleController?service=simulationExam"><button class="btn btn-success" style="float: right;margin: 10px;">Simulation Exam</button></a>
                     </div>
                     <div class="col-md-12" style="clear: both;">
                         <div class="container">
