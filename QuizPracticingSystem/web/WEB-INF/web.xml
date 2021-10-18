@@ -44,6 +44,10 @@
         <servlet-name>QuizHandleController</servlet-name>
         <servlet-class>controller.QuizHandleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuestionController</servlet-name>
+        <servlet-class>controller.QuestionController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -83,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>QuizHandleController</servlet-name>
         <url-pattern>/quizHandleController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionController</servlet-name>
+        <url-pattern>/questionController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

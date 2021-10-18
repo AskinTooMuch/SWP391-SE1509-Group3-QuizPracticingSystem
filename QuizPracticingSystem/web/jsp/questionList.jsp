@@ -42,7 +42,7 @@
 
             <%-- Check If listFilterSubject,listFilterDimension,listFilterLesson is avaiable not, if not redirect to load information --%>
             <c:if test="${listFilterSubject==null || listFilterDimension==null || listFilterLesson==null}">
-                <c:redirect url="/quizController?service=getFilterInformation"/>
+                <c:redirect url="/questionController?service=getFilterInformation"/>
             </c:if>
             <div class="row" style="margin-top: 3rem">
                 <div class="col-md-1"></div>
@@ -50,7 +50,7 @@
                     <h2 class="text-center">Filter</h2>
                     <div style="margin-bottom: 20px;">
                         <%-- Start search form --%>
-                        <form action = "${contextPath}/quizController" class="navbar-form">
+                        <form action = "${contextPath}/questionController" class="navbar-form">
                             <div class="form-group">
                                 <input  class="form-control" type="text" id="content" placeholder="Content... " name="content">
                                 <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
@@ -59,7 +59,7 @@
                         </form>                     
                     </div>
                     <%-- Start filter form --%>
-                    <form action="${contextPath}/quizController" method="POST">
+                    <form action="${contextPath}/questionController" method="POST">
                         <div class="form-group">
                             <h5>Filter by Subject</h5>
                             <%-- Choose Subject Filter --%>
@@ -145,7 +145,7 @@
                                                         Not Available
                                                     </c:if>
                                                 </td>
-                                                <td><a href="quizController?service=editQuestion&type=update&questionId=${questionList.getQuestionId()}"><div class="btn btn-success">Edit</div></a></td>
+                                                <td><a href="questionController?service=editQuestion&type=update&questionId=${questionList.getQuestionId()}"><div class="btn btn-success">Edit</div></a></td>
                                             </tr>
                                         </c:forEach> 
                                     </c:otherwise>

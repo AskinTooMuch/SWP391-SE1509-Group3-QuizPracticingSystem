@@ -448,7 +448,6 @@ public class QuizController extends HttpServlet {
              * Service: get all Subject, Dimension, Lesson Information
              */
             if (service.equalsIgnoreCase("getFilterInformation")) {
-                User currUser = (User) request.getSession().getAttribute("currUser");
                 String message = (String) request.getAttribute("message");
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
                 DimensionDAO dimensionDAO = new DimensionDAOImpl();
