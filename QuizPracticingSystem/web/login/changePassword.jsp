@@ -40,23 +40,26 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <%-- Start form --%>
-                            <form action="${contextPath}/changePassword" method="GET" name="changePassword" id="changePassword">
+                            <form action="${contextPath}/changePassword" method="POST" name="changePassword" id="changePassword">
+                                <%--Input old password--%>
                                 <div class="row" style="margin-top: 3vh;">
                                     <div class="col-md-4" style="text-align: right"><label class="label control-label">Old Password</label></div>
                                     <div class="col-md-8">
-                                        <input type="password" class="form-control" name="oldPassword" placeholder="" required>
+                                        <input type="password" class="form-control" name="oldPassword" placeholder="Enter old password" required>
                                     </div>
                                 </div>
+                                <%--Input new password--%>
                                 <div class="row" style="margin-top: 3vh;">
                                     <div class="col-md-4" style="text-align: right"><label class="label control-label">New Password</label></div>
                                     <div class="col-md-8">
-                                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="" onkeyup='check();' required>
+                                        <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="Enter new password" onkeyup='check();' required>
                                     </div>
                                 </div>
+                                <%--Input confirm new password--%>
                                 <div class="row" style="margin-top: 3vh;">
                                     <div class="col-md-4" style="text-align: right"><label class="label control-label">Confirm Password</label></div>
                                     <div class="col-md-8">
-                                        <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="" onkeyup='check();' required>
+                                        <input type="password" class="form-control" name="rePassword" id="rePassword" placeholder="Confirm new password" onkeyup='check();' required>
                                     </div>
                                 </div>
                                 <div id="message" style="text-align: center; margin-top: 2vh"></div>

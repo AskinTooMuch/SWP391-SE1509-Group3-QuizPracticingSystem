@@ -24,17 +24,64 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- *
+ *  The class has methods needed for initialize connection with database and 
+ * execute queries with Subject and associate tables
  * @author admin
  */
 public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
 
     /**
-     *
-     * @return @throws Exception Get all subject in the Subject table
+     *  Get all available subject in the Subject table (status = 1)
+     * @return @throws Exception 
      */
     @Override
     public ArrayList<Subject> getAllSubjects() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> allSubject = new ArrayList();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+
+        String sqlSubject = "SELECT * FROM [Subject] WHERE status=1";
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                allSubject.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status,
+                        dimensionDAO.getDimensionBySubject(subjectId),
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return allSubject;
+    }
+    
+    /**
+     *  Get all subject in the Subject table
+     * @return @throws Exception 
+     */
+    @Override
+    public ArrayList<Subject> getTrueAllSubjects() throws Exception {
         Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
@@ -74,6 +121,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return allSubject;
     }
+    
     /**
      *
      * @return @throws Exception Get 5 las added subject in the Subject table
@@ -402,4 +450,100 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
 //            }
 //        }
 //    }
+
+    @Override
+    public ArrayList<Subject> getSubjectsPaging(int page) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> allSubject = new ArrayList();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+
+        String sqlSubject = "SELECT * FROM \n" +
+                            "(SELECT * \n" +
+                            "		,ROW_NUMBER()  OVER(ORDER BY subjectId ASC) as num\n" +
+                            "		FROM [Subject] WHERE status=1) A\n" +
+                            "WHERE A.num>=? AND A.num<=?;";
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, (page-1)*7+1);
+            pre.setInt(2, page*7);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                allSubject.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status,
+                        dimensionDAO.getDimensionBySubject(subjectId),
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return allSubject;
+    }
+
+    @Override
+    public ArrayList<Subject> getTrueSubjectsPaging(int page) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> allSubject = new ArrayList();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+
+        String sqlSubject = "SELECT * FROM \n" +
+                            "(SELECT * \n" +
+                            "		,ROW_NUMBER()  OVER(ORDER BY subjectId ASC) as num\n" +
+                            "		FROM [Subject]) A\n" +
+                            "WHERE A.num>=? AND A.num<=?;";
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, (page-1)*7+1);
+            pre.setInt(2, page*7);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                allSubject.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status,
+                        dimensionDAO.getDimensionBySubject(subjectId),
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return allSubject;
+    }
 }

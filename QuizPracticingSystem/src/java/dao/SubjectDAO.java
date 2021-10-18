@@ -22,6 +22,12 @@ import java.util.ArrayList;
 public interface SubjectDAO {
     public ArrayList<Subject> getAllSubjects() throws Exception;
     
+    public ArrayList<Subject> getSubjectsPaging(int page) throws Exception;
+    
+    public ArrayList<Subject> getTrueAllSubjects() throws Exception;
+    
+    public ArrayList<Subject> getTrueSubjectsPaging(int page) throws Exception;
+    
     public ArrayList<Subject> getFeaturedSubjects() throws Exception;
     
     public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception;
