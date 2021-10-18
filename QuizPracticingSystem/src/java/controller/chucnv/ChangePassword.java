@@ -52,7 +52,7 @@ public class ChangePassword extends HttpServlet {
              * changePassword.jsp and include a message
              */
             if (!currUser.getPassword().equals(password)) {
-                request.setAttribute("message", "Password incorrect.");
+                request.setAttribute("message", "Old Password incorrect.");
                 request.setAttribute("color", "red");
                 sendDispatcher(request, response, "login/changePassword.jsp");
             } 
