@@ -114,7 +114,6 @@
 
                                 <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
                                 <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
-
                                 <input hidden name="option" value=${option}>
                                 <input hidden name="target" value="${target}">
                                 <input hidden name="attribute" value="${attribute}">

@@ -26,7 +26,7 @@
             <div class="infomation" style="">
                 <div class='info row' style='display:flex;'>
                     <div class='col-1'>
-                        <a type="button" class="btn" href="${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
+                        <a type="button" class="btn" href="${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=1" style='border:1px solid #4472c4; color:#4472c4;
                            margin-left: 5px;'> Back</a>
                     </div>
                     <div class='col-11'>
@@ -42,7 +42,7 @@
                 <div class="row">
                     <div class="mainContent col-9" style="border-right: 1px solid black;">
                         <c:forEach items="${doingQuiz.getQuestions()}" var="question">
-                            <a href="${contextPath}/quizController?service=quizHandle&quizId=${doingQuiz.getQuiz().getQuizId()}&questionNumber=${doingQuiz.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${doingQuiz.getQuestions().indexOf(question)+1}</a>
+                            <a href="${contextPath}/quizHandleController?service=quizHandle&quizId=${doingQuiz.getQuiz().getQuizId()}&questionNumber=${doingQuiz.getQuestions().indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${doingQuiz.getQuestions().indexOf(question)+1}</a>
                         </c:forEach>   
                     </div>
                     <div class="col-3" style="display:flex;">
@@ -90,7 +90,7 @@
                                 be able to change any answers after this point
                             </c:if>
                         </div>
-                        <form id='questionForm' action='quizController' method="POST">
+                        <form id='questionForm' action='quizHandleController' method="POST">
                             <input hidden id="time" name="time">  
                             <input hidden name="service" value="submit">
                         </form>

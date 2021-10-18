@@ -253,7 +253,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         Connection conn = null;
         ResultSet rs = null;
         PreparedStatement pre = null;
-        String sql = "select SUM(cost) as revenue, validFrom FROM [Registration] "
+        String sql = "SELECT SUM(cost) AS revenue, validFrom FROM [Registration] "
                 + "WHERE validFrom <= ? AND validFrom >= ? GROUP BY validFrom ORDER BY validFrom";
         try {
             conn = getConnection();

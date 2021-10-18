@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>        
-                        <a href="${contextPath}/quizController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/quizHandleController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <%-- Cac thong tin: diem so, thoi gian lam, thoi gian nop --%>
                     <div class="col-6" style="display:flex;">    
@@ -78,7 +78,7 @@
                     <div class="row answers" style="margin-top:10px;">
 
                         <div class="col-12" >
-                            <form id='questionForm' action='${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                            <form id='questionForm' action='${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                                 <ul style=''>
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
                                         <div class='row'>
@@ -155,10 +155,10 @@
                     <div style="float:right;">
                         <button type="button" class="btn" data-toggle="modal" data-target=".eplain" >Explanation</button>
                         <c:if test="${questionNumber!=1}">
-                            <a class="btn" href="${contextPath}/quizController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${questionNumber-1}">Previous Question</a>
+                            <a class="btn" href="${contextPath}/quizHandleController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${questionNumber-1}">Previous Question</a>
                         </c:if>
                         <c:if test="${questionNumber!=quizSize}">
-                            <a class="btn" href="${contextPath}/quizController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${questionNumber+1}">Next Question</a>
+                            <a class="btn" href="${contextPath}/quizHandleController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${questionNumber+1}">Next Question</a>
                         </c:if>
                         <c:if test="${questionNumber==quizSize}">
                             <button type="button" class="btn" data-toggle="modal" data-target=".submit" >Finish Review</button>
@@ -199,7 +199,7 @@
                             <br/><br/>
                             <div class="holder" style='margin-left:20px'>
                                 <c:forEach items="${requestScope.quizReview}" var="question">
-                                    <a href="${contextPath}/quizController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${quizReview.indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${quizReview.indexOf(question)+1}</a>
+                                    <a href="${contextPath}/quizHandleController?service=quizReview&quizTakeId=${quizTakeId}&questionNumber=${quizReview.indexOf(question)+1}" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button">${quizReview.indexOf(question)+1}</a>
                                 </c:forEach>                             
                             </div>
                             <style>

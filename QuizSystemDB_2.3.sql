@@ -306,6 +306,12 @@ INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,use
 				VALUES('Expert2',1,4,'','Expert2@gmail.com',1,'0969044717',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
 				VALUES('User1',1,1,'','User1@gmail.com',1,'0969044718',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('User2',1,1,'','User2@gmail.com',1,'0969044719',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('User3',1,1,'','User3@gmail.com',1,'0969044720',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('User4',1,1,'','User4@gmail.com',1,'0969044721',1);
 ----------dbo.[Subject]--------------------
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
 				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','java-oops.png',1,1);--1
@@ -544,25 +550,19 @@ INSERT INTO dbo.QuizQuestion(quizId,questionId,[status]) VALUES(3,10,1)
 -------------------------------------------
 ----------dbo.[Registration]---------------
 INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',2,20.0,'2020-12-12','2021-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2020-12-12',5,20.0,'2020-12-12','2021-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-12','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-7',4,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',4,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-7',2,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',2,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',2,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-7',2,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',2,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',2,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-14','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',4,20.0,'2019-12-14','2022-6-12',1,null,1)
-
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-7',2,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',2,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',2,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2020-10-6',4,20.0,'2019-12-13','2022-6-12',1,null,1)
-INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (2,'2020-10-6',4,20.0,'2019-12-13','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (1,'2021-10-12',5,20.0,'2020-12-12','2021-6-12',1,null,NULL)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2021-10-7',1,20.0,'2021-10-8','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (8,'2021-10-8',2,20.0,'2021-10-9','2022-6-12',1,null,NULL)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (9,'2021-10-7',2,20.0,'2021-10-8','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (9,'2021-10-6',1,20.0,'2021-10-7','2022-6-12',1,null,0)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (10,'2021-10-7',3,20.0,'2021-10-11','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (10,'2021-10-6',5,20.0,'2021-10-11','2022-6-12',1,null,NULL)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (11,'2021-10-6',5,20.0,'2021-10-11','2022-6-12',1,null,0)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (11,'2021-10-7',4,20.0,'2021-10-11','2022-6-12',1,null,NULL)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (7,'2021-10-8',3,20.0,'2021-10-15','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (7,'2021-10-6',5,20.0,'2021-10-7','2022-6-12',1,null,NULL)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (6,'2021-10-9',5,20.0,'2021-10-9','2022-6-12',1,null,1)
+INSERT INTO dbo.Registration([userId],[regTime],[packId],[cost],[validFrom],[validTo],[lastUpdatedBy],[note],[status]) VALUES (6,'2021-10-10',4,20.0,'2021-10-12','2022-6-12',1,null,0)
 -------------------------------------------
 ----------dbo.[Blog]-----------------------
 insert into Blog(blogTitle,created,lastEdited,author,detail,thumbnail,status) values('Rita’s Way: Why is it so Effective?','2021-08-10','2021-09-10','1','RMC Learning Solutions was founded in 1991 by Rita Mulcahy, who spent years working as a trainer and consultant. What started off as a project management training company with the intention of helping people pass the PMP® exam eventually grew into what it is today: a trusted and proven resource for training and exam prep courses led by renowned experts in their field.

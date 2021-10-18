@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>
-                        <a href="${contextPath}/quizController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/quizHandleController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <div class="col-11">    
                         <div class="detail">
@@ -81,7 +81,7 @@
                     <div class="row answers" style="margin-top:10px;">
                         <div class="col-1"></div>
                         <div class="col-11">
-                            <form id='questionForm' action='${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
+                            <form id='questionForm' action='${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                                 <ul>
 
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
@@ -139,7 +139,7 @@
                             <c:if test="${quizType!=1}">                               
                             <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
                             </c:if>
-                            <form id="markForm" action="${contextPath}/quizController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
+                            <form id="markForm" action="${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">
                             </form>

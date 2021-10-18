@@ -32,6 +32,18 @@
         <servlet-name>PracticeController</servlet-name>
         <servlet-class>controller.PracticeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashboardController</servlet-name>
+        <servlet-class>controller.DashboardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>controller.BlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>QuizHandleController</servlet-name>
+        <servlet-class>controller.QuizHandleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -59,6 +71,18 @@
     <servlet-mapping>
         <servlet-name>PracticeController</servlet-name>
         <url-pattern>/practiceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardController</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/blog</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizHandleController</servlet-name>
+        <url-pattern>/quizHandleController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

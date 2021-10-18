@@ -34,16 +34,16 @@
                             Search by Subject
                         </a> 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="${contextPath}/quizController?service=simulationExam">All</a>
+                            <a class="dropdown-item" href="${contextPath}/quizHandleController?service=simulationExam">All</a>
                             <c:forEach items="${subjectList}" var="subject">
-                                <a class="dropdown-item" href="${contextPath}/quizController?service=simulationExam&subjectSearchId=${subject.getSubjectId()}">${subject.getSubjectName()}</a>
+                                <a class="dropdown-item" href="${contextPath}/quizHandleController?service=simulationExam&subjectSearchId=${subject.getSubjectId()}">${subject.getSubjectName()}</a>
                             </c:forEach>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="input-group">
-                        <form action="quizController" method="GET">
+                        <form action="quizHandleController" method="GET">
                             <div style="display: flex;">
                                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                        aria-describedby="search-addon" name="subjectSearchName" />
@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="${quiz.getQuizId()}" action="${contextPath}/quizController?service=quizEntrance" method="POST">
+                        <form id="${quiz.getQuizId()}" action="${contextPath}/quizHandleController?service=quizEntrance" method="POST">
                             <input hidden name="quizId" value="${quiz.getQuizId()}" class="btn">
                         </form>
                     </div>
