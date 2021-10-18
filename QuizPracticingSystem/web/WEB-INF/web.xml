@@ -48,6 +48,10 @@
         <servlet-name>QuestionController</servlet-name>
         <servlet-class>controller.QuestionController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>controller.chucnv.ChangePassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -91,6 +95,10 @@
     <servlet-mapping>
         <servlet-name>QuestionController</servlet-name>
         <url-pattern>/questionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

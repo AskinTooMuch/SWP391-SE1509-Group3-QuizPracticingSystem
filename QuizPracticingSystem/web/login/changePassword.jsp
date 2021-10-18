@@ -41,7 +41,7 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <%-- Start form --%>
-                            <form action="${contextPath}/userController" method="POST" name="changePassword" id="changePassword">
+                            <form action="${contextPath}/changePassword" method="GET" name="changePassword" id="changePassword">
                             <%-- Enter old password --%>
                             <label class="label control-label">Old Password</label>
                             <div class="input-group">
@@ -69,7 +69,6 @@
                             <%-- Submit form --%>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success">Change password!</button>
-                                <input type="hidden" name="service" value="changePassword">
                             </div>
                             </form>
                             <%-- Display messages, if any --%>
