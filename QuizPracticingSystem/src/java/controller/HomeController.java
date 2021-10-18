@@ -75,8 +75,10 @@ public class HomeController extends HttpServlet {
             }
             /*Service: subjectList. Load subjectList and redirect user.*/
             if (service.equalsIgnoreCase("subjectList")) {
+                int page = (int)(request.getAttribute("page"));
+                
                 /* Get subject list and set attribute */
-                ArrayList<Subject> subjectList = subjectInterface.getAllSubjects();
+                ArrayList<Subject> subjectList = subjectInterface.getSubjectsPaging(page);
                 request.setAttribute("subjectList", subjectList);
                 /* Redirect to subjectList.jsp */
                 sendDispatcher(request, response, "jsp/subjectList.jsp");

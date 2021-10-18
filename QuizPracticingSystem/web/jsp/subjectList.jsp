@@ -58,7 +58,7 @@
                 <c:choose>
                     <%-- Case 1: subjectList is empty --%>
                     <c:when test = "${empty subjectList}">
-                        <div class="row" style="height: 50vh">
+                        <div class="row" style="height: 55vh">
                             <h5 style="margin: auto; text-align: center">We currently don't have any course. 
                                 <br> Feels Knowledgeable? Contact us and add your own course!</h5>
                         </div>
@@ -92,6 +92,25 @@
                                 </div>
                             </div>
                         </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </c:otherwise>
                 </c:choose>
             </div>
