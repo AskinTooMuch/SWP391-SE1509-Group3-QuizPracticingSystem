@@ -187,6 +187,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
     }
 
     /**
+     * get all simulation quiz by user search
      *
      * @param userId user's id. <code>int</code> primitive type
      * @param subjectId user's registered subject's id. <code>int</code> primitive type
@@ -270,6 +271,7 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
      * @param quizTakeId the target quiz's id. It is a <code>int</code>
      * primitive type
      * @return a quiz <code>Quiz</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception {

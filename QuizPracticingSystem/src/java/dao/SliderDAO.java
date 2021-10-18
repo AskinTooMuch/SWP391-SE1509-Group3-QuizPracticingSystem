@@ -7,7 +7,7 @@
  *  Record of change:
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
- *  14/10/21    1.0         ChucNVHE150618      Comment
+ *  18/10/21    1.0         NamDHHE150519       Add comment
 */
 package dao;
 
@@ -15,8 +15,9 @@ import bean.Slider;
 import java.util.ArrayList;
 
 /**
+ * Lớp này chứa các interface của SliderDAOImpl
  *
- * @author admin
+ * @author NamDH
  */
 public interface SliderDAO {
     

@@ -355,7 +355,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     /**
      * delete a user from User table
      *
-     * @param User is an <code>User</code> object
+     * @param user is an <code>User</code> object
      * @return a int.
      */
     @Override

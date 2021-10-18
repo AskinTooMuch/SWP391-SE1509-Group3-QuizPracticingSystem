@@ -15,7 +15,7 @@ import bean.Subject;
 import java.util.ArrayList;
 
 /**
- * Lớp này chứa các interface của AnswerDAOImpl
+ * Lớp này chứa các interface của SubjectDAOImpl
  *
  * @author NamDH
  */

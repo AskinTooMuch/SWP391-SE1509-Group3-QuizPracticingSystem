@@ -130,11 +130,11 @@
             <!--                           end mainContent-->
             <!--            peek and mark question-->
 
-            <div class="funtion fixed-bottom" style="margin-bottom: 75px; margin-left: 10px;"> 
+            <div class="funtion fixed-bottom" style="margin-bottom: 70px; margin-left: 10px;"> 
                 <div class='row'>
                     <div class="col-4">
                         <div style="float:left; display:flex;">
-                            
+
                             <form id="markForm" action="${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}" method="POST">
                                 <button class="btn " onclick="this.form.submit()">Mark For Review</button>
                                 <input hidden name="marked" value="yes">
@@ -178,11 +178,11 @@
             </div>
             <!--                        end peek modal-->
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
-                <div style="margin-top:20px;margin-left: 43%;">
-                    <div>
-                        <c:if test="${quizType!=1}">                               
-                                <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
-                            </c:if>
+                <div style="margin-left: 43%; margin-top:20px; <c:if test="${quizType==2}"> display:flex; margin-left: 31%;</c:if>">
+                        <div>
+                        <c:if test="${quizType==2}">                               
+                            <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
+                        </c:if>
                     </div>
                     <div>
                         <button  type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-xl">Review Progress</button>                      

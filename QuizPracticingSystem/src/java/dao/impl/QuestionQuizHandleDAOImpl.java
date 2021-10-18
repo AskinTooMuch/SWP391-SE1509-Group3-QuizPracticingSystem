@@ -28,14 +28,15 @@ import java.sql.ResultSet;
  */
 public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQuizHandleDAO {
 
-    @Override
     /**
      * turn a Question into QuestionQUizHandle type
      *
      * @param questionId the target question's id. It is a <code>int</code>
      * primitive type
      * @return a QuestionQuizHandle <code>QuestionQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
+    @Override
     public QuestionQuizHandle generateQuestionById(int questionId) throws Exception {
         QuestionDAOImpl questionDAO = new QuestionDAOImpl();
         AnswerDAOImpl answerDAO = new AnswerDAOImpl();
@@ -44,30 +45,15 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
         return new QuestionQuizHandle(question, answers, 0, false);                         //constructor(question,question's answers list, user's answerd id,marked)
     }
 
-    @Override
-    /**
-     * mark and unmark question
-     *
-     * @param question the target question's id. It is a
-     * <code>QuestionQuizHandle</code> object
-     * @return void.
-     */
-    public void markQuestion(QuestionQuizHandle question) throws Exception {
-        if (question.isMarked()) {
-            question.setMarked(false);
-        } else {
-            question.setMarked(true);
-        }
-    }
-
-    @Override
     /**
      * get right answer of the question
      *
      * @param question the target question's id. It is a
      * <code>QuestionQuizHandle</code> object
      * @return right answer of the question. It is <code>Answer</code> object.
+     * @throws java.lang.Exception
      */
+    @Override
     public Answer getRightAnswer(QuestionQuizHandle question) throws Exception {
         ArrayList<Answer> answerList = question.getAnswerList();
         for (Answer answer : answerList) {
@@ -79,11 +65,28 @@ public class QuestionQuizHandleDAOImpl extends DBConnection implements QuestionQ
     }
 
     /**
+     * mark and unmark question
+     *
+     * @param question the target question's id. It is a
+     * <code>QuestionQuizHandle</code> object
+     * @return void.
+     */
+    @Override
+    public void markQuestion(QuestionQuizHandle question) throws Exception {
+        if (question.isMarked()) {
+            question.setMarked(false);
+        } else {
+            question.setMarked(true);
+        }
+    }
+
+    /**
      * get the taken quiz for review action
      *
      * @param quizTakeId the target taken quiz's id. It is a <code>int</code>
      * primitive type
      * @return a <code>QuizQuizHandle</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<QuestionQuizHandle> getReviewQuestion(int quizTakeId) throws Exception {

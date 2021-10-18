@@ -34,7 +34,7 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author ADMN
  */
-public class QuizLHandleistener implements HttpSessionListener, HttpSessionAttributeListener {
+public class QuizHandleListener implements HttpSessionListener, HttpSessionAttributeListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
