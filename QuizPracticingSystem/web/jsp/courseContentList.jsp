@@ -26,23 +26,22 @@
         <style>
             .subjectCard {
                 margin: auto;
-                width: 65vw;
-                height: 20vh;
+                height: 40vh;
                 border: 3px solid #73AD21;
                 overflow: hidden;
                 margin-top: 1vh;
                 margin-bottom: 1vh;
+                background-color: #FCFFF2;
             }
 
             .cardThumbnail {
                 height: 100%;
-                width: 20vh;
-                display: inline-block;
             }
 
             .cardBody {
                 display: inline-block;
-                margin-left: 1vw;
+                padding-top: 10vh;
+                text-align: center;
             }
 
             .thumbNailImg{
@@ -70,41 +69,50 @@
                         <c:if test="${empty page}"><c:set var="page" value="1"/></c:if>
                         <%--If max page is null, redirect to servlet subjectList--%>
                         <c:if test="${empty maxPage}"><c:redirect url="${contextPath}/subjectList"/></c:if>
-                        <c:out value="${maxPage}"/>
-                        <div class="row" style="min-height: 50vh">
-                            <%-- Print available subject --%>
-                            <c:forEach items = "${courseContentSubjectList}" var="subject" begin = "0" end = "${courseContentSubjectList.size()-1}">
-                                <div class="col-md-10 subjectCard">
-                                    <%-- Image part of the card --%>
-                                    <div class="cardThumbnail">
-                                        <image class="thumbNailImg" src="${contextPath}/images/${subject.getThumbnail()}" alt="${subject.getThumbnail()}">
+                        
+                        <%--Subject List--%>
+                        <div class="row" style="min-height: 50vh; margin-top: 5vh;">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <%-- Print available subject --%>
+                                <c:forEach items = "${courseContentSubjectList}" var="subject" begin = "0" end = "${courseContentSubjectList.size()-1}">
+                                    <div class="row subjectCard">
+                                        <div class="col-md-5 cardThumbnail">
+                                            <%-- Image part of the card --%>
+                                            <image class="thumbNailImg" src="${contextPath}/images/${subject.getThumbnail()}" alt="${subject.getThumbnail()}">
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-6 cardBody">
+                                            <%-- Body part of the card --%>
+                                            <h5>${subject.getSubjectName()}</h5>
+                                            <p style="overflow: hidden">${subject.getDescription()}</p>
+                                            <a href="courseContentDetail?service=viewDetail&subjectId=${subject.getSubjectId()}" class="btn btn-primary">View Detail</a>
+                                        </div>
                                     </div>
-                                    <%-- Body part of the card --%>
-                                    <div class="cardBody">
-                                        <h5>${subject.getSubjectName()}</h5>
-                                        <p style="overflow: hidden">${subject.getDescription()}</p>
+                                </c:forEach>
+                                <%-- Print Subject placeholder card, same as subject card but the content is default --%>
+                                <div class="row subjectCard">
+                                    <div class="col-md-5 cardThumbnail">
+                                        <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
                                     </div>
-                                   <a href="subjectController?service=subjectDetail&subjectId=${subject.getSubjectId()}" class="btn btn-primary">Read More</a>
-                                </div>
-                            </c:forEach>
-                            <%-- Print Subject placeholder card, same as subject card but the content is default --%>
-                            <div class="col-md-10 subjectCard">
-                                <div class="cardThumbnail">
-                                    <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
-                                </div>
-                                <div class="cardBody">
-                                    <h5>We need you!</h5>
-                                    <p style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-6 cardBody">
+                                        <h5>We need you!</h5>
+                                        <p style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-2"></div>
                         </div>
+                                
+                        <%--Page navigate--%>        
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
                                 <%--Previous Page--%>
                                 <c:choose>
                                     <c:when test="${page > 1}">
                                         <li class="page-item" id="previousPage">
-                                            <a class="page-link" href="${contextPath}/subjectList?page=${page-1}" aria-label="Previous">
+                                            <a class="page-link" href="${contextPath}/courseContentList?page=${page-1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
@@ -112,7 +120,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <li class="page-item disabled">
-                                            <a class="page-link" href="${contextPath}/subjectList?page=${page-1}" aria-label="Previous">
+                                            <a class="page-link" href="${contextPath}/courseContentList?page=${page-1}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                                 <span class="sr-only">Previous</span>
                                             </a>
@@ -121,7 +129,7 @@
                                 </c:choose>
                                 <%--2 buttons before active page--%>
                                 <c:forEach var="pageNumber" begin="1" end="${page-1}">
-                                    <li class="page-item" id="page${page-pageNumber}"><a class="page-link" href="#">${page-pageNumber}</a></li>
+                                    <li class="page-item" id="page${page-pageNumber}"><a class="page-link" href="${contextPath}/courseContentList?page=${page-pageNumber}">${page-pageNumber}</a></li>
                                 </c:forEach>
                                 <%--Active page--%>
                                 <li class="page-item active" id="page${page}"><a class="page-link" href="#">${page}</a></li>
@@ -129,12 +137,12 @@
                                 <c:choose>
                                     <c:when test="${maxPape-page >= 2}">
                                         <c:forEach var="pageNumber" begin="1" end="2">
-                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="#">${page+pageNumber}</a></li>
+                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="${contextPath}/courseContentList?page=${page+pageNumber}">${page+pageNumber}</a></li>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
                                         <c:forEach var="pageNumber" begin="1" end="${maxPage - page}">
-                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="#">${page+pageNumber}</a></li>
+                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="${contextPath}/courseContentList?page=${page+pageNumber}">${page+pageNumber}</a></li>
                                         </c:forEach>
                                     </c:otherwise>
                                 </c:choose>
@@ -143,7 +151,7 @@
                                 <c:choose>
                                     <c:when test="${page == maxPage}">
                                         <li class="page-item disabled">
-                                            <a class="page-link" href="${contextPath}/subjectList?page=${page+1}" aria-label="Next">
+                                            <a class="page-link" href="${contextPath}/courseContentList?page=${page+1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                                 <span class="sr-only">Next</span>
                                             </a>
@@ -151,7 +159,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <li class="page-item">
-                                            <a class="page-link" href="${contextPath}/subjectList?page=${page+1}" aria-label="Next">
+                                            <a class="page-link" href="${contextPath}/courseContentList?page=${page+1}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                                 <span class="sr-only">Next</span>
                                             </a>

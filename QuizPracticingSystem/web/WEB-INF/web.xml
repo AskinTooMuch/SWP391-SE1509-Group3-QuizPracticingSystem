@@ -80,6 +80,10 @@
         <servlet-name>CourseContentList</servlet-name>
         <servlet-class>controller.chucnv.CourseContentList</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CourseContentDetail</servlet-name>
+        <servlet-class>controller.chucnv.CourseContentDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -155,6 +159,10 @@
     <servlet-mapping>
         <servlet-name>CourseContentList</servlet-name>
         <url-pattern>/courseContentList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CourseContentDetail</servlet-name>
+        <url-pattern>/courseContentDetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

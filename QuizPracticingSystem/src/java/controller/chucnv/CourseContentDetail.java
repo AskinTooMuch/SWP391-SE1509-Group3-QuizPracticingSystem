@@ -1,20 +1,17 @@
 /**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
- *  Created on : Sep 23, 2021
- *  SubjectController map
+ *  Created on : Oct 18, 2021
+ *  Course Content Detail servlet
  *  Quiz practicing system
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  27/9/21     1.0         ChucNVHE150618  First Deploy
- *  6/10/21     1.1         ChucNVHE150618  Add course content detail and update subject
- *  10/10/21    1.2         ChucNVHE150618  Add service of Dimension function: update, add, delete dimension
+ *  19/10/21    1.0         ChucNVHE150618  First Deploy
  */
-package controller;
+package controller.chucnv;
 
 import bean.Dimension;
 import bean.DimensionType;
-import bean.PricePackage;
 import bean.Subject;
 import bean.SubjectCate;
 import bean.User;
@@ -24,6 +21,12 @@ import dao.DimensionTypeDAO;
 import dao.PricePackageDAO;
 import dao.RegistrationDAO;
 import dao.SubjectCateDAO;
+import dao.SubjectDAO;
+import dao.impl.DimensionDAOImpl;
+import dao.impl.DimensionTypeDAOImpl;
+import dao.impl.PricePackageDAOImpl;
+import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectCateDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,19 +38,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import dao.SubjectDAO;
-import dao.impl.DimensionDAOImpl;
-import dao.impl.DimensionTypeDAOImpl;
-import dao.impl.PricePackageDAOImpl;
-import dao.impl.RegistrationDAOImpl;
-import dao.impl.SubjectCateDAOImpl;
 
-public class SubjectController extends HttpServlet {
+/**
+ *  This class has service for viewing and updating course content detail
+ *  and dimension
+ * @author ChucNV
+ */
+public class CourseContentDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     *  Service for viewing and updating course content detail and dimension
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,77 +59,49 @@ public class SubjectController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* Get service and initialise the subjectDAO */
             String service = request.getParameter("service");
-            SubjectDAO subjectDAO = new SubjectDAOImpl();
-            SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
-            DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
-            DimensionDAO dimensionDAO = new DimensionDAOImpl();
-            PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
-            RegistrationDAO registrationDAO = new RegistrationDAOImpl();
-
-//            /**
-//             * Service course content list: for admin and expert to check the
-//             * proper subject, depends on the role
-//             */
-//            if (service.equalsIgnoreCase("courseContentList")) {
-//                /* Get user and role on session scope */
-//                User currUser = (User) request.getSession().getAttribute("currUser");
-//                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-//                /* If user is not logged in, redirect to index */
-//                if ((currUser == null) || (currRole == null)) {
-//                    sendDispatcher(request, response, "index.jsp");
-//                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
-//                    /* Role is expert: get the assigned subjects */
-//                    /* Get assigned list */
-//                    ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
-//                    /* Set attribute and send it to course Content page */
-//                    request.setAttribute("courseContentSubjectList", featuredSubjectList);
-//                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
-//                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
-//                    /* Role is admin: load all subject */
-//                    /* Get all subject */
-//                    ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(2);
-//                    /* Set attribute and send it to course content page */
-//                    request.setAttribute("courseContentSubjectList", allSubject);
-//                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
-//                } else {
-//                    /* If the user is logged in but not admin or expert, send back to index.jsp */
-//                    sendDispatcher(request, response, "index.jsp");
-//                }
-//            }
-
-//            /**
-//             * Service course content detail: for admin and expert to check the
-//             * subject detail and edit it
-//             */
-//            if (service.equalsIgnoreCase("courseContentDetail")) {
-//                /* Get user and role on session scope */
-//                User currUser = (User) request.getSession().getAttribute("currUser");
-//                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-//                /* If user is not logged in, or not admin/expert, redirect to index */
-//                if ((currUser == null) || (currRole == null)
-//                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-//                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
-//                    sendDispatcher(request, response, "error.jsp");
-//                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ else {
-//                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-//                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-//                    request.setAttribute("subject", courseContent);
-//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-//                    request.setAttribute("categoryList", categoryList);
-//                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-//                    request.setAttribute("categoryRemainList", categoryRemainList);
-//                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-//                    request.setAttribute("dimensionTypes", dimensionTypes);
-//                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
-//                }
-//            }
-
+            
+            /*Service is null, redirect user to index*/
+            if (service == null) {
+                sendDispatcher(request, response, "index.jsp");
+            }
+            /**
+             * Service course content detail: for admin and expert to check the
+             * subject detail and edit it
+             */
+            if (service.equalsIgnoreCase("viewDetail")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ 
+                else {
+                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+                    request.setAttribute("subject", courseContent);
+                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryList", categoryList);
+                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+                    request.setAttribute("categoryRemainList", categoryRemainList);
+                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+                    request.setAttribute("dimensionTypes", dimensionTypes);
+                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+                }
+            }
             /**
              * Service course content detail: update subject
              */
             if (service.equalsIgnoreCase("updateSubject")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
                 /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
@@ -215,6 +189,10 @@ public class SubjectController extends HttpServlet {
              * delete)
              */
             if (service.equalsIgnoreCase("updateDimension")) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
+                DimensionDAO dimensionDAO = new DimensionDAOImpl(); /*Dimension DAO*/
                 /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
@@ -281,131 +259,30 @@ public class SubjectController extends HttpServlet {
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
-
-            /**
-             * Service course content detail: add new subject dimension
-             */
-            if (service.equalsIgnoreCase("addDimension")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null)
-                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
-                    sendDispatcher(request, response, "error.jsp");
-                } else {
-                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
-                    String message = "";
-                    String color = "red";
-                    /* Get parameters from jsp */
-                    int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
-                    String dimensionName = request.getParameter("dimensionName").trim();
-                    String description = request.getParameter("description").trim();
-                    /* Check boundaries */
-                    if (dimensionName == null || dimensionName.length() == 0) {
-                        message = "Dimension Name can not be empty";
-                    } else if (dimensionName.length() > 255) {
-                        message = "Dimension Name is too long";
-                    } else if (description.length() > 511) {
-                        message = "Dimension Description is too long";
-                    } else {
-                        /* Add new subject dimension */
-                        Dimension updateDimension = new Dimension(0, subjectId, dimensionTypeId, "", dimensionName, description, true);
-                        int check = dimensionDAO.addDimension(updateDimension);
-                        if (check > 0) {
-                            color = "green";
-                            message = "Add dimension successfully.";
-                        } else {
-                            message = "Add dimension failed.";
-                        }
-                    }
-
-                    /* Get the needed lists and redirect to the courseContentJsp */
-                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                    request.setAttribute("subject", courseContent);
-                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryList", categoryList);
-                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryRemainList", categoryRemainList);
-                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                    request.setAttribute("dimensionTypes", dimensionTypes);
-                    request.setAttribute("dimensionColor", color);
-                    request.setAttribute("dimensionMessage", message);
-                    request.setAttribute("displayTab", "dimension");
-                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
-                }
-            }
-
-            /**
-             * Service subject : subject detail
-             */
-            if (service.equalsIgnoreCase("subjectDetail")) {
-                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-                Subject subject = subjectDAO.getSubjectbyId(subjectId);
-                request.setAttribute("subject", subject);
-                ArrayList<PricePackage> pricePackage = pricePackageDAO.getAllPricePackagesBySubject(subjectId);
-                request.setAttribute("pricePackage", pricePackage);
-
-                request.getRequestDispatcher("jsp/subjectDetail.jsp").forward(request, response);
-            }
-            /**
-             * Service subject : add subject
-             */
-            if (service.equalsIgnoreCase("addSubject")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null)
-                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
-                    sendDispatcher(request, response, "error.jsp");
-                } else {
-                    int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-                    Subject subject = subjectDAO.getSubjectbyId(subjectId);
-//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-//                    request.setAttribute("categoryList", categoryList);
-                    request.getRequestDispatcher("jsp/addSubject.jsp").forward(request, response);
-                }
-            }
-            /**
-             * Service subject : My Registration
-             */
-            if (service.equalsIgnoreCase("myRegistration")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, redirect to index */
-                if ((currUser == null) || (currRole == null)) {
-                    sendDispatcher(request, response, "index.jsp");
-                } else {
-                    ArrayList<Subject> registrationList = registrationDAO.getRegistedSubjectbyUserId(currUser.getUserId());
-                    request.setAttribute("registrationList", registrationList);
-
-                    request.getRequestDispatcher("jsp/myRegistration.jsp").forward(request, response);
-
-                }
-            }
         } catch (Exception ex) {
-            Logger.getLogger(SubjectController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
-    /* Forward the request to the destination, catch any unexpected exceptions and log it */
+    /**
+     * Forward the request to the destination, catch any unexpected exceptions and log it
+     * @param request   Request of the servlet
+     * @param response  Response of the servlet
+     * @param path      Forward address
+     */
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(SubjectController.class
+            Logger.getLogger(SubjectList.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
