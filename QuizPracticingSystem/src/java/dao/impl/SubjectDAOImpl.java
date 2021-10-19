@@ -10,6 +10,7 @@
  *  24/9/21     1.0         ChucNVHE150618  Add methods: getAllSubjects, getSubjectById, getSubjectByCateId, update-add-delete subject
  *  27/9/21     1.0         ChucNVHE150618  Add methods: getFeaturedSubjects, getAssignedSubject
  *  9/10/21     1.0         NamDHHE150519   add method: get5LastAddedSubmit
+ *  18/10/21    1.1         ChucNVHE150618  Add method: getTrueAllSubjects(), getTrueSubjectsPaging(int page), getSubjectsAssignedPaging(int userId, int page), getSubjectsPaging(int page)
  */
 package dao.impl;
 
