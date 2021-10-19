@@ -22,8 +22,6 @@ import dao.SubjectCateDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *  The class has methods needed for initialize connection with database and 
@@ -358,6 +356,13 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return subjectByCate;
     }
 
+    /**
+     * Update subject with certain id
+     * @param subjectId
+     * @param subject
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int updateSubject(int subjectId, Subject subject) throws Exception {
         int i = 0;
@@ -365,12 +370,11 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
     }
 
     /**
-     *
+     *  Method to perform the single-value parameters of subject
      * @param subjectId
      * @param subject
      * @return
-     * @throws Exception Method to perform the single-value parameters of
-     * subject
+     * @throws Exception 
      */
     @Override
     public int updateSubjectBasic(int subjectId, Subject subject) throws Exception {
@@ -405,6 +409,12 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return i;
     }
 
+    /**
+     * Add new subject into database
+     * @param newSubject
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addSubject(Subject newSubject) throws Exception {
         int check = 0;
@@ -435,12 +445,24 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return check;
     }
 
+    /**
+     * Delete subject with a certain id
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deleteSubject(int subjectId) throws Exception {
         int i = 0;
         return i;
     }
 
+    /**
+     * Get available subject paginated
+     * @param page
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Subject> getSubjectsPaging(int page) throws Exception {
         Connection conn = null;
@@ -488,7 +510,13 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return allSubject;
     }
-
+    
+    /**
+     * Get all subject paginated
+     * @param page
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Subject> getTrueSubjectsPaging(int page) throws Exception {
         Connection conn = null;
@@ -536,7 +564,14 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return allSubject;
     }
-
+    
+    /**
+     * Get All subject assigned to an expert paginated
+     * @param userId
+     * @param page
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Subject> getSubjectsAssignedPaging(int userId, int page) throws Exception {
         Connection conn = null;
