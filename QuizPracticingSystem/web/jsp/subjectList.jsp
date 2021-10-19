@@ -65,6 +65,11 @@
                     </c:when>
                     <%-- Case 2: subjectList is not empty --%>
                     <c:otherwise>
+                        <%--If page is null, set default is 1--%>
+                        <c:if test="${empty page}"><c:set var="page" value="1"/></c:if>
+                        <%--If max page is null, redirect to servlet subjectList--%>
+                        <c:if test="${empty maxPage}"><c:redirect url="${contextPath}/subjectList"/></c:if>
+                        <c:out value="${maxPage}"/>
                         <div class="row" style="min-height: 50vh">
                             <%-- Print available subject --%>
                             <c:forEach items = "${subjectList}" var="subject" begin = "0" end = "${subjectList.size()-1}">
@@ -94,21 +99,64 @@
                         </div>
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
+                                <%--Previous Page--%>
+                                <c:choose>
+                                    <c:when test="${page > 1}">
+                                        <li class="page-item" id="previousPage">
+                                            <a class="page-link" href="${contextPath}/subjectList?page=${page-1}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="${contextPath}/subjectList?page=${page-1}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                                <%--2 buttons before active page--%>
+                                <c:forEach var="pageNumber" begin="1" end="${page-1}">
+                                    <li class="page-item" id="page${page-pageNumber}"><a class="page-link" href="#">${page-pageNumber}</a></li>
+                                </c:forEach>
+                                <%--Active page--%>
+                                <li class="page-item active" id="page${page}"><a class="page-link" href="#">${page}</a></li>
+                                <%--2 buttons after active page--%>
+                                <c:choose>
+                                    <c:when test="${maxPape-page >= 2}">
+                                        <c:forEach var="pageNumber" begin="1" end="2">
+                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="#">${page+pageNumber}</a></li>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach var="pageNumber" begin="1" end="${maxPage - page}">
+                                            <li class="page-item" id="page${page+pageNumber}"><a class="page-link" href="#">${page+pageNumber}</a></li>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+                                
+                                <%--Next Page--%>
+                                <c:choose>
+                                    <c:when test="${page == maxPage}">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="${contextPath}/subjectList?page=${page+1}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="page-item">
+                                            <a class="page-link" href="${contextPath}/subjectList?page=${page+1}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
                             </ul>
                         </nav>
                     </c:otherwise>
@@ -118,5 +166,17 @@
             <jsp:include page="footer.jsp"/>
         </div>
     </body>
-
+    <script>
+        
+        <%-- JS to active and inactive button on load --%>
+        window.onload{
+            if (%{page == 1}){
+                document.getElementById("previousPage").className += " disabled";
+            }
+            if (%{page == maxPage}){
+                document.getElementById("nextPage").className += " disabled";
+            }
+        }
+            
+    </script>
 </html>

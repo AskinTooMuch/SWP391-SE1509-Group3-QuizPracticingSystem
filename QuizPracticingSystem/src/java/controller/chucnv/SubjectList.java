@@ -50,6 +50,9 @@ public class SubjectList extends HttpServlet {
             } else {
                 page = (int) request.getAttribute("pageNumber");
             }
+            int maxPage = (int) Math.ceil((double) subjectDAO.getAllSubjects().size() / 7);
+            request.setAttribute("page", page);
+            request.setAttribute("maxPage", maxPage);
             /* Get subject list and set attribute */
             ArrayList<Subject> subjectList = subjectDAO.getSubjectsPaging(page);
             request.setAttribute("subjectList", subjectList);
