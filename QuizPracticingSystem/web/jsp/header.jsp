@@ -58,7 +58,7 @@
                                     Course Manage
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="${contextPath}/subjectController?service=courseContentList">Course Content List</a>
+                                    <a class="dropdown-item" href="${contextPath}/courseContentList">Course Content List</a>
                                     <a class="dropdown-item" href="${contextPath}/jsp/questionList.jsp">Question List</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Something else here</a>

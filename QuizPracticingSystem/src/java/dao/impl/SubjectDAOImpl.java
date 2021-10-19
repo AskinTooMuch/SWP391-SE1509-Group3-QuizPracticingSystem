@@ -22,6 +22,8 @@ import dao.SubjectCateDAO;
 import dao.SubjectDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  The class has methods needed for initialize connection with database and 
@@ -439,18 +441,6 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         return i;
     }
 
-    /* Test DAO */
-//    public static void main(String[] args) {
-//        SubjectDAOImpl dao = new SubjectDAOImpl();
-//        ArrayList<Subject> subjectByCate = dao.getSubjectsAssigned(7);
-//        for (Subject subject : subjectByCate) {
-//            if (subject==null) System.out.println("null");
-//            else {
-//                System.out.println(subject.toString());
-//            }
-//        }
-//    }
-
     @Override
     public ArrayList<Subject> getSubjectsPaging(int page) throws Exception {
         Connection conn = null;
@@ -467,7 +457,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
                             "(SELECT * \n" +
                             "		,ROW_NUMBER()  OVER(ORDER BY subjectId ASC) as num\n" +
                             "		FROM [Subject] WHERE status=1) A\n" +
-                            "WHERE A.num>=? AND A.num<=?;";
+                            "WHERE A.num BETWEEN ? AND ?;";
         /* Get the subject */
         try {
             conn = getConnection();
@@ -515,7 +505,7 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
                             "(SELECT * \n" +
                             "		,ROW_NUMBER()  OVER(ORDER BY subjectId ASC) as num\n" +
                             "		FROM [Subject]) A\n" +
-                            "WHERE A.num>=? AND A.num<=?;";
+                            "WHERE A.num BETWEEN ? AND ?;";
         /* Get the subject */
         try {
             conn = getConnection();
@@ -546,4 +536,69 @@ public class SubjectDAOImpl extends DBConnection implements SubjectDAO {
         }
         return allSubject;
     }
+
+    @Override
+    public ArrayList<Subject> getSubjectsAssignedPaging(int userId, int page) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        ArrayList<Subject> subjectAssigned = new ArrayList();
+        DimensionDAO dimensionDAO = new DimensionDAOImpl();
+        SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+
+        String sqlSubject = "SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY S.subjectId ASC) as num\n" +
+                            "			,S.[subjectId],[subjectName],[description],[thumbnail],[featuredSubject],S.[status],SE.[userId]\n" +
+                            "           	FROM [QuizSystem].dbo.[Subject] S INNER JOIN [QuizSystem].dbo.[SubjectExpert] SE\n" +
+                            "                   ON S.subjectId = SE.subjectId WHERE SE.userId = ?) A\n" +
+                            "	WHERE A.num BETWEEN ? AND ?;";
+        /* Get the subject */
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sqlSubject);
+            pre.setInt(1, userId);
+            pre.setInt(2, (page-1)*7+1);
+            pre.setInt(3, page*7);
+            rs = pre.executeQuery();
+            /* Get information from resultset and add it to arrayList */
+            while (rs.next()) {
+                int subjectId = rs.getInt("subjectId");
+                String subjectName = rs.getString("subjectName");
+                String description = rs.getString("description");
+                String thumbnail = rs.getString("thumbnail");
+                Boolean featured = rs.getBoolean("featuredSubject");
+                Boolean status = rs.getBoolean("status");
+
+                subjectAssigned.add(new Subject(subjectId, subjectName, description,
+                        thumbnail, featured, status,
+                        dimensionDAO.getDimensionBySubject(subjectId),
+                        subjectCateDAO.getSubjectCateBySubject(subjectId)));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return subjectAssigned;
+    }
+    
+    /* Test DAO */
+//    public static void main(String[] args) {
+//        try {
+//            SubjectDAOImpl dao = new SubjectDAOImpl();
+//            ArrayList<Subject> subjectA = dao.getSubjectsAssignedPaging(6,1);
+//            for (Subject subject : subjectA) {
+//                if (subject==null) System.out.println("null");
+//                else {
+//                    System.out.println(subject.toString());
+//                }
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(SubjectDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }

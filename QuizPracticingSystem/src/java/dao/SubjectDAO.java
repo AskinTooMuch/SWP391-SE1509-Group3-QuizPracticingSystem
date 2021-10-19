@@ -32,6 +32,8 @@ public interface SubjectDAO {
     
     public ArrayList<Subject> getSubjectsAssigned(int userId) throws Exception;
     
+    public ArrayList<Subject> getSubjectsAssignedPaging(int userId, int page) throws Exception;
+    
     public Subject getSubjectbyId(int subjectId) throws Exception;
     
     public ArrayList<Subject> getSubjectbyCateId(int cateId) throws Exception;

@@ -66,36 +66,36 @@ public class SubjectController extends HttpServlet {
             PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
             RegistrationDAO registrationDAO = new RegistrationDAOImpl();
 
-            /**
-             * Service course content list: for admin and expert to check the
-             * proper subject, depends on the role
-             */
-            if (service.equalsIgnoreCase("courseContentList")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, redirect to index */
-                if ((currUser == null) || (currRole == null)) {
-                    sendDispatcher(request, response, "index.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
-                    /* Role is expert: get the assigned subjects */
-                    /* Get assigned list */
-                    ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
-                    /* Set attribute and send it to course Content page */
-                    request.setAttribute("courseContentSubjectList", featuredSubjectList);
-                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
-                    /* Role is admin: load all subject */
-                    /* Get all subject */
-                    ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(2);
-                    /* Set attribute and send it to course content page */
-                    request.setAttribute("courseContentSubjectList", allSubject);
-                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
-                } else {
-                    /* If the user is logged in but not admin or expert, send back to index.jsp */
-                    sendDispatcher(request, response, "index.jsp");
-                }
-            }
+//            /**
+//             * Service course content list: for admin and expert to check the
+//             * proper subject, depends on the role
+//             */
+//            if (service.equalsIgnoreCase("courseContentList")) {
+//                /* Get user and role on session scope */
+//                User currUser = (User) request.getSession().getAttribute("currUser");
+//                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+//                /* If user is not logged in, redirect to index */
+//                if ((currUser == null) || (currRole == null)) {
+//                    sendDispatcher(request, response, "index.jsp");
+//                } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
+//                    /* Role is expert: get the assigned subjects */
+//                    /* Get assigned list */
+//                    ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
+//                    /* Set attribute and send it to course Content page */
+//                    request.setAttribute("courseContentSubjectList", featuredSubjectList);
+//                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
+//                } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
+//                    /* Role is admin: load all subject */
+//                    /* Get all subject */
+//                    ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(2);
+//                    /* Set attribute and send it to course content page */
+//                    request.setAttribute("courseContentSubjectList", allSubject);
+//                    sendDispatcher(request, response, "jsp/courseContentList.jsp");
+//                } else {
+//                    /* If the user is logged in but not admin or expert, send back to index.jsp */
+//                    sendDispatcher(request, response, "index.jsp");
+//                }
+//            }
 
             /**
              * Service course content detail: for admin and expert to check the

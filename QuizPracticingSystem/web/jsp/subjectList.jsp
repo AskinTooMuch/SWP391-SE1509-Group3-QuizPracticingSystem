@@ -92,7 +92,7 @@
                                     <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
                                 </div>
                                 <div class="cardBody">
-                                    <h5>Currently Not Available</h5>
+                                    <h5>We need you!</h5>
                                     <p style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
                                 </div>
                             </div>
