@@ -1,10 +1,4 @@
 <%-- 
-    Document   : error
-    Created on : Oct 2, 2021, 10:23:47 AM
-    Author     : Admin
---%>
-
-<%-- 
     Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Oct 2, 2021, 10:23:47 AM
     Error page

@@ -50,7 +50,7 @@ public class DashboardController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
 
             RegistrationDAO IRegistration = new RegistrationDAOImpl();
             SubjectDAO ISubject = new SubjectDAOImpl();
@@ -123,13 +123,7 @@ public class DashboardController extends HttpServlet {
                     request.setAttribute("registrationList", registrationList);
                 }
             }
-            if (option.equals("trendOfOrderCounts")) {
-                if (target.equals("success")) {
 
-                } else if (target.equals("all")) {
-
-                }
-            }
             request.setAttribute("statistics", statistics);
             request.setAttribute("nameList", nameList);
             request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
@@ -137,7 +131,7 @@ public class DashboardController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
-            response.sendRedirect("error.jsp");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

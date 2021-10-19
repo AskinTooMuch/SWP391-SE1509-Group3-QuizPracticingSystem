@@ -39,6 +39,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      *
      * @return list of all question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Question> getAllQuestion() throws Exception {
@@ -80,6 +81,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      * @param questionId the target question's id. It is a <code>int</code>
      * primitive type
      * @return a question. It is a <code>Question</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public Question getQuestionById(int questionId) throws Exception {
@@ -120,6 +122,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      * type
      * @return a list of question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception {
@@ -159,6 +162,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      * primitive type
      * @return a list of question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<QuestionManage> getQuestionByContent(String content) throws Exception {
@@ -204,6 +208,7 @@ public class QuestionDAOImpl extends DBConnection implements QuestionDAO {
      *
      * @param question It is a <code>Object</code> primitive type
      * @return questionId. It is a <code>int</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public int getQuestionIdCreated(Question question) throws Exception {

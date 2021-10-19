@@ -1,7 +1,7 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Sep 23, 2021
-   QuizController map
+   Quiz Handle Page
    Quiz practicing system
  
    Record of change:
@@ -10,7 +10,7 @@
    24/9/21     1.1         NamDHHE150519   Update
    25/9/21     1.2         NamDHHE150519   Big Update
    29/9/21     1.9         NamDDHE150519   complete all funtion
--->
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>
-                        <a href="${contextPath}/quizHandleController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/simulationExamController" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <div class="col-11">    
                         <div class="detail">
@@ -58,16 +58,18 @@
                 </div>
             </div>
             <!--end header-->
-            <style>
-                ul li::marker {
-                    font-weight: bold;
 
-                }
-            </style>
             <%-- Question and Answers --%>
             <div class="mainContent" style="display: flex; height:1000%;">
                 <div class="col-1"></div>
-                <div class="col-4" style="">
+                <div class="<c:choose>
+                         <c:when test="${questionQH.getQuestion().getMedia()!=null}">
+                             col-4
+                         </c:when>
+                         <c:otherwise>
+                             col-10
+                         </c:otherwise>
+                     </c:choose>" style="">
                     <div class="row question" style="display: flex;">
                         <div class="col-1">
 
@@ -112,8 +114,9 @@
                     </div>
                 </div>
                 <%-- Image or Video linked with the question--%>
+                <c:if test="${questionQH.getQuestion().getMedia()!=null}">
                 <div class="right col-7" style="">
-                    <c:if test="${questionQH.getQuestion().getMedia()!=null}">
+                    
                         <div style="">
                             <c:if test="${mediaType==2}">
                                 <iframe width="420" height="315" style="width:100%; height:400px;"
@@ -124,8 +127,9 @@
                                 <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:400px;">
                             </c:if>
                         </div>
-                    </c:if>
+                   
                 </div>
+                 </c:if>
             </div>
             <!--                           end mainContent-->
             <!--            peek and mark question-->
@@ -180,7 +184,7 @@
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
                 <div style="margin-left: 43%; margin-top:20px; <c:if test="${quizType==2}"> display:flex; margin-left: 31%;</c:if>">
                         <div>
-                        <c:if test="${quizType==2}">                               
+                        <c:if test="${quizType==3}">                               
                             <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
                         </c:if>
                     </div>
@@ -221,14 +225,6 @@
                                     <input type="submit" name="action" form="questionForm" class="btn allquestions ${question.getAnsweredId()!=0?"btn-secondary answered":"btn btn-light unanswered"}${question.isMarked()==true?" marked":" unmarked"} btn-lg active" id="${question.isMarked()==true?"marked":"unmarked"}" role="button" value="${quiz.indexOf(question)+1}">
                                 </c:forEach>                             
                             </div>
-                            <style>
-                                #marked{
-                                    border:red 3px solid;                                  
-                                }
-                                #reviewSubmit{
-                                    background-color: #4472c4;border: 1px white solid; color:white;
-                                }
-                            </style>
                         </div>
                     </div>
                 </div>
@@ -241,8 +237,9 @@
             var hoursLabel = document.getElementById("hours");
             var totalSecond;
             var today = new Date();
+            <%-- countDown timer  --%>
             <c:choose>
-                <c:when test="${quizType==1}">
+                <c:when test="${quizType!=3}">
             var endMilisecond;
             if (localStorage.getItem("endMiliseconds") != null) {
                 endMilisecond = localStorage.getItem("endMiliseconds");
@@ -267,7 +264,9 @@
                 }
             }
                 </c:when>
+                <%--End countDown timer  --%>
                 <c:otherwise>
+                <%-- countUp timer  --%>
             var startMilisecond;
             if (localStorage.getItem("startMiliseconds") != null) {
                 startMilisecond = localStorage.getItem("startMiliseconds");
@@ -289,6 +288,7 @@
                     document.getElementById('questionForm').submit();
                 }
             }
+            <%--  End countUp timer  --%>
                 </c:otherwise>
             </c:choose>
             function displayTime() {
@@ -310,6 +310,7 @@
                     return valString;
                 }
             }
+            <%-- filter Question  --%>
             const unanswered = document.getElementById('unansweredbutton');
             const marked = document.getElementById('markedbutton');
             const answered = document.getElementById('answeredbutton');
@@ -354,6 +355,7 @@
                     y[i].style.display = 'inline-flex';
                 }
             });
+            <%--  End filter question  --%>
         </script>
 
 
