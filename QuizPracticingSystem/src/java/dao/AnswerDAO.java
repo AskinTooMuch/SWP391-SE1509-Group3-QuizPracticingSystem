@@ -54,6 +54,12 @@ public interface AnswerDAO {
      * @throws Exception
      */
     public int addAnswer(Answer newAnswer) throws Exception;
-
+    
+    /**
+     * Get answers by Id 
+     * @param answerId It is a <code>int</code>
+     * @return 
+     * @throws Exception 
+     */
     public Answer getAnswersById(int answerId) throws Exception;
 }

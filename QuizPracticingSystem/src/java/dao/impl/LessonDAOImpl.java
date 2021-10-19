@@ -1,3 +1,14 @@
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  LessonDAOImpl
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  23/09/21     1.0        TuanPAHE150543      First Deploy
+
+*/
 package dao.impl;
 
 import bean.Lesson;
@@ -13,7 +24,14 @@ import java.sql.ResultSet;
  * @author tuan
  */
 public class LessonDAOImpl extends DBConnection implements LessonDAO {
-
+    
+    /**
+     * Get all lessons from database
+     *
+     * @return a list of <code>Lesson</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<Lesson> getAllLessons() throws Exception {
         Connection conn = null;
@@ -68,7 +86,14 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO {
     public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception {
         return null;
     }
-
+    
+    /**
+     * Get lesson from database by lesson's id
+     *
+     * @param lessonId lesson's ID. It is a <code>Integer</code>
+     * @return a <code>Lesson</code> objects
+     * @throws java.lang.Exception
+     */
     @Override
     public Lesson getLessonById(int lessonId) throws Exception {
         Connection conn = null;

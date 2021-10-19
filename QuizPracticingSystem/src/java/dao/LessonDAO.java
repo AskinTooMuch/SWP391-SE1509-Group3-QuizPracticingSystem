@@ -20,12 +20,26 @@ import java.util.ArrayList;
  * @author NamDH
  */
 public interface LessonDAO {
+    /**
+     * Get all lessons from database
+     *
+     * @return a list of <code>Lesson</code> objects. It is a
+     * <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
+     */
     public ArrayList<Lesson> getAllLessons() throws Exception;
     
     public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception;
     
     public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception;
     
+    /**
+     * Get lesson from database by lesson's id
+     *
+     * @param lessonId lesson's ID. It is a <code>Integer</code>
+     * @return a <code>Lesson</code> objects
+     * @throws java.lang.Exception
+     */
     public Lesson getLessonById(int lessonId) throws Exception;
     
     public int updateLesson(Lesson updatedLesson) throws Exception;

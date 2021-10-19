@@ -28,7 +28,13 @@ public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
     public ArrayList<Answer> getAllAnswers() throws Exception {
         return null;
     }
-
+    
+    /**
+     * Get answers by Id 
+     * @param answerId It is a <code>int</code>
+     * @return 
+     * @throws Exception 
+     */
     @Override
     public Answer getAnswersById(int answerId) throws Exception {
         Connection conn = null;
