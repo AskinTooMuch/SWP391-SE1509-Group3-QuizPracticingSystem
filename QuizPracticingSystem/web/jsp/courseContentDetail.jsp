@@ -63,7 +63,7 @@
                     <div id="tab1" class="tabcontent">
                         <h4 style="color: #565e64">Subject Overview/ Id <c:out value="${subject.getSubjectId()}"/></h4>
                         <%-- Form details: The whole tab is a form with the subject's details as set values --%>
-                        <form style="padding: 5px;" action="subjectController">
+                        <form style="padding: 5px;" action="courseContentDetail" method="POST">
                             <%-- First bootstrap form row: subject name, category, featured subject, status and thumbnail image --%>
                             <div class="form-row">
                                 <div class="form-group col-md-7">
@@ -185,13 +185,13 @@
                         <%-- Dimension table: each row is a form that allows admin/expert to edit/delete the dimension --%>
                         <table class="table table-striped table-bordered table-hover">
                             <%-- Table head --%>
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Dimension</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Action</th>
+                            <thead class="thead-light" style="background-color: #F0D8D5;">
+                                <tr style="background-color: #F0D8D5;">
+                                    <th scope="col" style="background-color: #F0D8D5;">Id</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Type</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Dimension</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Description</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Action</th>
                                 </tr>
                             </thead>
                             <%-- Table body --%>
@@ -199,7 +199,7 @@
                                 <%-- For each dimension, print a row --%>
                                 <c:forEach items = "${subject.getDimensions()}" var="dimension" begin = "0" end = "${subject.getDimensions().size()-1}">
                                     <tr>
-                                        <form action="subjectController">
+                                        <form action="courseContentDetail">
                                             <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
                                             <input type="hidden" name="dimensionId" value="${dimension.getDimensionId()}">
                                             <input type="hidden" name="service" value="updateDimension">
@@ -219,8 +219,8 @@
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
                                             <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Description"></td>
-                                            <td><input type="submit" class="btn btn-secondary" name="subService" value="Update" />
-                                                <input type="submit" class="btn btn-secondary" name="subService" value="Delete" />
+                                            <td><input type="submit" class="btn btn-primary" name="subService" value="Update" />
+                                                <input type="submit" class="btn btn-primary" name="subService" value="Delete" />
                                             </td>
                                         </form>
                                     </tr>
@@ -240,8 +240,8 @@
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
                                             <td><input class="inputBorderless" type="text" name="description" placeholder="Description"></td>
-                                            <td><button type="submit" id="submit" class="btn btn-secondary">Submit</button>
-                                                <a href="${contextPath}/index.jsp" class="btn btn-secondary">Back</a>
+                                            <td><button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                                                <a href="${contextPath}/index.jsp" class="btn btn-primary">Back</a>
                                             </td>
                                     </form>
                                 </tr>

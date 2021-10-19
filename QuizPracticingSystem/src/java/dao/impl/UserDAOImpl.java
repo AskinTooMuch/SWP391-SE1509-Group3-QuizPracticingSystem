@@ -1,7 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserDAO Interface
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  23/9/21     1.0         ChucNVHE150618      First Deploy
+ *  18/10/21    1.0         NamDHHE150519       Add comment
  */
 package dao.impl;
 
@@ -14,11 +20,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
+ * Lớp này chứa các Method của UserDAOImpl
  *
- * @author admin
+ * @author ChucNV
  */
 public class UserDAOImpl extends DBConnection implements UserDAO {
 
+    /**
+     * Get all user
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<User> getUserAllUser() throws Exception {
         return null;
@@ -345,12 +357,12 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         return check;
     }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        UserDAOImpl ud = new UserDAOImpl();
 //        User newUser = new User(0, "Duong", "12", 1, null, "duonghoang8801@gmail.com", true, "0852274855", true);
 //        ud.addUser(newUser);
-
-    }
+//
+//    }
 
     /**
      * delete a user from User table

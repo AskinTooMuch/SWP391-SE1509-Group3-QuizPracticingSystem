@@ -22,11 +22,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- *
- * @author admin
+ *  Lớp này chứa các method của SubjectCateDAOImpl
+ * @author ChucNV
  */
 public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
 
+    /**
+     * Get all subject categories
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<SubjectCate> getAllSubjectCates() throws Exception {
         Connection conn = null;
@@ -55,11 +60,23 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         return allCategory;
     }
 
+    /**
+     * Get subject category by Id
+     * @param scId Subject Category ID
+     * @return
+     * @throws Exception 
+     */
     @Override
     public SubjectCate getSubjectCateById(int scId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Get subject categories of a specified subject
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<SubjectCate> getSubjectCateBySubject(int subjectId) throws Exception {
         Connection conn = null;
@@ -92,6 +109,12 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         return categories;
     }
     
+    /**
+     * Get subject category ids of a specified subject
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public String[] getSubjectCateIdBySubject(int subjectId) throws Exception {
         Connection conn = null;
@@ -123,6 +146,12 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         return categoryId.toArray(idString);
     }
     
+    /**
+     * Get subject categories that is not referenced by a specified subject
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<SubjectCate> getRemainSubjectCateBySubject(int subjectId) throws Exception {
         Connection conn = null;
@@ -156,11 +185,24 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         return remainCategories;
     }
     
+    /**
+     * Add new subject Category
+     * @param updatedSubjectCate Subject Category
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addSubjectCate(SubjectCate updatedSubjectCate) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Add new category of a subject
+     * @param subjectId
+     * @param categoryId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addCategorySubject(int subjectId, int categoryId) throws Exception {
         Connection conn = null;
@@ -184,59 +226,36 @@ public class SubjectCateDAOImpl extends DBConnection implements SubjectCateDAO {
         return check;
     }
     
+    /**
+     * Update subject Category
+     * @param subjectCategoryId
+     * @param updatedSubjectCate Update Subject Category
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int updateSubjectCate(int subjectCategoryId, SubjectCate updatedSubjectCate) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    @Override
-    public int updateSubjectContentCate(int subjectId, String[] updatedSubjectCateId) throws Exception {
-        Connection conn = null;
-        PreparedStatement pre = null;   /* Prepared statement for executing sql queries */
-
-        String[] currentCategorySubject = getSubjectCateIdBySubject(subjectId);
-        int check = 0;
-        /* Terminates: eliminates all the unchanged tuples */
-        if (updatedSubjectCateId != null) {
-            for (int i = 0; i < updatedSubjectCateId.length; i++) {
-                for (int j = 0; j < currentCategorySubject.length; j++) {
-                    if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
-                        updatedSubjectCateId[i]= "-1";
-                        currentCategorySubject[j] = "-1";
-                    }
-                }
-            }
-            
-            try {
-                for (String categoryId : updatedSubjectCateId) {
-                    if (!categoryId.equals("-1"))
-                    check += addCategorySubject(subjectId, Integer.parseInt(categoryId));
-                }
-                for (String categoryId : currentCategorySubject) {
-                    if (!categoryId.equals("-1"))
-                    check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-                }
-            } catch (Exception ex) {
-                throw ex;
-            } finally {
-                closePreparedStatement(pre);
-                closeConnection(conn);
-            }
-        } else {
-            for (String categoryId : currentCategorySubject) {
-                    if (!categoryId.equals("-1"))
-                    check += deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-                }
-        }
-        
-        return check;
-    }
-    
+    /**
+     * Delete subject Category
+     * @param scId Subject Category ID
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deteleSubjectCate(int scId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    /**
+     * Delete relation between subject and subject category
+     * @param subjectId
+     * @param categoryId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deteleCategorySubject(int subjectId, int categoryId) throws Exception{
         Connection conn = null;

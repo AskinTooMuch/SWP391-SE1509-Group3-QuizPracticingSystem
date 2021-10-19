@@ -12,7 +12,7 @@
 package bean;
 
 /**
- *
+ * Hold the data of Dimension type entity
  * @author duong
  */
 public class DimensionType {

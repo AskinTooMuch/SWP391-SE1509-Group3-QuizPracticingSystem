@@ -22,11 +22,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- *
+ * Lớp này chứa các interface của DimensionDAOImpl
  * @author admin
  */
 public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
 
+    /**
+     * Get all dimension 
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Dimension> getAllDimension() throws Exception {
         Connection conn = null;
@@ -69,6 +74,12 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
         return listDimension;
     }
 
+    /**
+     * Get dimensions of a subject
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Dimension> getDimensionBySubject(int subjectId) throws Exception {
         Connection conn = null;
@@ -114,6 +125,12 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
         return dimensions;
     }
 
+    /**
+     * Get dimension by a specified id
+     * @param dimensionId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Dimension getDimensionById(int dimensionId) throws Exception {
         Connection conn = null;
@@ -253,7 +270,7 @@ public class DimensionDAOImpl extends DBConnection implements DimensionDAO {
     }
 
     /**
-     * 
+     * Get dimension types of a subject
      * @param subjectId
      * @return
      * @throws Exception 

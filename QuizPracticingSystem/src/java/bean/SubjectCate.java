@@ -12,7 +12,7 @@
 package bean;
 
 /**
- *
+ *  Hold the information of the subject category entity
  * @author admin
  */
 public class SubjectCate {

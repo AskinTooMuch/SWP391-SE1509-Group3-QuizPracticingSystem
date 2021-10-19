@@ -21,6 +21,11 @@ import java.util.ArrayList;
  */
 public interface UserDAO {
 
+    /**
+     * Get all user
+     * @return
+     * @throws Exception 
+     */
     public ArrayList<User> getUserAllUser() throws Exception;
 
     /**

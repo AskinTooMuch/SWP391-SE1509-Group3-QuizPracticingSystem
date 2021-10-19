@@ -20,13 +20,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
- *
+ * Lớp này chứa các method của DimensionTypeDAOImpl
  * @author duong
  */
 public class DimensionTypeDAOImpl extends DBConnection implements DimensionTypeDAO {
 
     /**
-     * 
+     * Get all dimension type with status = 1
      * @return <code>ArrayList</code>
      * @throws Exception 
      */
@@ -63,6 +63,12 @@ public class DimensionTypeDAOImpl extends DBConnection implements DimensionTypeD
         return dimensionTypesList;
     }
 
+    /**
+     * Get dimension type by a specified id
+     * @param dimensionTypeId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public DimensionType getDimensionTypeById(int dimensionTypeId) throws Exception {
         Connection conn = null;
@@ -92,16 +98,34 @@ public class DimensionTypeDAOImpl extends DBConnection implements DimensionTypeD
         return null;
     }
 
+    /**
+     * Update dimension type
+     * @param updatedDimensionType
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int updateDimensionType(DimensionType updatedDimensionType) throws Exception {
         return 0;
     }
 
+    /**
+     * Delete dimension type
+     * @param dtId dimensionID
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deteteDimensionTyoe(int dtId) throws Exception {
         return 0;
     }
 
+    /**
+     * Add new dimension Type
+     * @param newDimensionType
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addDimensionType(DimensionType newDimensionType) throws Exception {
         return 0;

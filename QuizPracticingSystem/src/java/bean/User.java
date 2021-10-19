@@ -12,8 +12,8 @@
 package bean;
 
 /**
- *
- * @author admin
+ *  Hold the data of the user entity
+ * @author ChucNV
  */
 public class User {
     private int userId; /*User ID*/

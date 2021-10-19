@@ -12,7 +12,7 @@
 package bean;
 
 /**
- *
+ * Hold the data of userRole entity
  * @author admin
  */
 public class UserRole {

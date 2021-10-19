@@ -1,8 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  UserRoleDAO Interface
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  23/9/21     1.0         ChucNVHE150618      First Deploy
+ *  18/10/21    1.0         NamDHHE150519       Add comment
+*/
 package dao.impl;
 
 import bean.UserRole;
@@ -14,11 +20,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- *
- * @author admin
+ *  Lớp này chứa các method của UserRoleDAOImpl
+ * @author ChucNV
  */
 public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
 
+    /**
+     * Get all user role
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<UserRole> getAllUserRole() throws Exception {
         Connection conn = null;
@@ -48,6 +59,12 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         return allUserRole;
     }
 
+    /**
+     * Get user role with a specified id
+     * @param roleId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public UserRole getUserRoleById(int roleId) throws Exception {
         Connection conn = null;
@@ -75,6 +92,12 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         return userRole;
     }
 
+    /**
+     * Edit user Role
+     * @param userRole
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int editRole(UserRole userRole) throws Exception {
         Connection conn = null;
@@ -102,6 +125,12 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         return i;
     }
 
+    /**
+     * Add new user role
+     * @param userRole
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addRole(UserRole userRole) throws Exception {
         Connection conn = null;
@@ -128,6 +157,12 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         return i;
     }
 
+    /**
+     * Delete user Role
+     * @param roleId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deleteRole(int roleId) throws Exception {
         Connection conn = null;

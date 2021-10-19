@@ -124,163 +124,163 @@ public class SubjectController extends HttpServlet {
 //                }
 //            }
 
-            /**
-             * Service course content detail: update subject
-             */
-            if (service.equalsIgnoreCase("updateSubject")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null)
-                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
-                    sendDispatcher(request, response, "error.jsp");
-                } else {
-                    /* Else: get the subject detail  */
-                    /* Get parameters from jsp */
-                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
-                    String subjectName = request.getParameter("subjectName").trim();
-                    String subjectDescription = request.getParameter("subjectDescription").trim();
-                    String subjectThumbnail = request.getParameter("subjectThumbnail");
-                    boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
-                    boolean status = request.getParameter("subjectStatus").equals("1");
-                    String[] updatedSubjectCateId = request.getParameterValues("subjectCategory");
-                    /* Check boundaries */
-                    String message = "";
-                    String color = "red";
-                    if (subjectName == null || subjectName.length() == 0) {
-                        message = "SubjectName can not be empty";
-                    } else if (subjectName.length() > 255) {
-                        message = "Subject Name is too long";
-                    } else if (subjectDescription == null || subjectDescription.length() == 0) {
-                        message = "Subject Description can not be empty";
-                    } else if (subjectDescription.length() > 1023) {
-                        message = "Subject Description is too long";
-                    } else {
-                        color = "green";
-                        /* Perform the updates on subject basic data and categories */
-                        Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
-                        int updateNumber = 0;
-                        updateNumber += subjectDAO.updateSubjectBasic(subjectId, updateSubject);
-                        String[] currentCategorySubject = subjectCateDAO.getSubjectCateIdBySubject(subjectId);
-                        /* Terminates: eliminates all the unchanged tuples */
-                        if (updatedSubjectCateId != null) { /* If the updated subject category list is not null */
-                            for (int i = 0; i < updatedSubjectCateId.length; i++) {
-                                for (int j = 0; j < currentCategorySubject.length; j++) {
-                                    if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
-                                        updatedSubjectCateId[i]= "-1";
-                                        currentCategorySubject[j] = "-1";
-                                    }
-                                }
-                            }
-                            /* Add categories in the updated list */
-                            for (String categoryId : updatedSubjectCateId) {
-                                if (!categoryId.equals("-1"))
-                                updateNumber += subjectCateDAO.addCategorySubject(subjectId, Integer.parseInt(categoryId));
-                            }
-                            /* Delete categories in the current list */
-                            for (String categoryId : currentCategorySubject) {
-                                if (!categoryId.equals("-1"))
-                                updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-                            }
-                        } else { /* If the updated subject category list is null: delete all category */
-                            for (String categoryId : currentCategorySubject) {
-                                    if (!categoryId.equals("-1"))
-                                    updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-                                }
-                        }
-//                         subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
-//                        int updateNumber = basicUpdate + categoryUpdate;
-                        message = "Performed " + updateNumber + " update(s) successfully.";
-                    }
-                    /* Get the needed lists and redirect to the courseContentJsp */
-                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                    request.setAttribute("subject", courseContent);
-                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryList", categoryList);
-                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryRemainList", categoryRemainList);
-                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                    request.setAttribute("dimensionTypes", dimensionTypes);
-                    request.setAttribute("detailColor", color);
-                    request.setAttribute("detailMessage", message);
-                    request.setAttribute("displayTab", "overview");
-                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
-                }
-            }
-
-            /**
-             * Service course content detail: update subject dimension (edit and
-             * delete)
-             */
-            if (service.equalsIgnoreCase("updateDimension")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null)
-                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
-                    sendDispatcher(request, response, "error.jsp");
-                } else {
-                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
-                    String message = "";
-                    String color = "red";
-                    int dimensionId = Integer.parseInt(request.getParameter("dimensionId").trim());
-                    /* Check if the sub-service is update or delete */
-                    String subService = request.getParameter("subService").trim();
-                    if (subService.equalsIgnoreCase("Delete")) {
-                        /* Perform deletion on subject dimension */
-                        int check = dimensionDAO.deleteDimension(dimensionId);
-                        if (check > 0) {
-                            color = "green";
-                            message = "Delete dimension successfully.";
-                        } else {
-                            message = "Delete dimension failed.";
-                        }
-                    } else if (subService.equalsIgnoreCase("Update")) {
-                        /* Get parameters from jsp */
-                        int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
-                        String dimensionName = request.getParameter("dimensionName").trim();
-                        String description = request.getParameter("description").trim();
-                        /* Check boundaries */
-
-                        if (dimensionName == null || dimensionName.length() == 0) {
-                            message = "Dimension Name can not be empty";
-                        } else if (dimensionName.length() > 255) {
-                            message = "Dimension Name is too long";
-                        } else if (description.length() > 511) {
-                            message = "Dimension Description is too long";
-                        } else {
-
-                            /* Perform the updates on subject dimension */
-                            Dimension updateDimension = new Dimension(dimensionId, subjectId, dimensionTypeId, "", dimensionName, description, true);
-                            int check = dimensionDAO.editDimension(dimensionId, updateDimension);
-                            if (check > 0) {
-                                color = "green";
-                                message = "Update dimension successfully.";
-                            } else {
-                                message = "Update dimension failed.";
-                            }
-                        }
-                    }
-
-                    /* Get the needed lists and redirect to the courseContentJsp */
-                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
-                    request.setAttribute("subject", courseContent);
-                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryList", categoryList);
-                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
-                    request.setAttribute("categoryRemainList", categoryRemainList);
-                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
-                    request.setAttribute("dimensionTypes", dimensionTypes);
-                    request.setAttribute("dimensionColor", color);
-                    request.setAttribute("dimensionMessage", message);
-                    request.setAttribute("displayTab", "dimension");
-                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
-                }
-            }
+//            /**
+//             * Service course content detail: update subject
+//             */
+//            if (service.equalsIgnoreCase("updateSubject")) {
+//                /* Get user and role on session scope */
+//                User currUser = (User) request.getSession().getAttribute("currUser");
+//                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+//                /* If user is not logged in, or not admin/expert, redirect to index */
+//                if ((currUser == null) || (currRole == null)
+//                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+//                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+//                    sendDispatcher(request, response, "error.jsp");
+//                } else {
+//                    /* Else: get the subject detail  */
+//                    /* Get parameters from jsp */
+//                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
+//                    String subjectName = request.getParameter("subjectName").trim();
+//                    String subjectDescription = request.getParameter("subjectDescription").trim();
+//                    String subjectThumbnail = request.getParameter("subjectThumbnail");
+//                    boolean isFeatured = request.getParameter("isFeaturedSubject") != null;
+//                    boolean status = request.getParameter("subjectStatus").equals("1");
+//                    String[] updatedSubjectCateId = request.getParameterValues("subjectCategory");
+//                    /* Check boundaries */
+//                    String message = "";
+//                    String color = "red";
+//                    if (subjectName == null || subjectName.length() == 0) {
+//                        message = "SubjectName can not be empty";
+//                    } else if (subjectName.length() > 255) {
+//                        message = "Subject Name is too long";
+//                    } else if (subjectDescription == null || subjectDescription.length() == 0) {
+//                        message = "Subject Description can not be empty";
+//                    } else if (subjectDescription.length() > 1023) {
+//                        message = "Subject Description is too long";
+//                    } else {
+//                        color = "green";
+//                        /* Perform the updates on subject basic data and categories */
+//                        Subject updateSubject = new Subject(subjectId, subjectName, subjectDescription, subjectThumbnail, isFeatured, status);
+//                        int updateNumber = 0;
+//                        updateNumber += subjectDAO.updateSubjectBasic(subjectId, updateSubject);
+//                        String[] currentCategorySubject = subjectCateDAO.getSubjectCateIdBySubject(subjectId);
+//                        /* Terminates: eliminates all the unchanged tuples */
+//                        if (updatedSubjectCateId != null) { /* If the updated subject category list is not null */
+//                            for (int i = 0; i < updatedSubjectCateId.length; i++) {
+//                                for (int j = 0; j < currentCategorySubject.length; j++) {
+//                                    if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
+//                                        updatedSubjectCateId[i]= "-1";
+//                                        currentCategorySubject[j] = "-1";
+//                                    }
+//                                }
+//                            }
+//                            /* Add categories in the updated list */
+//                            for (String categoryId : updatedSubjectCateId) {
+//                                if (!categoryId.equals("-1"))
+//                                updateNumber += subjectCateDAO.addCategorySubject(subjectId, Integer.parseInt(categoryId));
+//                            }
+//                            /* Delete categories in the current list */
+//                            for (String categoryId : currentCategorySubject) {
+//                                if (!categoryId.equals("-1"))
+//                                updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+//                            }
+//                        } else { /* If the updated subject category list is null: delete all category */
+//                            for (String categoryId : currentCategorySubject) {
+//                                    if (!categoryId.equals("-1"))
+//                                    updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+//                                }
+//                        }
+////                         subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
+////                        int updateNumber = basicUpdate + categoryUpdate;
+//                        message = "Performed " + updateNumber + " update(s) successfully.";
+//                    }
+//                    /* Get the needed lists and redirect to the courseContentJsp */
+//                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+//                    request.setAttribute("subject", courseContent);
+//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+//                    request.setAttribute("categoryList", categoryList);
+//                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+//                    request.setAttribute("categoryRemainList", categoryRemainList);
+//                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+//                    request.setAttribute("dimensionTypes", dimensionTypes);
+//                    request.setAttribute("detailColor", color);
+//                    request.setAttribute("detailMessage", message);
+//                    request.setAttribute("displayTab", "overview");
+//                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+//                }
+//            }
+//
+//            /**
+//             * Service course content detail: update subject dimension (edit and
+//             * delete)
+//             */
+//            if (service.equalsIgnoreCase("updateDimension")) {
+//                /* Get user and role on session scope */
+//                User currUser = (User) request.getSession().getAttribute("currUser");
+//                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+//                /* If user is not logged in, or not admin/expert, redirect to index */
+//                if ((currUser == null) || (currRole == null)
+//                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+//                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+//                    sendDispatcher(request, response, "error.jsp");
+//                } else {
+//                    int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
+//                    String message = "";
+//                    String color = "red";
+//                    int dimensionId = Integer.parseInt(request.getParameter("dimensionId").trim());
+//                    /* Check if the sub-service is update or delete */
+//                    String subService = request.getParameter("subService").trim();
+//                    if (subService.equalsIgnoreCase("Delete")) {
+//                        /* Perform deletion on subject dimension */
+//                        int check = dimensionDAO.deleteDimension(dimensionId);
+//                        if (check > 0) {
+//                            color = "green";
+//                            message = "Delete dimension successfully.";
+//                        } else {
+//                            message = "Delete dimension failed.";
+//                        }
+//                    } else if (subService.equalsIgnoreCase("Update")) {
+//                        /* Get parameters from jsp */
+//                        int dimensionTypeId = Integer.parseInt(request.getParameter("dimensionType").trim());
+//                        String dimensionName = request.getParameter("dimensionName").trim();
+//                        String description = request.getParameter("description").trim();
+//                        /* Check boundaries */
+//
+//                        if (dimensionName == null || dimensionName.length() == 0) {
+//                            message = "Dimension Name can not be empty";
+//                        } else if (dimensionName.length() > 255) {
+//                            message = "Dimension Name is too long";
+//                        } else if (description.length() > 511) {
+//                            message = "Dimension Description is too long";
+//                        } else {
+//
+//                            /* Perform the updates on subject dimension */
+//                            Dimension updateDimension = new Dimension(dimensionId, subjectId, dimensionTypeId, "", dimensionName, description, true);
+//                            int check = dimensionDAO.editDimension(dimensionId, updateDimension);
+//                            if (check > 0) {
+//                                color = "green";
+//                                message = "Update dimension successfully.";
+//                            } else {
+//                                message = "Update dimension failed.";
+//                            }
+//                        }
+//                    }
+//
+//                    /* Get the needed lists and redirect to the courseContentJsp */
+//                    Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
+//                    request.setAttribute("subject", courseContent);
+//                    ArrayList<SubjectCate> categoryList = subjectCateDAO.getSubjectCateBySubject(subjectId);
+//                    request.setAttribute("categoryList", categoryList);
+//                    ArrayList<SubjectCate> categoryRemainList = subjectCateDAO.getRemainSubjectCateBySubject(subjectId);
+//                    request.setAttribute("categoryRemainList", categoryRemainList);
+//                    ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
+//                    request.setAttribute("dimensionTypes", dimensionTypes);
+//                    request.setAttribute("dimensionColor", color);
+//                    request.setAttribute("dimensionMessage", message);
+//                    request.setAttribute("displayTab", "dimension");
+//                    sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
+//                }
+//            }
 
             /**
              * Service course content detail: add new subject dimension

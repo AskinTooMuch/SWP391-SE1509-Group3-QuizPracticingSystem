@@ -14,7 +14,7 @@ package bean;
 import java.util.ArrayList;
 
 /**
- *
+ *  Subject entity: Hold all the data of the subject
  * @author admin
  */
 public class Subject {

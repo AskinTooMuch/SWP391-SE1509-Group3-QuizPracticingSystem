@@ -12,7 +12,7 @@
 package bean;
 
 /**
- *
+ *  Hold the data of dimension entity
  * @author ChucNVHE150618
  */
 public class Dimension {
