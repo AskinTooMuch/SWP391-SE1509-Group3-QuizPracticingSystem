@@ -7,7 +7,7 @@
  *  Record of change:
  *  Date        Version     Author              Description
  *  23/9/21     1.0         DuongNHHE150328     First Deploy
-*/
+ */
 package bean;
 
 import javax.mail.*;
@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Admin
@@ -28,6 +29,14 @@ public class SystemEmail {
     final String fromEmail = "grouptreeswp391@gmail.com";
     final String password = "Grouptree123@";
 
+    /**
+     * Using system email to send email to <String>toEmail</String> address with
+     * subject and body content
+     *
+     * @param toEmail
+     * @param subject
+     * @param body
+     */
     public void sendEmail(String toEmail, String subject, String body) {
         try {
             Properties props = new Properties();
@@ -54,7 +63,6 @@ public class SystemEmail {
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             Transport.send(msg);
-//            System.out.println("Gui mail thanh cong");
         } catch (MessagingException ex) {
             Logger.getLogger(SystemEmail.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {

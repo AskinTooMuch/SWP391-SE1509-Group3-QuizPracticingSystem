@@ -12,33 +12,24 @@
  */
 package controller;
 
-import bean.DimensionType;
 import bean.Question;
 import bean.Quiz;
 import bean.Subject;
 import bean.User;
 import bean.CustomerQuiz;
 import bean.Dimension;
-import bean.QuizLevel;
-import bean.TestType;
 import dao.CustomerQuizDAO;
 import dao.DimensionDAO;
-import dao.DimensionTypeDAO;
 import dao.QuestionDAO;
 import dao.QuizDAO;
-import dao.QuizLevelDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
-import dao.TestTypeDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.DimensionDAOImpl;
-import dao.impl.DimensionTypeDAOImpl;
 import dao.impl.QuestionDAOImpl;
 import dao.impl.QuizDAOImpl;
-import dao.impl.QuizLevelDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
-import dao.impl.TestTypeDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -50,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This class has the process request of practiceList and practiceDetail
  * @author Admin
  */
 public class PracticeController extends HttpServlet {
@@ -58,7 +49,8 @@ public class PracticeController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * Function Practice List: allow the user to view all taken practice 
+     * Function Practice Detail: allow the user to create new practice 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -121,7 +113,7 @@ public class PracticeController extends HttpServlet {
                 for (Question question : questionList) {
                     quizDAO.addQuizQuestion(practice.getQuizId(), question.getQuestionId());
                 }
-                response.sendRedirect("quizController?service=quizEntrance&quizId=" + practice.getQuizId());
+                response.sendRedirect("quizHandleController?service=quizEntrance&quizId=" + practice.getQuizId());
             }
 
             //Get information to display in the practiceList

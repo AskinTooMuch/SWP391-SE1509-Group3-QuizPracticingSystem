@@ -46,9 +46,11 @@
                         <div style="margin-bottom: 20px;">
                             <%-- Start search form --%>
                             <form action = "${contextPath}/QuizListController" method="POST" class="navbar-form">
-                                <div class="form-group">
-                                    <input  class="form-control" type="text" id="content" placeholder="Content... " name="quizName">
-                                    <button type="submit" class="btn btn-primary" style="width: 100%">Search</button>
+                                <div class="input-group">
+                                    <input  class="form-control" type="text" id="content" placeholder="Content... " name="content"  style="display: inline-block">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span></button>  
+                                    </span>
                                     <input type="hidden" name="service" value="searchQuizByName">
                                 </div>
                             </form>                     

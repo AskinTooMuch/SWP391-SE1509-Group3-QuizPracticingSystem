@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 18, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  18/10/21    1.0         DuongNHHE150328 First Deploy
+ *  18/10/21    1.1         DuongNHHE150328 Add service
  */
 package controller;
 
@@ -19,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This class has the process request of send email and reset password
  * @author Admin
  */
 public class ResetPasswordController extends HttpServlet {
@@ -27,7 +33,7 @@ public class ResetPasswordController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * Function Reset Password: allow the user to reset their old password using a confirm link via email 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -49,14 +55,14 @@ public class ResetPasswordController extends HttpServlet {
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
-                } else if (userDAO.getUserByMail(userMail) == null) {
+                } else if (userDAO.getUserByMail(userMail) == null) {//if email have yet existed in the system
                     mess = "Email not existed!";
                     request.setAttribute("mess", mess);
                     request.getRequestDispatcher("login/resetPass.jsp").forward(request, response);
                     return;
-                } else {
+                } else {// send reset email to the customer email
                     SystemEmail se = new SystemEmail();
-                    long milis = System.currentTimeMillis();
+                    long milis = System.currentTimeMillis(); //save send email time to the link (to check in valid time)
                     String resetPassLink = "http://localhost:8080/QuizPracticingSystem/login/resetPass.jsp?userMail="
                             + userMail + "&createTime=" + milis;
                     se.sendEmail(userMail, "Reset password link", resetPassLink);

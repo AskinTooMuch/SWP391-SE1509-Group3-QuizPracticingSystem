@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 18, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  18/10/21    1.0         DuongNHHE150328 First Deploy
+ *  18/10/21    1.1         DuongNHHE150328 Add service
  */
 package controller;
 
@@ -19,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This class has the process request of register new email
  * @author Admin
  */
 public class RegisterController extends HttpServlet {
@@ -27,7 +33,7 @@ public class RegisterController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * Function Register: allow the new user to register a account 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -131,6 +137,7 @@ public class RegisterController extends HttpServlet {
                 userDAO.addUser(addUser);
 
                 SystemEmail se = new SystemEmail();
+                //create confirm account link
                 String confirmLink = "http://localhost:8080/QuizPracticingSystem"
                         + "/register?service=confirmAccount&userMail="
                         + userMail;
