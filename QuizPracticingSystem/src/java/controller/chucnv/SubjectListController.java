@@ -1,7 +1,7 @@
-/*
+/**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Oct 18, 2021
- *  Change Password servlet
+ *  Subject List servlet
  *  Quiz practicing system
  *
  *  Record of change:
@@ -10,11 +10,12 @@
  */
 package controller.chucnv;
 
-import bean.User;
-import dao.UserDAO;
-import dao.impl.UserDAOImpl;
+import bean.Subject;
+import dao.SubjectDAO;
+import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -27,12 +28,12 @@ import javax.servlet.http.HttpServletResponse;
  *  This class has the process request of change password
  * @author ChucNV
  */
-public class ChangePassword extends HttpServlet {
+public class SubjectListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     * Function Change Password: allow the user to re-enter their old password and change to a new one
+     * Function subject list: show the subject list paginated
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -42,52 +43,26 @@ public class ChangePassword extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            UserDAO userDAO = new UserDAOImpl();
-            
-            String password = request.getParameter("oldPassword").trim();  /*Old password , get from request*/
-            String newPassword = request.getParameter("newPassword").trim();   /*New password , get from request*/
-            User currUser = (User) request.getSession().getAttribute("currUser");   /*Current User from session*/
-            /**
-             * If the user enter the wrong old password: redirect back to 
-             * changePassword.jsp and include a message
-             */
-            if (!currUser.getPassword().equals(password)) {
-                request.setAttribute("message", "Old Password incorrect.");
-                request.setAttribute("color", "red");
-                sendDispatcher(request, response, "login/changePassword.jsp");
-            } 
-            /**
-             * If the user enter the new password too long: redirect back to 
-             * changePassword.jsp and include a message
-             */
-            else if (newPassword.length()>255){
-                request.setAttribute("message", "New Password is too long.");
-                request.setAttribute("color", "red");
-                sendDispatcher(request, response, "login/changePassword.jsp");
-            } 
-            /**
-             * Else: process to change password, redirect back to 
-             * changePassword.jsp and include a message
-             */
-            else {
-                currUser.setPassword(newPassword);
-                int i = userDAO.updateUser(currUser);
-                if (i != 0) {
-                    request.setAttribute("message", "Password changed successfully.");
-                    request.setAttribute("color", "green");
-                    sendDispatcher(request, response, "login/changePassword.jsp");
-                } else {
-                    request.setAttribute("message", "Password changed failed.");
-                    request.setAttribute("color", "red");
-                    sendDispatcher(request, response, "login/changePassword.jsp");
-                }
+            SubjectDAO subjectDAO = new SubjectDAOImpl();
+            int page;
+            if (request.getAttribute("pageNumber") == null) {
+                page = 1;
+            } else {
+                page = (int) request.getAttribute("pageNumber");
             }
+            int maxPage = (int) Math.ceil((double) subjectDAO.getAllSubjects().size() / 7);
+            request.setAttribute("page", page);
+            request.setAttribute("maxPage", maxPage);
+            /* Get subject list and set attribute */
+            ArrayList<Subject> subjectList = subjectDAO.getSubjectsPaging(page);
+            request.setAttribute("subjectList", subjectList);
+            /* Redirect to subjectList.jsp */
+            sendDispatcher(request, response, "jsp/subjectList.jsp");
         } catch (Exception ex) {
-            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePasswordController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-        
     }
 
     /**
@@ -102,7 +77,7 @@ public class ChangePassword extends HttpServlet {
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(ChangePassword.class
+            Logger.getLogger(SubjectListController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }

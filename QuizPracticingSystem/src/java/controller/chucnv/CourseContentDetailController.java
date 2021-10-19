@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  *  and dimension
  * @author ChucNV
  */
-public class CourseContentDetail extends HttpServlet {
+public class CourseContentDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -260,7 +260,7 @@ public class CourseContentDetail extends HttpServlet {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePasswordController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
@@ -278,7 +278,7 @@ public class CourseContentDetail extends HttpServlet {
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(SubjectList.class
+            Logger.getLogger(SubjectListController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }

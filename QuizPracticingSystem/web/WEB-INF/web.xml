@@ -66,7 +66,7 @@
     </servlet>
     <servlet>
         <servlet-name>ChangePassword</servlet-name>
-        <servlet-class>controller.chucnv.ChangePassword</servlet-class>
+        <servlet-class>controller.chucnv.ChangePasswordController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SimulationExamController</servlet-name>
@@ -74,15 +74,15 @@
     </servlet>
     <servlet>
         <servlet-name>SubjectList</servlet-name>
-        <servlet-class>controller.chucnv.SubjectList</servlet-class>
+        <servlet-class>controller.chucnv.SubjectListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CourseContentList</servlet-name>
-        <servlet-class>controller.chucnv.CourseContentList</servlet-class>
+        <servlet-class>controller.chucnv.CourseContentListController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CourseContentDetail</servlet-name>
-        <servlet-class>controller.chucnv.CourseContentDetail</servlet-class>
+        <servlet-class>controller.chucnv.CourseContentDetailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>

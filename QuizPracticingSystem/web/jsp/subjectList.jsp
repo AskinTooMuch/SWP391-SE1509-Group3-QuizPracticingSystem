@@ -88,11 +88,12 @@
                                     </div>
                                 </c:forEach>
                                 <%-- Print Subject placeholder card, same as subject card but the content is default --%>
-                                <div class="col-md-10 subjectCard">
-                                    <div class="cardThumbnail">
+                                <div class="row subjectCard">
+                                    <div class="col-md-5 cardThumbnail">
                                         <image class="thumbNailImg" src="${contextPath}/images/logo.png" alt="logo.png">
                                     </div>
-                                    <div class="cardBody">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-6 cardBody">
                                         <h5>We need you!</h5>
                                         <p style="overflow: hidden">Feels Knowledgeable? Contact us and add your own course!</p>
                                     </div>
