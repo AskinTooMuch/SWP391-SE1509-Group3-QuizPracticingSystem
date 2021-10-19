@@ -10,7 +10,6 @@
  */
 package dao;
 
-import bean.Question;
 import bean.Quiz;
 import java.util.ArrayList;
 
