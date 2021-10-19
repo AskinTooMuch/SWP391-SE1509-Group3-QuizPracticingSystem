@@ -87,7 +87,7 @@ public class SubjectController extends HttpServlet {
                 } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
                     /* Role is admin: load all subject */
                     /* Get all subject */
-                    ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(1);
+                    ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(2);
                     /* Set attribute and send it to course content page */
                     request.setAttribute("courseContentSubjectList", allSubject);
                     sendDispatcher(request, response, "jsp/courseContentList.jsp");

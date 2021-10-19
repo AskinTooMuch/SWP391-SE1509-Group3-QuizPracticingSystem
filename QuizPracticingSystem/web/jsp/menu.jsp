@@ -176,11 +176,9 @@
 
 
                 <div>
-                    <form action="homeController" method="POST">
-                        <input type="hidden" name="service" value="subjectList">
+                    <form action="subjectList" method="POST">
                         <button type="submit" class="btn btn-default" style="margin: 50px;position: relative;left:43%;border:solid 2px;border-radius: 50px">
                             LOAD MORE</button>
-
                     </form>
 
                 </div>

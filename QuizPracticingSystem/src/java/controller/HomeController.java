@@ -74,15 +74,15 @@ public class HomeController extends HttpServlet {
                 sendDispatcher(request, response, "index.jsp");
             }
             /*Service: subjectList. Load subjectList and redirect user.*/
-            if (service.equalsIgnoreCase("subjectList")) {
-                int page = (int)(request.getAttribute("page"));
-                
-                /* Get subject list and set attribute */
-                ArrayList<Subject> subjectList = subjectInterface.getSubjectsPaging(page);
-                request.setAttribute("subjectList", subjectList);
-                /* Redirect to subjectList.jsp */
-                sendDispatcher(request, response, "jsp/subjectList.jsp");
-            }
+//            if (service.equalsIgnoreCase("subjectList")) {
+//                
+//                
+//                /* Get subject list and set attribute */
+//                ArrayList<Subject> subjectList = subjectInterface.getSubjectsPaging(1);
+//                request.setAttribute("subjectList", subjectList);
+//                /* Redirect to subjectList.jsp */
+//                sendDispatcher(request, response, "jsp/subjectList.jsp");
+//            }
             
             
         } catch (Exception ex) {
