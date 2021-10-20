@@ -1,4 +1,4 @@
-/*
+/**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Sep 18, 2021
  *  MarketingController map
@@ -7,7 +7,8 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  18/9/21     1.0         NamDHHe150519   First Deploy
-    19/9/21     1.0         NamDHHe150519   update service
+ * 19/9/21     1.0         NamDHHe150519   update service
+ * 15/10/21    1.0         NamDHHe150519   them comment
  */
 package controller;
 
@@ -18,7 +19,6 @@ import dao.PostCateDAO;
 import dao.impl.BlogDAOImpl;
 import dao.impl.PostCateDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Lớp này được tạo ra để xử lí các request, response liên quan tới blog(public
+ * feature)
  *
  * @author ADMN
  */
@@ -35,7 +37,8 @@ public class BlogController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. Function: BLogList: allow user to see all blog Function:
+     * BlogDetail: allow user to read blog
      *
      * @param request servlet request
      * @param response servlet response
@@ -48,7 +51,7 @@ public class BlogController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
             String service = request.getParameter("service");
             BlogDAO blogInterface = new BlogDAOImpl();
             PostCateDAO postCateInterface = new PostCateDAOImpl();
@@ -57,31 +60,30 @@ public class BlogController extends HttpServlet {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
-
                 String searchString = request.getParameter("search");
-
                 if ((searchCate != null) || (searchString != null)) {
-                    if(searchString.length()>100){
+                    if (searchString.length() > 100) {
                         request.setAttribute("errorMess", "invalid length");
-                    }else{
-                    blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
-                    //phan trang sau khi tim kiem theo category
-                    String pagingUrl = "";                                                               //url connect to ...?page=          
-                    if (searchCate != null) {
-                        for (String category : searchCate) {
-                            pagingUrl += "&category=" + category;                                        //Add category parameter
+                    } else {
+                        blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
+                        //phan trang sau khi tim kiem theo category
+                        String pagingUrl = "";                                                               //url connect to ...?page=          
+                        if (searchCate != null) {
+                            for (String category : searchCate) {
+                                pagingUrl += "&category=" + category;                                        //Add category parameter
+                            }
+                            int[] cateList = new int[searchCate.length];
+                            for (int i = 0; i < searchCate.length; i++) {
+                                cateList[i] = Integer.parseInt(searchCate[i]);
+                            }
+                            request.setAttribute("cateList", cateList);
                         }
-                        int[] cateList = new int[searchCate.length];
-                        for (int i = 0; i < searchCate.length; i++) {
-                            cateList[i] = Integer.parseInt(searchCate[i]);
+                        if (searchString != null) {
+                            pagingUrl += "&search=" + searchString;                                          //Add search parameter
+                            request.setAttribute("search", searchString);
                         }
-                        request.setAttribute("cateList", cateList);
+                        request.setAttribute("pagingUrl", pagingUrl);
                     }
-                    if (searchString != null) {
-                        pagingUrl += "&search=" + searchString; //Add search parameter
-                        request.setAttribute("search", searchString);
-                    }
-                    request.setAttribute("pagingUrl", pagingUrl);}
                 }
 
                 //xu li phan trang
@@ -129,7 +131,7 @@ public class BlogController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
-            response.sendRedirect("error.jsp");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

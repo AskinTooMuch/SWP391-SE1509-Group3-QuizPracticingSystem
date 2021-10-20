@@ -1,14 +1,14 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Oct 6, 2021
-   QuizController map
+   Simulation Exam Page
    Quiz practicing system
  
    Record of change:
    Date        Version     Author          Description
    6/10/21     1.0         NamDHHE150519   First Deploy
    7/10/21     1.0         NamDHHE150519   90% function
--->
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

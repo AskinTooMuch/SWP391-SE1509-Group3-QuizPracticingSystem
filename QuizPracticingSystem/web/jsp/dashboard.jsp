@@ -1,4 +1,4 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Oct 9, 2021
    MarketingController map
@@ -8,7 +8,7 @@
    Date        Version     Author          Description
    9/10/21     1.0         NamDHHE150519   First Deploy
    14/10/21    1.0         NamDHHE150519   update subject statistics
--->
+--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>

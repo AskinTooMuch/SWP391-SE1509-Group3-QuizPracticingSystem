@@ -9,7 +9,6 @@ import bean.Answer;
 import bean.CustomerQuiz;
 import bean.Question;
 import bean.QuestionQuizHandle;
-import bean.Quiz;
 import bean.QuizQuizHandle;
 import bean.User;
 import dao.CustomerQuizDAO;
@@ -23,7 +22,6 @@ import dao.impl.QuestionQuizHandleDAOImpl;
 import dao.impl.QuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +41,8 @@ public class QuizHandleController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. Function Quiz Handle: allow user to answer question, submit quiz
+     * for scoring Quiz Review: allow user to review quiz after be taken
      *
      * @param request servlet request
      * @param response servlet response
@@ -53,18 +52,22 @@ public class QuizHandleController extends HttpServlet {
     static final int IMAGE_MEDIA_TYPE = 1;
     static final int VIDEO_MEDIA_TYPE = 2;
     static final int EXAM_TYPE_ID = 1;
-    static final int PRACTICE_TYPE_ID = 2;
+    static final int QUIZ_EXAM_TYPE_ID = 2;
+    static final int PRACTICE_TYPE_ID = 3;
     static final int DEFAULT_PAGE = 1;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try {
             QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
             QuestionQuizHandleDAO questionQHInterface = new QuestionQuizHandleDAOImpl();
             QuestionDAO questionInterface = new QuestionDAOImpl();
             String service = request.getParameter("service");
 
+            /**
+             * create session for taking quiz
+             */
             if (service.equalsIgnoreCase("quizEntrance")) {
                 HttpSession session = request.getSession();
                 int quizId = Integer.parseInt(request.getParameter("quizId"));
@@ -198,7 +201,7 @@ public class QuizHandleController extends HttpServlet {
 
                 } else {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("error.jsp");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
             /**
@@ -220,10 +223,11 @@ public class QuizHandleController extends HttpServlet {
                     request.getRequestDispatcher("quizhandle/quizSummary.jsp").forward(request, response);
                 } else {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("error.jsp");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
 
+            //handle submit quiz (manual) 
             if (service.equalsIgnoreCase("submit")) {
                 HttpSession session = request.getSession(true);
                 QuizQuizHandle doingQuiz = null;
@@ -236,12 +240,12 @@ public class QuizHandleController extends HttpServlet {
                     session.removeAttribute("doingQuiz");
                     CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
                     latestTakeQuizId = customerQuizInterface.getLastAddedCustomerQuiz().getQuizTakeId();
-                    //redirect user to review quiz page  
+                    //if quiz submitted by manual, redirect to the quiz review page  
                     response.sendRedirect("quizHandleController?service=quizReview&quizTakeId=" + latestTakeQuizId + "&questionNumber=1");
                     return;
                 } else if (object == null) {
                     request.setAttribute("errorMess", "Co loi Co loi");
-                    response.sendRedirect("error.jsp");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
 
             }
@@ -253,13 +257,15 @@ public class QuizHandleController extends HttpServlet {
                 int quizTakeId = Integer.parseInt(request.getParameter("quizTakeId"));
                 request.setAttribute("quizTakeId", quizTakeId);
                 CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
-                QuizDAO quizDAOInterface = new QuizDAOImpl();
+                
+                //get Quiz information(right,wrong answer, number of question)
                 QuizQuizHandle doingQuiz = quizQHInterface.getReviewQuiz(quizTakeId);
                 ArrayList<QuestionQuizHandle> quizReview = doingQuiz.getQuestions();
-                Quiz quiz = quizDAOInterface.getQuizByQuizTakeId(quizTakeId);
                 request.setAttribute("quizReview", quizReview);
                 request.setAttribute("quizSize", quizReview.size());
-                CustomerQuiz customerQuiz = customerQuizInterface.getLastAddedCustomerQuiz();
+
+                //get Quiz result information(score, time)
+                CustomerQuiz customerQuiz = customerQuizInterface.getQuizByTakeQuizId(quizTakeId);
                 long startedAt = customerQuiz.getSubmitedAt().getTime() - customerQuiz.getTime() * 1000;;
                 long submitedAt = customerQuiz.getSubmitedAt().getTime();
                 Timestamp submitTime = new Timestamp(submitedAt);
@@ -335,7 +341,7 @@ public class QuizHandleController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
-            response.sendRedirect("error.jsp");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

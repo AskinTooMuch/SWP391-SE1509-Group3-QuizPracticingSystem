@@ -1,7 +1,7 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Sep 23, 2021
-   QuizController map
+   Quiz Review Page
    Quiz practicing system
  
    Record of change:
@@ -10,7 +10,7 @@
    24/9/21     1.1         NamDHHE150519   Update
    25/9/21     1.2         NamDHHE150519   Big Update
    29/9/21     1.9         NamDDHE150519   complete all funtion
--->
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>        
-                        <a href="${contextPath}/quizHandleController?service=simulationExam" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/simulationExamController" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <%-- Cac thong tin: diem so, thoi gian lam, thoi gian nop --%>
                     <div class="col-6" style="display:flex;">    

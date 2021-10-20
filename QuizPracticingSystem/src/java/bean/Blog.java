@@ -28,6 +28,7 @@ public class Blog {
     private String thumbnail; /* Blog thumbnail */
     private Boolean status; /* Blog status */
 
+    
     /**
      * Blank constructor
      */

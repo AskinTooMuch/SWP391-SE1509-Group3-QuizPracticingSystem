@@ -1,14 +1,14 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Sep 23, 2021
-   QuizController map
+   Before submit quiz page
    Quiz practicing system
  
    Record of change:
    Date        Version     Author          Description
    29/9/21     1.0         NamDHHE150519   First Deploy
    29/9/21     2.0         NamDHHE150519   complete all funtion
--->
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -123,7 +123,7 @@
         var totalSecond;
         var today = new Date();
         <c:choose>
-            <c:when test="${quizType==1}">
+            <c:when test="${quizType!=3}">
         var endMilisecond = localStorage.getItem("endMiliseconds");
         localStorage.setItem('endMiliseconds', endMilisecond);
         setInterval(setTime, 100);

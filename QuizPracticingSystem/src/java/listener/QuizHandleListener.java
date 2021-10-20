@@ -19,11 +19,8 @@ import dao.QuizQuizHandleDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
@@ -32,70 +29,18 @@ import javax.servlet.http.HttpSessionListener;
 /**
  * Class này có mục đích theo dõi các session(còn hoạt động hay đã hết hạn).
  *
- * @author ADMN
+ * @author NamDH
  */
 public class QuizHandleListener implements HttpSessionListener, HttpSessionAttributeListener {
 
-    @Override
-    public void sessionCreated(HttpSessionEvent se) {
-        System.out.println("\n###################################\n");
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
-        System.out.println("sessionCreated method has been called in "
-                + this.getClass().getName());
-
-        HttpSession session = se.getSession();
-
-        System.out.print(session + " Created:");
-
-        System.out.println("ID=" + session.getId() + " MaxInactiveInterval="
-                + session.getMaxInactiveInterval() + "created: " + sdf.format(date.getTime()));
-
-        System.out.println("\n#####################################\n");
-
-    }
-
-    @Override
-    public void sessionDestroyed(HttpSessionEvent se) {
-        Date date = new Date();
-        System.out.println("\n###################################\n");
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-
-        System.out.println("sessionDestroyed method has been called in "
-                + this.getClass().getName());
-
-        HttpSession session = se.getSession();
-
-        System.out.print(session + " destroyed:");
-
-        System.out.println("ID=" + session.getId() + " MaxInactiveInterval="
-                + session.getMaxInactiveInterval() + "created: " + sdf.format(date.getTime()));
-
-        System.out.println("\n#####################################\n");
-
-    }
-
-    @Override
-    public void attributeAdded(HttpSessionBindingEvent se) {
-        System.out.println("\n###################################\n");
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        
-        System.out.println("created: " + sdf.format(date.getTime()));
-//        System.out.println("\n###################################\n");
-        if (se.getName().equalsIgnoreCase("doingQuiz")) {
-        QuizQuizHandle questionArray = (QuizQuizHandle) se.getValue();
-        int timeOut = questionArray.getQuiz().getQuizDuration()+3;
-        Time(timeOut, se);
-        }
-    }
     public static Timer timer;
 
-    public void Time(int seconds, HttpSessionBindingEvent se) {
-        timer = new Timer();
-        timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
-    }
+    /**
+     * Class này có mục đích override method run của TimerTask để thực hiện
+     * remove session.
+     *
+     * @author ADMN
+     */
     class RemindTask extends TimerTask {
 
         private HttpSessionBindingEvent se;
@@ -112,16 +57,41 @@ public class QuizHandleListener implements HttpSessionListener, HttpSessionAttri
         }
     }
 
+    public void Time(int seconds, HttpSessionBindingEvent se) {
+        timer = new Timer();
+        timer.schedule(new RemindTask(se), seconds * 1000); // schedule the task
+    }
+
+    /**
+     * set a timer for auto submit quiz
+     *
+     * @param se the session that be changed
+     * <code>HttpSessionBindingEvent</code> object
+     */
+    @Override
+    public void attributeAdded(HttpSessionBindingEvent se) {
+        if (se.getName().equalsIgnoreCase("doingQuiz")) {
+            int defaultPracticeQuizTime = 7200;
+            int timeOut = defaultPracticeQuizTime;
+            QuizQuizHandle doingQuiz = (QuizQuizHandle) se.getValue();
+            if (doingQuiz.getQuiz().getTestTypeId() != 3) {
+                timeOut = doingQuiz.getQuiz().getQuizDuration() + 3;
+            }
+            Time(timeOut, se);
+        }
+    }
+
+    /**
+     * set a timer for auto submit quiz
+     *
+     * @param se the session that be changed
+     * <code>HttpSessionBindingEvent</code> object
+     */
     @Override
     public void attributeRemoved(HttpSessionBindingEvent se) {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        System.out.println("-- HttpSessionAttributeListener#attributeRemoved() --");
-        System.out.printf("removed: " + sdf.format(date.getTime()) + "removed attribute name: %s, value:%s %n", se.getName(),
-                se.getValue());
+        //quiz submit
         if (se.getName().equalsIgnoreCase("doingQuiz")) {
             try {
-                
                 QuizQuizHandle doingQuiz = (QuizQuizHandle) se.getValue();
                 QuizQuizHandleDAO quizQHInterface = new QuizQuizHandleDAOImpl();
                 int quizId = doingQuiz.getQuiz().getQuizId();
@@ -130,16 +100,16 @@ public class QuizHandleListener implements HttpSessionListener, HttpSessionAttri
                 double score = quizQHInterface.calculateScore(doingQuiz);
                 //Date of this quiz
                 int time = doingQuiz.getTime();
-                if(time<0){
-                    time=0;
+                if (time < 0) {
+                    time = 0;
                 }
-                if(doingQuiz.getQuiz().getTestTypeId()==1){
-                    time=doingQuiz.getQuiz().getQuizDuration()-time;
+                if (doingQuiz.getQuiz().getTestTypeId() == 1) {
+                    time = doingQuiz.getQuiz().getQuizDuration() - time;
                 }
                 long millis = System.currentTimeMillis();
                 Timestamp dateSql = new Timestamp(millis);
                 //Insert into CustomerQuiz table in database
-                CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, user.getUserId(), (int) score,time, dateSql, true);
+                CustomerQuiz customerQuiz = new CustomerQuiz(0, quizId, user.getUserId(), (int) score, time, dateSql, true);
                 CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
                 customerQuizInterface.addCustomerQuiz(customerQuiz);
                 //Insert into TakeAnswer table in database;
@@ -150,7 +120,16 @@ public class QuizHandleListener implements HttpSessionListener, HttpSessionAttri
             }
         }
     }
-       @Override
+
+    @Override
+    public void sessionCreated(HttpSessionEvent se) {
+    }
+
+    @Override
+    public void sessionDestroyed(HttpSessionEvent se) {
+    }
+
+    @Override
     public void attributeReplaced(HttpSessionBindingEvent event) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -1,14 +1,14 @@
-<!--
+<%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Sep 23, 2021
-   MarketingController map
+   Blog List Page
    Quiz practicing system
  
    Record of change:
    Date        Version     Author          Description
    23/9/21     1.0         NamDHHE150519   First Deploy
    23/9/21     2.0         NamDHHE150519   complete all funtion 
--->
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -23,6 +23,14 @@
             .body{
                 font-family: Source Serif Pro;
             }
+            .card-body{
+                height: 300px;
+            }
+            .card-body .btn{
+                position:absolute;
+                bottom:20px;
+                left: 85px;
+            }
         </style>
     </head>
 
@@ -30,7 +38,7 @@
 
         <jsp:include page="header.jsp"/>
         <hr>
-        
+
         <div class="container-fluid">
             <div class="row">
                 <%-- search box --%>
@@ -94,21 +102,11 @@
                                     <div class="card-body">
                                         <h8>Author ${blog.getAuthor().getUserName()}</h8>
                                         <h5 class="card-title">${blog.getBlogTitle()}</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <p class="card-text">${blog.getDetail().substring(0,100)}. . .</p>
                                         <a href="${contextPath}/blog?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
                                     </div>
                                 </div>
                             </c:forEach>
-                            <style>
-                                .card-body{
-                                    height: 300px;
-                                }
-                                .card-body .btn{
-                                    position:absolute;
-                                    bottom:20px;
-                                    left: 85px;
-                                }
-                            </style>
                         </div>
                         <%-- pagination --%>
                         <c:set var="page" value="${requestScope.page}"/>  
