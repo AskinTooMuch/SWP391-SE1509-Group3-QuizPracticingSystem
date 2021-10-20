@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * This class has the process request of register new email
+ * This class has the process request of register new account
  * @author Admin
  */
 public class RegisterController extends HttpServlet {

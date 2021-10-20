@@ -1,12 +1,12 @@
 <%-- 
     Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Oct 11, 2021, 11:33:41 PM
+    Created on : Oct 20, 2021, 10:26:04 AM
     Quiz practicing system
 
     Record of change:
     Date        Version     Author          Description
-    11/10/21    1.0         DuongNHHE150328 First Deploy
-    11/10/21    1.1         DuongNHHE150328 Complete style
+    20/10/21    1.0         DuongNHHE150328 First Deploy
+    20/10/21    1.1         DuongNHHE150328 Complete style
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

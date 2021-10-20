@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 18, 2021
+ *  UserController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  18/10/21    1.0         DuongNHHE150328 First Deploy
+ *  18/10/21    1.1         DuongNHHE150328 Add service
  */
 package controller;
 
@@ -23,12 +29,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
+ * This class has the process request display or update user detail
  *
  * @author Admin
  */
@@ -36,7 +44,8 @@ public class UserProfileController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. Function user profile: allow the new user to update personal
+     * information
      *
      * @param request servlet request
      * @param response servlet response
@@ -152,30 +161,35 @@ public class UserProfileController extends HttpServlet {
                     }
                 } catch (FileUploadException ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                currUser.setProfilePic(filename);
-                userDAO.updateUser(currUser);
-                request.getSession().setAttribute("currUser", userDAO.getUserById(currUser.getUserId()));
-                response.sendRedirect("login/userProfile.jsp");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(UserProfileController.class.getName()).log(Level.SEVERE, null, ex);
+            currUser.setProfilePic(filename);
+            userDAO.updateUser(currUser);
+            request.getSession().setAttribute("currUser", userDAO.getUserById(currUser.getUserId()));
+            response.sendRedirect("login/userProfile.jsp");
         }
     }
+    catch (Exception ex
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    
+        ) {
+            Logger.getLogger(UserProfileController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+/**
+ * Handles the HTTP <code>GET</code> method.
+ *
+ * @param request servlet request
+ * @param response servlet response
+ * @throws ServletException if a servlet-specific error occurs
+ * @throws IOException if an I/O error occurs
+ */
+@Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -189,7 +203,7 @@ public class UserProfileController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -200,7 +214,7 @@ public class UserProfileController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 
