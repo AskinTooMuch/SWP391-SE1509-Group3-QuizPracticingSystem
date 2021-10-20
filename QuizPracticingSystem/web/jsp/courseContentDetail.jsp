@@ -50,13 +50,14 @@
             <div class="col-md-8">
                 <%-- Header nav tab --%>
                 <div class="row">
-                    <div class="col-md-3"></div>
-                    <div class="tab col-md-6">
+                    <div class="col-md-2"></div>
+                    <div class="tab col-md-8">
                         <button class="tablinks" onclick="openTab(event, 'tab1')" id="overview">Overview</button>
                         <button class="tablinks" onclick="openTab(event, 'tab2')" id="dimension">Dimension</button>
-                        <button class="tablinks" onclick="openTab(event, 'tab3')" id="pricePackage">Price Package</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab3')" id="pricePackage">Lesson</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab4')" id="pricePackage">Price Package</button>
                     </div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-2"></div>
                 </div>
                 <%-- Main tab details --%>
                 <div class="details">
@@ -219,8 +220,8 @@
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
                                             <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Description"></td>
-                                            <td><input type="submit" class="btn btn-primary" name="subService" value="Update" />
-                                                <input type="submit" class="btn btn-primary" name="subService" value="Delete" />
+                                            <td><input type="submit" class="btn btn-success" name="subService" value="Update" />
+                                                <input type="submit" class="btn btn-danger" name="subService" value="Delete" />
                                             </td>
                                         </form>
                                     </tr>
@@ -240,8 +241,7 @@
                                             </td>
                                             <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
                                             <td><input class="inputBorderless" type="text" name="description" placeholder="Description"></td>
-                                            <td><button type="submit" id="submit" class="btn btn-primary">Submit</button>
-                                                <a href="${contextPath}/index.jsp" class="btn btn-primary">Back</a>
+                                            <td><button type="submit" id="submit" class="btn btn-success">Submit</button>
                                             </td>
                                     </form>
                                 </tr>

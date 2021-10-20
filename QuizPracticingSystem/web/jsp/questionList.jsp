@@ -96,22 +96,20 @@
 
                 </div>
 
-                <div class="col-md-8" id="form" style="min-height: 600px; min-width: 1000px">
+                <div class="col-md-8" id="form" style="min-height: 480px; min-width: 1000px">
                     <div class="container" >
                         <%-- Table Container --%>
-                        <div class="form-group">
-                            <h5>Select Number of Rows</h5>
+                        <div class="form-group">                           
                             <%-- Select number of Rows show on table --%>
-                            <select class  ="form-control" name="state" id="maxRows" style="width: 150px;">                               
+                            <select class="form-control" name="state" id="maxRows" style="width: 150px;float:left;">                               
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
-
                             </select>
-
+                            <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="float:right;margin: 5px">Add new Question</button></a>
+                            <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
                         </div>  
-                        <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="floar:left;margin: 5px">Add new Question</button></a>
-                        <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
+
                         <%-- Table of QuestionList--%>
                         <table id="table-id" class="table table-bordered table-striped"">
                             <thead>
@@ -158,9 +156,10 @@
                             </tbody>
                         </table>
                         <%--Start Pagination --%>
-                        <div class='pagination-container'>
+                        <div class='pagination-container row'>
+                            
                             <nav>
-                                <ul class="pagination" style="">
+                                <ul class="pagination" style="justify-content: center">
                                     <li data-page="prev" >
                                         <span> <button class="btn btn-light" style="border: solid 1px">Prev</button></span>
                                     </li>
@@ -170,6 +169,7 @@
                                     </li>
                                 </ul>
                             </nav>
+                            
                         </div>
 
                     </div>
