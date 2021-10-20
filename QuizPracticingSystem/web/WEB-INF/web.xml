@@ -88,6 +88,10 @@
         <servlet-name>PostDetailController</servlet-name>
         <servlet-class>controller.PostDetailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImportQuestionController</servlet-name>
+        <servlet-class>controller.chucnv.ImportQuestionController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -171,6 +175,10 @@
     <servlet-mapping>
         <servlet-name>PostDetailController</servlet-name>
         <url-pattern>/PostDetailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportQuestionController</servlet-name>
+        <url-pattern>/importQuestion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
