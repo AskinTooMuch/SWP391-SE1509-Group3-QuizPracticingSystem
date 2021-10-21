@@ -5,8 +5,15 @@
  */
 package controller.chucnv;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,16 +38,53 @@ public class ImportQuestionController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImportQuestionController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImportQuestionController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String service = request.getParameter("service");
+            
+            /*Service is null, redirect user to index*/
+            if (service == null) {
+                sendDispatcher(request, response, "index.jsp");
+            }
+            
+            if ("downloadTemplate".equalsIgnoreCase(service)){
+                String filename = "questiontemplate.txt";
+                // if you want to use a relative path to context root:
+//                String relativePath = getServletContext().getRealPath("");
+//                System.out.println("relativePath = " + relativePath);
+                String relativePath = "questionTemplate/";
+                
+                //String filePath = relativePath + filename;
+                String filePath = this.getServletContext().getRealPath("questionTemplate/questiontemplate.txt");;
+                
+                response.setContentType("APPLICATION/OCTET-STREAM");   
+                response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
+
+                java.io.FileInputStream fileInputStream =new java.io.FileInputStream(filePath);  
+                System.out.println(filePath);
+                int i;   
+                while ((i=fileInputStream.read()) != -1) {  
+                  out.write(i);
+                    System.out.println(i);
+                }   
+                fileInputStream.close();   
+                sendDispatcher(request, response, "jsp/questionImport.jsp");
+            }
+        }
+    }
+    
+    /**
+     * Forward the request to the destination, catch any unexpected exceptions and log it
+     * @param request   Request of the servlet
+     * @param response  Response of the servlet
+     * @param path      Forward address
+     */
+    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher rd = request.getRequestDispatcher(path);
+            rd.forward(request, response);
+
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(ImportQuestionController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

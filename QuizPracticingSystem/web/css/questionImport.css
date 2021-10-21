@@ -14,10 +14,10 @@ body {
   }
 
   .file-upload {
-    background-color: #ffffff;
-    width: 600px;
+    background-color: #e6ffe6;
     margin: 0 auto;
     padding: 20px;
+    border:  4px ridge #1aff1a;
   }
 
   .file-upload-btn {
@@ -72,7 +72,7 @@ body {
   .image-dropping,
   .image-upload-wrap:hover {
     background-color: #1FB264;
-    border: 4px dashed #ffffff;
+    border: 4px dashed #e6ffe6;
   }
 
   .image-title-wrap {
@@ -87,7 +87,7 @@ body {
   .drag-text h3 {
     font-weight: 100;
     text-transform: uppercase;
-    color: #15824B;
+    color: black;
     padding: 60px 0;
   }
 

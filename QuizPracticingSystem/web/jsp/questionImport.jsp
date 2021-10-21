@@ -28,20 +28,28 @@
     <body>
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
-        <div class="wrap" style="min-height: 55vh;">
-            <div class="file-upload">
-                <div class="image-upload-wrap">
-                    <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/*" />
-                    <div class="drag-text">
-                      <h3>Drag and drop a file or select a file</h3>
-                    </div>
-                  </div>
-                  <div class="file-upload-content">
-                    <img class="file-upload-image" src="#" alt="your image" />
-                    <div class="image-title-wrap">
-                      <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+        <div class="wrap" style="min-height: 55vh; padding-top: 5vh;">
+            
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row file-upload">
+                        <div class="col-md-8">
+                            Before you start uploading your own file, if this is
+                            your first time then please download our template here 
+                            first! Don't want any weird errors now do we?
+                            <br>
+                            <a class="btn btn-success" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Download</a>
+                        </div>
+                        <div class="image-upload-wrap col-md-4">
+                            <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
+                            <div class="drag-text">
+                              <h3>Drag and drop a file or select a file</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-2"></div>
             </div>
             <span class="fileName">
                 File name goes here
