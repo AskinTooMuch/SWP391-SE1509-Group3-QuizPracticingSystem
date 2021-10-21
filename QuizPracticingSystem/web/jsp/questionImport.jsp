@@ -35,11 +35,21 @@
                 <div class="col-md-8">
                     <div class="row file-upload">
                         <div class="col-md-8">
-                            Before you start uploading your own file, if this is
-                            your first time then please download our template here 
-                            first! Don't want any weird errors now do we?
-                            <br>
-                            <a class="btn btn-success" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Download</a>
+                            <p style='text-align: center; font-weight: bold'>
+                                <span style='color:red; font-weight: bold'>! Before you start uploading your own file ! </span><br>
+                                If this is your first time then please download our template here 
+                                first!
+                                <br>Don't want any weird errors now do we?
+                                <br>
+                                <br><span style='font-style: italic; font-weight: normal'>Disclaimer! 
+                                    This function still has a lot of restrictions.
+                                    You still have to select the lesson and question 
+                                    types later. Sorry for the inconvenience!</span>
+                            </p>
+                            <div class='col text-center'>
+                                <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Give me the template!</a>
+                            </div>
+                            
                         </div>
                         <div class="image-upload-wrap col-md-4">
                             <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
@@ -52,7 +62,7 @@
                 <div class="col-md-2"></div>
             </div>
             <span class="fileName">
-                File name goes here
+                File name goes here 
             </span>
             <div id='output'>
                 ...
