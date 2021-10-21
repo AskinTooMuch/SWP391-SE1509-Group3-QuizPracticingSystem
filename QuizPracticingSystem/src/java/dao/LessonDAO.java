@@ -29,7 +29,14 @@ public interface LessonDAO {
      */
     public ArrayList<Lesson> getAllLessons() throws Exception;
     
-    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception;
+    /**
+     * Get lessons of a subject
+     *
+     * @param subjectId
+     * @return
+     * @throws Exception
+     */
+    public ArrayList<Lesson> getAllLessonBySubjectId(int subjectId) throws Exception;
     
     public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception;
     
@@ -42,7 +49,7 @@ public interface LessonDAO {
      */
     public Lesson getLessonById(int lessonId) throws Exception;
     
-    public int updateLesson(Lesson updatedLesson) throws Exception;
+    public int updateLesson(int lessonId, Lesson updatedLesson) throws Exception;
     
     public int deleteLesson(int lessonId) throws Exception;
     

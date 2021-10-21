@@ -12,16 +12,22 @@ package controller.chucnv;
 
 import bean.Dimension;
 import bean.DimensionType;
+import bean.Lesson;
+import bean.LessonType;
 import bean.Subject;
 import bean.SubjectCate;
 import bean.User;
 import bean.UserRole;
 import dao.DimensionDAO;
 import dao.DimensionTypeDAO;
+import dao.LessonDAO;
+import dao.LessonTypeDAO;
 import dao.SubjectCateDAO;
 import dao.SubjectDAO;
 import dao.impl.DimensionDAOImpl;
 import dao.impl.DimensionTypeDAOImpl;
+import dao.impl.LessonDAOImpl;
+import dao.impl.LessonTypeDAOImpl;
 import dao.impl.SubjectCateDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
@@ -36,16 +42,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *  This class has service for viewing and updating course content detail
- *  and dimension
+ * This class has service for viewing and updating course content detail and
+ * dimension
+ *
  * @author ChucNV
  */
 public class CourseContentDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *  Service for viewing and updating course content detail and dimension
+     * methods. Service for viewing and updating course content detail and
+     * dimension
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -56,7 +64,8 @@ public class CourseContentDetailController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            
+            LessonDAO lessonInterface = new LessonDAOImpl();
+            LessonTypeDAO lessonTypeInterface = new LessonTypeDAOImpl();
             /*Service is null, redirect user to index*/
             if (service == null) {
                 sendDispatcher(request, response, "index.jsp");
@@ -66,10 +75,14 @@ public class CourseContentDetailController extends HttpServlet {
              * subject detail and edit it
              */
             if (service.equalsIgnoreCase("viewDetail")) {
-                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
-                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
-                /* Get user and role on session scope */
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+                /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                /*Dimension Type DAO*/
+
+ /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -77,8 +90,7 @@ public class CourseContentDetailController extends HttpServlet {
                         || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
                         && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ 
-                else {
+                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);
@@ -88,6 +100,10 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
+                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    request.setAttribute("listLesson", listLesson);
+                    ArrayList<LessonType> lessonTypes = lessonTypeInterface.getAllLessonType();
+                    request.setAttribute("lessonTypes", lessonTypes);
                     sendDispatcher(request, response, "jsp/courseContentDetail.jsp");
                 }
             }
@@ -95,10 +111,13 @@ public class CourseContentDetailController extends HttpServlet {
              * Service course content detail: update subject
              */
             if (service.equalsIgnoreCase("updateSubject")) {
-                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
-                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
-                /* Get user and role on session scope */
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+                /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                /*Dimension Type DAO*/
+ /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -108,7 +127,7 @@ public class CourseContentDetailController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     /* Else: get the subject detail  */
-                    /* Get parameters from jsp */
+ /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
                     String subjectName = request.getParameter("subjectName").trim();
                     String subjectDescription = request.getParameter("subjectDescription").trim();
@@ -135,30 +154,35 @@ public class CourseContentDetailController extends HttpServlet {
                         updateNumber += subjectDAO.updateSubjectBasic(subjectId, updateSubject);
                         String[] currentCategorySubject = subjectCateDAO.getSubjectCateIdBySubject(subjectId);
                         /* Terminates: eliminates all the unchanged tuples */
-                        if (updatedSubjectCateId != null) { /* If the updated subject category list is not null */
+                        if (updatedSubjectCateId != null) {
+                            /* If the updated subject category list is not null */
                             for (int i = 0; i < updatedSubjectCateId.length; i++) {
                                 for (int j = 0; j < currentCategorySubject.length; j++) {
                                     if (updatedSubjectCateId[i].equals(currentCategorySubject[j])) {
-                                        updatedSubjectCateId[i]= "-1";
+                                        updatedSubjectCateId[i] = "-1";
                                         currentCategorySubject[j] = "-1";
                                     }
                                 }
                             }
                             /* Add categories in the updated list */
                             for (String categoryId : updatedSubjectCateId) {
-                                if (!categoryId.equals("-1"))
-                                updateNumber += subjectCateDAO.addCategorySubject(subjectId, Integer.parseInt(categoryId));
+                                if (!categoryId.equals("-1")) {
+                                    updateNumber += subjectCateDAO.addCategorySubject(subjectId, Integer.parseInt(categoryId));
+                                }
                             }
                             /* Delete categories in the current list */
                             for (String categoryId : currentCategorySubject) {
-                                if (!categoryId.equals("-1"))
-                                updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
-                            }
-                        } else { /* If the updated subject category list is null: delete all category */
-                            for (String categoryId : currentCategorySubject) {
-                                    if (!categoryId.equals("-1"))
+                                if (!categoryId.equals("-1")) {
                                     updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
                                 }
+                            }
+                        } else {
+                            /* If the updated subject category list is null: delete all category */
+                            for (String categoryId : currentCategorySubject) {
+                                if (!categoryId.equals("-1")) {
+                                    updateNumber += subjectCateDAO.deteleCategorySubject(subjectId, Integer.parseInt(categoryId));
+                                }
+                            }
                         }
 //                         subjectCateDAO.updateSubjectContentCate(subjectId, categoryId);
 //                        int updateNumber = basicUpdate + categoryUpdate;
@@ -173,6 +197,8 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
+                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    request.setAttribute("listLesson", listLesson);
                     request.setAttribute("detailColor", color);
                     request.setAttribute("detailMessage", message);
                     request.setAttribute("displayTab", "overview");
@@ -185,11 +211,15 @@ public class CourseContentDetailController extends HttpServlet {
              * delete)
              */
             if (service.equalsIgnoreCase("updateDimension")) {
-                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
-                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();   /*Subject Category DAO*/
-                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl(); /*Dimension Type DAO*/
-                DimensionDAO dimensionDAO = new DimensionDAOImpl(); /*Dimension DAO*/
-                /* Get user and role on session scope */
+                SubjectDAO subjectDAO = new SubjectDAOImpl();
+                /*Subject DAO*/
+                SubjectCateDAO subjectCateDAO = new SubjectCateDAOImpl();
+                /*Subject Category DAO*/
+                DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
+                /*Dimension Type DAO*/
+                DimensionDAO dimensionDAO = new DimensionDAOImpl();
+                /*Dimension DAO*/
+ /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -249,6 +279,8 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
+                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    request.setAttribute("listLesson", listLesson);
                     request.setAttribute("dimensionColor", color);
                     request.setAttribute("dimensionMessage", message);
                     request.setAttribute("displayTab", "dimension");
@@ -263,10 +295,12 @@ public class CourseContentDetailController extends HttpServlet {
     }
 
     /**
-     * Forward the request to the destination, catch any unexpected exceptions and log it
-     * @param request   Request of the servlet
-     * @param response  Response of the servlet
-     * @param path      Forward address
+     * Forward the request to the destination, catch any unexpected exceptions
+     * and log it
+     *
+     * @param request Request of the servlet
+     * @param response Response of the servlet
+     * @param path Forward address
      */
     public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
@@ -278,7 +312,7 @@ public class CourseContentDetailController extends HttpServlet {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

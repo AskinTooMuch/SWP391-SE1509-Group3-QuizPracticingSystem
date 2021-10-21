@@ -54,7 +54,7 @@
                     <div class="tab col-md-8">
                         <button class="tablinks" onclick="openTab(event, 'tab1')" id="overview">Overview</button>
                         <button class="tablinks" onclick="openTab(event, 'tab2')" id="dimension">Dimension</button>
-                        <button class="tablinks" onclick="openTab(event, 'tab3')" id="pricePackage">Lesson</button>
+                        <button class="tablinks" onclick="openTab(event, 'tab3')" id="lesson">Lesson</button>
                         <button class="tablinks" onclick="openTab(event, 'tab4')" id="pricePackage">Price Package</button>
                     </div>
                     <div class="col-md-2"></div>
@@ -200,67 +200,136 @@
                                 <%-- For each dimension, print a row --%>
                                 <c:forEach items = "${subject.getDimensions()}" var="dimension" begin = "0" end = "${subject.getDimensions().size()-1}">
                                     <tr>
-                                        <form action="courseContentDetail">
-                                            <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
-                                            <input type="hidden" name="dimensionId" value="${dimension.getDimensionId()}">
-                                            <input type="hidden" name="service" value="updateDimension">
-                                            <th scope="row"><c:out value="${dimension.getDimensionId()}"/></th>
-                                            <td>
-                                                <%-- Print the dimension type select box with the selected value of dimension on top --%>
-                                                <select id="inputState" class="inputBorderless" name="dimensionType">
-                                                    <option selected value="${dimension.getDimensionTypeId()}"><c:out value="${dimension.getDimensionTypeName()}"/></option>
-                                                    <c:if test = "${!empty dimensionTypes}">
-                                                        <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
-                                                            <c:if test="${dimensionTypes.getDimensionTypeId() != dimension.getDimensionId()}">
-                                                                <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
-                                                            </c:if>
-                                                        </c:forEach>
+                                <form action="courseContentDetail">
+                                    <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
+                                    <input type="hidden" name="dimensionId" value="${dimension.getDimensionId()}">
+                                    <input type="hidden" name="service" value="updateDimension">
+                                    <th scope="row"><c:out value="${dimension.getDimensionId()}"/></th>
+                                    <td>
+                                        <%-- Print the dimension type select box with the selected value of dimension on top --%>
+                                        <select id="inputState" class="inputBorderless" name="dimensionType">
+                                            <option selected value="${dimension.getDimensionTypeId()}"><c:out value="${dimension.getDimensionTypeName()}"/></option>
+                                            <c:if test = "${!empty dimensionTypes}">
+                                                <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
+                                                    <c:if test="${dimensionTypes.getDimensionTypeId() != dimension.getDimensionId()}">
+                                                        <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
                                                     </c:if>
-                                                </select>
-                                            </td>
-                                            <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
-                                            <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Description"></td>
-                                            <td><input type="submit" class="btn btn-success" name="subService" value="Update" />
-                                                <input type="submit" class="btn btn-danger" name="subService" value="Delete" />
-                                            </td>
-                                        </form>
-                                    </tr>
-                                </c:forEach>
-                                <%-- Form to create a new dimension --%>
-                                <tr>
-                                    <form action="subjectController">
-                                            <input type="hidden" name="service" value="addDimension">
-                                            <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
-                                            <th scope="row">New</th>
-                                            <td>
-                                                <select id="inputState" class="inputBorderless" name="dimensionType">
-                                                    <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
-                                                            <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
-                                                    </c:forEach>
-                                                </select>
-                                            </td>
-                                            <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
-                                            <td><input class="inputBorderless" type="text" name="description" placeholder="Description"></td>
-                                            <td><button type="submit" id="submit" class="btn btn-success">Submit</button>
-                                            </td>
-                                    </form>
+                                                </c:forEach>
+                                            </c:if>
+                                        </select>
+                                    </td>
+                                    <td><input class="inputBorderless" type="text" name="dimensionName" value="${dimension.getDimensionName()}" required></td>
+                                    <td><input class="inputBorderless" type="text" name="description" value="${dimension.getDescription()}" placeholder="Description"></td>
+                                    <td><input type="submit" class="btn btn-success" name="subService" value="Update" />
+                                        <input type="submit" class="btn btn-danger" name="subService" value="Delete" />
+                                    </td>
+                                </form>
                                 </tr>
+                            </c:forEach>
+                            <%-- Form to create a new dimension --%>
+                            <tr>
+                            <form action="subjectController">
+                                <input type="hidden" name="service" value="addDimension">
+                                <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
+                                <th scope="row">New</th>
+                                <td>
+                                    <select id="inputState" class="inputBorderless" name="dimensionType">
+                                        <c:forEach items = "${dimensionTypes}" var="dimensionTypes" begin = "0" end = "${dimensionTypes.size()-1}">
+                                            <option value="${dimensionTypes.getDimensionTypeId()}"><c:out value="${dimensionTypes.getDimensionTypeName()}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                                <td><input class="inputBorderless" type="text" name="dimensionName" placeholder="Dimension Name" required></td>
+                                <td><input class="inputBorderless" type="text" name="description" placeholder="Description"></td>
+                                <td><button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                </td>
+                            </form>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div id="tab3" class="tabcontent">
-                        <h3>Tab 3</h3>
-                        <p>Tab content 3</p>
+                        <h4 style="color: #565e64">Subject Lessons/ Id <c:out value="${subject.getSubjectId()}"/></h4>
+                        <%-- Display message if available --%>
+                        <c:if test="${!empty lessonnMessage}">
+                            <h6 style="color: ${lessonColor}"><c:out value="${lessonMessage}"/></h6>
+                        </c:if>
+                        <%-- Lesson table: each row is a form that allows admin/expert to edit the Lesson --%>
+                        <table class="table table-striped table-bordered table-hover">
+                            <%-- Table head --%>
+                            <thead class="thead-light" style="background-color: #F0D8D5;">
+                                <tr style="background-color: #F0D8D5;">
+                                    <th scope="col" style="background-color: #F0D8D5;">Id</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Lesson</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Order</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Type</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Status</th>
+                                    <th scope="col" style="background-color: #F0D8D5;">Action</th>
+                                </tr>
+                            </thead>
+                            <%-- Table body --%>
+                            <tbody>
+                                <c:forEach items="${listLesson}" var="lessonList" >
+                                    <tr>
+                                        <td><c:out value="${lessonList.getLessonId()}"/></td>
+                                        <td><c:out value="${lessonList.getLessonName()}"/></td>
+                                        <td><c:out value="${lessonList.getLessonOrder()}"/></td>
+                                        <td><c:out value="${lessonList.getLessonTypeName()}"/></td>
+                                        <td><c:if test="${lessonList.isStatus()}">
+                                                Active
+                                            </c:if>
+                                            <c:if test="${!lessonList.isStatus()}">
+                                                Inactive
+                                            </c:if>
+                                        </td>
+                                        <td><a href="lessonController?subjectId=${subject.getSubjectId()}&service=updateLesson&type=update&lessonId=${lessonList.getLessonId()}"><div class="btn btn-success">Edit</div></a></td>
+                                    </tr>
+                                </c:forEach> 
+                                <%-- Form to create a new dimension --%>
+                                <tr>
+                            <form action="lessonController">
+                                <input type="hidden" name="service" value="addLesson">
+                                <input type="hidden" name="subjectId" value="${subject.getSubjectId()}">
+                                <th scope="row">New</th>
+                                <td><input class="inputBorderless" type="text" name="lessonName" placeholder="Lesson Name" required></td>
+                                <td><input class="inputBorderless" type="text" name="lessonOrder" placeholder="Lesson Order" required</td>
+                                <td>
+                                    <select id="inputState" class="inputBorderless" name="lessonTypeId">
+                                        <c:forEach items = "${lessonTypes}" var="lessonType">
+                                            <option value="${lessonType.getLessonTypeId()}"><c:out value="${lessonType.getLessonTypeName()}"/></option>
+                                        </c:forEach>
+                                    </select>
+                                </td>   
+                                <td>
+                                    <select id="inputState" class="inputBorderless" name="lessonStatus">
+                                        <c:choose>
+                                            <c:when test="${lessonList.isStatus()}">
+                                                <option selected value="1">Active</option>
+                                                <option value="0">Inactive</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option  value="1">Active</option>
+                                                <option selected value="0">Inactive</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </select>
+                                </td>
+                                <td><button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                </td>
+                            </form>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-2"></div>
         </div>
-            
-        
-                                            
+
+
+
         <%-- Include footer page --%>
         <jsp:include page="footer.jsp"/>
     </body>
@@ -287,9 +356,9 @@
         $(document).on('click', '.allow-focus', function (e) {
             e.stopPropagation();
         });
-        
+
         <%-- JS to click on (display) proper tab --%>
-        window.onload = function() {
+        window.onload = function () {
             document.getElementById("${displayTab}").click();
         };
     </script>

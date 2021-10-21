@@ -353,7 +353,7 @@ public class QuestionController extends HttpServlet {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QuestionController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }

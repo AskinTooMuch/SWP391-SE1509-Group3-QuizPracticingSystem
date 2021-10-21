@@ -7,8 +7,8 @@
  *  Record of change:
  *  Date        Version     Author              Description
  *  23/09/21     1.0        TuanPAHE150543      First Deploy
-
-*/
+ *
+ */
 package dao.impl;
 
 import bean.Lesson;
@@ -24,7 +24,7 @@ import java.sql.ResultSet;
  * @author tuan
  */
 public class LessonDAOImpl extends DBConnection implements LessonDAO {
-    
+
     /**
      * Get all lessons from database
      *
@@ -77,16 +77,66 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO {
         return listLesson;
     }
 
+    /**
+     * Get lessons of a subject
+     *
+     * @param subjectId
+     * @return
+     * @throws Exception
+     */
     @Override
-    public ArrayList<Lesson> getAllLessonBySubjectId(int subId) throws Exception {
-        return null;
+    public ArrayList<Lesson> getAllLessonBySubjectId(int subjectId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+ /* Get dimension list of the subject */
+        ArrayList<Lesson> lessons = new ArrayList<>();
+        String sql = "SELECT L.[lessonId]"
+                + "      ,S.[subjectId]\n"
+                + "      ,L.[lessonName]\n"
+                + "      ,L.[lessonOrder]\n"
+                + "      ,L.[lessonTypeId]\n"
+                + "	  ,LT.lessonTypeName\n"
+                + "      ,L.[videoLink]\n"
+                + "      ,L.[content]\n"
+                + "      ,L.[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Subject] S "
+                + "  INNER JOIN [QuizSystem].[dbo].[Lesson] L ON S.subjectId = L.subjectId\n"
+                + "  INNER JOIN [QuizSystem].[dbo].[LessonType] LT ON LT.lessonTypeId = L.lessonTypeId\n"
+                + "  WHERE S.subjectId = " + subjectId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                lessons.add(new Lesson(rs.getInt("lessonId"), 
+                        subjectId, 
+                        rs.getString("lessonName"),
+                        rs.getInt("lessonOrder"),
+                        rs.getInt("lessonTypeId"),
+                        rs.getString("videoLink"),
+                        rs.getString("content"),
+                        rs.getBoolean("status"),
+                        rs.getString("lessonTypeName")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return lessons;
     }
 
     @Override
     public ArrayList<Lesson> getAllLessonByTypeId(int typeId) throws Exception {
         return null;
     }
-    
+
     /**
      * Get lesson from database by lesson's id
      *
@@ -130,19 +180,91 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO {
         }
         return lessonById;
     }
-
+    
+    /**
+     * update Lesson
+     *
+     * @param lessonId the target lessonId. It is a <code>int</code>
+     * @param updatedLesson the target updatedLesson. It is a <code>Object</code>
+     * @return check. It is a <code>int</code>
+     * @throws Exception
+     */
     @Override
-    public int updateLesson(Lesson updatedLesson) throws Exception {
-        return 0;
+    public int updateLesson(int lessonId, Lesson updatedLesson) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = " UPDATE [QuizSystem].[dbo].[Lesson] "
+                + "SET lessonName =?,lessonOrder=?,lessonTypeId=?,videoLink=?,content=?,status=?\n" 
+                + "WHERE lessonId = ?";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, updatedLesson.getLessonName());
+            pre.setInt(2, updatedLesson.getLessonOrder());
+            pre.setInt(3, updatedLesson.getLessonTypeId());
+            pre.setString(4, updatedLesson.getVideoLink());
+            pre.setString(5, updatedLesson.getContent());
+            pre.setBoolean(6, updatedLesson.isStatus());
+            pre.setInt(7, lessonId);
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
 
     @Override
     public int deleteLesson(int lessonId) throws Exception {
         return 0;
     }
-
+    
+    /**
+     * add New lesson 
+     *
+     * @param newLesson It is a <code>Object</code> primitive type
+     * @return count. It is a <code>int</code> object.
+     */
     @Override
     public int addLesson(Lesson newLesson) throws Exception {
-        return 0;
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = "INSERT INTO [QuizSystem].[dbo].[Lesson](subjectId,lessonName,lessonOrder,lessonTypeId,videoLink,content,status) "
+                + "values (?,?,?,?,?,?,?);";
+        int check = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, newLesson.getSubjectId());
+            pre.setString(2, newLesson.getLessonName());
+            pre.setInt(3, newLesson.getLessonOrder());
+            pre.setInt(4, newLesson.getLessonTypeId());
+            pre.setString(5, newLesson.getVideoLink());
+            pre.setString(6, newLesson.getContent());
+            pre.setBoolean(7, newLesson.isStatus());
+            check = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+
+        return check;
     }
+   
 }
