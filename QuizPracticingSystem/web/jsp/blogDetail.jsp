@@ -76,7 +76,7 @@
                             </div>
                             <c:if test="${sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('marketing')}">
                             <div style="float:right;">
-                                <a href="${contextPath}/PostDetailController?service=postDetail&blogId=${thisBlog.getBlogId()}" class="btn btn-primary">Blog detail</a>
+                                <a href="${contextPath}/PostDetailController?service=editPost&blogId=${thisBlog.getBlogId()}" class="btn btn-primary">Blog detail</a>
                             </div>
                             </c:if>
                         </div>

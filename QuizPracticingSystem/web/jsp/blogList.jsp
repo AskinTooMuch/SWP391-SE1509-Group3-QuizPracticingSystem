@@ -109,7 +109,7 @@
                                         <c:if test="${blog.getDetail().length() > 101}">
                                         <p class="card-text"><c:out value="${blog.getDetail().substring(0, 100)}"/>. . .</p>
                                         </c:if>
-                                        <a href="${contextPath}/blog?service=editPost&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                        <a href="${contextPath}/blog?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
                                     </div>
                                 </div>
                             </c:forEach>

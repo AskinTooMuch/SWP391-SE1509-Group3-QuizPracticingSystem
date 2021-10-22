@@ -68,6 +68,7 @@
                                 </div>
 
                                 <c:if test="${editBlog != null}" >
+                                    <input type="text" name="editBlogId" value="${ editBlog.getBlogId() }" hidden>
                                     <label class="label control-label">Author</label>
                                     <div class="form-group">
                                         <span class="input-group-addon">

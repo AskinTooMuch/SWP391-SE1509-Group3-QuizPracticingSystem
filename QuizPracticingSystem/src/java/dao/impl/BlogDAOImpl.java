@@ -427,6 +427,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             pre.setString(5, blog.getDetail());
             pre.setString(6, blog.getThumbnail());
             pre.setInt(7, blog.getStatus() == true ? 1 : 0);
+            pre.setInt(8, blogId);
             return pre.executeUpdate();
         } catch (Exception ex) {
             throw ex;
@@ -674,6 +675,28 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             pre = conn.prepareStatement(sql);
             pre.setInt(1, blogId);
             pre.setInt(2, categoryId);
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+    }
+
+    @Override
+    public int removeAllBlogCategory(int blogId) throws Exception {
+                Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
+        String sql = " DELETE FROM [QuizSystem].[dbo].[BlogCate] WHERE [blogId] = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, blogId);
             return pre.executeUpdate();
         } catch (Exception ex) {
             throw ex;

@@ -162,11 +162,19 @@ public class PostDetailController extends HttpServlet {
                     if (postTitle.length() == 0 || detail.length() == 0) {
                         request.setAttribute("message", "You have to enter all required form");
                         request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
+                        return;
                     }
                     //if  the postTitle or detail is too long then return message
                     if (postTitle.length() >= 100 || detail.length() >= 1000) {
                         request.setAttribute("message", "Your input is to long!!!");
                         request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
+                        return;
+                    }
+                    //if user not check any category return message
+                    if (blogCategoryId.size() == 0) {
+                        request.setAttribute("message", "Your post must have at least 1 category !!!");
+                        request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
+                        return;
                     }
 
                     newBlog.setBlogTitle(postTitle);
@@ -177,10 +185,11 @@ public class PostDetailController extends HttpServlet {
                     blogDAO.addBlog(newBlog);
                     // get blogId that have just been added
                     int createdBlogId = blogDAO.getCreatedBlogID(newBlog);
+                    //input blog's categories
                     for (Integer integer : blogCategoryId) {
                         blogDAO.addBlogCategory(createdBlogId, integer);
                     }
-                    request.setAttribute("message", "Your blog have successfull posted !!!");
+                    request.setAttribute("message", "Your blog have successfull edited !!!");
                     request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
                 } catch (FileUploadException ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,7 +203,96 @@ public class PostDetailController extends HttpServlet {
              * database
              */
             if (service.equalsIgnoreCase("editBlog")) {
-                out.println("editBlog");
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                ArrayList<PostCate> categoryList = postCateDAO.getAllPostCates();
+                ArrayList<Integer> blogCategoryId = new ArrayList<>();
+                String filename = null;
+                try {
+                    // Create a factory for disk-based file items
+                    DiskFileItemFactory factory = new DiskFileItemFactory();
+                    // Configure a repository (to ensure a secure temp location is used)
+                    ServletContext servletContext = this.getServletConfig().getServletContext();
+                    File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+                    factory.setRepository(repository);
+                    // Create a new file upload handler
+                    ServletFileUpload upload = new ServletFileUpload(factory);
+                    // Parse the request
+                    List<FileItem> items = upload.parseRequest(request);
+                    Iterator<FileItem> iter = items.iterator();
+                    HashMap<String, String> fields = new HashMap<>();
+                    while (iter.hasNext()) {
+                        FileItem item = iter.next();
+                        //if item is a regular form field then add to the HashMap
+                        if (item.isFormField()) {
+                            fields.put(item.getFieldName(), item.getString().trim());
+                        } else { // 
+                            filename = item.getName();
+                            if (filename == null || filename.equals("")) {
+                                break;
+                            } else { //if item is a uploaded file then write into system
+                                Path path = Paths.get(filename);
+                                String storePath = servletContext.getRealPath("/images");
+                                File uploadFile = new File(storePath + "/blog/" + path.getFileName());
+                                //if file name already existed then delete old file
+                                if (uploadFile.canRead()) {
+                                    uploadFile.delete();
+                                }
+                                item.write(uploadFile);
+                                filename = "images\\blog\\" + filename;
+                            }
+                        }
+                    }
+                    String postTitle = fields.get("postTitle");
+                    String detail = fields.get("detail");
+                    int editBlogId = Integer.parseInt(fields.get("editBlogId"));
+                    Blog editBlog = blogDAO.getBlogById(editBlogId);
+                    //get all cotegory id that user have input
+                    for (PostCate postCate : categoryList) {
+                        String cateId = fields.get("categories_" + postCate.getPostCateId());
+                        if (cateId != null) {
+                            blogCategoryId.add(Integer.parseInt(cateId));
+                        }
+                    }
+
+                    //if the postTitle or detail have yet entered then return message
+                    if (postTitle.length() == 0 || detail.length() == 0) {
+                        request.setAttribute("message", "You have to enter all required form");
+                        request.getRequestDispatcher("PostDetailController?service=editPost&blogId=" + editBlogId).forward(request, response);
+                    }
+                    //if  the postTitle or detail is too long then return message
+                    if (postTitle.length() >= 100 || detail.length() >= 1000) {
+                        request.setAttribute("message", "Your input is to long!!!");
+                        request.getRequestDispatcher("PostDetailController?service=editPost&blogId=" + editBlogId).forward(request, response);
+                    }
+                    //if user not check any category return message
+                    if (blogCategoryId.size() == 0) {
+                        request.setAttribute("message", "Your post must have at least 1 category !!!");
+                        request.getRequestDispatcher("PostDetailController?service=editPost&blogId=" + editBlogId).forward(request, response);
+                        return;
+                    }
+                    //set new attribute
+                    editBlog.setBlogTitle(postTitle);
+                    editBlog.setDetail(detail);
+                    editBlog.setAuthor(currUser);
+                    //if there is a new thumnail then set thumnail attribute
+                    if (filename != null && !filename.equals("")) {
+                        editBlog.setThumbnail(filename);
+                    }
+                    //add new blog
+                    blogDAO.editBlog(editBlog.getBlogId(), editBlog);
+                    //remove all old categories
+                    blogDAO.removeAllBlogCategory(editBlogId);
+                    //input new blog's categories
+                    for (Integer integer : blogCategoryId) {
+                        blogDAO.addBlogCategory(editBlogId, integer);
+                    }
+                    request.setAttribute("message", "Your blog have successfull posted !!!");
+                    request.getRequestDispatcher("PostDetailController?service=editPost&blogId=" + editBlogId).forward(request, response);
+                } catch (FileUploadException ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(PostDetailController.class.getName()).log(Level.SEVERE, null, ex);

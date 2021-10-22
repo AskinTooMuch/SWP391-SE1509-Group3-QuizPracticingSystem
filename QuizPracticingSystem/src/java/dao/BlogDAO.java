@@ -187,4 +187,12 @@ public interface BlogDAO {
      * @throws Exception 
      */
     public int addBlogCategory(int blogId,int categoryId) throws Exception;
+    
+    /**
+     * remove all blog's category
+     * @param blogId. It is a <code>int</code> object
+     * @return number of row change. It is a <code>int</code> object
+     * @throws Exception 
+     */
+    public int removeAllBlogCategory(int blogId) throws Exception;
 }
