@@ -189,7 +189,7 @@ public class PostDetailController extends HttpServlet {
                     for (Integer integer : blogCategoryId) {
                         blogDAO.addBlogCategory(createdBlogId, integer);
                     }
-                    request.setAttribute("message", "Your blog have successfull edited !!!");
+                    request.setAttribute("message", "Your blog have successfull posted !!!");
                     request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
                 } catch (FileUploadException ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
@@ -286,7 +286,7 @@ public class PostDetailController extends HttpServlet {
                     for (Integer integer : blogCategoryId) {
                         blogDAO.addBlogCategory(editBlogId, integer);
                     }
-                    request.setAttribute("message", "Your blog have successfull posted !!!");
+                    request.setAttribute("message", "Your blog have successfull edited !!!");
                     request.getRequestDispatcher("PostDetailController?service=editPost&blogId=" + editBlogId).forward(request, response);
                 } catch (FileUploadException ex) {
                     Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);

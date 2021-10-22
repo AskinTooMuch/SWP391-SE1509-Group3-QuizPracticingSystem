@@ -121,6 +121,12 @@
                                             <span class="fas fa-user-shield">Admin Page</span>  
                                         </a>
                                     </c:if>
+                                    <%-- If role is admin or marketing--%>
+                                    <c:if test="${currUser != null && (role.getUserRoleName().equalsIgnoreCase('admin') || role.getUserRoleName().equalsIgnoreCase('marketing'))}">
+                                        <a href="${contextPath}/jsp/postDetail.jsp" style="text-decoration: none;color:black" >
+                                            <span class="fas fa-user-shield">Create Post</span>  
+                                        </a>
+                                    </c:if>
                                     <hr>
                                     <%-- Logout --%>
                                     <a href="${contextPath}/userController?service=logout" style="text-decoration: none;color:black" >
