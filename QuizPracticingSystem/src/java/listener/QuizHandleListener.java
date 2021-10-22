@@ -16,8 +16,10 @@ import bean.QuizQuizHandle;
 import bean.User;
 import dao.CustomerQuizDAO;
 import dao.QuizQuizHandleDAO;
+import dao.ViewDAO;
 import dao.impl.CustomerQuizDAOImpl;
 import dao.impl.QuizQuizHandleDAOImpl;
+import dao.impl.ViewDAOImpl;
 import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -123,6 +125,16 @@ public class QuizHandleListener implements HttpSessionListener, HttpSessionAttri
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
+        ViewDAO IView = new ViewDAOImpl();
+        if (se.getSession().isNew()) {
+            try {
+                System.out.println("########################### +1 View");
+                IView.updateView();
+            } catch (Exception e) {
+
+            }
+        }
+
     }
 
     @Override

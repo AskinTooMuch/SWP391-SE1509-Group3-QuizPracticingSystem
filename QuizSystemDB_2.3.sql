@@ -10,6 +10,10 @@ GO
 USE [QuizSystem]
 GO
 ---------------Create Table----------------
+CREATE TABLE dbo.[ViewCount](
+	[date]		date NOT NULL PRIMARY KEY,
+	[view]		int	
+)
 CREATE TABLE dbo.[UserRole](
 	userRoleId		int	NOT NULL identity(1,1) PRIMARY KEY,
 	userRoleName	nvarchar(63) NOT NULL,

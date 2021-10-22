@@ -17,9 +17,11 @@ import static controller.MarketingController.MILISECOND_PER_WEEK;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import dao.UserDAO;
+import dao.ViewDAO;
 import dao.impl.RegistrationDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import dao.impl.UserDAOImpl;
+import dao.impl.ViewDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,7 @@ public class DashboardController extends HttpServlet {
 
             RegistrationDAO IRegistration = new RegistrationDAOImpl();
             SubjectDAO ISubject = new SubjectDAOImpl();
+            ViewDAO IView = new ViewDAOImpl();
             String option = request.getParameter("option");
             String target = request.getParameter("target");
             String attribute = request.getParameter("attribute");
@@ -122,6 +125,12 @@ public class DashboardController extends HttpServlet {
                     ArrayList<Registration> registrationList = IRegistration.get10NewRegistration();
                     request.setAttribute("registrationList", registrationList);
                 }
+            }
+
+            if (option.equals("view")) {
+                ArrayList<ItemDashboard> viewStatistics = IView.getViewStatistics(from, to);
+                statistics = IView.convertJson(viewStatistics);
+                nameList = IRegistration.getNameList(viewStatistics);
             }
 
             request.setAttribute("statistics", statistics);

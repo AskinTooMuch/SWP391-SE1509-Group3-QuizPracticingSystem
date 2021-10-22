@@ -1,13 +1,14 @@
 <%--
    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
    Created on : Oct 9, 2021
-   MarketingController map
+   dashboard map
    Quiz practicing system
  
    Record of change:
    Date        Version     Author          Description
    9/10/21     1.0         NamDHHE150519   First Deploy
    14/10/21    1.0         NamDHHE150519   update subject statistics
+   22/10/21    1.0         NamDHHE150519   update view statistics
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -85,13 +86,14 @@
                 <h4>Dashboard</h4>
             </div>
             <div class="row">
-                <div class="col-md-4"></div>
-                <div class="tab col-md-5" style="border:none;">
+                <div class="col-md-3"></div>
+                <div class="tab col-md-6" style="border:none;">
                     <div >
-                        <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=subject&target=new&attribute=revenue">Subjects</a>
-                        <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=registration">Registrations</a>
-                        <a class="btn ${option=="revenue"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=revenue&target=total">Revenues</a>
-                        <a class="btn ${option=="customer"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&option=customer&target=newlyRegistered">Customers</a>
+                        <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/dashboard?&option=subject&target=new&attribute=revenue">Subjects</a>
+                        <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/dashboard?&option=registration">Registrations</a>
+                        <a class="btn ${option=="revenue"?"active":""}" role="button" href="${contextPath}/dashboard?&option=revenue&target=total">Revenues</a>
+                        <a class="btn ${option=="customer"?"active":""}" role="button" href="${contextPath}/dashboard?&option=customer&target=newlyRegistered">Customers</a>
+                        <a class="btn ${option=="view"?"active":""}" role="button" href="${contextPath}/dashboard?&option=view">Web</a>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -101,15 +103,15 @@
                 <c:if test="${option=='subject'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${attribute=="revenue"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=subject&target=${target}&attribute=revenue">Revenue</a>
-                            <a class="btn ${attribute=="registrationCount"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=subject&target=${target}&attribute=registrationCount">Registration</a>                 
+                            <a class="btn ${attribute=="revenue"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=subject&target=${target}&attribute=revenue">Revenue</a>
+                            <a class="btn ${attribute=="registrationCount"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=subject&target=${target}&attribute=registrationCount">Registration</a>                 
                         </div>
                         <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${target=="new"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=new&attribute=${attribute}">New Subject</a>
-                            <a class="btn ${target=="all"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=all&attribute=${attribute}">All Subject</a>
+                            <a class="btn ${target=="new"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=new&attribute=${attribute}">New Subject</a>
+                            <a class="btn ${target=="all"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=all&attribute=${attribute}">All Subject</a>
                         </div>
                         <div class="date col-6">
-                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                            <form action="${contextPath}/dashboard" method="GET" style="float:right;">
                                 <input hidden name="service" value="dashboard">
 
                                 <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
@@ -126,7 +128,7 @@
                         <div class="choose col-6" style="display: grid;">
                         </div>
                         <div class="date col-6">
-                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                            <form action="${contextPath}/dashboard" method="GET" style="float:right;">
                                 <input hidden name="service" value="dashboard">
                                 <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
                                 <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
@@ -138,12 +140,12 @@
                 <c:if test="${option=='revenue'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${target=="total"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=total">Total</a>
-                            <a class="btn ${target=="bySubjectCate"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=bySubjectCate">By Subject Category</a>
+                            <a class="btn ${target=="total"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=total">Total</a>
+                            <a class="btn ${target=="bySubjectCate"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=bySubjectCate">By Subject Category</a>
                         </div>
                         <div class="col-3"></div>
                         <div class="date col-6">
-                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                            <form action="${contextPath}/dashboard" method="GET" style="float:right;">
                                 <input hidden name="service" value="dashboard">
                                 <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
                                 <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
@@ -156,8 +158,8 @@
                 <c:if test="${option=='customer'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${target=="newlyRegistered"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=newlyRegistered">Newly Registered</a>
-                            <a class="btn ${target=="newlyBought"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=newlyBought">Newly Bought</a>
+                            <a class="btn ${target=="newlyRegistered"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=newlyRegistered">Newly Registered</a>
+                            <a class="btn ${target=="newlyBought"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=newlyBought">Newly Bought</a>
                         </div>
                         <div class="col-3"></div>
                     </div>
@@ -190,27 +192,23 @@
                         </table>
                     </div>
                 </c:if>
-                <c:if test="${option=='trendOfOrder'}">
+                <c:if test="${option=='view'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
-                        <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${target=="success"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=success">Success</a>
-                            <a class="btn ${target=="all"?"active":""}" role="button" href="${contextPath}/marketingController?service=dashboard&from=${from}&to=${to}&option=${option}&target=all">All</a>
+                        <div class="choose col-6" style="display: grid;">
                         </div>
-                        <div class="col-3"></div>
                         <div class="date col-6">
-                            <form action="${contextPath}/marketingController" method="GET" style="float:right;">
+                            <form action="${contextPath}/dashboard" method="GET" style="float:right;">
                                 <input hidden name="service" value="dashboard">
                                 <input onchange="this.form.submit()" type="date" name="from" value="${from}" max="${to}">
                                 <input onchange="this.form.submit()" type="date" name="to" value="${to}" min="${from}" max="${currentDate}">
-                                <input hidden name="option" value=${option}>
-                                <input hidden name="target" value="${target}">
+                                <input hidden name="option" value=${option}>                              
                             </form>
                         </div>
                     </div>
                 </c:if>
                 <c:if test="${option!='customer'}">
                 <c:choose>
-                    <c:when test="${nameList.size()>0}">
+                    <c:when test="${nameList.size()!=0}">
                         <div class='row' style="height: 300px; width: 100%;">
                             <div>
                                 <div class="subtabcontent" style='display:block;'>
