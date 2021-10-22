@@ -48,8 +48,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class PostDetailController extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods. 
-     * Function Post Detail: allow the marketing member to update blog
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods. Function Post Detail: allow the marketing member to update blog
      * information
      *
      * @param request servlet request
@@ -64,7 +64,7 @@ public class PostDetailController extends HttpServlet {
             String service = request.getParameter("service");
             BlogDAO blogDAO = new BlogDAOImpl();
             PostCateDAO postCateDAO = new PostCateDAOImpl();
-            
+
             /**
              * get all post categories in the database
              */
@@ -78,7 +78,7 @@ public class PostDetailController extends HttpServlet {
                 }
                 request.getRequestDispatcher("jsp/postDetail.jsp").forward(request, response);
             }
-            
+
             /**
              * get all information to display in the postDetail to edit post
              */
@@ -132,6 +132,7 @@ public class PostDetailController extends HttpServlet {
                         } else { // 
                             filename = item.getName();
                             if (filename == null || filename.equals("")) {
+                                filename = "images\\blog\\default.png";
                                 break;
                             } else { //if item is a uploaded file then write into system
                                 Path path = Paths.get(filename);
@@ -142,21 +143,21 @@ public class PostDetailController extends HttpServlet {
                                     uploadFile.delete();
                                 }
                                 item.write(uploadFile);
+                                filename = "images\\blog\\" + filename;
                             }
-                            filename = "images\\blog\\" + filename;
                         }
                     }
                     String postTitle = fields.get("postTitle");
                     String detail = fields.get("detail");
-                    
+
                     //get all cotegory id that user have input
                     for (PostCate postCate : categoryList) {
                         String cateId = fields.get("categories_" + postCate.getPostCateId());
-                        if(cateId != null){
+                        if (cateId != null) {
                             blogCategoryId.add(Integer.parseInt(cateId));
                         }
                     }
-                    
+
                     //if the postTitle or detail have yet entered then return message
                     if (postTitle.length() == 0 || detail.length() == 0) {
                         request.setAttribute("message", "You have to enter all required form");
@@ -167,7 +168,7 @@ public class PostDetailController extends HttpServlet {
                         request.setAttribute("message", "Your input is to long!!!");
                         request.getRequestDispatcher("PostDetailController?service=getPostCategory").forward(request, response);
                     }
-                    
+
                     newBlog.setBlogTitle(postTitle);
                     newBlog.setDetail(detail);
                     newBlog.setAuthor(currUser);
@@ -189,7 +190,8 @@ public class PostDetailController extends HttpServlet {
             }
 
             /**
-             * get information from postDetail to edit existed blog in the database
+             * get information from postDetail to edit existed blog in the
+             * database
              */
             if (service.equalsIgnoreCase("editBlog")) {
                 out.println("editBlog");
