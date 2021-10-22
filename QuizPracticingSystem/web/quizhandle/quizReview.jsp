@@ -67,7 +67,14 @@
             <%-- Question and Answers --%>
             <div class="mainContent" style="display: flex;">
 
-                <div class="col-4" style="">
+                <div class="<c:choose>
+                         <c:when test="${questionQH.getQuestion().getMedia()!=null}">
+                             col-4
+                         </c:when>
+                         <c:otherwise>
+                             col-10
+                         </c:otherwise>
+                     </c:choose> style="">
                     <div class="row question" style="display: flex;">
                         <div class="col-2">
                         </div>
@@ -80,11 +87,14 @@
                         <div class="col-12" >
                             <form id='questionForm' action='${contextPath}/quizHandleController?service=quizHandle&quizId=${quizId}&questionNumber=${questionNumber}' method='POST'>
                                 <ul style=''>
+                              
                                     <c:forEach items="${questionQH.getAnswerList()}" var="answer">
                                         <div class='row'>
                                             <div class='col-3' style="">
                                                 <c:if test="${answer.getAnswerId()==answered}">
+                                                    <div style="float:right;">
                                                     <img src="images/youranswer.png" style='width:80px;height: auto;'>
+                                                    </div>
                                                 </c:if>
                                             </div>
                                             <div class="col-9 ${answer.getAnswerId()==answered?"":"wrong"}" style="display: -webkit-inline-box;">
@@ -95,13 +105,13 @@
                                                     <input type="radio" name="answerTakenId" value="${answer.getAnswerId()}" id="${answer.getAnswerId()}" ${answer.getAnswerId()==questionQH.getAnsweredId()?"checked":""} ${answer.getAnswerId()==answered?"":"disabled"} class="radioAnswer">
                                                     <span class="checkmark"></span>
                                                 </label>                                          
-                                            <c:if test="${answer.isIsCorrect()}">
-                                                <img src="images/right.png" style='width:25px;height: 25px;'>
-                                            </c:if>
-                                            <c:if test="${!answer.isIsCorrect()}">
-                                                <img src="images/wrong.png" style='width:25px;height: 25px;'>
-                                            </c:if>
-                                                </div>
+                                                <c:if test="${answer.isIsCorrect()}">
+                                                    <img src="images/right.png" style='width:25px;height: 25px;'>
+                                                </c:if>
+                                                <c:if test="${!answer.isIsCorrect()}">
+                                                    <img src="images/wrong.png" style='width:25px;height: 25px;'>
+                                                </c:if>
+                                            </div>
                                             <br/>
                                         </div>
                                     </c:forEach>
@@ -116,8 +126,9 @@
                     </div>
                 </div>
                 <%-- Video or Image related with this question --%>
-                <div class="right col-8" style="">
-                    <c:if test="${questionQH.getQuestion().getMedia()!=null}">
+                <c:if test="${questionQH.getQuestion().getMedia()!=null}">
+                    <div class="right col-8" style="">
+
                         <div style="">
                             <c:if test="${mediaType==2}">
                                 <iframe width="420" height="315" style="width:100%; height:450px;"
@@ -128,8 +139,9 @@
                                 <img src="${questionQH.getQuestion().getMedia()}" style="width:100%; height:auto;">
                             </c:if>
                         </div>
-                    </c:if>
-                </div>
+
+                    </div>
+                </c:if>
             </div>
             <%-- End main content --%>
             <%-- Function bar --%>

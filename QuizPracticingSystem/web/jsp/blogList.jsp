@@ -20,6 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Blog List</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <%--Start page style--%>
         <style>
             .body{
                 font-family: Source Serif Pro;
@@ -33,13 +34,10 @@
                 left: 85px;
             }
         </style>
+        <%--End page style--%>
     </head>
-
     <body>
-
         <jsp:include page="header.jsp"/>
-        <hr>
-
         <div class="container-fluid">
             <div class="row">
                 <%-- search box --%>
@@ -68,7 +66,7 @@
                                         </div>
                                     </c:forEach>    
                                 </div>
-                                <input type="submit" class="btn btn-primary" value="Search"/>
+                                <input type="submit" class="btn btn-primary" value="Search" style="background-color:#4472c4;color:white; margin-top: 10px;"/>
                                 <input hidden name="service" value="blogList"/>
                             </div>
                         </form>
@@ -103,6 +101,7 @@
                                     <div class="card-body">
                                         <h8>Author ${blog.getAuthor().getUserName()}</h8>
                                         <h5 class="card-title">${blog.getBlogTitle()}</h5>
+
                                         <c:if test="${blog.getDetail().length() <= 101}">
                                             <p class="card-text"><c:out value="${blog.getDetail()}"/>. . .</p>
                                         </c:if>

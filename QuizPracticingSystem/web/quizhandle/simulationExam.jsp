@@ -23,7 +23,7 @@
     </head>
     <jsp:include page="/jsp/header.jsp"/>
     <body>
-        <div class="container-fluid" style="border-top:1px solid black;margin-bottom: 300px;">
+        <div class="container-fluid" style="margin-bottom: 300px;">
             <div class="row functions" style="margin-top: 30px;">
                 <div class="col-1">
                     <h5 style="float:right; margin-top: 6px;">Subject:</h5>

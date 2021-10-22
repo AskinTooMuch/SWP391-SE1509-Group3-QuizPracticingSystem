@@ -30,12 +30,12 @@
                            margin-left: 5px;'> Back</a>
                     </div>
                     <div class='col-11'>
-                        thong tin bai quiz
+                        .
                     </div>
                 </div>
             </div>
             <div class="row infomation1" style="">
-                thong tin bai quiz
+                .
             </div>
             <div class="container">
                 <%-- Clock and  --%>

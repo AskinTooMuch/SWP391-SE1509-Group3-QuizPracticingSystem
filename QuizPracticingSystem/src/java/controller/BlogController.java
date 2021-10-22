@@ -58,6 +58,7 @@ public class BlogController extends HttpServlet {
 
             if (service.equalsIgnoreCase("blogList")) {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
+                
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");
@@ -65,12 +66,13 @@ public class BlogController extends HttpServlet {
                     if (searchString.length() > 100) {
                         request.setAttribute("errorMess", "invalid length");
                     } else {
-                        blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);        //searched blogList 
-                        //phan trang sau khi tim kiem theo category
-                        String pagingUrl = "";                                                               //url connect to ...?page=          
+                        blogList = blogInterface.getBlogByCategoryAndTitle(searchCate, searchString);
+                        //url concat to ...?page=
+                        String pagingUrl = "";
+                        //Add category parameter
                         if (searchCate != null) {
                             for (String category : searchCate) {
-                                pagingUrl += "&category=" + category;                                        //Add category parameter
+                                pagingUrl += "&category=" + category;
                             }
                             int[] cateList = new int[searchCate.length];
                             for (int i = 0; i < searchCate.length; i++) {
@@ -78,8 +80,9 @@ public class BlogController extends HttpServlet {
                             }
                             request.setAttribute("cateList", cateList);
                         }
+                        //Add search parameter
                         if (searchString != null) {
-                            pagingUrl += "&search=" + searchString;                                          //Add search parameter
+                            pagingUrl += "&search=" + searchString;
                             request.setAttribute("search", searchString);
                         }
                         request.setAttribute("pagingUrl", pagingUrl);
