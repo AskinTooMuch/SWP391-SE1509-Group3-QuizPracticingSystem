@@ -8,6 +8,7 @@
     Date        Version     Author          Description
     17/9/21     1.0         ChucNVHE150618  First Deploy
     30/9/21     2.0         NamDHHE150519   Complete code
+    22/10/21    2.1         DuongNHHE150328 Add new method
  */
  /*
   Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
@@ -369,8 +370,8 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             sql += cateList[postCateIdList.length - 1];
             sql += ")";
         }
-        String checkSearch = search.replaceAll(" ","");
-        if (checkSearch.length()!=0) {
+        String checkSearch = search.replaceAll(" ", "");
+        if (checkSearch.length() != 0) {
             sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
         sql += " ORDER BY created DESC";
@@ -450,17 +451,15 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
-        String sql = "INSERT INTO [Blog] values(?,?,?,?,?,?,?)";
+        String sql = "insert into Blog(blogTitle,created,lastEdited,author,detail,thumbnail,status)"
+                + " values(?,GETDATE(),GETDATE(),?,?,?,1)";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             pre.setString(1, blog.getBlogTitle());
-            pre.setDate(2, blog.getCreated());
-            pre.setDate(3, blog.getLastEdited());
-            pre.setInt(4, blog.getAuthor().getUserId());
-            pre.setString(5, blog.getDetail());
-            pre.setString(6, blog.getThumbnail());
-            pre.setInt(7, blog.getStatus() == true ? 1 : 0);
+            pre.setInt(2, blog.getAuthor().getUserId());
+            pre.setString(3, blog.getDetail());
+            pre.setString(4, blog.getThumbnail());
             return pre.executeUpdate();
         } catch (Exception ex) {
             throw ex;
@@ -550,23 +549,25 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
      * @throws java.lang.Exception
      */
     @Override
-    public PostCate getBlogCategory(int blogId) throws Exception {
+    public ArrayList<PostCate> getBlogCategory(int blogId) throws Exception {
         Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
-
+        ArrayList<PostCate> categoryList = new ArrayList<>();
+        PostCate add = null;
         String sql = "SELECT * FROM [BlogCate] as a join [PostCate] as b ON a.postCateId=b.postCateId WHERE a.blogId=" + blogId;
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
-            if (rs.next()) {
-                return new PostCate(rs.getInt("postCateId"),
+            while (rs.next()) {
+                add = new PostCate(rs.getInt("postCateId"),
                         rs.getString("postCateName"),
                         rs.getBoolean("status"));
+                categoryList.add(add);
             }
-            return null;
+            return categoryList;
         } catch (Exception ex) {
             throw ex;
         } finally {
@@ -602,5 +603,84 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
             t.add(list.get(i));
         }
         return t;
+    }
+
+    /**
+     * get id of blog that have the same attribute with the search blog
+     *
+     * @param searchBlog. It is a <code>Blog</code> object
+     * @return a blog id. It is a <code>int</code> object
+     * @throws Exception
+     */
+    @Override
+    public int getCreatedBlogID(Blog searchBlog) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
+        String sql = "SELECT TOP 1 [blogId]\n"
+                + "      ,[blogTitle]\n"
+                + "      ,[created]\n"
+                + "      ,[lastEdited]\n"
+                + "      ,[author]\n"
+                + "      ,[detail]\n"
+                + "      ,[thumbnail]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Blog]\n"
+                + "  WHERE [blogTitle] = ?\n"
+                + "      AND [author] = ?\n"
+                + "      AND [detail] = ?\n"
+                + "      AND [thumbnail] = ?\n"
+                + "ORDER BY blogId DESC";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, searchBlog.getBlogTitle());
+            pre.setInt(2, searchBlog.getAuthor().getUserId());
+            pre.setString(3, searchBlog.getDetail());
+            pre.setString(4, searchBlog.getThumbnail());
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("blogId");
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return -1;
+    }
+
+    /**
+     * add blog category to database
+     * @param blogId. It is a <code>int</code> object
+     * @param categoryId. It is a <code>int</code> object
+     * @return number of row change. It is a <code>int</code> object
+     * @throws Exception 
+     */
+    @Override
+    public int addBlogCategory(int blogId, int categoryId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+
+        String sql = "insert into BlogCate values(?,?,1)";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, blogId);
+            pre.setInt(2, categoryId);
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
     }
 }

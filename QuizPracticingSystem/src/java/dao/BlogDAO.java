@@ -157,7 +157,7 @@ public interface BlogDAO {
      * @return blog's category. It is a <code>PostCate</code> object
      * @throws java.lang.Exception
      */
-    public PostCate getBlogCategory(int blogId) throws Exception;
+    public ArrayList<PostCate> getBlogCategory(int blogId) throws Exception;
             
     
     /**
@@ -170,4 +170,21 @@ public interface BlogDAO {
      * @throws java.lang.Exception
      */
     public ArrayList<Blog> Paging(int page, ArrayList<Blog> list) throws Exception;
+    
+    /**
+     * get id of blog that have the same attribute with the search blog
+     * @param searchBlog. It is a <code>Blog</code> object
+     * @return a blog id. It is a <code>int</code> object
+     * @throws Exception 
+     */
+    public int getCreatedBlogID(Blog searchBlog) throws Exception;
+    
+    /**
+     * add blog category to database
+     * @param blogId. It is a <code>int</code> object
+     * @param categoryId. It is a <code>int</code> object
+     * @return number of row change. It is a <code>int</code> object
+     * @throws Exception 
+     */
+    public int addBlogCategory(int blogId,int categoryId) throws Exception;
 }

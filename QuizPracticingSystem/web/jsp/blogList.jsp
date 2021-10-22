@@ -8,6 +8,7 @@
    Date        Version     Author          Description
    23/9/21     1.0         NamDHHE150519   First Deploy
    23/9/21     2.0         NamDHHE150519   complete all funtion 
+   22/10/21    2.1         DuongNHHE150328 fix conntent length
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -102,8 +103,13 @@
                                     <div class="card-body">
                                         <h8>Author ${blog.getAuthor().getUserName()}</h8>
                                         <h5 class="card-title">${blog.getBlogTitle()}</h5>
-                                        <p class="card-text">${blog.getDetail().substring(0,100)}. . .</p>
-                                        <a href="${contextPath}/blog?service=blogDetail&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
+                                        <c:if test="${blog.getDetail().length() <= 101}">
+                                            <p class="card-text"><c:out value="${blog.getDetail()}"/>. . .</p>
+                                        </c:if>
+                                        <c:if test="${blog.getDetail().length() > 101}">
+                                        <p class="card-text"><c:out value="${blog.getDetail().substring(0, 100)}"/>. . .</p>
+                                        </c:if>
+                                        <a href="${contextPath}/blog?service=editPost&blogId=${blog.getBlogId()}" class="btn btn-primary">Read More</a>
                                     </div>
                                 </div>
                             </c:forEach>

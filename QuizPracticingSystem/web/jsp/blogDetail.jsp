@@ -7,7 +7,8 @@
    Record of change:
    Date        Version     Author          Description
    23/9/21     1.0         NamDHHE150519   First Deploy
-   23/9/21     2.9         NamDHHE150519   complete all funtion
+   23/9/21     2.0         NamDHHE150519   complete all funtion
+   22/10/21    2.1         DuongNHHE150328 add new button
 --%>
 
 
@@ -65,12 +66,20 @@
                         </c:forEach>
                     </div>
                 </div>
-<%-- mainContent --%>
+                <%-- mainContent --%>
                 <div class="right col-9">
                     <c:set var="thisBlog" value="${blog}"/>
                     <div class="info row">
                         <div class="cate col-9">${blogCateName}</div>
-                        <div class="date col-3"><div style="float:right;">Last Edited: <fmt:formatDate type = "date" value = "${thisBlog.getLastEdited()}" /></div></div>
+                        <div class="date col-3">
+                            <div style="float:right;">Last Edited: <fmt:formatDate type = "date" value = "${thisBlog.getLastEdited()}" />
+                            </div>
+                            <c:if test="${sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('marketing')}">
+                            <div style="float:right;">
+                                <a href="${contextPath}/PostDetailController?service=postDetail&blogId=${thisBlog.getBlogId()}" class="btn btn-primary">Blog detail</a>
+                            </div>
+                            </c:if>
+                        </div>
                     </div>        
                     <div class="title row">
                         <h4>${thisBlog.getBlogTitle()}</h4>
@@ -92,7 +101,7 @@
                 </div>
             </div>
         </div>
-<%-- end mainContent --%>
+        <%-- end mainContent --%>
 
     </body>
     <jsp:include page="footer.jsp"/>

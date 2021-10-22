@@ -17,7 +17,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Change Password Page</title>
+        <title>Post Detail</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -29,18 +29,24 @@
         <c:if test="${sessionScope.currUser == null}">
             <c:redirect url="/index.jsp"/>
         </c:if>
+        <c:if test="${categoryList == null}">
+            <c:redirect url="/PostDetailController?service=getPostCategory"/>
+        </c:if>
+        <c:if test="${editBlog != null}" >
+            <c:set var="service" value="editBlog" />
+        </c:if>
+        <c:if test="${editBlog == null}" >
+            <c:set var="service" value="addBlog" />
+        </c:if>
         <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
-        <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
-            <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
-            <c:if test="${updateQuiz == null}">
-                <c:redirect url="jsp/quizList.jsp"/>
-            </c:if>        
+        <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('marketing')}">
+            <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>     
             <div class="main">
                 <%-- Login form --%>
                 <div class="container" style="align-self: center; min-height: 50vh">
                     <%-- Start form --%>
-                    <form action="${contextPath}/QuizListController" method="POST">
+                    <form action="${contextPath}/PostDetailController?service=${service}" enctype="multipart/form-data" method="post">
                         <div class="row">
                             <%-- Bootstrap to center form --%>
                             <div class="col-md-3"></div>
@@ -52,135 +58,93 @@
                                     </c:if>
                                 </div>
                                 <br>
-                                <h1>Quiz Detail</h1>
-                                <label class="label control-label">Quiz Name</label>
+                                <h1>Post Detail</h1>
+                                <label class="label control-label">Post Title</label>
                                 <div class="form-group">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="text" name="quizName" required value="${updateQuiz.getQuizName()}">
+                                    <input class="form-control" type="text" name="postTitle" required value="${editBlog.getBlogTitle()}" maxlength="100">
                                 </div>
 
-                                <label class="label control-label">Subject</label>
+                                <c:if test="${editBlog != null}" >
+                                    <label class="label control-label">Author</label>
+                                    <div class="form-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                        <input class="form-control" type="text" name="author" required value="${editBlog.getAuthor().getUserName()}" readonly>
+                                    </div>
+
+                                    <label class="label control-label">Create time</label>
+                                    <div class="form-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                        <input class="form-control" type="date" name="createTime" required value="${editBlog.getCreated()}" readonly>
+                                    </div>
+                                </c:if>
+
+                                <label class="label control-label">Detail</label>
                                 <div class="form-group">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <select class="form-control" name="subject">
-                                        <option value="0" >Choose</option>
-                                        <c:forEach items="${subjectList}" var="subject">
-                                            <option  value="${ subject.getSubjectId()}" <c:if test="${updateQuiz.getSubject().getSubjectId() == subject.getSubjectId()}">selected</c:if>>
-                                                <c:out value="${subject.getSubjectName()}" />
-                                            </option>
-                                        </c:forEach>
-                                    </select>
+                                    <textarea class="form-control" name="detail" required rows="6" cols="50" maxlength="1000"><c:out value="${editBlog.getDetail()}"/></textarea>
                                 </div>
 
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Duration (in minute)</label>
+                                <label class="label control-label">Categories:</label>
+                                <div class="form-group">
+                                    <c:forEach items="${categoryList}" var="category">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user">
+                                            </span>
+                                        </span>                                    
+                                        <input class="checkbox" type="checkbox" name="categories_<c:out value="${category.getPostCateId()}"/>" value="${category.getPostCateId()}" <c:if test="${ blogCategoryId.contains(category.getPostCateId())}">checked</c:if>>
+                                        <c:out value="${category.getPostCateName()}" />
+                                        <br>
+                                    </c:forEach>
+                                </div>
+                                
+                                <div  class="wrapper">
+                                    <label class="label control-label">Thumbnail</label>
                                     <div class="form-group">
+                                        <div style="width: 100%;border: dashed green;">
+                                            <img id="img" style="width: 100%;" src="${contextPath}/${editBlog.getThumbnail()}" alt="Thumbnail image" >
+                                        </div>
+                                        <br>
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-user"></span>
                                         </span>
-                                        <input class="form-control" type="number" name="duration" min="1" required value="<c:out value="${Math.round(updateQuiz.getQuizDuration()/60)}"/>">
+                                        <input id="file" class="form-control" type="file" name="thumnail" onchange="readURL(this);">
                                     </div>
                                 </div>
-
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Exam Level</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <select class="form-control" name="examLevel">
-                                            <option value="0">Choose</option>
-                                            <c:forEach items="${quizLevelList}" var="quizLevel">
-                                                <option value="${ quizLevel.getQuizLevelId()}" <c:if test="${updateQuiz.getQuizLevelId() == quizLevel.getQuizLevelId()}">selected</c:if>>
-                                                    <c:out value="${quizLevel.getQuizLevelName()}" />
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Pass Rate (%)</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <input class="form-control" type="number" name="passRate" min="0" max="100" required value="${updateQuiz.getPassRate()}">
-                                    </div>
-                                </div>
-
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Test Type</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <select class="form-control" name="testType">
-                                            <option value="0">Choose</option>
-                                            <c:forEach items="${testTypeList}" var="testType">
-                                                <option value="${ testType.getTestTypeId()}" <c:if test="${updateQuiz.getTestTypeId() == testType.getTestTypeId()}">selected</c:if>>
-                                                    <c:out value="${testType.getTestTypeName()}" />
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Number of Question</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <input class="form-control" type="number" name="numberOfQuestion" min="1" max="50" required value="${updateQuiz.getNumberQuestion()}">
-                                    </div>
-                                </div>
-
-                                <div style="width: 50%;float: left;padding-right: 10px;">
-                                    <label class="label control-label">Question Dimension</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <select class="form-control" name="dimensionType">
-                                            <option value="0">Choose</option>
-                                            <c:forEach items="${dimensionTypeList}" var="dimensionType">
-                                                <option value="${ dimensionType.getDimensionTypeId()}" <c:if test="${updateQuiz.getDimensionTypeId() == dimensionType.getDimensionTypeId()}">selected</c:if>>
-                                                    <c:out value="${dimensionType.getDimensionTypeName()}" />
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div style="clear: both;">
-                                    <label class="label control-label">Description</label>
-                                    <div class="form-group">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <input class="form-control" style="height: 100px;" type="textarea" name="description" value="${updateQuiz.getDescription()}">
-                                    </div>
-                                </div>
+                                        
                                 <%-- Submit form --%>
                                 <div class="input-group" >
-                                    <input type="hidden" name="updateQuizId" value="${updateQuiz.getQuizId()}">
-                                    <input type="hidden" name="service" value="updateQuizInformation">
                                     <button style="margin-left: auto; margin-right: auto; " type="submit" id="submit" class="btn btn-success">Submit</button>
-                                    
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
             </c:if>
-            <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
+            <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('marketing')}">
                 <h2 style="text-align: center;">You don't have the right to access this page</h2>
             </c:if>
             <%-- Include footer page --%>
             <jsp:include page="/jsp/footer.jsp"/>
+            <script>
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('#img').attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+            </script>
     </body>
 </html>

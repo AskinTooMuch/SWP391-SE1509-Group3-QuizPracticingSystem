@@ -219,7 +219,7 @@ public class BlogDAOTest {
         int blogId = 0;
         BlogDAOImpl instance = new BlogDAOImpl();
         PostCate expResult = null;
-        PostCate result = instance.getBlogCategory(blogId);
+        ArrayList<PostCate> result = instance.getBlogCategory(blogId);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
