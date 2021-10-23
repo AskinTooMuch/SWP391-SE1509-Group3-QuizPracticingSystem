@@ -1,24 +1,34 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 21, 2021
+ *  Question Import servlet
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  21/10/21    1.0         ChucNVHE150618  First Deploy
  */
 package controller.chucnv;
 
-import java.io.File;
-import java.io.FileInputStream;
+import bean.Question;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
+)
 /**
  *
  * @author admin
@@ -39,52 +49,49 @@ public class ImportQuestionController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            
+
             /*Service is null, redirect user to index*/
             if (service == null) {
                 sendDispatcher(request, response, "index.jsp");
             }
-            
-            if ("downloadTemplate".equalsIgnoreCase(service)){
-                String filename = "questiontemplate.txt";
-                // if you want to use a relative path to context root:
-//                String relativePath = getServletContext().getRealPath("");
-//                System.out.println("relativePath = " + relativePath);
-                String relativePath = "questionTemplate/";
-                
-                //String filePath = relativePath + filename;
-                String filePath = this.getServletContext().getRealPath("questionTemplate/questiontemplate.txt");;
-                
-                response.setContentType("APPLICATION/OCTET-STREAM");   
-                response.setHeader("Content-Disposition","attachment; filename=\"" + filename + "\"");   
 
-                java.io.FileInputStream fileInputStream =new java.io.FileInputStream(filePath);  
-                System.out.println(filePath);
-                int i;   
-                while ((i=fileInputStream.read()) != -1) {  
-                  out.write(i);
-                    System.out.println(i);
-                }   
-                fileInputStream.close();   
+            if ("uploadQuestion".equalsIgnoreCase(service)) {
+                String uploadContent = (String) request.getParameter("uploadQuestions");
+                ArrayList<Question> questionList = new ArrayList<>();
+                
+                String[] uploadContentPart = uploadContent.split("<qps>");
+                /**
+                 * Extract question content from the array of strings
+                 */
+                for (int i = 3; i < uploadContentPart.length; i++) {
+                    
+                }
+                
+                request.setAttribute("uploadContentPart", uploadContentPart);
                 sendDispatcher(request, response, "jsp/questionImport.jsp");
             }
         }
     }
-    
-    /**
-     * Forward the request to the destination, catch any unexpected exceptions and log it
-     * @param request   Request of the servlet
-     * @param response  Response of the servlet
-     * @param path      Forward address
-     */
-    public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
+
+/**
+ * Forward the request to the destination, catch any unexpected exceptions and
+ * log it
+ *
+ * @param request Request of the servlet
+ * @param response Response of the servlet
+ * @param path Forward address
+ */
+public void sendDispatcher(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher(path);
             rd.forward(request, response);
 
-        } catch (ServletException | IOException ex) {
+        
+
+} catch (ServletException | IOException ex) {
             Logger.getLogger(ImportQuestionController.class
-                    .getName()).log(Level.SEVERE, null, ex);
+
+.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -98,7 +105,7 @@ public class ImportQuestionController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -112,7 +119,7 @@ public class ImportQuestionController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -123,7 +130,7 @@ public class ImportQuestionController extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+        public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

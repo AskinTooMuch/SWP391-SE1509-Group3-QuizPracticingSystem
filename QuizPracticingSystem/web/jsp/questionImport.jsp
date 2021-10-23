@@ -29,12 +29,12 @@
         <%-- Include header page --%>
         <jsp:include page="header.jsp"/>
         <div class="wrap" style="min-height: 55vh; padding-top: 5vh;">
-            
             <div class="row">
                 <div class="col-md-2"></div>
-                <div class="col-md-8">
-                    <div class="row file-upload">
-                        <div class="col-md-8">
+                <div class="col-md-8" id="content">
+                    <%--Template Downloader|File uploader--%>
+                    <div class="row file-upload" >
+                        <div class="col-md-8" id="uploadBanner">
                             <p style='text-align: center; font-weight: bold'>
                                 <span style='color:red; font-weight: bold'>! Before you start uploading your own file ! </span><br>
                                 If this is your first time then please download our template here 
@@ -43,27 +43,42 @@
                                 <br>
                                 <br><span style='font-style: italic; font-weight: normal'>Disclaimer! 
                                     This function still has a lot of restrictions.
-                                    You still have to select the lesson and question 
-                                    types later. Sorry for the inconvenience!</span>
+                                    You still have to select the lesson and dimension
+                                    later. Sorry for the inconvenience!</span>
                             </p>
                             <div class='col text-center'>
                                 <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Give me the template!</a>
                             </div>
-                            
                         </div>
-                        <div class="image-upload-wrap col-md-4">
-                            <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
-                            <div class="drag-text">
-                              <h3>Drag and drop a file or select a file</h3>
-                            </div>
+                        <div class="col-md-4 text-center">
+                            <form action="${contextPath}/importQuestion" method="POST">
+                                <div class="image-upload-wrap">
+                                   <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
+                                <div class="drag-text">
+                                  <h4>Drag and drop or select a file</h4>
+                                </div>  
+                                </div>
+                                <p class="fileName" style="margin-bottom:0;">&nbsp;
+                                </p>
+                                
+                                <input type="hidden" name="service" value="uploadQuestion"/>
+                                <input class="btn btn-success" type="submit" value="Import">
+                            </form>
                         </div>
                     </div>
+                    <c:if test="${!empty uploadContentPart}">
+                        <c:forEach items = "${uploadContentPart}" var="uploadContentPart" begin="3">
+                            <p>
+                                <c:out value="${uploadContentPart}"/><br>
+                            </p>
+                        </c:forEach>
+                    </c:if>
+                         
                 </div>
                 <div class="col-md-2"></div>
             </div>
-            <span class="fileName">
-                File name goes here 
-            </span>
+            
+            
             <div id='output'>
                 ...
             </div>
@@ -72,19 +87,29 @@
         <jsp:include page="footer.jsp"/>
     </body>
     <script>
-        var openFile = function(event) {
-        var input = event.target;
+        var openFile = function (event) {
+            var input = event.target;
+            const endPage = document.getElementById("endPage");
 
-        $('.fileName').html(input.files[0].name);
-        var reader = new FileReader();
-        reader.onload = function(){
-          var text = reader.result;
-          var node = document.getElementById('output');
-          node.innerText = text;
-          console.log(reader.result.substring(0, 200));
+            $('.fileName').html('You just uploaded : ' + input.files[0].name);
+            var reader = new FileReader();
+            reader.onload = function () {
+                var text = reader.result;
+                //var lines = reader.result.split('\n');
+                var node = document.getElementById('questionContent');
+                node.value = text;
+                $('.breakLine').remove();
+//                for (var line =0; line<lines.length; line++){
+//                    var paragraph = document.createElement("p");
+//                    paragraph.appendChild(document.createTextNode(lines[line]));
+//                    parent.insertBefore(paragraph, parent);
+//                    console.log(lines[line]);
+//                }
+
+                console.log(reader.result.substring(0, 200));
+            };
+            reader.readAsText(input.files[0]);
         };
-        reader.readAsText(input.files[0]);
-      };
         
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -107,16 +132,16 @@
             }
         }
 
-          function removeUpload() {
+        function removeUpload() {
             $('.file-upload-input').replaceWith($('.file-upload-input').clone());
             $('.file-upload-content').hide();
             $('.image-upload-wrap').show();
-          }
-          $('.image-upload-wrap').bind('dragover', function () {
-              $('.image-upload-wrap').addClass('image-dropping');
+        }
+            $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
             });
             $('.image-upload-wrap').bind('dragleave', function () {
-              $('.image-upload-wrap').removeClass('image-dropping');
-          });
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
     </script>
 </html>

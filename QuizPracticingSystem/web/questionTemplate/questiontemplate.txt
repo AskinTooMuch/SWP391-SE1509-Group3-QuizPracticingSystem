@@ -1,14 +1,14 @@
 [
 Attention: Delete this instruction in your final upload (Between the []
-    - Each question is 6 consecutive lines, start with * on each line
+    - Each question is 6 consecutive lines, start with <qps> on each line
     - The first line is the question content, second line is explanation, third line is the correct answer and from the 4th line is
 	the wrong answer.
-    - The first 2 answer is required, after that you can leave the line empty (only * at the start of line) if you wish.
+    - The first 2 answer is required, after that you can leave the line empty (only <qps> at the start of line) if you wish.
 ]
 
-*question content
-*question explanation
-*true answer(required)
-*wrong answer(required)
-*wrong answer
-*wrong answer
+<qps>question content
+<qps>question explanation
+<qps>true answer(required)
+<qps>wrong answer(required)
+<qps>wrong answer
+<qps>wrong answer
