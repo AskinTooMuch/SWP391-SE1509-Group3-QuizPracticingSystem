@@ -60,20 +60,49 @@
                                 </div>
                                 <p class="fileName" style="margin-bottom:0;">&nbsp;
                                 </p>
-                                
+                                <input id="questionContent" type="hidden" name="questionContent" value=""/>
                                 <input type="hidden" name="service" value="uploadQuestion"/>
-                                <input class="btn btn-success" type="submit" value="Import">
+                                <input id="submit" class="btn btn-success" type="submit" value="Import">
                             </form>
                         </div>
-                    </div>
-                    <c:if test="${!empty uploadContentPart}">
-                        <c:forEach items = "${uploadContentPart}" var="uploadContentPart" begin="3">
-                            <p>
-                                <c:out value="${uploadContentPart}"/><br>
-                            </p>
+                    </div><br>
+                    <%--If the importedQuestion list is not null, display it--%>
+                    <c:if test="${!empty importedQuestions}">
+                        <h5>After some digging, here are the question we managed to extract from your beautiful file: </h5>
+                        <c:forEach items = "${importedQuestions}" var="question">
+                            <%--Question forms--%>
+                            <div class="row question-form">
+                                <div class="col-md-8 question-content">
+                                    <label><c:out value="${question.getQuestionId()}"/>.</label>
+                                    <textarea class="input-question" name="questionContent"><c:out value="${question.getContent()}"/></textarea><br>
+                                    <label style="font-style: italic">Explanation: </label>
+                                        <input style="width:85%; border:none;" type="text" name="questionExplanation" value="${question.getExplanation()}"><br>
+                                    <label style="font-weight: bold">A.</label>
+                                        <input class="input-question" type="text" name="questionAnswerRight" value="${question.getAnswers().get(0).getAnswerContent()}"><br>
+                                    <label>B.</label>
+                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(1).getAnswerContent()}"><br>
+                                    <label>C.</label>
+                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(2).getAnswerContent()}"><br>
+                                    <label>D.</label>
+                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(3).getAnswerContent()}"><br>
+                                </div>
+                                <div class="col-md-4 question-select">
+                                    <label>Select Lesson</label><br>
+                                    <select name="lesson">
+                                        <option>Lesson 1</option>
+                                        <option>Lesson 2</option>
+                                    </select>
+                                    <br>
+                                    <label>Select Dimension</label><br>
+                                    <select name="Dimension">
+                                        <option>Dimension 1</option>
+                                        <option>Dimension 2</option>
+                                    </select>
+                                    <br>
+                                </div>
+                            </div>   
                         </c:forEach>
                     </c:if>
-                         
                 </div>
                 <div class="col-md-2"></div>
             </div>
@@ -96,9 +125,9 @@
             reader.onload = function () {
                 var text = reader.result;
                 //var lines = reader.result.split('\n');
-                var node = document.getElementById('questionContent');
-                node.value = text;
-                $('.breakLine').remove();
+                var content = document.getElementById('questionContent');
+                content.value = text;
+                document.getElementById("submit").disabled = false;
 //                for (var line =0; line<lines.length; line++){
 //                    var paragraph = document.createElement("p");
 //                    paragraph.appendChild(document.createTextNode(lines[line]));
@@ -111,37 +140,8 @@
             reader.readAsText(input.files[0]);
         };
         
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-
-              var reader = new FileReader();
-
-              reader.onload = function(e) {
-                $('.image-upload-wrap').hide();
-
-                $('.file-upload-image').attr('src', e.target.result);
-                $('.file-upload-content').show();
-
-                $('.image-title').html(input.files[0].name);
-              };
-
-              reader.readAsDataURL(input.files[0]);
-
-            } else {
-              removeUpload();
-            }
-        }
-
-        function removeUpload() {
-            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-            $('.file-upload-content').hide();
-            $('.image-upload-wrap').show();
-        }
-            $('.image-upload-wrap').bind('dragover', function () {
-            $('.image-upload-wrap').addClass('image-dropping');
-            });
-            $('.image-upload-wrap').bind('dragleave', function () {
-            $('.image-upload-wrap').removeClass('image-dropping');
-        });
+        window.onload = function () {
+            document.getElementById("submit").disabled = true;
+        };
     </script>
 </html>

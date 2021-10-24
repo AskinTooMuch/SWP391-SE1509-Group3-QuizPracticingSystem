@@ -8,8 +8,11 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  16/10/21    1.0         ChucNVHE150618      Comment
+ *  24/10/21    1.0         ChucNVHE150618      Add attribute: arraylist<Answer>
 */
 package bean;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -25,7 +28,8 @@ public class Question {
     private String media; /*Question Media*/
     private String explanation; /*Question Explanation*/
     private boolean status; /*Question Status*/
-
+    private ArrayList<Answer> answers = new ArrayList<>(); /*Question answers*/
+    
     /**
      * Blank constructor
      */
@@ -181,5 +185,23 @@ public class Question {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    /**
+     * Get answers
+     * @return Array list of answers
+     */
+    public ArrayList<Answer> getAnswers() {
+        return answers;
+    }
+
+    /**
+     * Set answers
+     * @param answers 
+     */
+    public void setAnswers(ArrayList<Answer> answers) {
+        this.answers = answers;
+    }
+    
+    
 
 }

@@ -10,9 +10,11 @@
  */
 package controller.chucnv;
 
+import bean.Answer;
 import bean.Question;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.console;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +24,6 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
@@ -56,20 +57,39 @@ public class ImportQuestionController extends HttpServlet {
             }
 
             if ("uploadQuestion".equalsIgnoreCase(service)) {
-                String uploadContent = (String) request.getParameter("uploadQuestions");
+                String uploadFile = (String) request.getParameter("questionContent");
                 ArrayList<Question> questionList = new ArrayList<>();
-                
+                int subjectId = 1;
+                //Part 1: remove the part in the /* */
+                int endComment = uploadFile.indexOf("*/");
+                String uploadContent; /*Upload content in string form*/
+                if (endComment > 0){
+                    uploadContent = uploadFile.substring(endComment+2).trim()+" ";
+                } else {
+                    uploadContent = uploadFile.trim()+" ";
+                }
                 String[] uploadContentPart = uploadContent.split("<qps>");
+                System.out.println(uploadContentPart.length);
                 /**
                  * Extract question content from the array of strings
                  */
-                for (int i = 3; i < uploadContentPart.length; i++) {
-                    
+                for (int i = 0; i < (int) Math.ceil((double) (uploadContentPart.length -1 )/6); i++) {
+                    Question newQuestion = new Question((i+1), subjectId, 0, 0, uploadContentPart[i*6+1].trim(), "", uploadContentPart[i*6+2].trim(), true);
+                    ArrayList<Answer> newAnswer = new ArrayList<>();
+                    newAnswer.add(new Answer(1, subjectId, uploadContentPart[i*6+3].trim(), true, true));
+                    newAnswer.add(new Answer(2, subjectId, uploadContentPart[i*6+4].trim(), false, true));
+                    newAnswer.add(new Answer(3, subjectId, uploadContentPart[i*6+5].trim(), false, true));
+                    newAnswer.add(new Answer(4, subjectId, uploadContentPart[i*6+6].trim(), false, true));
+                    newQuestion.setAnswers(newAnswer);
+                    questionList.add(newQuestion);
                 }
-                
-                request.setAttribute("uploadContentPart", uploadContentPart);
+                request.setAttribute("importedQuestions", questionList);
                 sendDispatcher(request, response, "jsp/questionImport.jsp");
             }
+        } catch (Exception ex) {
+            Logger.getLogger(ImportQuestionController.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("errorMess", ex.toString());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

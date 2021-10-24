@@ -12,6 +12,19 @@ body {
     font-family: sans-serif;
     background-color: #eeeeee;
   }
+  
+  .input-question{
+      width: 96%;
+      border: none;
+      overflow: visible; 
+  }
+  
+  .question-form{
+    border: 2px solid #73AD21;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    background-color: #FCFFF2;
+  }
 
   .file-upload {
     background-color: #e6ffe6;
