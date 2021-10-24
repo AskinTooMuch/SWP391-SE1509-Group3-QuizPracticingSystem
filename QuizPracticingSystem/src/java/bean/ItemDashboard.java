@@ -1,19 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 18, 2021
+ *  Item Dashboard entity
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  18/10/21    1.0         NamDHHE150519       First Deploy
+*/
 package bean;
 
 /**
- *
- * @author ADMN
+ * this entity hold statistics data (name, value, date)
+ * 
+ * @author NamDH
  */
 public class ItemDashboard {
 
-    private String Name;
-    private double value;
-    private long date;
+    private String Name; //name of data 
+    private double value; //value of data
+    private long date; //date of data
 
     public ItemDashboard() {
     }

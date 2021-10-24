@@ -1,11 +1,12 @@
-/*
+/**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Oct 9, 2021
  *  Quiz practicing system
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  9/10/21     1.0         NamDHHe150519   update service dashboard
+ *  9/10/21     1.0         NamDHHE150519   update service dashboard
+ *  22/10/21    1.0         NamDHHE150519   update dashboard view
  */
 package controller;
 
@@ -23,7 +24,6 @@ import dao.impl.SubjectDAOImpl;
 import dao.impl.UserDAOImpl;
 import dao.impl.ViewDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +65,7 @@ public class DashboardController extends HttpServlet {
             Date date = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String currentDate = formatter.format(date.getTime());
+            //default date range 1 week
             if (to == null) {
                 to = currentDate;
             }
@@ -75,6 +76,7 @@ public class DashboardController extends HttpServlet {
             request.setAttribute("from", from);
             request.setAttribute("to", to);
 
+            //default view option
             if (option == null) {
                 option = "subject";
                 target = "new";
@@ -85,6 +87,8 @@ public class DashboardController extends HttpServlet {
             request.setAttribute("target", target);
             ArrayList<String> statistics = new ArrayList();
             ArrayList<String> nameList = new ArrayList();
+            
+            //view subject statistics
             if (option.equals("subject")) {
                 request.setAttribute("attribute", attribute);
                 ArrayList<Subject> subjectList = new ArrayList();
@@ -98,13 +102,15 @@ public class DashboardController extends HttpServlet {
                 statistics = IRegistration.convertJson(subjectStatistics);
                 nameList = IRegistration.getNameList(subjectStatistics);
             }
-
+            
+            //registration statistics
             if (option.equals("registration")) {
                 ArrayList<ItemDashboard> registrationStatistics = IRegistration.getRegistrationStatistics(from, to);
                 statistics = IRegistration.convertJson(registrationStatistics);
                 nameList = IRegistration.getNameList(registrationStatistics);
             }
 
+            //revenue statistics
             if (option.equals("revenue")) {
                 ArrayList<ItemDashboard> revenueStatistics = new ArrayList();
                 if (target.equals("total")) {
@@ -115,7 +121,8 @@ public class DashboardController extends HttpServlet {
                 statistics = IRegistration.convertJson(revenueStatistics);
                 nameList = IRegistration.getNameList(revenueStatistics);
             }
-
+            
+            //customer statistics
             if (option.equals("customer")) {
                 UserDAO IUser = new UserDAOImpl();
                 if (target.equals("newlyRegistered")) {
@@ -127,6 +134,7 @@ public class DashboardController extends HttpServlet {
                 }
             }
 
+            //view statistics   
             if (option.equals("view")) {
                 ArrayList<ItemDashboard> viewStatistics = IView.getViewStatistics(from, to);
                 statistics = IView.convertJson(viewStatistics);

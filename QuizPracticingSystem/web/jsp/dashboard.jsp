@@ -24,6 +24,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <%--Start chart javascript--%>
         <c:if test="${nameList.size()>0}">
             <script>
                 window.onload = function () {
@@ -76,6 +77,7 @@
                 }
             </script>
         </c:if>
+            <%--End chart javascript--%>
     </head>
 
     <body>
@@ -87,6 +89,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3"></div>
+                <%--Statistics view option--%>
                 <div class="tab col-md-6" style="border:none;">
                     <div >
                         <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/dashboard?&option=subject&target=new&attribute=revenue">Subjects</a>
@@ -96,10 +99,12 @@
                         <a class="btn ${option=="view"?"active":""}" role="button" href="${contextPath}/dashboard?&option=view">Web</a>
                     </div>
                 </div>
+                <%--End Statistics view option--%>
                 <div class="col-md-3">
                 </div>
             </div>
             <div class="" class="tabcontent" style="border-top:1px solid black;">
+                <%--Subject statistics view option--%>
                 <c:if test="${option=='subject'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
@@ -123,6 +128,7 @@
                         </div>
                     </div>
                 </c:if>
+                <%--Registration statistics view option--%>
                 <c:if test="${option=='registration'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-6" style="display: grid;">
@@ -137,6 +143,7 @@
                         </div>
                     </div>
                 </c:if>
+                <%--Revenue statistics view option--%>
                 <c:if test="${option=='revenue'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
@@ -155,6 +162,7 @@
                         </div>
                     </div>
                 </c:if>
+                <%--Customer statistics view option--%>
                 <c:if test="${option=='customer'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
@@ -192,6 +200,7 @@
                         </table>
                     </div>
                 </c:if>
+                <%--View statistics view option--%>
                 <c:if test="${option=='view'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-6" style="display: grid;">
@@ -238,6 +247,7 @@
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>
     <jsp:include page="footer.jsp"/>
+    <%--Start page style--%>
     <style>
         .choose .active,.tab .active{
             border: #4472c4 3px solid;
@@ -264,4 +274,5 @@
             font-weight: 600;
         }
     </style>
+    <%--End page style--%>
 </html>

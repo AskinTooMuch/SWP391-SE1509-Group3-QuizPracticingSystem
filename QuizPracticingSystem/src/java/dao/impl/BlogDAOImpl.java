@@ -9,12 +9,7 @@
     17/9/21     1.0         ChucNVHE150618  First Deploy
     30/9/21     2.0         NamDHHE150519   Complete code
     22/10/21    2.1         DuongNHHE150328 Add new method
- */
- /*
-  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
-  quan tới bảng Blog,CateBlog, phục vụ cho các chức năng liên quan tới Blog của 
-  dự án
-  @author Đinh Hải Nam
+    24/10/21    2.1         NamDHHE150519   update getBlogByCategoryAndTitle
  */
 package dao.impl;
 
@@ -29,9 +24,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author ChucNVHE150618
+ /*
+  Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database liên
+  quan tới bảng Blog,CateBlog, phục vụ cho các chức năng liên quan tới Blog của 
+  dự án
+  @author Đinh Hải Nam
  */
 public class BlogDAOImpl extends DBConnection implements BlogDAO {
 
@@ -357,7 +354,8 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
         ArrayList<Blog> blogList = new ArrayList();
-        String sql = "SELECT * FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE a.status = 1";
+        String sql = "SELECT a.blogId,a.blogTitle,a.created,a.detail,a.lastEdited,a.status,a.thumbnail,a.author "
+                + "FROM [Blog] as a join [BlogCate] as b on a.blogId = b.blogId WHERE a.status = 1";
         if (postCateIdList != null) {
             int[] cateList = new int[postCateIdList.length];
             for (int i = 0; i < postCateIdList.length; i++) {
@@ -374,7 +372,8 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
         if (checkSearch.length() != 0) {
             sql += " AND a.blogTitle like '%" + search.toLowerCase() + "%'";
         }
-        sql += " ORDER BY created DESC";
+        sql += " GROUP BY a.blogId,a.blogTitle,a.created,a.detail,a.lastEdited,a.status,a.thumbnail,a.author "
+                + "ORDER BY created DESC";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -657,10 +656,11 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
 
     /**
      * add blog category to database
+     *
      * @param blogId. It is a <code>int</code> object
      * @param categoryId. It is a <code>int</code> object
      * @return number of row change. It is a <code>int</code> object
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int addBlogCategory(int blogId, int categoryId) throws Exception {
@@ -687,7 +687,7 @@ public class BlogDAOImpl extends DBConnection implements BlogDAO {
 
     @Override
     public int removeAllBlogCategory(int blogId) throws Exception {
-                Connection conn = null;
+        Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
         PreparedStatement pre = null;/* Prepared statement for executing sql queries */
