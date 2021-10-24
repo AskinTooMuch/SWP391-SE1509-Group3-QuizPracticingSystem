@@ -11,10 +11,21 @@
 package controller.chucnv;
 
 import bean.Answer;
+import bean.Lesson;
 import bean.Question;
+import bean.Subject;
+import bean.User;
+import bean.UserRole;
+import dao.AnswerDAO;
+import dao.LessonDAO;
+import dao.QuestionDAO;
+import dao.SubjectDAO;
+import dao.impl.AnswerDAOImpl;
+import dao.impl.LessonDAOImpl;
+import dao.impl.QuestionDAOImpl;
+import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.console;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,11 +66,65 @@ public class ImportQuestionController extends HttpServlet {
             if (service == null) {
                 sendDispatcher(request, response, "index.jsp");
             }
-
+            /**
+             * Service loadSubjectList: get the subjectList to load the page questionImport.jsp
+             */
+            if ("loadSubjectList".equalsIgnoreCase(service)){
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject list*/
+                else {
+                    SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                    ArrayList<Subject> subjectList = null;
+                    if (currRole.getUserRoleName().equalsIgnoreCase("admin")){
+                        subjectList = subjectDAO.getTrueAllSubjects();
+                    }
+                    if (currRole.getUserRoleName().equalsIgnoreCase("expert")){
+                        subjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
+                    }
+                    request.setAttribute("subjectList", subjectList);
+                    sendDispatcher(request, response, "jsp/questionImport.jsp");
+                }
+            }
+            /**
+             * Service upload question: get the information from file uploaded
+             * and turn into list of question, redirect back to the jsp 
+             */
             if ("uploadQuestion".equalsIgnoreCase(service)) {
+                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                LessonDAO lessonDAO = new LessonDAOImpl();  /*Lesson DAO*/
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject list*/
+                else {
+                    ArrayList<Subject> subjectList = null;
+                    if (currRole.getUserRoleName().equalsIgnoreCase("admin")){
+                        subjectList = subjectDAO.getTrueAllSubjects();
+                    }
+                    if (currRole.getUserRoleName().equalsIgnoreCase("expert")){
+                        subjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
+                    }
+                    request.setAttribute("subjectList", subjectList);
+                }
                 String uploadFile = (String) request.getParameter("questionContent");
                 ArrayList<Question> questionList = new ArrayList<>();
-                int subjectId = 1;
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+                Subject subjectImport = subjectDAO.getSubjectbyId(subjectId);
+                request.setAttribute("subjectImport", subjectImport);
+                ArrayList<Lesson> lessonList = lessonDAO.getAllLessonBySubjectId(subjectId);
+                request.setAttribute("lessonList", lessonList);
                 //Part 1: remove the part in the /* */
                 int endComment = uploadFile.indexOf("*/");
                 String uploadContent; /*Upload content in string form*/
@@ -85,6 +150,28 @@ public class ImportQuestionController extends HttpServlet {
                 }
                 request.setAttribute("importedQuestions", questionList);
                 sendDispatcher(request, response, "jsp/questionImport.jsp");
+            }
+            
+            if ("importQuestions".equalsIgnoreCase(service)){
+                SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
+                QuestionDAO questionDAO = new QuestionDAOImpl();    /*Question DAO*/
+                AnswerDAO answerDAO = new AnswerDAOImpl();  /*Answer DAO*/
+                String[] questionContent = request.getParameterValues("questionContent");
+                System.out.println("Question content: "+questionContent.length);
+                String[] questionExplanation = request.getParameterValues("questionExplanation");
+                System.out.println("questionExplanation: "+questionContent.length);
+                String[] questionAnswerRight = request.getParameterValues("questionAnswerRight");
+                System.out.println("questionAnswerRight: "+questionContent.length);
+                String[] questionAnswerWrong1 = request.getParameterValues("questionAnswerWrong1");
+                System.out.println("questionAnswerWrong1: "+questionContent.length);
+                String[] questionAnswerWrong2 = request.getParameterValues("questionAnswerWrong2");
+                System.out.println("questionAnswerWrong2: "+questionContent.length);
+                String[] questionAnswerWrong3 = request.getParameterValues("questionAnswerWrong3");
+                System.out.println("questionAnswerWrong3: "+questionContent.length);
+                String[] lesson = request.getParameterValues("lesson");
+                System.out.println("lesson: "+questionContent.length);
+                String[] dimension = request.getParameterValues("dimension");
+                System.out.println("dimension: "+questionContent.length);
             }
         } catch (Exception ex) {
             Logger.getLogger(ImportQuestionController.class.getName()).log(Level.SEVERE, null, ex);

@@ -10,6 +10,7 @@
     5/10/21     1.0         TuanPAHE150543  First Deploy
     8/10/21     1.1         TuanPAHE150543  Update JSP
     14/10/21    1.2         TuanPAHE150543  Update Edit button
+    24/10/21    1.2         ChucNVHE150618  Add link import question   
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
@@ -107,7 +108,7 @@
                                 <option value="20">20</option>
                             </select>
                             <a href="${contextPath}/jsp/questionDetail.jsp"><button class="btn btn-success" style="float:right;margin: 5px">Add new Question</button></a>
-                            <button class="btn btn-info" style="float: right; margin: 5px">Import Question</button>
+                            <a href="importQuestion?service=loadSubjectList"><button class="btn btn-info" style="float: right; margin: 5px">Import Question</button></a>
                         </div>  
 
                         <%-- Table of QuestionList--%>

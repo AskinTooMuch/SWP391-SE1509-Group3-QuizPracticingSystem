@@ -82,7 +82,7 @@ public class CourseContentDetailController extends HttpServlet {
                 DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
                 /*Dimension Type DAO*/
 
- /* Get user and role on session scope */
+                /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -90,7 +90,8 @@ public class CourseContentDetailController extends HttpServlet {
                         || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
                         && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
                     sendDispatcher(request, response, "error.jsp");
-                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ else {
+                } /* Else: get the subject with the set id and redirect to courseContentDetail page*/ 
+                else {
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     Subject courseContent = subjectDAO.getSubjectbyId(subjectId);
                     request.setAttribute("subject", courseContent);

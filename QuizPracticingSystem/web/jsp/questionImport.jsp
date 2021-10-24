@@ -32,84 +32,111 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8" id="content">
-                    <%--Template Downloader|File uploader--%>
-                    <div class="row file-upload" >
-                        <div class="col-md-8" id="uploadBanner">
-                            <p style='text-align: center; font-weight: bold'>
-                                <span style='color:red; font-weight: bold'>! Before you start uploading your own file ! </span><br>
-                                If this is your first time then please download our template here 
-                                first!
-                                <br>Don't want any weird errors now do we?
-                                <br>
-                                <br><span style='font-style: italic; font-weight: normal'>Disclaimer! 
-                                    This function still has a lot of restrictions.
-                                    You still have to select the lesson and dimension
-                                    later. Sorry for the inconvenience!</span>
-                            </p>
-                            <div class='col text-center'>
-                                <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Give me the template!</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <form action="${contextPath}/importQuestion" method="POST">
-                                <div class="image-upload-wrap">
-                                   <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
-                                <div class="drag-text">
-                                  <h4>Drag and drop or select a file</h4>
-                                </div>  
+                    <c:choose>
+                        <c:when test="${empty subjectList}">
+                            <c:redirect url="importQuestion?service=loadSubjectList"/>
+                        </c:when>
+                        <c:otherwise>
+                            <%--Template Downloader|File uploader--%>
+                            <div class="row file-upload" >
+                                <div class="col-md-6" id="uploadBanner">
+                                    <p style='text-align: center; font-weight: bold'>
+                                        <span style='color:red; font-weight: bold'>! Before you start uploading your own file ! </span><br>
+                                        If this is your first time then please download our template here 
+                                        first!
+                                        <br>Don't want any weird errors now do we?
+                                        <br>
+                                        <br><span style='font-style: italic; font-weight: normal'>Disclaimer! 
+                                            This function still has a lot of restrictions.
+                                            You still have to select the lesson and dimension
+                                            later. Sorry for the inconvenience!</span>
+                                    </p>
+                                    <div class='col text-center'>
+                                        <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Give me the template!</a>
+                                    </div>
                                 </div>
-                                <p class="fileName" style="margin-bottom:0;">&nbsp;
-                                </p>
-                                <input id="questionContent" type="hidden" name="questionContent" value=""/>
-                                <input type="hidden" name="service" value="uploadQuestion"/>
-                                <input id="submit" class="btn btn-success" type="submit" value="Import">
-                            </form>
-                        </div>
-                    </div><br>
-                    <%--If the importedQuestion list is not null, display it--%>
-                    <c:if test="${!empty importedQuestions}">
-                        <h5>After some digging, here are the question we managed to extract from your beautiful file: </h5>
-                        <c:forEach items = "${importedQuestions}" var="question">
-                            <%--Question forms--%>
-                            <div class="row question-form">
-                                <div class="col-md-8 question-content">
-                                    <label><c:out value="${question.getQuestionId()}"/>.</label>
-                                    <textarea class="input-question" name="questionContent"><c:out value="${question.getContent()}"/></textarea><br>
-                                    <label style="font-style: italic">Explanation: </label>
-                                        <input style="width:85%; border:none;" type="text" name="questionExplanation" value="${question.getExplanation()}"><br>
-                                    <label style="font-weight: bold">A.</label>
-                                        <input class="input-question" type="text" name="questionAnswerRight" value="${question.getAnswers().get(0).getAnswerContent()}"><br>
-                                    <label>B.</label>
-                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(1).getAnswerContent()}"><br>
-                                    <label>C.</label>
-                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(2).getAnswerContent()}"><br>
-                                    <label>D.</label>
-                                        <input class="input-question" type="text" name="questionAnswerWrong" value="${question.getAnswers().get(3).getAnswerContent()}"><br>
+                                <div class="col-md-6">
+                                    <form action="${contextPath}/importQuestion" method="POST">
+                                        <div class="text-center">
+                                            <div class="image-upload-wrap">
+                                               <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
+                                            <div class="drag-text">
+                                              <h4>Drag and drop or select a file</h4>
+                                            </div>  
+                                            </div>
+                                            <p class="fileName" style="margin-bottom:0;">&nbsp;
+                                            </p>
+                                            <label>Subject : </label>
+                                            <select name="subjectId" style="width: 20vw; margin-top: 2vh;">
+                                                <c:forEach items="${subjectList}" var="subject">
+                                                    <c:choose>
+                                                        <c:when test="${(!empty subjectImport) && (subjectImport.getSubjectId() == subject.getSubjectId())}">
+                                                            <option value="${subject.getSubjectId()}" name="subjectId" selected><c:out value="${subject.getSubjectName()}"/></option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${subject.getSubjectId()}" name="subjectId"><c:out value="${subject.getSubjectName()}"/></option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
+                                            </select><br>
+                                            <input id="questionContent" type="hidden" name="questionContent" value=""/>
+                                            <input type="hidden" name="service" value="uploadQuestion"/>
+                                            <input id="submit" class="btn btn-success" type="submit" value="Import">
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-md-4 question-select">
-                                    <label>Select Lesson</label><br>
-                                    <select name="lesson">
-                                        <option>Lesson 1</option>
-                                        <option>Lesson 2</option>
-                                    </select>
-                                    <br>
-                                    <label>Select Dimension</label><br>
-                                    <select name="Dimension">
-                                        <option>Dimension 1</option>
-                                        <option>Dimension 2</option>
-                                    </select>
-                                    <br>
-                                </div>
-                            </div>   
-                        </c:forEach>
-                    </c:if>
+                            </div><br>
+                            <%--If the importedQuestion list is not null, display it--%>
+                            <c:if test="${!empty importedQuestions}">
+                                <h5>After some digging, here are the question we managed to extract from your beautiful file: </h5>
+                                <form action="${contextPath}/importQuestion" method="POST">
+                                    <c:forEach items = "${importedQuestions}" var="question">
+                                        <%--Question forms--%>
+                                        <div class="row question-form">
+                                            <div class="col-md-8 question-content">
+                                                <label><c:out value="${question.getQuestionId()}"/>.</label>
+                                                    <textarea class="input-question" name="questionContent" 
+                                                              oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' required><c:out value="${question.getContent()}"/></textarea><br>
+                                                <label style="font-style: italic">Explanation: </label>
+                                                    <input style="width:85%; border:none;" type="text" name="questionExplanation" value="${question.getExplanation()}"><br>
+                                                <label style="font-weight: bold">*A.</label>
+                                                    <input class="input-question" type="text" name="questionAnswerRight" value="${question.getAnswers().get(0).getAnswerContent()}" required><br>
+                                                <label>*B.</label>
+                                                    <input class="input-question" type="text" name="questionAnswerWrong1" value="${question.getAnswers().get(1).getAnswerContent()}" required><br>
+                                                <label>C.</label>
+                                                    <input class="input-question" type="text" name="questionAnswerWrong2" value="${question.getAnswers().get(2).getAnswerContent()}"><br>
+                                                <label>D.</label>
+                                                    <input class="input-question" type="text" name="questionAnswerWrong3" value="${question.getAnswers().get(3).getAnswerContent()}"><br>
+                                            </div>
+                                            <div class="col-md-4 question-select">
+                                                <label>Select Lesson</label><br>
+                                                <select name="lesson">
+                                                    <c:forEach items="${lessonList}" var="lesson">
+                                                        <option value="${lesson.getLessonId()}"><c:out value="${lesson.getLessonName()}"/></option>
+                                                    </c:forEach>
+                                                </select>
+                                                <br>
+                                                <label>Select Dimension</label><br>
+                                                <select name="dimension">
+                                                    <c:forEach items="${subjectImport.getDimensions()}" var="dimension">
+                                                        <option value="${dimension.getDimensionId()}"><c:out value="${dimension.getDimensionName()}"/></option>
+                                                    </c:forEach>
+                                                </select>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                    <div class="text-center">
+                                        <input type="hidden" name="subjectId" value="${subjectImport.getSubjectId()}">
+                                        <input type="hidden" name="service" value="importQuestions">
+                                        <input type="submit" class="btn btn-success" value="Add it to the subject!">
+                                    </div>
+                                </form>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="col-md-2"></div>
-            </div>
-            
-            
-            <div id='output'>
-                ...
             </div>
         </div>
         <%-- Include footer page --%>
