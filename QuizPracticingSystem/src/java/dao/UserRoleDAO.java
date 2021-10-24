@@ -8,6 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
+ *  24/10/21    1.2         DuongNHHE150328     Add method
 */
 package dao;
 
@@ -20,8 +21,9 @@ import java.util.ArrayList;
  * @author NamDH
  */
 public interface UserRoleDAO {
+    
     /**
-     * Get all user role
+     * Get all user role where status = 1 
      * @return
      * @throws Exception 
      */
@@ -58,4 +60,11 @@ public interface UserRoleDAO {
      * @throws Exception 
      */
     public int deleteRole(int roleId) throws Exception;
+    
+    /**
+     * Get all user role
+     * @return
+     * @throws Exception 
+     */
+    public ArrayList<UserRole> getAllStatusUserRole() throws Exception;
 }

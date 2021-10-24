@@ -8,6 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
+ *  24/10/21    1.2         DuongNHHE150328     Add method
 */
 package dao.impl;
 
@@ -38,7 +39,7 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         PreparedStatement pre = null;
         /* Prepared statement for executing sql queries */
 
-        String sql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole]";
+        String sql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole] where status = 1";
         ArrayList<UserRole> allUserRole = new ArrayList<>();
         UserRole add = null;
         try {
@@ -187,4 +188,37 @@ public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
         return i;
     }
 
+    /**
+     * Get all user role
+     * @return
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<UserRole> getAllStatusUserRole() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = "SELECT [userRoleId],[userRoleName],[status] FROM [QuizSystem].[dbo].[UserRole]";
+        ArrayList<UserRole> allUserRole = new ArrayList<>();
+        UserRole add = null;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                add = new UserRole(rs.getInt("userRoleId"), rs.getString("userRoleName"), rs.getBoolean("status"));
+                allUserRole.add(add);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return allUserRole;
+    }
 }

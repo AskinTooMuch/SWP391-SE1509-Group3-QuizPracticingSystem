@@ -8,6 +8,7 @@
  *  Date        Version     Author           Description
  *  23/9/21     1.0         DuongNHHE150328  First Deploy
  *  10/10/21    1.1         DuongNHHE150328  Add new method
+ *  24/10/21    1.2         DuongNHHE150328  Add new method
  */
 package dao.impl;
 
@@ -26,12 +27,161 @@ import java.sql.ResultSet;
 public class TestTypeDAOImpl extends DBConnection implements TestTypeDAO {
 
     /**
-     * Get all testType in the database
+     * Get all testType in the database where status = 1
+     *
      * @return <code>ArrayList<TestType></code>
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public ArrayList<TestType> getAllTestTypes() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        TestType testType = null;
+        ArrayList<TestType> testTypeList = new ArrayList<>();
+        String sql = "SELECT [testTypeId]\n"
+                + "      ,[testTypeName]\n"
+                + "      ,[status]\n"
+                + "  FROM [QuizSystem].[dbo].[TestType] where status = 1";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                testType = new TestType(rs.getInt("testTypeId"),
+                        rs.getString("testTypeName"),
+                        rs.getBoolean("status"));
+                testTypeList.add(testType);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return testTypeList;
+    }
+
+    /**
+     * get test type by id
+     *
+     * @param testTypeId
+     * @return <code>TestType</code>
+     * @throws Exception
+     */
+    @Override
+    public TestType getTestTypeById(int testTypeId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "SELECT * FROM [TestType] WHERE testTypeId =" + testTypeId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new TestType(rs.getInt("testTypeId"),
+                        rs.getString("testTypeName"),
+                        rs.getBoolean("status"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return null;
+    }
+
+    /**
+     * update existed test type in the database
+     *
+     * @param updatedTestType
+     * @return <code>Integer</code>
+     * @throws Exception
+     */
+    @Override
+    public int updateTestType(TestType updatedTestType) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "  UPDATE [QuizSystem].[dbo].[TestType]\n"
+                + "  SET [testTypeName] = ? \n"
+                + "      ,[status] = ?\n"
+                + "WHERE [testTypeId] = ?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, updatedTestType.getTestTypeName());
+            pre.setBoolean(2, updatedTestType.isStatus());
+            pre.setInt(3, updatedTestType.getTestTypeId());
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+    }
+
+    /**
+     * delete a test type from the database
+     *
+     * @param testTypeId
+     * @return <code>Integer</code>
+     * @throws Exception
+     */
+    @Override
+    public int deleteTestType(int testTypeId) throws Exception {
+        return 0;
+    }
+
+    /**
+     * add a new test type to the database
+     *
+     * @param newTestType
+     * @return <code>Integer</code>
+     * @throws Exception
+     */
+    @Override
+    public int addTestType(TestType newTestType) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "INSERT INTO dbo.TestType(testTypeName,status) VALUES(?,1);";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, newTestType.getTestTypeName());
+            return pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+    }
+
+    /**
+     * Get all testType in the database
+     *
+     * @return <code>ArrayList<TestType></code>
+     * @throws Exception
+     */
+    @Override
+    public ArrayList<TestType> getAllStatusTestTypes() throws Exception {
         Connection conn = null;
         ResultSet rs = null;
         /* Result set returned by the sqlserver */
@@ -61,47 +211,5 @@ public class TestTypeDAOImpl extends DBConnection implements TestTypeDAO {
             closeConnection(conn);
         }
         return testTypeList;
-    }
-
-    @Override
-    public TestType getTestTypeById(int testTypeId) throws Exception {
-        Connection conn = null;
-        ResultSet rs = null;
-        /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
-        /* Prepared statement for executing sql queries */
-        String sql = "SELECT * FROM [TestType] WHERE testTypeId =" + testTypeId;
-        try {
-            conn = getConnection();
-            pre = conn.prepareStatement(sql);
-            rs = pre.executeQuery();
-            if (rs.next()) {
-                return new TestType(rs.getInt("testTypeId"),
-                        rs.getString("testTypeName"),
-                        rs.getBoolean("status"));
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            closeResultSet(rs);
-            closePreparedStatement(pre);
-            closeConnection(conn);
-        }
-        return null;
-    }
-
-    @Override
-    public int updateTestType(TestType updatedTestType) throws Exception {
-        return 0;
-    }
-
-    @Override
-    public int deleteTestType(int testTypeId) throws Exception {
-        return 0;
-    }
-
-    @Override
-    public int addTestType(TestType newTestType) throws Exception {
-        return 0;
     }
 }

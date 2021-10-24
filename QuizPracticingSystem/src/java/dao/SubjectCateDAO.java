@@ -8,6 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
+ *  24/10/21    1.2         DuongNHHE150328     Add method
 */
 package dao;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  */
 public interface SubjectCateDAO {
     /**
-     * Get all subject categories
+     * Get all subject categories where status = 1
      * @return
      * @throws Exception 
      */
@@ -83,7 +84,7 @@ public interface SubjectCateDAO {
      * @return
      * @throws Exception 
      */
-    public int updateSubjectCate(int subjectCategoryId, SubjectCate updatedSubjectCate) throws Exception;
+    public int updateSubjectCate(SubjectCate updatedSubjectCate) throws Exception;
     
     /**
      * Delete subject Category
@@ -101,4 +102,11 @@ public interface SubjectCateDAO {
      * @throws Exception 
      */
     public int deteleCategorySubject(int subjectId, int categoryId) throws Exception;
+    
+     /**
+     * Get all subject categories
+     * @return
+     * @throws Exception 
+     */
+    public ArrayList<SubjectCate> getAllStatusSubjectCates() throws Exception;
 }

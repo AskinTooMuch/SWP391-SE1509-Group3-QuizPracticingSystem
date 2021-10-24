@@ -8,6 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
+ *  24/10/21    1.0         DuongNHHE150328     Add method
 */
 package dao;
 
@@ -50,7 +51,7 @@ public interface DimensionTypeDAO {
      * @return
      * @throws Exception 
      */
-    public int deteteDimensionTyoe(int dtId) throws Exception;
+    public int deteteDimensionType(int dtId) throws Exception;
     
     /**
      * Add new dimension Type
@@ -59,4 +60,11 @@ public interface DimensionTypeDAO {
      * @throws Exception 
      */
     public int addDimensionType(DimensionType newDimensionType ) throws Exception;
+    
+    /**
+     * Get all dimension type
+     * @return <code>ArrayList</code>
+     * @throws Exception 
+     */
+    public ArrayList<DimensionType> getAllStatusDimensionTypes() throws Exception;
 }
