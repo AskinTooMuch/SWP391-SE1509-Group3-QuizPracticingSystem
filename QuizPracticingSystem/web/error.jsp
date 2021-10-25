@@ -30,7 +30,7 @@
         <div style="min-height: 55vh; margin-left: 10vw">
             <c:if test="${errorMess != null}">
                 <p style="color: red; font-weight: bold;">
-                <c:out value="${errorMess}"/>
+                Error: <c:out value="${errorMess}"/>
                 </p>
             </c:if>
         </div>

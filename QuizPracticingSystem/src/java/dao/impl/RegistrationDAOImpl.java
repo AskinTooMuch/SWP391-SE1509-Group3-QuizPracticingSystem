@@ -33,8 +33,35 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
 
     @Override
     public ArrayList<Registration> getAllRegistration() throws Exception {
-        return null;
-
+        ArrayList<Registration> registrationsList = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT * FROM [Registration]";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                registrationsList.add(new Registration(rs.getInt("regId"),
+                        rs.getInt("userId"),
+                        rs.getDate("regTime"),
+                        rs.getInt("packId"),
+                        rs.getDouble("cost"),
+                        rs.getDate("validFrom"),
+                        rs.getDate("validTo"),
+                        rs.getInt("lastUpdatedBy"),
+                        rs.getString("note"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return registrationsList;
     }
 
     @Override
@@ -346,6 +373,39 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return list;
     }
+    @Override
+    public ArrayList<Registration> getPaidRegistration(String type) throws Exception {
+        ArrayList<Registration> list = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT TOP 10 * FROM [Registration] WHERE [status] = '"+type+"' ORDER BY regTime DESC";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Registration(rs.getInt("regId"),
+                        rs.getInt("userId"),
+                        rs.getDate("regTime"),
+                        rs.getInt("packId"),
+                        rs.getDouble("cost"),
+                        rs.getDate("validFrom"),
+                        rs.getDate("validTo"),
+                        rs.getInt("lastUpdatedBy"),
+                        rs.getString("note"),
+                        rs.getBoolean("status"))
+                );
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return list;
+    }
 
     /**
      * get new registration from database
@@ -418,7 +478,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         for (ArrayList<ItemDashboard> item : list) {
             ret.add(gson.toJson(item));
         }
-        // print your generated json
         return ret;
     }
 

@@ -14,7 +14,6 @@ import dao.RegistrationDAO;
 import dao.impl.QuizDAOImpl;
 import dao.impl.RegistrationDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -13,6 +13,7 @@ package dao;
 
 import bean.User;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Lớp này chứa các interface của UserDAOImpl
@@ -23,8 +24,9 @@ public interface UserDAO {
 
     /**
      * Get all user
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public ArrayList<User> getUserAllUser() throws Exception;
 
@@ -60,6 +62,7 @@ public interface UserDAO {
      *
      * @param userMail is an String
      * @return <code>User</code> object.
+     * @throws java.lang.Exception
      */
     public User getUserByMail(String userMail) throws Exception;
 
@@ -76,6 +79,7 @@ public interface UserDAO {
      *
      * @param updatedUser is a <code>User</code> object
      * @return a int.
+     * @throws java.lang.Exception
      */
     public int updateUser(User updatedUser) throws Exception;
 
@@ -85,6 +89,7 @@ public interface UserDAO {
      * @param userId is an int
      * @param newStatus is a boolean object
      * @return a int.
+     * @throws java.lang.Exception
      */
     public int changeStatus(int userId, boolean newStatus) throws Exception;
 
@@ -93,6 +98,7 @@ public interface UserDAO {
      *
      * @param newUser is an <code>User</code> object
      * @return a int.
+     * @throws java.lang.Exception
      */
     public int addUser(User newUser) throws Exception;
 
@@ -101,6 +107,15 @@ public interface UserDAO {
      *
      * @param user is an <code>User</code> object
      * @return a int.
+     * @throws java.lang.Exception
      */
     public int deleteUser(User user) throws Exception;
+
+    /**
+     * Get user count by user role
+     *
+     * @return <code>HashMap</code>
+     * @throws Exception
+     */
+    public HashMap<String, Integer> getUserCountByRole() throws Exception;
 }

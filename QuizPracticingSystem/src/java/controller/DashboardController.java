@@ -13,20 +13,30 @@ package controller;
 import bean.ItemDashboard;
 import bean.Registration;
 import bean.Subject;
+import bean.SubjectCate;
 import bean.User;
+import bean.UserRole;
 import static controller.MarketingController.MILISECOND_PER_WEEK;
 import dao.RegistrationDAO;
+import dao.SubjectCateDAO;
 import dao.SubjectDAO;
 import dao.UserDAO;
+import dao.UserRoleDAO;
 import dao.ViewDAO;
 import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectCateDAOImpl;
 import dao.impl.SubjectDAOImpl;
 import dao.impl.UserDAOImpl;
+import dao.impl.UserRoleDAOImpl;
 import dao.impl.ViewDAOImpl;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -57,6 +67,9 @@ public class DashboardController extends HttpServlet {
             RegistrationDAO IRegistration = new RegistrationDAOImpl();
             SubjectDAO ISubject = new SubjectDAOImpl();
             ViewDAO IView = new ViewDAOImpl();
+            UserDAO IUser = new UserDAOImpl();
+            SubjectCateDAO ISubjectCate = new SubjectCateDAOImpl();
+            UserRoleDAO IUserRole = new UserRoleDAOImpl();
             String option = request.getParameter("option");
             String target = request.getParameter("target");
             String attribute = request.getParameter("attribute");
@@ -87,9 +100,10 @@ public class DashboardController extends HttpServlet {
             request.setAttribute("target", target);
             ArrayList<String> statistics = new ArrayList();
             ArrayList<String> nameList = new ArrayList();
-            
+
             //view subject statistics
             if (option.equals("subject")) {
+
                 request.setAttribute("attribute", attribute);
                 ArrayList<Subject> subjectList = new ArrayList();
                 if (target.equals("new")) {
@@ -102,7 +116,7 @@ public class DashboardController extends HttpServlet {
                 statistics = IRegistration.convertJson(subjectStatistics);
                 nameList = IRegistration.getNameList(subjectStatistics);
             }
-            
+
             //registration statistics
             if (option.equals("registration")) {
                 ArrayList<ItemDashboard> registrationStatistics = IRegistration.getRegistrationStatistics(from, to);
@@ -121,10 +135,9 @@ public class DashboardController extends HttpServlet {
                 statistics = IRegistration.convertJson(revenueStatistics);
                 nameList = IRegistration.getNameList(revenueStatistics);
             }
-            
+
             //customer statistics
             if (option.equals("customer")) {
-                UserDAO IUser = new UserDAOImpl();
                 if (target.equals("newlyRegistered")) {
                     ArrayList<User> userList = IUser.get10NewUser();
                     request.setAttribute("userList", userList);
@@ -136,6 +149,33 @@ public class DashboardController extends HttpServlet {
 
             //view statistics   
             if (option.equals("view")) {
+                int totalView = IView.getTotalView();
+                String totalViewFormated = String.format("%06d", totalView);
+                request.setAttribute("totalView", totalViewFormated);
+
+                int totalRegistrationCount = IRegistration.getAllRegistration().size();
+                request.setAttribute("totalRegistrationCount", totalRegistrationCount);
+                int paidRegistrationCount = IRegistration.getPaidRegistration("true").size();
+                request.setAttribute("paidRegistrationCount", paidRegistrationCount);
+                int unpaidRegistrationCount = IRegistration.getPaidRegistration("false").size();
+                request.setAttribute("unpaidRegistrationCount", unpaidRegistrationCount);
+
+                int totalSubjectCount = ISubject.getAllSubjects().size();
+                request.setAttribute("totalSubjectCount", totalSubjectCount);
+
+                HashMap<String, Integer> subjectCateCountMap = ISubjectCate.getSubjectCountByCate();
+                request.setAttribute("subjectCateCountMap", subjectCateCountMap);
+                ArrayList<SubjectCate> subjectCateList = ISubjectCate.getAllStatusSubjectCates();
+                request.setAttribute("subjectCateList", subjectCateList);
+                
+                HashMap<String, Integer> userRoleCountMap = IUser.getUserCountByRole();
+                request.setAttribute("userRoleCountMap", userRoleCountMap);
+                ArrayList<UserRole> userRoleList = IUserRole.getAllUserRole();
+                request.setAttribute("userRoleList", userRoleList);
+                
+                int totalUserCount = IUser.getUserAllUser().size();
+                request.setAttribute("totalUserCount", totalUserCount);
+
                 ArrayList<ItemDashboard> viewStatistics = IView.getViewStatistics(from, to);
                 statistics = IView.convertJson(viewStatistics);
                 nameList = IRegistration.getNameList(viewStatistics);

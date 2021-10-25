@@ -18,6 +18,7 @@ import dao.UserDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 /**
  * Lớp này chứa các Method của UserDAOImpl
@@ -33,7 +34,34 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
      */
     @Override
     public ArrayList<User> getUserAllUser() throws Exception {
-        return null;
+                ArrayList<User> newUserList = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT * FROM [User]";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                newUserList.add(new User(rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return newUserList;
     }
 
     /**
@@ -395,6 +423,31 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         }
         return check;
 
+    }
+    
+        public HashMap<String, Integer> getUserCountByRole() throws Exception {
+        HashMap<String, Integer> map = new HashMap();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT userRoleName, COUNT(userRoleId) AS number "
+                + "FROM [UserRole] AS a JOIN [User] AS b ON a.userRoleId = b.roleId "
+                + "GROUP BY a.userRoleId,a.userRoleName ";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("userRoleName"), rs.getInt("number"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return map;
     }
 
 }

@@ -75,9 +75,47 @@
                     }
                     addData(data);
                 }
-            </script>
+            </script>    
         </c:if>
-            <%--End chart javascript--%>
+        <%--End chart javascript--%>
+        <%--Start page style--%>
+        <style>
+            .choose .active,.tab .active{
+                border: #4472c4 3px solid;
+                background-color: white;
+                color:#4472c4;
+                font-weight: bold;
+                opacity:1;
+                font-size:120%;
+            }
+            .choose a, .tab a{
+                border: 1px solid black;
+                margin-bottom: 10px;
+                opacity: 0.7;
+                font-size:110%;
+            }
+            .choose a:hover, .tab a:hover{
+                color: #4472c4;
+                font-weight: bold;
+                opacity:1;
+                font-size:120%;
+            }
+            .date input{
+                border:2px solid #4472c4;
+                font-weight: 600;
+            }
+
+            .registrationInfo,.subjectInfo,.userInfo{
+                display:none;
+            }   
+            .registrationTab:hover + .registrationInfo , .subjectTab:hover +.subjectInfo, .userTab:hover + .userInfo{
+                display:block;
+                border:1px solid black;
+            }
+            
+
+        </style>
+        <%--End page style--%>
     </head>
 
     <body>
@@ -133,6 +171,7 @@
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-6" style="display: grid;">
                         </div>
+
                         <div class="date col-6">
                             <form action="${contextPath}/dashboard" method="GET" style="float:right;">
                                 <input hidden name="service" value="dashboard">
@@ -191,8 +230,8 @@
                                             <c:if test="${user.getRoleId()==3}">Marketing</c:if>
                                             <c:if test="${user.getRoleId()==4}">Expert</c:if>
                                             <c:if test="${user.getRoleId()==5}">Admin</c:if>
-                                        </td>
-                                        <td>${user.getUserMail()}</td>
+                                            </td>
+                                            <td>${user.getUserMail()}</td>
                                         <td>${user.getUserMobile()}</td>
                                     </tr>
                                 </c:forEach>
@@ -201,9 +240,44 @@
                     </div>
                 </c:if>
                 <%--View statistics view option--%>
+
                 <c:if test="${option=='view'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-6" style="display: grid;">
+                            <h5 class="subjectTab">Total subjects: ${totalSubjectCount} subjects</h5>
+                            <span class="subjectInfo">
+                                <c:forEach items="${subjectCateList}" var="subjectCate">
+                                    <c:set value="0" var="count"/>
+                                    <c:if test="${subjectCateCountMap.get(subjectCate.getSubjectCateName())!=null}">
+                                        <c:set value="${subjectCateCountMap.get(subjectCate.getSubjectCateName())}" var="count"/>
+                                    </c:if>
+
+                                    <h6>${subjectCate.getSubjectCateName()}: ${count}</h6>
+                                </c:forEach>
+                            </span>
+
+                            <div>
+                                <div class="registrationTab">
+                                    <h5>Total registrations count: ${totalRegistrationCount}</h5>
+                                </div>
+                                <span class="registrationInfo">
+                                    <h6 style="color: green;">Total paid: ${paidRegistrationCount}</h6>
+                                    <h6 style="color: red;">Total unpaid: ${unpaidRegistrationCount}</h6>
+                                </span>
+                            </div>
+
+                            <h5 class="userTab">Total user: ${totalUserCount}</h5>
+                            <span class="userInfo">
+                                <c:forEach items="${userRoleList}" var="userRole">
+                                    <c:set value="0" var="count"/>
+                                    <c:if test="${userRoleCountMap.get(userRole.getUserRoleName())!=null}">
+                                        <c:set value="${userRoleCountMap.get(userRole.getUserRoleName())}" var="count"/>
+                                    </c:if>
+
+                                    <h6>${userRole.getUserRoleName()}: ${count}</h6>
+                                </c:forEach>
+                            </span>
+                            <h5>Total view: ${totalView}</h5>
                         </div>
                         <div class="date col-6">
                             <form action="${contextPath}/dashboard" method="GET" style="float:right;">
@@ -216,63 +290,33 @@
                     </div>
                 </c:if>
                 <c:if test="${option!='customer'}">
-                <c:choose>
-                    <c:when test="${nameList.size()!=0}">
-                        <div class='row' style="height: 300px; width: 100%;">
-                            <div>
-                                <div class="subtabcontent" style='display:block;'>
-                                    <div id="chart" style="height: 300px; width: 100%;">
+                    <c:choose>
+                        <c:when test="${nameList.size()!=0}">
+                            <div class='row' style="height: 300px; width: 100%;">
+                                <div>
+                                    <div class="subtabcontent" style='display:block;'>
+                                        <div id="chart" style="height: 300px; width: 100%;">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class='row' style="height: 300px; width: 100%;">
-                            <div>
-                                <div class="subtabcontent" style='display:block;'>
-                                    <h4>Khong co thong ke nao</h4>
+                        </c:when>
+                        <c:otherwise>
+                            <div class='row' style="height: 300px; width: 100%;">
+                                <div>
+                                    <div class="subtabcontent" style='display:block;'>
+                                        <h4>Khong co thong ke nao</h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
-
-
             </div>
-
         </div>
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>
     <jsp:include page="footer.jsp"/>
-    <%--Start page style--%>
-    <style>
-        .choose .active,.tab .active{
-            border: #4472c4 3px solid;
-            background-color: white;
-            color:#4472c4;
-            font-weight: bold;
-            opacity:1;
-            font-size:120%;
-        }
-        .choose a, .tab a{
-            border: 1px solid black;
-            margin-bottom: 10px;
-            opacity: 0.7;
-            font-size:110%;
-        }
-        .choose a:hover, .tab a:hover{
-            color: #4472c4;
-            font-weight: bold;
-            opacity:1;
-            font-size:120%;
-        }
-        .date input{
-            border:2px solid #4472c4;
-            font-weight: 600;
-        }
-    </style>
-    <%--End page style--%>
+
 </html>

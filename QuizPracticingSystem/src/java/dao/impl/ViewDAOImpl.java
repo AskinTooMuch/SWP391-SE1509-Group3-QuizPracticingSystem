@@ -99,7 +99,6 @@ public class ViewDAOImpl extends DBConnection implements ViewDAO {
     /**
      * get statistic from database
      *
-     *
      * @param from Lower range limit. <code>String</code>
      * @param to Upper range limit. <code>String</code>
      * @return list of statistics data. It is a <code>java.util.ArrayList</code>
@@ -132,6 +131,35 @@ public class ViewDAOImpl extends DBConnection implements ViewDAO {
             closeConnection(conn);
         }
         return itemList;
+    }
+
+    /**
+     * get total view count
+     *
+     * @return <code>int</code>
+     * @throws java.lang.Exception
+     */
+    @Override
+    public int getTotalView() throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "select SUM([view]) AS totalView FROM [ViewCount]";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("totalView");
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return 0;
     }
 
     /**

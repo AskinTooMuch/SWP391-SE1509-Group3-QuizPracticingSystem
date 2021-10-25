@@ -159,15 +159,4 @@ public class QuizQuizHandleDAOImpl extends DBConnection implements QuizQuizHandl
         reviewQuiz.setTime(customerQuizInterface.getQuizByTakeQuizId(quizTakeId).getTime());
         return reviewQuiz;
     }
-
-//    public static void main(String[] args) {
-//        QuizQuizHandleDAOImpl dao = new QuizQuizHandleDAOImpl();
-//        QuestionDAOImpl qdao = new QuestionDAOImpl();
-//        ArrayList<Question> s = qdao.getAllQuestion();
-//
-//        QuizQuizHandle list = dao.getReviewQuiz(11);
-//        for (QuestionQuizHandle q : list.getQuestions()) {
-//            System.out.println(q.getAnsweredId());
-//        }
-//    }
 }
