@@ -8,6 +8,7 @@
  *  Date        Version     Author          Description
  *  23/9/21     1.0         NamDHHE150519  First Deploy
  *  9/10/21     1.0         NamDHHE150519  add method View,convertJson
+ *  24/10/21    1.0         NamDHHE150519  comment
  */
 package dao.impl;
 
@@ -151,8 +152,17 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     /**
+     * get statistic from database
      *
-     * @return @throws Exception Get statistics
+     *
+     * @param from Lower range limit. <code>String</code>
+     * @param to Upper range limit. <code>String</code>
+     * @param subjectList list of target subject.
+     * <code>java.util.ArrayList</code> object
+     * @param type revenue or registration. <code>String</code>
+     * @return list of statistics data. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
      */
     @Override
     public ArrayList<ItemDashboard> getSubjectStatistics(String from, String to, ArrayList<Subject> subjectList, String type) throws Exception {
@@ -201,6 +211,16 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * get statistic from database
+     *
+     *
+     * @param from Lower range limit. <code>String</code>
+     * @param to Upper range limit. <code>String</code>
+     * @return list of statistics data. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<ItemDashboard> getRegistrationStatistics(String from, String to) throws Exception {
         ArrayList<ItemDashboard> list = new ArrayList();
@@ -246,6 +266,16 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * get statistic from database
+     *
+     *
+     * @param from Lower range limit. <code>String</code>
+     * @param to Upper range limit. <code>String</code>
+     * @return list of statistics data. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<ItemDashboard> getRevenueStatistics(String from, String to) throws Exception {
         ArrayList<ItemDashboard> list = new ArrayList();
@@ -274,6 +304,16 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * get statistic from database
+     *
+     *
+     * @param from Lower range limit. <code>String</code>
+     * @param to Upper range limit. <code>String</code>
+     * @return list of statistics data. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<ItemDashboard> getRevenueStatisticsBySubjectCate(String from, String to) throws Exception {
         String sql = "SELECT SUM(cost) AS revenue,a.validFrom,e.subjectCateName FROM (Registration AS a "
@@ -307,13 +347,20 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * get new registration from database
+     *
+     * @return list of new registrations. It is a
+     * <code>java.util.ArrayList</code>object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<Registration> get10NewRegistration() throws Exception {
         ArrayList<Registration> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
         PreparedStatement pre = null;
-        String sql = "SELECT top 10 * FROM [Registration] ORDER BY regTime DESC";
+        String sql = "SELECT TOP 10 * FROM [Registration] ORDER BY regTime DESC";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -341,6 +388,14 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * Convert statistics data into JSon string
+     *
+     * @param viewList statistics data
+     * @return JSon strings of data. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<String> convertJson(ArrayList<ItemDashboard> viewList) throws Exception {
         // create a new Gson instance
@@ -367,6 +422,13 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return ret;
     }
 
+    /**
+     * get name of each JSon string
+     *
+     * @param viewList statistics data
+     * @return names of data. It is a <code>java.util.ArrayList</code> object
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<String> getNameList(ArrayList<ItemDashboard> viewList) throws Exception {
         ArrayList<String> nameList = new ArrayList();
@@ -382,11 +444,4 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return nameList;
     }
 
-    public static void main(String[] args) throws Exception {
-        RegistrationDAOImpl IRegistration = new RegistrationDAOImpl();
-        SubjectDAO i = new SubjectDAOImpl();
-        ArrayList<ItemDashboard> list = IRegistration.getRegistrationStatistics("2018-1-1", "2022-1-1");
-        ArrayList<String> a = IRegistration.getNameList(list);
-        System.out.print(a.get(1));
-    }
 }

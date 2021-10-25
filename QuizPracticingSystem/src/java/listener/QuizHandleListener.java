@@ -139,6 +139,7 @@ public class QuizHandleListener implements HttpSessionListener, HttpSessionAttri
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
+        System.out.println("########################### -1 View");
     }
 
     @Override
