@@ -86,6 +86,11 @@
                                     </form>
                                 </div>
                             </div><br>
+                            <c:if test="${!empty questionImportMessage}">
+                                <div class="question-form">
+                                    <c:out value="${questionImportMessage}"/>
+                                </div>
+                            </c:if>
                             <%--If the importedQuestion list is not null, display it--%>
                             <c:if test="${!empty importedQuestions}">
                                 <h5>After some digging, here are the question we managed to extract from your beautiful file: </h5>

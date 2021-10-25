@@ -134,7 +134,6 @@ public class ImportQuestionController extends HttpServlet {
                     uploadContent = uploadFile.trim()+" ";
                 }
                 String[] uploadContentPart = uploadContent.split("<qps>");
-                System.out.println(uploadContentPart.length);
                 /**
                  * Extract question content from the array of strings
                  */
@@ -156,22 +155,84 @@ public class ImportQuestionController extends HttpServlet {
                 SubjectDAO subjectDAO = new SubjectDAOImpl();   /*Subject DAO*/
                 QuestionDAO questionDAO = new QuestionDAOImpl();    /*Question DAO*/
                 AnswerDAO answerDAO = new AnswerDAOImpl();  /*Answer DAO*/
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("expert")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } /* Else: get the subject list*/
+                else {
+                    ArrayList<Subject> subjectList = null;
+                    if (currRole.getUserRoleName().equalsIgnoreCase("admin")){
+                        subjectList = subjectDAO.getTrueAllSubjects();
+                    }
+                    if (currRole.getUserRoleName().equalsIgnoreCase("expert")){
+                        subjectList = subjectDAO.getSubjectsAssigned(currUser.getUserId());
+                    }
+                    request.setAttribute("subjectList", subjectList);
+                }
+                
+                ArrayList<Question> addQuestionList = new ArrayList<>(); /*Question list to add*/
+                /**
+                 * Get all the attributes needed for question adding
+                 */
+                int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                 String[] questionContent = request.getParameterValues("questionContent");
-                System.out.println("Question content: "+questionContent.length);
                 String[] questionExplanation = request.getParameterValues("questionExplanation");
-                System.out.println("questionExplanation: "+questionContent.length);
                 String[] questionAnswerRight = request.getParameterValues("questionAnswerRight");
-                System.out.println("questionAnswerRight: "+questionContent.length);
                 String[] questionAnswerWrong1 = request.getParameterValues("questionAnswerWrong1");
-                System.out.println("questionAnswerWrong1: "+questionContent.length);
                 String[] questionAnswerWrong2 = request.getParameterValues("questionAnswerWrong2");
-                System.out.println("questionAnswerWrong2: "+questionContent.length);
                 String[] questionAnswerWrong3 = request.getParameterValues("questionAnswerWrong3");
-                System.out.println("questionAnswerWrong3: "+questionContent.length);
                 String[] lesson = request.getParameterValues("lesson");
-                System.out.println("lesson: "+questionContent.length);
                 String[] dimension = request.getParameterValues("dimension");
-                System.out.println("dimension: "+questionContent.length);
+                /**
+                 * Create the question adding list
+                 */
+                for (int i = 0; i < questionContent.length; i++) {
+                    int dimensionId = Integer.parseInt(dimension[i]);
+                    int lessonId = Integer.parseInt(lesson[i]);
+                    
+                    ArrayList<Answer> answerList = new ArrayList<>();   /*Answer List*/
+                    if ( ((questionAnswerRight[i] == null) || (!"".equals(questionAnswerRight[i].trim())))
+                            && ((questionAnswerWrong1[i] == null) || (!"".equals(questionAnswerWrong1[i].trim())))){
+                        answerList.add(new Answer(1, lessonId, questionAnswerRight[i], true, true));
+                        answerList.add(new Answer(1, lessonId, questionAnswerWrong1[i], false, true));
+                    } else continue;
+                    
+                    if (((questionAnswerWrong2[i] == null) || (!"".equals(questionAnswerWrong2[i].trim())))){
+                        answerList.add(new Answer(1, lessonId, questionAnswerWrong2[i], false, true));
+                    }
+                    if (((questionAnswerWrong3[i] == null) || (!"".equals(questionAnswerWrong3[i].trim())))){
+                        answerList.add(new Answer(1, lessonId, questionAnswerWrong2[i], false, true));
+                    }
+                    String newQuestionContent = questionContent[i].trim();
+                    String newQuestionExplanation = questionExplanation[i].trim();
+                    if ((newQuestionContent == null) || (!"".equals(newQuestionContent))){
+                        Question addQuestion = new Question(i, subjectId, dimensionId, lessonId, newQuestionContent, "", newQuestionExplanation, true);
+                        addQuestion.setAnswers(answerList);
+                        addQuestionList.add(addQuestion);
+                    }
+                }
+                
+                int checkQuestion = 0;
+                int checkAnswer = 0;
+                for (Question question : addQuestionList) {
+                    checkQuestion += questionDAO.addQuestion(question);
+                    int newAddQuestion = questionDAO.getQuestionIdCreated(question);
+                    for (Answer answer : question.getAnswers()) {
+                        answer.setQuestionId(newAddQuestion);
+                        checkAnswer += answerDAO.addAnswer(answer);
+                    }
+                }
+                String questionImportMessage = "Out of your " + questionContent.length + 
+                        ", there are " + addQuestionList.size() + 
+                        " valid question, out of which we added successfully " + checkQuestion +
+                        " questions and " + checkAnswer + " answers";
+                request.setAttribute("questionImportMessage", questionImportMessage);
+                sendDispatcher(request, response, "jsp/questionImport.jsp");
             }
         } catch (Exception ex) {
             Logger.getLogger(ImportQuestionController.class.getName()).log(Level.SEVERE, null, ex);
