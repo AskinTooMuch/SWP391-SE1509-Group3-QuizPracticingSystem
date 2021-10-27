@@ -1,18 +1,20 @@
 /**
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
- *  Created on : Oct 18, 2021
- *  Subject List servlet
+ *  Created on : Oct 27, 2021
+ *  User List servlet
  *  Quiz practicing system
  *
  *  Record of change:
  *  Date        Version     Author          Description
- *  18/10/21    1.0         ChucNVHE150618  First Deploy
+ *  27/10/21    1.0         ChucNVHE150618  First Deploy
  */
 package controller.chucnv;
 
 import bean.Subject;
-import dao.SubjectDAO;
-import dao.impl.SubjectDAOImpl;
+import bean.User;
+import bean.UserRole;
+import dao.UserDAO;
+import dao.impl.UserDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,15 +27,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *  This class has the process request of change password
- * @author ChucNV
+ *
+ * @author admin
  */
-public class SubjectListController extends HttpServlet {
+public class UserListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     * Function subject list: show the subject list paginated
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -43,21 +45,35 @@ public class SubjectListController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            SubjectDAO subjectDAO = new SubjectDAOImpl();
-            int page;
-            if (request.getAttribute("page") == null) {
-                page = 1;
+            UserDAO userDAO = new UserDAOImpl();
+            /* Get user and role on session scope */
+            User currUser = (User) request.getSession().getAttribute("currUser");
+            UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+            /* If user is not logged in, redirect to index */
+            if ((currUser == null) || (currRole == null)) {
+                sendDispatcher(request, response, "index.jsp");
+            } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
+                /* Role is admin: load all user */
+                int page;
+                if (request.getAttribute("pageNumber") == null) {
+                    page = 1;
+                } else {
+                    page = (int) request.getAttribute("pageNumber");
+                }
+                
+//                /* Get all subject */
+//                int maxPage = (int) Math.ceil((double) subjectDAO.getTrueAllSubjects().size() / 7);
+//                request.setAttribute("page", page);
+//                request.setAttribute("maxPage", maxPage);
+//                ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(page);
+//                /* Set attribute and send it to course content page */
+//                request.setAttribute("courseContentSubjectList", allSubject);
+//                sendDispatcher(request, response, "jsp/courseContentList.jsp");
+                
             } else {
-                page = (int) request.getAttribute("page");
+                /* If the user is logged in but not admin, send back to index.jsp */
+                sendDispatcher(request, response, "index.jsp");
             }
-            int maxPage = (int) Math.ceil((double) subjectDAO.getAllSubjects().size() / 7);
-            request.setAttribute("page", page);
-            request.setAttribute("maxPage", maxPage);
-            /* Get subject list and set attribute */
-            ArrayList<Subject> subjectList = subjectDAO.getSubjectsPaging(page);
-            request.setAttribute("subjectList", subjectList);
-            /* Redirect to subjectList.jsp */
-            sendDispatcher(request, response, "jsp/subjectList.jsp");
         } catch (Exception ex) {
             Logger.getLogger(ChangePasswordController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
@@ -77,7 +93,7 @@ public class SubjectListController extends HttpServlet {
             rd.forward(request, response);
 
         } catch (ServletException | IOException ex) {
-            Logger.getLogger(SubjectListController.class
+            Logger.getLogger(UserListController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
