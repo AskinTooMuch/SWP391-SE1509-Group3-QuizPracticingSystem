@@ -100,6 +100,10 @@
         <servlet-name>RegistrationController</servlet-name>
         <servlet-class>controller.RegistrationController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserListController</servlet-name>
+        <servlet-class>controller.chucnv.UserListController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -195,6 +199,10 @@
     <servlet-mapping>
         <servlet-name>RegistrationController</servlet-name>
         <url-pattern>/registrationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserListController</servlet-name>
+        <url-pattern>/userList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -56,10 +56,10 @@ public class CourseContentListController extends HttpServlet {
             } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
                 /* Role is expert: get the assigned subjects */
                 int page;
-                if (request.getAttribute("pageNumber") == null) {
+                if (request.getAttribute("page") == null) {
                     page = 1;
                 } else {
-                    page = (int) request.getAttribute("pageNumber");
+                    page = (int) request.getAttribute("page");
                 }
                 /* Get assigned list */
                 ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssignedPaging(currUser.getUserId(),page);
@@ -72,10 +72,10 @@ public class CourseContentListController extends HttpServlet {
             } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
                 /* Role is admin: load all subject */
                 int page;
-                if (request.getAttribute("pageNumber") == null) {
+                if (request.getAttribute("page") == null) {
                     page = 1;
                 } else {
-                    page = (int) request.getAttribute("pageNumber");
+                    page = (int) request.getAttribute("page");
                 }
                 /* Get all subject */
                 int maxPage = (int) Math.ceil((double) subjectDAO.getTrueAllSubjects().size() / 7);

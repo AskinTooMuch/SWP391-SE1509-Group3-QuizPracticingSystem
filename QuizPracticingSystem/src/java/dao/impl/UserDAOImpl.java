@@ -8,6 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
+ *  27/10/21    1.1         ChucNVHE150618      Add method getTrueAllUserPaging
  */
 package dao.impl;
 
@@ -29,12 +30,13 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
 
     /**
      * Get all user
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public ArrayList<User> getUserAllUser() throws Exception {
-                ArrayList<User> newUserList = new ArrayList();
+        ArrayList<User> newUserList = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
         PreparedStatement pre = null;
@@ -113,10 +115,10 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     @Override
     public User getUserLogin(String userMail, String password) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
         /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
+        ResultSet rs = null;
         /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
 
         String sql = "SELECT * FROM [User] WHERE userMail = ? and password = ? and status = 1";
         try {
@@ -157,10 +159,10 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     @Override
     public User getUserById(int userId) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
         /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
+        ResultSet rs = null;
         /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
 
         String sql = "SELECT * FROM [User] WHERE userId = ?";
         User user = null;
@@ -200,10 +202,10 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     @Override
     public User getUserByMail(String userMail) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
         /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
+        ResultSet rs = null;
         /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
 
         String sql = "SELECT * FROM [User] WHERE userMail = ?";
         try {
@@ -241,10 +243,10 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     @Override
     public User getUserByMobile(String userMobile) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
         /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
+        ResultSet rs = null;
         /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
         String sql = "SELECT * FROM [User] WHERE userMobile = ?";
         try {
             conn = getConnection();
@@ -281,12 +283,20 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     @Override
     public int updateUser(User updatedUser) throws Exception {
         Connection conn = null;
-        ResultSet rs = null;
         /* Result set returned by the sqlserver */
-        PreparedStatement pre = null;
+        ResultSet rs = null;
         /* Prepared statement for executing sql queries */
+        PreparedStatement pre = null;
 
-        String sql = " UPDATE [User] set userName = ?, [password] = ?,  roleId = ?, profilePic = ?, userMail = ?, gender = ?, userMobile = ?, status = ? where userId = ?";
+        String sql = " UPDATE [User] set userName = ?, "
+                + "[password] = ?,  "
+                + "roleId = ?, "
+                + "profilePic = ?, "
+                + "userMail = ?, "
+                + "gender = ?, "
+                + "userMobile = ?, "
+                + "status = ? "
+                + "where userId = ?";
         int check = 0;
         try {
             conn = getConnection();
@@ -385,13 +395,6 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         return check;
     }
 
-//    public static void main(String[] args) {
-//        UserDAOImpl ud = new UserDAOImpl();
-//        User newUser = new User(0, "Duong", "12", 1, null, "duonghoang8801@gmail.com", true, "0852274855", true);
-//        ud.addUser(newUser);
-//
-//    }
-
     /**
      * delete a user from User table
      *
@@ -424,8 +427,8 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         return check;
 
     }
-    
-        public HashMap<String, Integer> getUserCountByRole() throws Exception {
+
+    public HashMap<String, Integer> getUserCountByRole() throws Exception {
         HashMap<String, Integer> map = new HashMap();
         Connection conn = null;
         ResultSet rs = null;
@@ -450,4 +453,86 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         return map;
     }
 
+    /**
+     * Get all user regardless of status, based on criteria in a paginated form
+     *
+     * @param page Page Number
+     * @param criteriaType Type of searching restriction
+     * @param criteria Content of searching restriction
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria) throws Exception {
+        ArrayList<User> newUserList = new ArrayList();
+        /*Database Connection*/
+        Connection conn = null;
+        /*Result Set got from executing sql query*/
+        ResultSet rs = null;
+        /*Prepared Statement for executing query*/
+        PreparedStatement pre = null;
+        String queryCriteria = "";
+        /*Set criteria based on the search type*/
+        switch (criteriaType) {
+            case "fullName": queryCriteria = " userName LIKE ? ";
+                             criteria = criteria + "%";
+                             criteria = "%" + criteria;
+                            break;
+            case "userMail": queryCriteria =" userMail LIKE ? ";
+                             criteria = criteria + "%";
+                             criteria = "%" + criteria;
+                            break;
+            case "userMobile": queryCriteria =" userMobile = ? ";
+                            break;
+            default:    return null;
+        }
+        /*SQL query with the criteria*/
+        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY userId ASC) as num\n"
+                        + "				  ,[userId]\n"
+                        + "				  ,[userName]\n"
+                        + "				  ,[password]\n"
+                        + "				  ,[roleId]\n"
+                        + "				  ,[profilePic]\n"
+                        + "				  ,[userMail]\n"
+                        + "				  ,[gender]\n"
+                        + "				  ,[userMobile]\n"
+                        + "				  ,[status]\n"
+                        + "				  FROM [QuizSystem].dbo.[User]\n"
+                        + "				  WHERE "
+                        + queryCriteria + ") A\n"
+                        + "  WHERE A.num BETWEEN ? AND ?;";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, criteria);
+            pre.setInt(2, (page-1)*7+1);
+            pre.setInt(3, page*7);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                newUserList.add(new User(rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return newUserList;
+    }
+//
+//    public static void main(String[] args) throws Exception {
+//        UserDAOImpl dao = new UserDAOImpl();
+//        for (User u : dao.getTrueAllUserPaging(1, "userMail", "fpt")) {
+//            System.out.println(u.getUserMail());
+//        }
+//    }
 }
