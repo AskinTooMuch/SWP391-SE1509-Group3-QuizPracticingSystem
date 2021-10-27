@@ -172,14 +172,17 @@ public class QuizListController extends HttpServlet {
 
             //Get all quiz that have name contain search value
             if (service.equalsIgnoreCase("searchQuizByName")) {
-                String quizName = request.getParameter("quizName").trim();
+                String quizName = request.getParameter("quizName");
                 QuizDAO quizDAO = new QuizDAOImpl();
                 ArrayList<Quiz> quizList = new ArrayList<>();
-                if (quizName.length() == 0) {
+                if (quizName == null) {
+                    //if user don't enter anything then get all quiz
+                    quizList = quizDAO.getQuizByName(null);
+                }else if (quizName.trim().length() == 0 ) {
                     //if user don't enter anything then get all quiz
                     quizList = quizDAO.getQuizByName(null);
                 } else {
-                    quizList = quizDAO.getQuizByName(quizName);
+                    quizList = quizDAO.getQuizByName(quizName.trim());
                 }
                 request.setAttribute("quizQuizList", quizList);
                 request.getRequestDispatcher("jsp/quizList.jsp").forward(request, response);
