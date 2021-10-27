@@ -55,7 +55,7 @@
                         <c:if test="${(role.getUserRoleName().equalsIgnoreCase('admin')) || (role.getUserRoleName().equalsIgnoreCase('expert'))}">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bold;">
-                                    Course Manage
+                                    Manage
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="${contextPath}/courseContentList">Course Content List</a>
@@ -65,18 +65,18 @@
                                 </div>
                             </li>
                         </c:if>
-
+                        <c:if test="${(role.getUserRoleName().equalsIgnoreCase('sale'))}">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bold;">
+                                    Manage
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="${contextPath}/jsp/registrationList.jsp">Registration List</a>
+                                    <div class="dropdown-divider"></div>                                   
+                                </div>
+                            </li>
+                        </c:if>    
                     </ul>
-                    <form class="navbar-form navbar-right" role="search">
-                        <div class="input-group">
-                            <input type="text" class="form-control" style="border-radius: 5px" placeholder="">
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default">
-                                    <span class="fas fa-search"></span>
-                                </button>  
-                            </span>
-                        </div>
-                    </form>
 
                     <c:choose>    
                         <%--When the user is not logged in--%>
@@ -127,6 +127,7 @@
                                             <span class="fas fa-user-shield">Create Post</span>  
                                         </a>
                                     </c:if>
+                                    
                                     <hr>
                                     <%-- Logout --%>
                                     <a href="${contextPath}/userController?service=logout" style="text-decoration: none;color:black" >

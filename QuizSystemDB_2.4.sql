@@ -316,6 +316,8 @@ INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,use
 				VALUES('User3',1,1,'','User3@gmail.com',1,'0969044720',1);
 INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
 				VALUES('User4',1,1,'','User4@gmail.com',1,'0969044721',1);
+INSERT INTO dbo.[User](userName,[password],roleId,profilePic,userMail,gender,userMobile,[status]) 
+				VALUES('Sale1',1,3,'','Sale1@gmail.com',0,'0969696969',1);
 ----------dbo.[Subject]--------------------
 INSERT INTO dbo.[Subject](subjectName,[description],thumbnail,featuredSubject,[status])
 				   VALUES('OOP with Java','Object Oriented Programming Fundamentals with Java.','java-oops.png',1,1);--1

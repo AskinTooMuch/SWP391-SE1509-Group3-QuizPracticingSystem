@@ -96,6 +96,10 @@
         <servlet-name>SystemSettingController</servlet-name>
         <servlet-class>controller.SystemSettingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegistrationController</servlet-name>
+        <servlet-class>controller.RegistrationController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
@@ -187,6 +191,10 @@
     <servlet-mapping>
         <servlet-name>SystemSettingController</servlet-name>
         <url-pattern>/SystemSettingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationController</servlet-name>
+        <url-pattern>/registrationController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
