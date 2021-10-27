@@ -12,7 +12,7 @@ package bean;
 
 /**
  *
- * @author admin
+ * Slider entity
  */
 public class Slider {
     /**

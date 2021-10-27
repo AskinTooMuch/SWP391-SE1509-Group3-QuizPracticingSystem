@@ -15,6 +15,7 @@ package bean;
 import java.util.ArrayList;
 
 /**
+ * question entity
  *
  * @author admin
  */

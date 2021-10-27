@@ -12,6 +12,7 @@
 package bean;
 
 /**
+ * PricePackage entity
  *
  * @author admin
  */

@@ -43,6 +43,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -63,128 +64,138 @@ public class DashboardController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            //authorization
+            HttpSession session = request.getSession();
+            Object currUser = session.getAttribute("currUser");
+            if (currUser == null) {
+                response.sendRedirect("index.jsp");
+            } else {
+                User user = (User) currUser;
+                if (user.getRoleId() ==1) {
+                    response.sendRedirect("index.jsp");
+                } else {
+                    RegistrationDAO IRegistration = new RegistrationDAOImpl();
+                    SubjectDAO ISubject = new SubjectDAOImpl();
+                    ViewDAO IView = new ViewDAOImpl();
+                    UserDAO IUser = new UserDAOImpl();
+                    SubjectCateDAO ISubjectCate = new SubjectCateDAOImpl();
+                    UserRoleDAO IUserRole = new UserRoleDAOImpl();
+                    String option = request.getParameter("option");
+                    String target = request.getParameter("target");
+                    String attribute = request.getParameter("attribute");
+                    String from = request.getParameter("from");
+                    String to = request.getParameter("to");
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    String currentDate = formatter.format(date.getTime());
+                    //default date range 1 week
+                    if (to == null) {
+                        to = currentDate;
+                    }
+                    if (from == null) {
+                        from = formatter.format(date.getTime() - MILISECOND_PER_WEEK);
+                    }
+                    request.setAttribute("currentDate", currentDate);
+                    request.setAttribute("from", from);
+                    request.setAttribute("to", to);
 
-            RegistrationDAO IRegistration = new RegistrationDAOImpl();
-            SubjectDAO ISubject = new SubjectDAOImpl();
-            ViewDAO IView = new ViewDAOImpl();
-            UserDAO IUser = new UserDAOImpl();
-            SubjectCateDAO ISubjectCate = new SubjectCateDAOImpl();
-            UserRoleDAO IUserRole = new UserRoleDAOImpl();
-            String option = request.getParameter("option");
-            String target = request.getParameter("target");
-            String attribute = request.getParameter("attribute");
-            String from = request.getParameter("from");
-            String to = request.getParameter("to");
-            Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String currentDate = formatter.format(date.getTime());
-            //default date range 1 week
-            if (to == null) {
-                to = currentDate;
-            }
-            if (from == null) {
-                from = formatter.format(date.getTime() - MILISECOND_PER_WEEK);
-            }
-            request.setAttribute("currentDate", currentDate);
-            request.setAttribute("from", from);
-            request.setAttribute("to", to);
+                    //default view option
+                    if (option == null) {
+                        option = "subject";
+                        target = "new";
+                        attribute = "revenue";
+                    }
 
-            //default view option
-            if (option == null) {
-                option = "subject";
-                target = "new";
-                attribute = "revenue";
-            }
+                    request.setAttribute("option", option);
+                    request.setAttribute("target", target);
+                    ArrayList<String> statistics = new ArrayList();
+                    ArrayList<String> nameList = new ArrayList();
 
-            request.setAttribute("option", option);
-            request.setAttribute("target", target);
-            ArrayList<String> statistics = new ArrayList();
-            ArrayList<String> nameList = new ArrayList();
+                    //view subject statistics
+                    if (option.equals("subject")) {
 
-            //view subject statistics
-            if (option.equals("subject")) {
+                        request.setAttribute("attribute", attribute);
+                        ArrayList<Subject> subjectList = new ArrayList();
+                        if (target.equals("new")) {
+                            subjectList = ISubject.get5LastAddedSubject();
+                        } else if (target.equals("all")) {
+                            subjectList = ISubject.getAllSubjects();
+                        }
 
-                request.setAttribute("attribute", attribute);
-                ArrayList<Subject> subjectList = new ArrayList();
-                if (target.equals("new")) {
-                    subjectList = ISubject.get5LastAddedSubject();
-                } else if (target.equals("all")) {
-                    subjectList = ISubject.getAllSubjects();
+                        ArrayList<ItemDashboard> subjectStatistics = IRegistration.getSubjectStatistics(from, to, subjectList, attribute);
+                        statistics = IRegistration.convertJson(subjectStatistics);
+                        nameList = IRegistration.getNameList(subjectStatistics);
+                    }
+
+                    //registration statistics
+                    if (option.equals("registration")) {
+                        ArrayList<ItemDashboard> registrationStatistics = IRegistration.getRegistrationStatistics(from, to);
+                        statistics = IRegistration.convertJson(registrationStatistics);
+                        nameList = IRegistration.getNameList(registrationStatistics);
+                    }
+
+                    //revenue statistics
+                    if (option.equals("revenue")) {
+                        ArrayList<ItemDashboard> revenueStatistics = new ArrayList();
+                        if (target.equals("total")) {
+                            revenueStatistics = IRegistration.getRevenueStatistics(from, to);
+                        } else if (target.equals("bySubjectCate")) {
+                            revenueStatistics = IRegistration.getRevenueStatisticsBySubjectCate(from, to);
+                        }
+                        statistics = IRegistration.convertJson(revenueStatistics);
+                        nameList = IRegistration.getNameList(revenueStatistics);
+                    }
+
+                    //customer statistics
+                    if (option.equals("customer")) {
+                        if (target.equals("newlyRegistered")) {
+                            ArrayList<User> userList = IUser.get10NewUser();
+                            request.setAttribute("userList", userList);
+                        } else if (target.equals("newlyBought")) {
+                            ArrayList<Registration> registrationList = IRegistration.get10NewRegistration();
+                            request.setAttribute("registrationList", registrationList);
+                        }
+                    }
+
+                    //view statistics   
+                    if (option.equals("view")) {
+                        int totalView = IView.getTotalView();
+                        String totalViewFormated = String.format("%06d", totalView);
+                        request.setAttribute("totalView", totalViewFormated);
+
+                        int totalRegistrationCount = IRegistration.getAllRegistration().size();
+                        request.setAttribute("totalRegistrationCount", totalRegistrationCount);
+                        int paidRegistrationCount = IRegistration.getPaidRegistration("true").size();
+                        request.setAttribute("paidRegistrationCount", paidRegistrationCount);
+                        int unpaidRegistrationCount = IRegistration.getPaidRegistration("false").size();
+                        request.setAttribute("unpaidRegistrationCount", unpaidRegistrationCount);
+
+                        int totalSubjectCount = ISubject.getAllSubjects().size();
+                        request.setAttribute("totalSubjectCount", totalSubjectCount);
+
+                        HashMap<String, Integer> subjectCateCountMap = ISubjectCate.getSubjectCountByCate();
+                        request.setAttribute("subjectCateCountMap", subjectCateCountMap);
+                        ArrayList<SubjectCate> subjectCateList = ISubjectCate.getAllStatusSubjectCates();
+                        request.setAttribute("subjectCateList", subjectCateList);
+
+                        HashMap<String, Integer> userRoleCountMap = IUser.getUserCountByRole();
+                        request.setAttribute("userRoleCountMap", userRoleCountMap);
+                        ArrayList<UserRole> userRoleList = IUserRole.getAllUserRole();
+                        request.setAttribute("userRoleList", userRoleList);
+
+                        int totalUserCount = IUser.getUserAllUser().size();
+                        request.setAttribute("totalUserCount", totalUserCount);
+
+                        ArrayList<ItemDashboard> viewStatistics = IView.getViewStatistics(from, to);
+                        statistics = IView.convertJson(viewStatistics);
+                        nameList = IRegistration.getNameList(viewStatistics);
+                    }
+
+                    request.setAttribute("statistics", statistics);
+                    request.setAttribute("nameList", nameList);
+                    request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
                 }
-
-                ArrayList<ItemDashboard> subjectStatistics = IRegistration.getSubjectStatistics(from, to, subjectList, attribute);
-                statistics = IRegistration.convertJson(subjectStatistics);
-                nameList = IRegistration.getNameList(subjectStatistics);
             }
-
-            //registration statistics
-            if (option.equals("registration")) {
-                ArrayList<ItemDashboard> registrationStatistics = IRegistration.getRegistrationStatistics(from, to);
-                statistics = IRegistration.convertJson(registrationStatistics);
-                nameList = IRegistration.getNameList(registrationStatistics);
-            }
-
-            //revenue statistics
-            if (option.equals("revenue")) {
-                ArrayList<ItemDashboard> revenueStatistics = new ArrayList();
-                if (target.equals("total")) {
-                    revenueStatistics = IRegistration.getRevenueStatistics(from, to);
-                } else if (target.equals("bySubjectCate")) {
-                    revenueStatistics = IRegistration.getRevenueStatisticsBySubjectCate(from, to);
-                }
-                statistics = IRegistration.convertJson(revenueStatistics);
-                nameList = IRegistration.getNameList(revenueStatistics);
-            }
-
-            //customer statistics
-            if (option.equals("customer")) {
-                if (target.equals("newlyRegistered")) {
-                    ArrayList<User> userList = IUser.get10NewUser();
-                    request.setAttribute("userList", userList);
-                } else if (target.equals("newlyBought")) {
-                    ArrayList<Registration> registrationList = IRegistration.get10NewRegistration();
-                    request.setAttribute("registrationList", registrationList);
-                }
-            }
-
-            //view statistics   
-            if (option.equals("view")) {
-                int totalView = IView.getTotalView();
-                String totalViewFormated = String.format("%06d", totalView);
-                request.setAttribute("totalView", totalViewFormated);
-
-                int totalRegistrationCount = IRegistration.getAllRegistration().size();
-                request.setAttribute("totalRegistrationCount", totalRegistrationCount);
-                int paidRegistrationCount = IRegistration.getPaidRegistration("true").size();
-                request.setAttribute("paidRegistrationCount", paidRegistrationCount);
-                int unpaidRegistrationCount = IRegistration.getPaidRegistration("false").size();
-                request.setAttribute("unpaidRegistrationCount", unpaidRegistrationCount);
-
-                int totalSubjectCount = ISubject.getAllSubjects().size();
-                request.setAttribute("totalSubjectCount", totalSubjectCount);
-
-                HashMap<String, Integer> subjectCateCountMap = ISubjectCate.getSubjectCountByCate();
-                request.setAttribute("subjectCateCountMap", subjectCateCountMap);
-                ArrayList<SubjectCate> subjectCateList = ISubjectCate.getAllStatusSubjectCates();
-                request.setAttribute("subjectCateList", subjectCateList);
-                
-                HashMap<String, Integer> userRoleCountMap = IUser.getUserCountByRole();
-                request.setAttribute("userRoleCountMap", userRoleCountMap);
-                ArrayList<UserRole> userRoleList = IUserRole.getAllUserRole();
-                request.setAttribute("userRoleList", userRoleList);
-                
-                int totalUserCount = IUser.getUserAllUser().size();
-                request.setAttribute("totalUserCount", totalUserCount);
-
-                ArrayList<ItemDashboard> viewStatistics = IView.getViewStatistics(from, to);
-                statistics = IView.convertJson(viewStatistics);
-                nameList = IRegistration.getNameList(viewStatistics);
-            }
-
-            request.setAttribute("statistics", statistics);
-            request.setAttribute("nameList", nameList);
-            request.getRequestDispatcher("jsp/dashboard.jsp").forward(request, response);
-
         } catch (Exception ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());

@@ -12,6 +12,7 @@
 package bean;
 
 /**
+ * Quiz entity
  *
  * @author ChucNVHE150618
  */

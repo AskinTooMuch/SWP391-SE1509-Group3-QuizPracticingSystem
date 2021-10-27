@@ -12,6 +12,7 @@
 package bean;
 
 /**
+ * PostCate entity
  *
  * @author duong
  */

@@ -78,8 +78,7 @@
             </script>    
         </c:if>
         <%--End chart javascript--%>
-        <%--Start page style--%>
-        <style>
+                <style>
             .choose .active,.tab .active{
                 border: #4472c4 3px solid;
                 background-color: white;

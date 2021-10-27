@@ -14,8 +14,9 @@ package bean;
 import java.util.ArrayList;
 
 /**
+ * QuestionQuizHandle entity
  *
- * @author ADMN
+ * @author NamDH
  */
 public class QuestionQuizHandle {
     private Question question; /*Question entity*/

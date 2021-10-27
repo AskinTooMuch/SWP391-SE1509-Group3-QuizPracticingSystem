@@ -58,7 +58,7 @@ public class BlogController extends HttpServlet {
 
             if (service.equalsIgnoreCase("blogList")) {
                 ArrayList<Blog> blogList = blogInterface.getAllTrueBlog();
-                
+
                 //neu tim kiem theo category hoac string
                 String[] searchCate = request.getParameterValues("category");
                 String searchString = request.getParameter("search");

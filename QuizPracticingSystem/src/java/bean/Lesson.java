@@ -12,6 +12,7 @@
 package bean;
 
 /**
+ * Lesson entity
  *
  * @author admin
  */

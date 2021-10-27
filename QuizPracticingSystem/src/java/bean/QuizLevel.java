@@ -12,7 +12,8 @@
 package bean;
 
 /**
- *
+ * QuizLevel entity
+ * 
  * @author ChucNVHE150618
  */
 public class QuizLevel {

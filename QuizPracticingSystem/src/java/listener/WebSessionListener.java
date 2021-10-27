@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @author NamDH
  */
-public class QuizHandleListener implements HttpSessionListener, HttpSessionAttributeListener {
+public class WebSessionListener implements HttpSessionListener, HttpSessionAttributeListener {
 
     public static Timer timer;
 

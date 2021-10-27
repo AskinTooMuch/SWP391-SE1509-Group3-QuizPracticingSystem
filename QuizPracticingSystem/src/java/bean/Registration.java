@@ -14,6 +14,7 @@ package bean;
 import java.util.Date;
 
 /**
+ * Registration entity
  *
  * @author admin
  */

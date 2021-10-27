@@ -12,6 +12,7 @@
 package bean;
 
 /**
+ * TestType entity
  *
  * @author duong
  */
