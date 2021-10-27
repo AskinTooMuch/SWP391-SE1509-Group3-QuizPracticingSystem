@@ -104,15 +104,10 @@
                 border:2px solid #4472c4;
                 font-weight: 600;
             }
-
-            .registrationInfo,.subjectInfo,.userInfo{
-                display:none;
-            }   
-            .registrationTab:hover + .registrationInfo , .subjectTab:hover +.subjectInfo, .userTab:hover + .userInfo{
-                display:block;
-                border:1px solid black;
+            #info{
+                border: 1px solid #4472c4;
+                margin:2px;
             }
-            
 
         </style>
         <%--End page style--%>
@@ -128,7 +123,7 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <%--Statistics view option--%>
-                <div class="tab col-md-6" style="border:none;">
+                <div class="tab col-md-6" style="margin-left:70px;">
                     <div >
                         <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/dashboard?&option=subject&target=new&attribute=revenue">Subjects</a>
                         <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/dashboard?&option=registration">Registrations</a>
@@ -240,44 +235,76 @@
                     </div>
                 </c:if>
                 <%--View statistics view option--%>
-
                 <c:if test="${option=='view'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-6" style="display: grid;">
-                            <h5 class="subjectTab">Total subjects: ${totalSubjectCount} subjects</h5>
-                            <span class="subjectInfo">
-                                <c:forEach items="${subjectCateList}" var="subjectCate">
-                                    <c:set value="0" var="count"/>
-                                    <c:if test="${subjectCateCountMap.get(subjectCate.getSubjectCateName())!=null}">
-                                        <c:set value="${subjectCateCountMap.get(subjectCate.getSubjectCateName())}" var="count"/>
-                                    </c:if>
-
-                                    <h6>${subjectCate.getSubjectCateName()}: ${count}</h6>
-                                </c:forEach>
-                            </span>
-
                             <div>
-                                <div class="registrationTab">
-                                    <h5>Total registrations count: ${totalRegistrationCount}</h5>
+                                <div>
+                                    <button id="info" type="button" class="btn" data-toggle="modal" data-target=".subjectInfo">Total subjects: ${totalSubjectCount} subjects</button>
                                 </div>
-                                <span class="registrationInfo">
-                                    <h6 style="color: green;">Total paid: ${paidRegistrationCount}</h6>
-                                    <h6 style="color: red;">Total unpaid: ${unpaidRegistrationCount}</h6>
-                                </span>
+                                <div class="modal fade bd-example-modal-sm subjectInfo" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="margin-left:12px;">Subject Cate</h5>                           
+                                            <div class="modal-header">
+                                            </div>
+                                            <div class="modal-body">
+                                                <c:forEach items="${subjectCateList}" var="subjectCate">
+                                                    <c:set value="0" var="count"/>
+                                                    <c:if test="${subjectCateCountMap.get(subjectCate.getSubjectCateName())!=null}">
+                                                        <c:set value="${subjectCateCountMap.get(subjectCate.getSubjectCateName())}" var="count"/>
+                                                    </c:if>
+
+                                                    <h6>${subjectCate.getSubjectCateName()}: ${count}</h6>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button id="info" type="button" class="btn" data-toggle="modal" data-target=".registrationInfo">Total registrations count: ${totalRegistrationCount}</button>
+                                <div class="modal fade bd-example-modal-sm registrationInfo" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="margin-left:12px;">Registration</h5>                           
+                                            <div class="modal-header">
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6 style="color: green;">Total paid: ${paidRegistrationCount}</h6>
+                                                <h6 style="color: red;">Total unpaid: ${unpaidRegistrationCount}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button id="info" type="button" class="btn" data-toggle="modal" data-target=".userInfo">Total user: ${totalUserCount}</button>
+
+                                <div class="modal fade bd-example-modal-sm userInfo" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="margin-left:12px;">Registration</h5>                           
+                                            <div class="modal-header">
+                                            </div>
+                                            <div class="modal-body">
+                                                <c:forEach items="${userRoleList}" var="userRole">
+                                                    <c:set value="0" var="count"/>
+                                                    <c:if test="${userRoleCountMap.get(userRole.getUserRoleName())!=null}">
+                                                        <c:set value="${userRoleCountMap.get(userRole.getUserRoleName())}" var="count"/>
+                                                    </c:if>
+
+                                                    <h6>${userRole.getUserRoleName()}: ${count}</h6>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <h5 class="userTab">Total user: ${totalUserCount}</h5>
-                            <span class="userInfo">
-                                <c:forEach items="${userRoleList}" var="userRole">
-                                    <c:set value="0" var="count"/>
-                                    <c:if test="${userRoleCountMap.get(userRole.getUserRoleName())!=null}">
-                                        <c:set value="${userRoleCountMap.get(userRole.getUserRoleName())}" var="count"/>
-                                    </c:if>
-
-                                    <h6>${userRole.getUserRoleName()}: ${count}</h6>
-                                </c:forEach>
-                            </span>
-                            <h5>Total view: ${totalView}</h5>
+                            <div>
+                                <button id="info" type="button" class="btn">Total view: ${totalView}</button>
+                            </div>
                         </div>
                         <div class="date col-6">
                             <form action="${contextPath}/dashboard" method="GET" style="float:right;">
@@ -305,7 +332,7 @@
                             <div class='row' style="height: 300px; width: 100%;">
                                 <div>
                                     <div class="subtabcontent" style='display:block;'>
-                                        <h4>Khong co thong ke nao</h4>
+                                        <h4>There're no statistics</h4>
                                     </div>
                                 </div>
                             </div>

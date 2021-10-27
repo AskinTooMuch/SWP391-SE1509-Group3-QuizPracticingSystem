@@ -5,6 +5,7 @@
  */
 package filter;
 
+import bean.User;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Bùi Thanh Tùng
  */
-public class Filter  {
+public class Filter {
     
     private static final boolean debug = true;
 
@@ -32,7 +33,7 @@ public class Filter  {
     private FilterConfig filterConfig = null;
     
     public Filter() {
-    }    
+    }
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
@@ -60,7 +61,7 @@ public class Filter  {
 	    log(buf.toString());
 	}
          */
-    }    
+    }
     
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
@@ -105,22 +106,20 @@ public class Filter  {
         }
         
         doBeforeProcessing(request, response);
-         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession();
-        Boolean isAuthorized = (Boolean) session.getAttribute("isAuthorized");
-        String url = httpRequest.getServletPath();
-//        if(!isAuthorized||isAuthorized==null){
-        if (url.endsWith(".jsp") && !url.contains("login.jsp")
-                && !url.contains("register.jsp")
-                && !url.contains("resetPass.jsp")
-                && !url.contains("changePassword.jsp")
-                && !url.contains("index.jsp")
-                && !url.contains("courseContent.jsp")) {
-            httpResponse.sendRedirect("homeController");
+//        String url = httpRequest.getServletPath();
+        Object currUser = session.getAttribute("currSession");
+        if (currUser == null) {
+            httpResponse.sendRedirect("home.jsp");
+        } else {
+            User user = (User) currUser;
+            if (user.getRoleId() == 5) {
+                httpResponse.sendRedirect("home.jsp");
+            }
         }
-//    }
-
+        
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -166,16 +165,16 @@ public class Filter  {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("Filter:Initializing filter");
             }
         }
@@ -196,18 +195,18 @@ public class Filter  {
     }
     
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
+        String stackTrace = getStackTrace(t);
         
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -240,7 +239,7 @@ public class Filter  {
     }
     
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
     
 }
