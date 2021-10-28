@@ -33,21 +33,27 @@
         <div class="wrap">
             
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
-                <div class="big-button">
+                <div class="text-center text-center">
                     <a href="${contextPath}/jsp/quizDetail.jsp" style="text-decoration: none;color:black" >
-                        <span class="fas fa-user-shield">Quiz Detail Page</span>  
+                        <div class="big-button">
+                            <span class="fas fa-user-shield">Quiz Detail Page</span>  
+                        </div>
                     </a>
                 </div>
-                <div class="big-button">
+                <div class="text-center">
                     <a href="${contextPath}/jsp/quizList.jsp" style="text-decoration: none;color:black" >
-                        <span class="fas fa-user-shield">Quiz List Page</span>  
+                        <div class="text-center big-button">
+                            <span class="fas fa-user-shield">Quiz List Page</span>  
+                        </div> 
                     </a>
                 </div>
-                <div class="big-button">
+                <div class="text-center">        
                     <a href="${contextPath}/userList" style="text-decoration: none;color:black" >
-                        <span class="fas fa-user-shield">User List</span>  
+                        <div class="text-center big-button">
+                            <span class="fas fa-user-shield">User List</span>  
+                        </div>
                     </a>
-                </div>
+                </div>    
             </c:if>
             <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
                     <h2 style="text-align: center;">You don't have the right to access this page</h2>
