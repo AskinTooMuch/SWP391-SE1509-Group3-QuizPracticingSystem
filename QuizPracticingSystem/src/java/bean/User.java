@@ -8,6 +8,7 @@
  *  Date        Version     Author          Description
  *  23/9/21     1.0         ChucNVHE150618  First Deploy
  *  16/10/21    1.0         ChucNVHE150618  Comment
+ *  28/10/21    1.1         ChucNVHE150618  Add userRole entity
 */
 package bean;
 
@@ -25,6 +26,7 @@ public class User {
     private boolean gender; /*User gender*/
     private String userMobile; /*User mobile*/
     private boolean status; /*User status*/
+    private UserRole userRole; /*User Role Entity*/
 
     /**
      * Blank constructor
@@ -198,6 +200,22 @@ public class User {
      */
     public void setUserMobile(String userMobile) {
         this.userMobile = userMobile;
+    }
+
+    /**
+     * Get user role
+     * @return User role entity
+     */
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    /**
+     * Set user Role entity
+     * @param userRole 
+     */
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
     
     

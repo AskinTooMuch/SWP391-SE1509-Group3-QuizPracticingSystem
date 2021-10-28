@@ -44,7 +44,7 @@
                     </a>
                 </div>
                 <div class="big-button">
-                    <a href="#" style="text-decoration: none;color:black" >
+                    <a href="${contextPath}/userList" style="text-decoration: none;color:black" >
                         <span class="fas fa-user-shield">User List</span>  
                     </a>
                 </div>

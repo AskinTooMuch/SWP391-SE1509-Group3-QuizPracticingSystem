@@ -45,10 +45,10 @@ public class SubjectListController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             SubjectDAO subjectDAO = new SubjectDAOImpl();
             int page;
-            if (request.getAttribute("page") == null) {
+            if (request.getParameter("page") == null) {
                 page = 1;
             } else {
-                page = (int) request.getAttribute("page");
+                page = Integer.parseInt(request.getParameter("page"));
             }
             int maxPage = (int) Math.ceil((double) subjectDAO.getAllSubjects().size() / 7);
             request.setAttribute("page", page);
