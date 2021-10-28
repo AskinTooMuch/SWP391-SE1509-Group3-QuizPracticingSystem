@@ -20,6 +20,12 @@ public class TestType {
     private int testTypeId; /*Test type id*/
     private String testTypeName; /*Test type name*/
     private boolean status; /*Test type status*/
+    
+    /**
+     * Constructor
+     */
+    public TestType() {
+    }
 
     /**
      * Complete constructor

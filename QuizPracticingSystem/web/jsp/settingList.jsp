@@ -66,9 +66,13 @@
                                     <a class="dropdown-item" href="${contextPath}/SystemSettingController?service=filter&field=lessonType">Lesson Type</a>
                                     <a class="dropdown-item" href="${contextPath}/SystemSettingController?service=filter&field=dimensionType">Dimension Type</a>
                                 </div>
+                                
+                                <a href="${contextPath}/jsp/settingDetail.jsp"><button type="button" class="btn btn-primary" style="float: right; margin-top: auto;margin-bottom: auto;margin-right: 10px;">
+                                    Add setting
+                                    </button></a>
                             </div>
                             <c:if test="${message != null}">
-                                <h5 style="color: red"><c:out value="${message}" /></h5>
+                                <h5 style="color: red; clear: both;"><c:out value="${message}" /></h5>
                             </c:if>
                         </div>
 
@@ -99,7 +103,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=userRole&id=${userRole.getUserRoleId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -118,7 +122,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=postCate&id=${postCate.getPostCateId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -137,7 +141,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=subjectCate&id=${subjectCate.getSubjectCateId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -156,7 +160,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=testType&id=${testType.getTestTypeId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -175,7 +179,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=quizLevel&id=${quizLevel.getQuizLevelId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -194,7 +198,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=lessonType&id=${lessonType.getLessonTypeId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -213,7 +217,7 @@
                                             </c:if>
                                         </td>
                                         <td>
-                                            <a href="#"><button class="btn btn-success">Edit</button></a>
+                                            <a href="${contextPath}/SystemSettingController?service=getEditInformation&field=dimensionType&id=${dimensionType.getDimensionTypeId()}"><button class="btn btn-success">Edit</button></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -239,7 +243,7 @@
             </div>
             <div class="space" style="min-height: 50vh;"></div>
         </c:if>
-        <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
+        <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin')}">
             <h2 style="text-align: center;">You don't have the right to access this page</h2>
         </c:if>
         <%-- Include footer page --%>
