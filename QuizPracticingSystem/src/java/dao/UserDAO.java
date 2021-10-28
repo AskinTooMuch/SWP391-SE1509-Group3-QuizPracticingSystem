@@ -128,4 +128,15 @@ public interface UserDAO {
      * @throws Exception 
      */
     public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria) throws Exception;
+    
+    /**
+     * Get filtered Users paginated
+     * @param page
+     * @param gender
+     * @param role
+     * @param status
+     * @return
+     * @throws Exception 
+     */
+    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status) throws Exception;
 }

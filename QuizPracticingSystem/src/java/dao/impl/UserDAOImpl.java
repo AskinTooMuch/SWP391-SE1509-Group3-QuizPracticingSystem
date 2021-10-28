@@ -9,6 +9,7 @@
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
  *  27/10/21    1.1         ChucNVHE150618      Add method getTrueAllUserPaging
+ *  28/10/21    1.2         ChucNVHE150618      Add method getFilteredUserPaging
  */
 package dao.impl;
 
@@ -523,6 +524,108 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
                 }
             } else if (criteriaType != null) {
                 pre.setString(1, criteria);
+            }
+            
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                newUserList.add(new User(rs.getInt("userId"),
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("profilePic"),
+                        rs.getString("userMail"),
+                        rs.getBoolean("gender"),
+                        rs.getString("userMobile"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return newUserList;
+    }
+    
+    /**
+     * Get filtered Users paginated
+     * @param page
+     * @param gender
+     * @param role
+     * @param status
+     * @return
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status) throws Exception {
+        ArrayList<User> newUserList = new ArrayList();
+        /*Database Connection*/
+        Connection conn = null;
+        /*Result Set got from executing sql query*/
+        ResultSet rs = null;
+        /*Prepared Statement for executing query*/
+        PreparedStatement pre = null;
+        /*Set filter depends on the criteria*/
+        String filter = "";
+        if (gender != -1){
+            filter += " WHERE gender = ?";
+            if (role != -1){
+                filter += " AND roleId = ?";
+            }
+            if (status != -1){
+                filter += " AND [status] = ?";
+            }
+        } else if (role != -1){
+            filter += "WHERE roleId = ?";
+            if (status != -1){
+                filter += " AND [status] = ?";
+            }
+        } else if (status != -1){
+                filter += "WHERE [status] = ?";
+        }
+        
+        
+        /*Set page boundaries*/
+        String pageBoundary = "";
+        
+        if (page > 0){
+            System.out.println("Page = "+page);
+            pageBoundary = "  WHERE A.num BETWEEN ? AND ?;";
+        }
+        
+        /*SQL query with the criteria*/
+        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY userId ASC) as num\n"
+                        + "				  ,[userId]\n"
+                        + "				  ,[userName]\n"
+                        + "				  ,[password]\n"
+                        + "				  ,[roleId]\n"
+                        + "				  ,[profilePic]\n"
+                        + "				  ,[userMail]\n"
+                        + "				  ,[gender]\n"
+                        + "				  ,[userMobile]\n"
+                        + "				  ,[status]\n"
+                        + "				  FROM [QuizSystem].dbo.[User]\n"
+                        + filter + ") A\n" + pageBoundary;
+        
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            int parameterCount = 1;
+            /*Set filter parrameter*/
+            if (gender != -1){
+                pre.setInt(parameterCount++, gender);
+            } 
+            if (role != -1){
+                pre.setInt(parameterCount++, role);
+            }
+            if (status != -1){
+                pre.setInt(parameterCount++, status);
+            }
+            /*Set paging parameter*/
+            if (page > 0){
+                pre.setInt(parameterCount++, (page-1)*7+1);
+                pre.setInt(parameterCount, page*7);
             }
             
             rs = pre.executeQuery();

@@ -47,6 +47,12 @@ public class UserListController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String service = request.getParameter("service");
+            /*Service is null, redirect user to index*/
+            if ((service == null) || (service.trim().equals(""))) {
+                service = "loadCriteria";
+            }
+            
             UserDAO userDAO = new UserDAOImpl();
             UserRoleDAO userRoleDAO = new UserRoleDAOImpl();
             /* Get user and role on session scope */
@@ -56,39 +62,75 @@ public class UserListController extends HttpServlet {
             if ((currUser == null) || (currRole == null)) {
                 sendDispatcher(request, response, "index.jsp");
             } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
-                /* Role is admin: load all user */
+                /*Get page number*/
                 int page;
                 if (request.getParameter("page") == null) {
                     page = 1;
                 } else {
                     page = Integer.parseInt(request.getParameter("page"));
                 }
-                String criteriaType = request.getParameter("criteriaType");
-                if (criteriaType == null){
-                    criteriaType = "";
-                }
-                String criteria = request.getParameter("criteria");
-                if (criteria == null){
-                    criteria = "";
-                }
-                ArrayList<User> userPage = userDAO.getTrueAllUserPaging(page,criteriaType,criteria);
-                for (User user : userPage) {
-                    user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
-                }
-                /* Get user with criteria, paginated */
-                int maxPage = (int) Math.ceil((double) userDAO.getTrueAllUserPaging(-1,criteriaType,criteria).size() / 7);
                 request.setAttribute("page", page);
-                request.setAttribute("maxPage", maxPage);
+                /**
+                 * Service loadCriteria : load default lists and searched lists
+                 */
+                if (service.equalsIgnoreCase("loadCriteria")){
+                    /* Role is admin: load all user */
+                    String criteriaType = request.getParameter("criteriaType");
+                    if (criteriaType == null){
+                        criteriaType = "";
+                    }
+                    String criteria = request.getParameter("criteria");
+                    if (criteria == null){
+                        criteria = "";
+                    }
+                    /* Get user with criteria, paginated */
+                    ArrayList<User> userPage = userDAO.getTrueAllUserPaging(page,criteriaType,criteria);
+                    for (User user : userPage) {
+                        user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
+                    }
+                    int maxPage = (int) Math.ceil((double) userDAO.getTrueAllUserPaging(-1,criteriaType,criteria).size() / 7);
+                    request.setAttribute("maxPage", maxPage);
+                    /*Reset filter*/
+                    request.setAttribute("genderFilter", -1);
+                    request.setAttribute("roleFilter", -1);
+                    request.setAttribute("statusFilter", -1);
+                    
+                    request.setAttribute("userRoleList", userRoleDAO.getAllStatusUserRole());
+                    /* Set attribute and send it to user list page */
+                    request.setAttribute("userPageList", userPage);
+                    sendDispatcher(request, response, "jsp/userList.jsp");
+                }
                 
+                /**
+                 * Service Filter: load userList filtered
+                 */
+                if (service.equalsIgnoreCase("filter")){
+                    int gender = Integer.parseInt(request.getParameter("genderFilter"));
+                    int role = Integer.parseInt(request.getParameter("roleFilter"));
+                    int status = Integer.parseInt(request.getParameter("statusFilter"));
+                    request.setAttribute("genderFilter", gender);
+                    request.setAttribute("roleFilter", role);
+                    request.setAttribute("statusFilter", status);
+                    /*Get user list*/
+                    ArrayList<User> userPage = userDAO.getFilteredUserPaging(page, gender, role, status);
+                    for (User user : userPage) {
+                        user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
+                    }
+                    
+                    int maxPage = (int) Math.ceil((double) userDAO.getFilteredUserPaging(-1, gender, role, status).size() / 7);
+                    request.setAttribute("maxPage", maxPage);
+                    request.setAttribute("userRoleList", userRoleDAO.getAllStatusUserRole());
+                    /* Set attribute and send it to user list page */
+                    request.setAttribute("userPageList", userPage);
+                    sendDispatcher(request, response, "jsp/userList.jsp");
+                }
                 
-                /* Set attribute and send it to user list page */
-                request.setAttribute("userPageList", userPage);
-                sendDispatcher(request, response, "jsp/userList.jsp");
                 
             } else {
                 /* If the user is logged in but not admin, send back to index.jsp */
                 sendDispatcher(request, response, "index.jsp");
             }
+            
         } catch (Exception ex) {
             Logger.getLogger(ChangePasswordController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());

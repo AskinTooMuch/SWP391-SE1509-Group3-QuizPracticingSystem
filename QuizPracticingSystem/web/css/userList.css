@@ -31,4 +31,9 @@ table th , table td{
     border: solid 1px;
 }
 
-
+.filterForm{
+    border-radius: 10px;
+    border: solid #00c6ff 1px;
+    padding: 10px;
+    margin-top: 10px;
+}

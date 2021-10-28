@@ -48,7 +48,7 @@
                         <c:if test="${empty maxPage}"><c:redirect url="${contextPath}/subjectList"/></c:if>
                             <div class="row" style="margin-top: 3rem">
                                 <div class="col-md-1"></div>
-                                <div class="col-md-2" id="form" style="height: 480px">
+                                <div class="col-md-2" id="form" style="min-height: 480px">
                                     <h2 class="text-center">Filter</h2>
                                     <div style="margin-bottom: 20px;">
                                     <%-- Start search form --%>
@@ -85,6 +85,49 @@
                                                 <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span></button>  
                                             </span>
                                             <input type="hidden" name="criteriaType" value="userMobile">
+                                        </div>
+                                    </form>
+                                    <%--Filter--%>
+                                    <form action = "${contextPath}/userList" class="filterForm" method="POST">
+                                        <%--Gender--%>
+                                        <div class="row input-group">
+                                            <div class="col-md-6"><label>By gender</label></div>
+                                            <div class="col-md-6">
+                                                <select name="genderFilter" class="filter-sellection">
+                                                    <option id="gender-1" value="-1">Not Specify</option>
+                                                    <option id="gender1" value="1">Male</option>
+                                                    <option id="gender0" value="0">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <%--Role--%>
+                                        <div class="row input-group" class="filter-sellection">
+                                            <div class="col-md-6"><label>By Role</label></div>
+                                            <div class="col-md-6">
+                                                <select name="roleFilter">
+                                                    <option value="-1">Not Specify</option>
+                                                    <c:if test="${!empty userRoleList}">
+                                                        <c:forEach items="${userRoleList}" var="role">
+                                                            <option id="role${role.getUserRoleId()}" value="${role.getUserRoleId()}"><c:out value="${role.getUserRoleName()}"/></option>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <%--Status--%>
+                                        <div class="row input-group" class="filter-sellection">
+                                            <div class="col-md-6"><label>By Status</label></div>
+                                            <div class="col-md-6">
+                                                <select name="statusFilter">
+                                                    <option id="status-1" value="-1">Not Specify</option>
+                                                    <option id="status1" value="1">Available</option>
+                                                    <option id="status0" value="0">Disabled</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="hidden" name="service" value="filter">
+                                            <input type="submit" value="Filter" class="btn btn-primary" style="margin: 0px auto;">
                                         </div>
                                     </form>
                                 </div>
@@ -227,5 +270,15 @@
             <jsp:include page="footer.jsp"/>
         </div>
     </body>
+    <script>
+        window.onload = function () {
+            var gender = "${genderFilter}";
+            document.getElementById("gender"+gender).selected = true;
+            var role = "${roleFilter}";
+            document.getElementById("role"+role).selected = true;
+            var status = "${statusFilter}";
+            document.getElementById("status"+status).selected = true;
+        };
+    </script>
 </html>
 
