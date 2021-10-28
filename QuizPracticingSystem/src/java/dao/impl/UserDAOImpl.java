@@ -455,16 +455,17 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     }
 
     /**
-     * Get all user regardless of status, based on criteria in a paginated form
-     *
-     * @param page Page Number
-     * @param criteriaType Type of searching restriction
-     * @param criteria Content of searching restriction
+     * Get all user regardless of status, based on criteria and sort in a paginated form
+     * @param page
+     * @param criteriaType
+     * @param criteria
+     * @param sortCriteria
+     * @param sort
      * @return
-     * @throws Exception
+     * @throws Exception 
      */
     @Override
-    public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria) throws Exception {
+    public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria, String sortCriteria, String sort) throws Exception {
         ArrayList<User> newUserList = new ArrayList();
         /*Database Connection*/
         Connection conn = null;
@@ -488,16 +489,33 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
             default:    criteriaType = null;
                         break;
         }
+        switch (sortCriteria){
+            case "sortId": sort = " Order By userId " + sort;
+                        break;
+            case "sortName": sort = " Order By userName " + sort;
+                        break;
+            case "sortGender": sort = " Order By gender " + sort;
+                        break;
+            case "sortMail": sort = " Order By userMail " + sort;
+                        break;
+            case "sortMobile": sort = " Order By userMobile " + sort;
+                        break;
+            case "sortRole": sort = " Order By roleId " + sort;
+                        break;
+            case "sortStatus": sort = " Order By status " + sort;
+                        break;
+            default: sort = " Order By userId ASC";
+        }
+        
         /*Set page boundaries*/
         String pageBoundary = "";
         
         if (page > 0){
-            System.out.println("Page = "+page);
-            pageBoundary = "  WHERE A.num BETWEEN ? AND ?;";
+            pageBoundary = "  WHERE A.num BETWEEN ? AND ?";
         }
         
         /*SQL query with the criteria*/
-        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY userId ASC) as num\n"
+        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER("+ sort +") as num\n"
                         + "				  ,[userId]\n"
                         + "				  ,[userName]\n"
                         + "				  ,[password]\n"
@@ -508,7 +526,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
                         + "				  ,[userMobile]\n"
                         + "				  ,[status]\n"
                         + "				  FROM [QuizSystem].dbo.[User]\n"
-                        + queryCriteria + ") A\n" + pageBoundary;
+                        + queryCriteria + ") A\n" + pageBoundary + sort;
         
         try {
             conn = getConnection();
@@ -549,16 +567,18 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
     }
     
     /**
-     * Get filtered Users paginated
+     * Get filtered and sort Users paginated
      * @param page
      * @param gender
      * @param role
      * @param status
+     * @param sortCriteria
+     * @param sort
      * @return
      * @throws Exception 
      */
     @Override
-    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status) throws Exception {
+    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status, String sortCriteria, String sort) throws Exception {
         ArrayList<User> newUserList = new ArrayList();
         /*Database Connection*/
         Connection conn = null;
@@ -584,18 +604,36 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         } else if (status != -1){
                 filter += "WHERE [status] = ?";
         }
-        
+        /**
+         * Sort
+         */
+        switch (sortCriteria){
+            case "sortId": sort = " Order By userId " + sort;
+                        break;
+            case "sortName": sort = " Order By userName " + sort;
+                        break;
+            case "sortGender": sort = " Order By gender " + sort;
+                        break;
+            case "sortMail": sort = " Order By userMail " + sort;
+                        break;
+            case "sortMobile": sort = " Order By userMobile " + sort;
+                        break;
+            case "sortRole": sort = " Order By roleId " + sort;
+                        break;
+            case "sortStatus": sort = " Order By status " + sort;
+                        break;
+            default: sort = " Order By userId ASC";
+        }
         
         /*Set page boundaries*/
         String pageBoundary = "";
         
         if (page > 0){
-            System.out.println("Page = "+page);
-            pageBoundary = "  WHERE A.num BETWEEN ? AND ?;";
+            pageBoundary = "  WHERE A.num BETWEEN ? AND ?";
         }
         
         /*SQL query with the criteria*/
-        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY userId ASC) as num\n"
+        String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER("+ sort +") as num\n"
                         + "				  ,[userId]\n"
                         + "				  ,[userName]\n"
                         + "				  ,[password]\n"
@@ -652,7 +690,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
 
 //    public static void main(String[] args) throws Exception {
 //        UserDAOImpl dao = new UserDAOImpl();
-//        for (User u : dao.getTrueAllUserPaging(1, "userMail", "fpt")) {
+//        for (User u : dao.getTrueAllUserPaging(1, "userMail", "fpt", "sortMail", "asc")) {
 //            System.out.println(u.getUserMail());
 //        }
 //    }

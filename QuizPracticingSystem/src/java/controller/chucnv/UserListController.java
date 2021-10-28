@@ -70,6 +70,22 @@ public class UserListController extends HttpServlet {
                     page = Integer.parseInt(request.getParameter("page"));
                 }
                 request.setAttribute("page", page);
+                
+                /*Get sort criteria*/
+                String sortCriteria = request.getParameter("sortCriteria");
+                System.out.println(sortCriteria);
+                if ((sortCriteria == null) || (sortCriteria.trim().equals(""))){
+                    sortCriteria = "sortId";
+                }
+                String sort = request.getParameter("sort");
+                System.out.println(sort);
+                if ((sort == null) || (sort.trim().equals(""))){
+                    sort = "asc";
+                }
+                /*Set sorting information*/
+                request.setAttribute("sortCriteria", sortCriteria);
+                request.setAttribute("sort", sort);
+                
                 /**
                  * Service loadCriteria : load default lists and searched lists
                  */
@@ -83,13 +99,16 @@ public class UserListController extends HttpServlet {
                     if (criteria == null){
                         criteria = "";
                     }
+                    request.setAttribute("criteriaType", criteriaType);
+                    request.setAttribute("criteria", criteria);
                     /* Get user with criteria, paginated */
-                    ArrayList<User> userPage = userDAO.getTrueAllUserPaging(page,criteriaType,criteria);
+                    ArrayList<User> userPage = userDAO.getTrueAllUserPaging(page,criteriaType,criteria,sortCriteria,sort);
                     for (User user : userPage) {
                         user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
                     }
-                    int maxPage = (int) Math.ceil((double) userDAO.getTrueAllUserPaging(-1,criteriaType,criteria).size() / 7);
+                    int maxPage = (int) Math.ceil((double) userDAO.getTrueAllUserPaging(-1,criteriaType,criteria,sortCriteria,sort).size() / 7);
                     request.setAttribute("maxPage", maxPage);
+                    
                     /*Reset filter*/
                     request.setAttribute("genderFilter", -1);
                     request.setAttribute("roleFilter", -1);
@@ -98,6 +117,7 @@ public class UserListController extends HttpServlet {
                     request.setAttribute("userRoleList", userRoleDAO.getAllStatusUserRole());
                     /* Set attribute and send it to user list page */
                     request.setAttribute("userPageList", userPage);
+                    request.setAttribute("service", "loadCriteria");
                     sendDispatcher(request, response, "jsp/userList.jsp");
                 }
                 
@@ -112,16 +132,17 @@ public class UserListController extends HttpServlet {
                     request.setAttribute("roleFilter", role);
                     request.setAttribute("statusFilter", status);
                     /*Get user list*/
-                    ArrayList<User> userPage = userDAO.getFilteredUserPaging(page, gender, role, status);
+                    ArrayList<User> userPage = userDAO.getFilteredUserPaging(page, gender, role, status, sortCriteria, sort);
                     for (User user : userPage) {
                         user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
                     }
                     
-                    int maxPage = (int) Math.ceil((double) userDAO.getFilteredUserPaging(-1, gender, role, status).size() / 7);
+                    int maxPage = (int) Math.ceil((double) userDAO.getFilteredUserPaging(-1, gender, role, status, sortCriteria, sort).size() / 7);
                     request.setAttribute("maxPage", maxPage);
                     request.setAttribute("userRoleList", userRoleDAO.getAllStatusUserRole());
                     /* Set attribute and send it to user list page */
                     request.setAttribute("userPageList", userPage);
+                    request.setAttribute("service", "filter");
                     sendDispatcher(request, response, "jsp/userList.jsp");
                 }
                 

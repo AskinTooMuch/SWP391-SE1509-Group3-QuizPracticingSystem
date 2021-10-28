@@ -120,23 +120,27 @@ public interface UserDAO {
     public HashMap<String, Integer> getUserCountByRole() throws Exception;
     
     /**
-     * Get all user regardless of status, based on criteria in a paginated form
-     * @param page Page Number
-     * @param criteriaType  Type of searching restriction
-     * @param criteria  Content of searching restriction
+     * Get all user regardless of status, based on criteria and sort in a paginated form
+     * @param page
+     * @param criteriaType
+     * @param criteria
+     * @param sortCriteria
+     * @param sort
      * @return
      * @throws Exception 
      */
-    public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria) throws Exception;
+    public ArrayList<User> getTrueAllUserPaging(int page, String criteriaType, String criteria, String sortCriteria, String sort) throws Exception;
     
     /**
-     * Get filtered Users paginated
+     * Get filtered and sort Users paginated
      * @param page
      * @param gender
      * @param role
      * @param status
+     * @param sortCriteria
+     * @param sort
      * @return
      * @throws Exception 
      */
-    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status) throws Exception;
+    public ArrayList<User> getFilteredUserPaging(int page, int gender, int role, int status, String sortCriteria, String sort) throws Exception;
 }
