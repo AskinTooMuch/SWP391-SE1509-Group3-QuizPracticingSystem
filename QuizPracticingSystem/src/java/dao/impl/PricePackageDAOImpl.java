@@ -6,6 +6,7 @@
 package dao.impl;
 
 import bean.PricePackage;
+import bean.Question;
 
 import dao.DBConnection;
 import java.util.ArrayList;
@@ -63,7 +64,33 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
     }
 
     @Override
-    public PricePackage getPricePackageById(int ppId) throws Exception {
+    public PricePackage getPricePackageById(int packId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;
+        /* Result set returned by the sqlserver */
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+        String sql = "SELECT * FROM PricePackage WHERE packId=" + packId;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new PricePackage(rs.getInt("packId"), 
+                        rs.getString("packName"), 
+                        rs.getInt("subjectId"), 
+                        rs.getInt("duration"), 
+                        rs.getFloat("listPrice"), 
+                        rs.getFloat("salePrice"), 
+                        rs.getBoolean("status"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
 
@@ -81,6 +108,7 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
     public int deletePricePackage(int ppId) throws Exception {
         return 0;
     }
+     
     
 }
 

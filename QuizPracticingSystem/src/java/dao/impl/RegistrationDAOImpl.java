@@ -15,12 +15,16 @@ package dao.impl;
 import bean.Registration;
 import bean.Subject;
 import bean.ItemDashboard;
+import bean.RegistrationManage;
 import com.google.gson.Gson;
 import dao.DBConnection;
+import dao.PricePackageDAO;
 import java.util.ArrayList;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.UserDAO;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -373,13 +377,14 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return list;
     }
+
     @Override
     public ArrayList<Registration> getPaidRegistration(String type) throws Exception {
         ArrayList<Registration> list = new ArrayList();
         Connection conn = null;
         ResultSet rs = null;
         PreparedStatement pre = null;
-        String sql = "SELECT TOP 10 * FROM [Registration] WHERE [status] = '"+type+"' ORDER BY regTime DESC";
+        String sql = "SELECT TOP 10 * FROM [Registration] WHERE [status] = '" + type + "' ORDER BY regTime DESC";
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
@@ -503,4 +508,154 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return nameList;
     }
 
+    @Override
+    public ArrayList<Registration> getFilterRegistration(String type, String value) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<Registration> registrationList = new ArrayList<>();
+        String sql = "";
+        switch (type) {
+            case "subject":
+                sql = "SELECT [regId]\n"
+                        + "      ,R.[userId]\n"
+                        + "      ,[regTime]\n"
+                        + "      ,R.[packId]\n"
+                        + "      ,[cost]\n"
+                        + "      ,[validFrom]\n"
+                        + "      ,[validTo]\n"
+                        + "      ,[lastUpdatedBy]\n"
+                        + "      ,[note]\n"
+                        + "      ,R.[status]\n"
+                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
+                        + "        INNER JOIN [QuizSystem].[dbo].PricePackage PP ON R.packId = PP.packId\n"
+                        + "        INNER JOIN [QuizSystem].[dbo].[Subject] S ON S.subjectId=PP.subjectId\n"
+                        + "WHERE S.subjectId = ?";
+                break;
+            case "from":
+                sql = "SELECT [regId]\n"
+                        + "      ,R.[userId]\n"
+                        + "      ,[regTime]\n"
+                        + "      ,R.[packId]\n"
+                        + "      ,[cost]\n"
+                        + "      ,[validFrom]\n"
+                        + "      ,[validTo]\n"
+                        + "      ,[lastUpdatedBy]\n"
+                        + "      ,[note]\n"
+                        + "      ,R.[status]\n"
+                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
+                        + "WHERE R.validFrom >= ?";
+                break;
+            case "to":
+                sql = "SELECT [regId]\n"
+                        + "      ,R.[userId]\n"
+                        + "      ,[regTime]\n"
+                        + "      ,R.[packId]\n"
+                        + "      ,[cost]\n"
+                        + "      ,[validFrom]\n"
+                        + "      ,[validTo]\n"
+                        + "      ,[lastUpdatedBy]\n"
+                        + "      ,[note]\n"
+                        + "      ,R.[status]\n"
+                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
+                        + "WHERE R.validTo <= ?";
+                break;
+            case "email":
+                sql = "SELECT [regId]\n"
+                        + "      ,R.[userId]\n"
+                        + "      ,[regTime]\n"
+                        + "      ,R.[packId]\n"
+                        + "      ,[cost]\n"
+                        + "      ,[validFrom]\n"
+                        + "      ,[validTo]\n"
+                        + "      ,[lastUpdatedBy]\n"
+                        + "      ,[note]\n"
+                        + "      ,R.[status]\n"
+                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
+                        + "WHERE U.userMail = ?";
+                break;
+        }
+
+        Registration registration = null;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, value);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                registration = new Registration(rs.getInt("regId"),
+                        rs.getInt("userId"), rs.getDate("regTime"),
+                        rs.getInt("packId"), rs.getDouble("cost"),
+                        rs.getDate("validFrom"), rs.getDate("validTo"),
+                        rs.getInt("lastUpdatedBy"), rs.getString("note"),
+                        rs.getBoolean("status"));
+                registrationList.add(registration);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return registrationList;
+    }
+
+    public ArrayList<RegistrationManage> getFilterRegistration(int subjectId, int userId) throws Exception {
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
+        ArrayList<RegistrationManage> registrationList = new ArrayList<>();
+        String sql = "SELECT [regId]\n"
+                + "      ,R.[userId]\n"
+                + "      ,[regTime]\n"
+                + "	  ,S.[subjectId]\n"
+                + "      ,R.[packId]\n"
+                + "      ,[cost]\n"
+                + "      ,[validFrom]\n"
+                + "      ,[validTo]\n"
+                + "      ,[lastUpdatedBy]\n"
+                + "      ,[note]\n"
+                + "      ,R.[status]\n"
+                + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
+                + "  INNER JOIN [QuizSystem].[dbo].PricePackage PP ON R.packId = PP.packId\n"
+                + "  INNER JOIN [QuizSystem].[dbo].[Subject] S ON S.subjectId=PP.subjectId\n"
+                + "  WHERE 1=1";
+        if (subjectId > 0) {
+            sql = sql.concat(" and S.subjectId = " + subjectId);
+        }
+        if (userId > 0) {
+            sql = sql.concat(" and U.userId = " + userId);
+        }
+        RegistrationManage registrationManage = null;
+        SubjectDAO subjectDAO = new SubjectDAOImpl();
+        PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
+        UserDAO userDAO = new UserDAOImpl();
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                registrationManage = new RegistrationManage(rs.getInt("regId"),
+                        userDAO.getUserById(rs.getInt("userId")).getUserMail(),
+                        rs.getDate("regTime"), subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                        pricePackageDAO.getPricePackageById(rs.getInt("packId")).getPackName(),
+                        rs.getDouble("cost"), rs.getDate("validFrom"), rs.getDate("validTo"),
+                        userDAO.getUserById(rs.getInt("userId")).getUserName(),
+                        rs.getString("note"), rs.getBoolean("status"));
+                registrationList.add(registrationManage);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return registrationList;
+    }
+       public static void main(String[] args) throws Exception {
+        RegistrationDAO reg = new RegistrationDAOImpl();
+           System.out.println(reg.getFilterRegistration(2, 11).size());
+    }
 }

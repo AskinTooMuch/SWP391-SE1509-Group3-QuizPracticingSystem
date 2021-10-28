@@ -1,9 +1,12 @@
 <%-- 
-    Document   : registrationList
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Oct 26, 2021, 9:12:17 AM
-    Author     : tuan
---%>
+    registrationList
 
+    Record of change:
+    Date        Version     Author          Description
+    26/10/21     1.0         TuanPAHE150543  First Deploy
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -22,7 +25,7 @@
         <script src="${contextPath}/js/questionList.js"></script>
     </head>
     <body>
-                <div class="wrap">
+        <div class="wrap">
             <c:if test="${sessionScope.currUser == null}">
                 <c:redirect url="/index.jsp"/>
             </c:if>
@@ -31,51 +34,39 @@
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('sale')}">
 
                 <%-- Check If subjectQuizList,testTypeQuizListis avaiable not, if not redirect to load information --%>
-                <c:if test="${subjectQuizList==null || testTypeQuizList==null}">
-                    <c:redirect url="/QuizListController?service=getQuizListInformation"/>
+                <c:if test="${listFilterSubject==null || listFilterUser==null }">
+                    <c:redirect url="/registrationController?service=getFilterInformation"/>
                 </c:if>
                 <div class="row" style="margin-top: 3rem">
                     <div class="col-md-1"></div>
                     <div class="col-md-2" id="form" style="height: 480px">
                         <h2 class="text-center">Filter</h2>
-                        <div style="margin-bottom: 20px;">
-                            <%-- Start search form --%>
-                            <form action = "${contextPath}/QuizListController" method="POST" class="navbar-form">
-                                <div class="input-group">
-                                    <input  class="form-control" type="text" id="content" placeholder="Content... " name="content"  style="display: inline-block">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span></button>  
-                                    </span>
-                                    <input type="hidden" name="service" value="searchQuizByName">
-                                </div>
-                            </form>                     
-                        </div>
                         <%-- Start filter form --%>
-                        <form action="${contextPath}/QuizListController" method="POST">
+                        <%-- Start filter form --%>
+                        <form action="${contextPath}/registrationController" method="POST">
                             <div class="form-group">
                                 <h5>Filter by Subject</h5>
                                 <%-- Choose Subject Filter --%>
                                 <select class="form-control" name="subjectId">                                
                                     <option value="0" selected="">Choose...</option>
-                                    <c:forEach items="${subjectQuizList}" var="subject">
+                                    <c:forEach items="${listFilterSubject}" var="subject">
                                         <option value="${subject.getSubjectId()}" ><c:out value="${subject.getSubjectName()}" /></option>                          
                                     </c:forEach>                          
-                                </select>
-                                <h5>Filter by Quiz Type</h5>
-                                <%-- Choose Dimension Filter --%>
-                                <select class="form-control" name="testTypeId">
+                                </select>                           
+                                <h5>Filter by User</h5>
+                                <%-- Choose Lesson Filter --%>
+                                <select class="form-control" name="userId">
                                     <option value="0" selected="">Choose...</option>
-                                    <c:forEach items="${testTypeQuizList}" var="testType">
-                                        <option value="${testType.getTestTypeId()}" onclick=""><c:out value="${testType.getTestTypeName()}" /></option>                          
+                                    <c:forEach items="${listFilterUser}" var="user">
+                                        <option value="${user.getUserId()}" onclick=""><c:out value="${user.getUserMail()}" /></option>                          
                                     </c:forEach>                          
                                 </select>
                             </div>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success" style="width: 100%">Filter</button>
-                                <input type="hidden" name="service" value="filterQuiz">
+                                <input type="hidden" name="service" value="filterRegistration">
                             </div>
                         </form>
-
                     </div>
 
                     <div class="col-md-8" id="form" style="min-height: 600px; ">
@@ -94,55 +85,54 @@
                                     <h5 style="color: red"><c:out value="${message}" /></h5>
                                 </c:if>
                             </div>  
-                            <a href="jsp/quizDetail.jsp"><button class="btn btn-info" style="float: right; margin: 5px">Add quiz</button></a>
-
 
                             <%-- Table of QuestionList--%>
-                            <table id="table-id" class="table table-bordered table-striped"">
+                            <table id="table-id" class="table table-bordered table-striped">
                                 <thead>
                                     <%-- Headers of Table--%>
                                     <tr style="background-color: #F0D8D5;">
-                                        <th>Quiz Id</th>
-                                        <th>Quiz Name</th>
+                                        <th>Id</th>
+                                        <th>Email</th>
+                                        <th>Registration Time</th>
                                         <th>Subject</th>
-                                        <th>Level</th>
-                                        <th>Number Of Question</th>
-                                        <th>Duration<br>(minutes)</th>
-                                        <th>Pass Rate</th>
-                                        <th>Quiz Type</th>
-                                        <th>Available</th>
+                                        <th>Package</th>
+                                        <th>Total cost</th>
+                                        <th>Status</th>
+                                        <th>Valid from</th>
+                                        <th>Valid to</th>
+                                        <th>Last updated by</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead> 
                                 <tbody>
                                     <c:choose>
-                                        <c:when test="${empty quizQuizList}">
-                                            <tr style="color: red"><td colspan="10">No Quiz Found</td></tr>
+                                        <c:when test="${empty listRegistrationManage}">
+                                            <tr style="color: red"><td colspan="10">No Registration Found</td></tr>
                                         </c:when>                               
-                                        <%-- Check if listQuestionManage not null then display listQuestionManage --%>
+                                        <%-- Check if  --%>
                                         <c:otherwise>
-                                            <c:forEach items="${quizQuizList}" var="quiz">
+                                            <c:forEach items="${listRegistrationManage}" var="registration">
                                                 <tr>
-                                                    <td><c:out value="${quiz.getQuizId()}"/></td>
-                                                    <td><c:out value="${quiz.getQuizName()}"/></td>
-                                                    <td><c:out value="${quiz.getSubject().getSubjectName()}"/></td>
-                                                    <td><c:out value="${quiz.getQuizLevelName()}"/></td>
-                                                    <td><c:out value="${quiz.getNumberQuestion()}"/></td>
-                                                    <td><c:out value="${quiz.getDurationString()}"/></td>
-                                                    <td><c:out value="${quiz.getPassRate()}"/>%</td>
-                                                    <td><c:out value="${quiz.getTestTypeName()}"/></td>
-                                                    <%-- Check if questionList status is available or not--%>
-                                                    <td><c:if test="${quiz.getStatus()}">
-                                                            Available
+                                                    <td><c:out value="${registration.getRegId()}"/></td>
+                                                    <td><c:out value="${registration.getUserMail()}"/></td>
+                                                    <td><c:out value="${registration.getRegTime()}"/></td>
+                                                    <td><c:out value="${registration.getSubjectName()}"/></td>
+                                                    <td><c:out value="${registration.getPackId()}"/></td>
+                                                    <td><c:out value="${registration.getCost()}"/></td>
+                                                    <td><c:if test="${registration.isStatus()}">
+                                                            Paid
                                                         </c:if>
-                                                        <c:if test="${!quiz.getStatus()}">
-                                                            Not Available
+                                                        <c:if test="${!registration.isStatus()}">
+                                                            Unpaid
+                                                        </c:if>
+                                                        <c:if test="${registration.isStatus()==null}">
+                                                            Submitted
                                                         </c:if>
                                                     </td>
-                                                    <td>
-                                                        <a href="QuizListController?service=editQuiz&type=update&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Edit</div></a>
-                                                        <a href="QuizListController?service=editQuiz&type=delete&quizId=${quiz.getQuizId()}"><div class="btn btn-success">Delete</div></a>
-                                                    </td>
+                                                    <td><c:out value="${registration.getValidFrom()}"/></td>
+                                                    <td><c:out value="${registration.getValidTo()}"/></td>
+                                                    <td><c:out value="${registration.getLastUpdatedBy()}"/></td>
+                                                    <td><a>Edit</div></a></td>
                                                 </tr>
                                             </c:forEach> 
 

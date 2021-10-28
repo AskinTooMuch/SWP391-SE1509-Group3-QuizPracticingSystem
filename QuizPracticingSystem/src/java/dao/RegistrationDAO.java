@@ -12,6 +12,7 @@
 package dao;
 
 import bean.*;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -50,4 +51,8 @@ public interface RegistrationDAO {
     public ArrayList<Subject> getRegistedSubjectbyUserId(int userId) throws Exception;
     
     public ArrayList<Registration> getPaidRegistration(String type) throws Exception;
+    
+    public ArrayList<Registration> getFilterRegistration(String type, String value) throws Exception;
+    
+    public ArrayList<RegistrationManage> getFilterRegistration(int subjectId, int userId) throws Exception;
 }

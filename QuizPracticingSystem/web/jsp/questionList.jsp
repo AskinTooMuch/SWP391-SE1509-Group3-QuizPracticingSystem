@@ -112,7 +112,7 @@
                         </div>  
 
                         <%-- Table of QuestionList--%>
-                        <table id="table-id" class="table table-bordered table-striped"">
+                        <table id="table-id" class="table table-bordered table-striped">
                             <thead>
                                 <%-- Headers of Table--%>
                                 <tr style="background-color: #F0D8D5;">
