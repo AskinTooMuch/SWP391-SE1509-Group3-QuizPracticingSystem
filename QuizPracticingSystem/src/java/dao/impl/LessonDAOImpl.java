@@ -20,6 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with Lesson and associate tables
  *
  * @author tuan
  */

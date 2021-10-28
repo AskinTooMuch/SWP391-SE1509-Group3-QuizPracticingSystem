@@ -20,6 +20,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with PostCate and associate tables
  *
  * @author duong
  */

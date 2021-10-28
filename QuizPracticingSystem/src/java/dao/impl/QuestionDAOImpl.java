@@ -1,15 +1,15 @@
-/* 
-    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
-    Created on : Sep 17, 2021, 9:33:11 PM
-    PostCateDAO
-    Quiz practicing system
-
-    Record of change:
-    Date        Version     Author          Description
-    17/9/21     1.0         NamDHHE150519   First Deploy
-    30/9/21     1.1         NamDHHE150519   update method
-    05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage, addQuestion
-    07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
+/**
+ * Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ * Created on : Sep 17, 2021, 9:33:11 PM
+ * PostCateDAO
+ * Quiz practicing system
+ *
+ * Record of change:
+ * Date        Version     Author          Description
+ * 17/9/21     1.0         NamDHHE150519   First Deploy
+ * 30/9/21     1.1         NamDHHE150519   update method
+ * 05/10/21    1.2         TuanPAHE150543  update getQuestionByContent, getQuestionManage, addQuestion
+ * 07/10/21    1.3         DuongNHHE150328 update getQuestionForCreateQuiz
  */
 package dao.impl;
 

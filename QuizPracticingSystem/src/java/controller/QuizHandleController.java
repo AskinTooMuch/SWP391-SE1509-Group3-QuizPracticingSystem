@@ -32,8 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * This class has the process request of quiz handle
  *
- * @author ADMN
+ * @author NamDH
  */
 public class QuizHandleController extends HttpServlet {
 

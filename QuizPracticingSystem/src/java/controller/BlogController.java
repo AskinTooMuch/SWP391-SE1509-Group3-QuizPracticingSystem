@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Lớp này được tạo ra để xử lí các request, response liên quan tới blog(public
+ *  This class has the process request of blog(public
  * feature)
  *
  * @author ADMN

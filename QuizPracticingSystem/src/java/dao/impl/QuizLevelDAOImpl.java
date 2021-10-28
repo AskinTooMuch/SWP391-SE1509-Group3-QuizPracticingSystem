@@ -22,6 +22,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with QuizLevel and associate tables
  *
  * @author ChucNVHE150618
  */
@@ -70,7 +72,6 @@ public class QuizLevelDAOImpl extends DBConnection implements QuizLevelDAO {
      * update existed quiz level
      *
      * @param quizLevelId
-     * @param quizLevel
      * @return
      * @throws Exception
      */
@@ -105,7 +106,6 @@ public class QuizLevelDAOImpl extends DBConnection implements QuizLevelDAO {
     /**
      * update existed quiz level
      *
-     * @param quizLevelId
      * @param quizLevel
      * @return
      * @throws Exception

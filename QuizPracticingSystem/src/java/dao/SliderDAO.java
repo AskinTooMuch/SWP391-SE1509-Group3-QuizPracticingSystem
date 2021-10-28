@@ -8,7 +8,7 @@
  *  Date        Version     Author              Description
  *  23/9/21     1.0         ChucNVHE150618      First Deploy
  *  18/10/21    1.0         NamDHHE150519       Add comment
-*/
+ */
 package dao;
 
 import bean.Slider;
@@ -20,15 +20,16 @@ import java.util.ArrayList;
  * @author NamDH
  */
 public interface SliderDAO {
-    
+
+    /*Get all Slider from table*/
     public ArrayList<Slider> getSlider() throws Exception;
-    
+
     public Slider getSliderById(int sliderId) throws Exception;
-    
-    public int editSlider(int sliderId,Slider editedSlider) throws Exception;
-    
+
+    public int editSlider(int sliderId, Slider editedSlider) throws Exception;
+
     public int addSlider(Slider newSlder) throws Exception;
-    
+
     public int deleteSlider(int sliderId) throws Exception;
 
 }
