@@ -474,18 +474,27 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         String queryCriteria = "";
         /*Set criteria based on the search type*/
         switch (criteriaType) {
-            case "fullName": queryCriteria = " userName LIKE ? ";
+            case "userName": queryCriteria = " WHERE userName LIKE ? ";
                              criteria = criteria + "%";
                              criteria = "%" + criteria;
                             break;
-            case "userMail": queryCriteria =" userMail LIKE ? ";
+            case "userMail": queryCriteria =" WHERE userMail LIKE ? ";
                              criteria = criteria + "%";
                              criteria = "%" + criteria;
                             break;
-            case "userMobile": queryCriteria =" userMobile = ? ";
+            case "userMobile": queryCriteria =" WHERE userMobile = ? ";
                             break;
-            default:    return null;
+            default:    criteriaType = null;
+                        break;
         }
+        /*Set page boundaries*/
+        String pageBoundary = "";
+        
+        if (page > 0){
+            System.out.println("Page = "+page);
+            pageBoundary = "  WHERE A.num BETWEEN ? AND ?;";
+        }
+        
         /*SQL query with the criteria*/
         String sql = "  SELECT * FROM (SELECT ROW_NUMBER()  OVER(ORDER BY userId ASC) as num\n"
                         + "				  ,[userId]\n"
@@ -498,15 +507,24 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
                         + "				  ,[userMobile]\n"
                         + "				  ,[status]\n"
                         + "				  FROM [QuizSystem].dbo.[User]\n"
-                        + "				  WHERE "
-                        + queryCriteria + ") A\n"
-                        + "  WHERE A.num BETWEEN ? AND ?;";
+                        + queryCriteria + ") A\n" + pageBoundary;
+        
         try {
             conn = getConnection();
             pre = conn.prepareStatement(sql);
-            pre.setString(1, criteria);
-            pre.setInt(2, (page-1)*7+1);
-            pre.setInt(3, page*7);
+            if (page > 0){
+                if (criteriaType != null){
+                    pre.setString(1, criteria);
+                    pre.setInt(2, (page-1)*7+1);
+                    pre.setInt(3, page*7);
+                } else if (page > 0){
+                pre.setInt(1, (page-1)*7+1);
+                pre.setInt(2, page*7);
+                }
+            } else if (criteriaType != null) {
+                pre.setString(1, criteria);
+            }
+            
             rs = pre.executeQuery();
             while (rs.next()) {
                 newUserList.add(new User(rs.getInt("userId"),
@@ -528,7 +546,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
         }
         return newUserList;
     }
-//
+
 //    public static void main(String[] args) throws Exception {
 //        UserDAOImpl dao = new UserDAOImpl();
 //        for (User u : dao.getTrueAllUserPaging(1, "userMail", "fpt")) {

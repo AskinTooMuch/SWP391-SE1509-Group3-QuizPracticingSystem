@@ -56,10 +56,10 @@ public class CourseContentListController extends HttpServlet {
             } else if (currRole.getUserRoleName().equalsIgnoreCase("expert")) {
                 /* Role is expert: get the assigned subjects */
                 int page;
-                if (request.getAttribute("page") == null) {
+                if (request.getParameter("page") == null) {
                     page = 1;
                 } else {
-                    page = (int) request.getAttribute("page");
+                    page = Integer.parseInt(request.getParameter("page"));
                 }
                 /* Get assigned list */
                 ArrayList<Subject> featuredSubjectList = subjectDAO.getSubjectsAssignedPaging(currUser.getUserId(),page);

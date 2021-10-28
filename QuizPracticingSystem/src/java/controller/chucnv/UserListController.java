@@ -14,7 +14,9 @@ import bean.Subject;
 import bean.User;
 import bean.UserRole;
 import dao.UserDAO;
+import dao.UserRoleDAO;
 import dao.impl.UserDAOImpl;
+import dao.impl.UserRoleDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class UserListController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             UserDAO userDAO = new UserDAOImpl();
+            UserRoleDAO userRoleDAO = new UserRoleDAOImpl();
             /* Get user and role on session scope */
             User currUser = (User) request.getSession().getAttribute("currUser");
             UserRole currRole = (UserRole) request.getSession().getAttribute("role");
@@ -55,20 +58,32 @@ public class UserListController extends HttpServlet {
             } else if (currRole.getUserRoleName().equalsIgnoreCase("admin")) {
                 /* Role is admin: load all user */
                 int page;
-                if (request.getAttribute("pageNumber") == null) {
+                if (request.getParameter("page") == null) {
                     page = 1;
                 } else {
-                    page = (int) request.getAttribute("pageNumber");
+                    page = Integer.parseInt(request.getParameter("page"));
                 }
+                String criteriaType = request.getParameter("criteriaType");
+                if (criteriaType == null){
+                    criteriaType = "";
+                }
+                String criteria = request.getParameter("criteria");
+                if (criteria == null){
+                    criteria = "";
+                }
+                ArrayList<User> userPage = userDAO.getTrueAllUserPaging(page,criteriaType,criteria);
+                for (User user : userPage) {
+                    user.setUserRole(userRoleDAO.getUserRoleById(user.getRoleId()));
+                }
+                /* Get user with criteria, paginated */
+                int maxPage = (int) Math.ceil((double) userDAO.getTrueAllUserPaging(-1,criteriaType,criteria).size() / 7);
+                request.setAttribute("page", page);
+                request.setAttribute("maxPage", maxPage);
                 
-//                /* Get all subject */
-//                int maxPage = (int) Math.ceil((double) subjectDAO.getTrueAllSubjects().size() / 7);
-//                request.setAttribute("page", page);
-//                request.setAttribute("maxPage", maxPage);
-//                ArrayList<Subject> allSubject = subjectDAO.getTrueSubjectsPaging(page);
-//                /* Set attribute and send it to course content page */
-//                request.setAttribute("courseContentSubjectList", allSubject);
-//                sendDispatcher(request, response, "jsp/courseContentList.jsp");
+                
+                /* Set attribute and send it to user list page */
+                request.setAttribute("userPageList", userPage);
+                sendDispatcher(request, response, "jsp/userList.jsp");
                 
             } else {
                 /* If the user is logged in but not admin, send back to index.jsp */
