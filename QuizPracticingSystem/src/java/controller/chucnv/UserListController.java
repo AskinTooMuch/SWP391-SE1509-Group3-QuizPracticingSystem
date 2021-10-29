@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This class has process requests of services of user list function
  * @author admin
  */
 public class UserListController extends HttpServlet {

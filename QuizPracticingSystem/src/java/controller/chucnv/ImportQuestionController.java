@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
         maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
 /**
- *
+ * This class has process requests of services of import question function
  * @author admin
  */
 public class ImportQuestionController extends HttpServlet {
