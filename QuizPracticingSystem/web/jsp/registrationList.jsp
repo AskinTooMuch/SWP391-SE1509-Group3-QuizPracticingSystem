@@ -129,7 +129,7 @@
                                                     <td><c:out value="${registration.getValidFrom()}"/></td>
                                                     <td><c:out value="${registration.getValidTo()}"/></td>
                                                     <td><c:out value="${registration.getLastUpdatedBy()}"/></td>
-                                                    <td><a href="questionController?service=editRegistration&type=update&registrationId=${registration.getRegId()}"><div class="btn btn-success">Edit</div></a></td>
+                                                    <td><a href="registrationController?service=updateRegistration&type=update&registrationId=${registration.getRegId()}"><div class="btn btn-success">Edit</div></a></td>
                                                 </tr>
                                             </c:forEach> 
 

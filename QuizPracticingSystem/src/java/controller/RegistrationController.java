@@ -1,7 +1,7 @@
 /*
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Oct 26, 2021, 9:12:17 AM
- *  UserController map
+ *  Registration Controller
  *  Quiz practicing system
 
  *  Record of change:
@@ -59,13 +59,14 @@ public class RegistrationController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String service = request.getParameter("service");
             RegistrationDAO registrationInterface = new RegistrationDAOImpl();
+            PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
+            UserDAO userDAO = new UserDAOImpl();
+            SubjectDAO subjectDAO = new SubjectDAOImpl();
             /**
-             * Service: get all Subject, User
+             * Service: get Filter Information
              */
             if (service.equalsIgnoreCase("getFilterInformation")) {
                 String message = (String) request.getAttribute("message");
-                SubjectDAO subjectDAO = new SubjectDAOImpl();
-                UserDAO userDAO = new UserDAOImpl();
                 ArrayList<Subject> listSubject = subjectDAO.getAllSubjects();
                 request.setAttribute("listFilterSubject", listSubject);
                 ArrayList<User> listUser = userDAO.getUserAllUser();
@@ -76,13 +77,10 @@ public class RegistrationController extends HttpServlet {
                 }
             }
             /**
-             * Service: get all Subject, User
+             * Service: get Registration Information Detail
              */
             if (service.equalsIgnoreCase("getInformationDetail")) {
                 String message = (String) request.getAttribute("message");
-                SubjectDAO subjectDAO = new SubjectDAOImpl();
-                UserDAO userDAO = new UserDAOImpl();
-                PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
                 ArrayList<User> listUser = userDAO.getUserAllUser();
                 request.setAttribute("listUser", listUser);
                 ArrayList<PricePackage> listPackage = pricePackageDAO.getAllPricePackage();
@@ -106,9 +104,6 @@ public class RegistrationController extends HttpServlet {
                         && (!currRole.getUserRoleName().equalsIgnoreCase("sale")))) {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
-                    SubjectDAO subjectDAO = new SubjectDAOImpl();
-                    UserDAO userDAO = new UserDAOImpl();
-                    PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
                     int subjectId = Integer.parseInt(request.getParameter("subjectId"));
                     int userId = Integer.parseInt(request.getParameter("userId"));
                     ArrayList<Subject> listSubject = subjectDAO.getAllSubjects();
@@ -122,33 +117,7 @@ public class RegistrationController extends HttpServlet {
             }
 
             /**
-             * Service: get edit registration information
-             */
-            if (service.equalsIgnoreCase("editRegistration")) {
-                /* Get user and role on session scope */
-                User currUser = (User) request.getSession().getAttribute("currUser");
-                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
-                /* If user is not logged in, or not admin/expert, redirect to index */
-                if ((currUser == null) || (currRole == null)
-                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
-                        && (!currRole.getUserRoleName().equalsIgnoreCase("sale")))) {
-                    sendDispatcher(request, response, "error.jsp");
-                } else {
-                    int registrationId = Integer.parseInt(request.getParameter("registrationId"));
-                    String type = request.getParameter("type");
-                    RegistrationDAO registrationDAO = new RegistrationDAOImpl();
-                    if (type.equalsIgnoreCase("update")) {
-                        SubjectDAO subjectDAO = new SubjectDAOImpl();
-                        UserDAO userDAO = new UserDAOImpl();
-                        Registration updateRegistration = registrationInterface.getRegistrationById(registrationId);
-                        ArrayList<Subject> subjectList = subjectDAO.getAllSubjects();
-                        request.getRequestDispatcher("jsp/updateQuestion.jsp").forward(request, response);
-                    }
-                }
-            }
-
-            /**
-             * Service course content detail: add new subject lessons
+             * Service: add new registration
              */
             if (service.equalsIgnoreCase("addRegistration")) {
                 /* Get user and role on session scope */
@@ -160,11 +129,9 @@ public class RegistrationController extends HttpServlet {
                         && (!currRole.getUserRoleName().equalsIgnoreCase("sale")))) {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
-                    UserDAO userDAO = new UserDAOImpl();
-                    PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
                     String message = "";
                     /* Get parameters from jsp */
-                    int userId = Integer.parseInt(request.getParameter("userId").trim());          
+                    int userId = Integer.parseInt(request.getParameter("userId").trim());
                     int packageId = Integer.parseInt(request.getParameter("packageId").trim());
                     double cost = Double.parseDouble(request.getParameter("cost"));
                     String dateFrom = request.getParameter("validFrom"); // get request date user selected
@@ -174,7 +141,7 @@ public class RegistrationController extends HttpServlet {
                     java.util.Calendar calendar = java.util.Calendar.getInstance();
                     calendar.setTime(validTo);
                     calendar.add(java.util.Calendar.MONTH, pricePackage.getDuration());
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");                  
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     validTo = Date.valueOf(dateFormat.format(calendar.getTime()));
                     int lastUpdateBy = currUser.getUserId();
                     String note = request.getParameter("note").trim();
@@ -183,7 +150,7 @@ public class RegistrationController extends HttpServlet {
                     if (userId == 0) {
                         message = "User can not be empty";
                     } else {
-                        /* Add new subject lesson */
+                        /* Add new registration */
                         Registration updateRegistration = new Registration(0, userId, null, packageId, cost, validFrom, validTo, lastUpdateBy, note, status);
                         int check = registrationInterface.addRegistration(updateRegistration);
                         if (check > 0) {
@@ -200,6 +167,73 @@ public class RegistrationController extends HttpServlet {
                     request.setAttribute("listPackage", listPackage);
                     request.setAttribute("message", message);
                     sendDispatcher(request, response, "jsp/registrationList.jsp");
+                }
+            }
+
+            /**
+             * Service: get update registration information
+             */
+            if (service.equalsIgnoreCase("updateRegistration")) {
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("sale")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } else {
+                    int registrationId = Integer.parseInt(request.getParameter("registrationId"));
+                    String type = request.getParameter("type");
+                    if (type.equalsIgnoreCase("update")) {
+                        Registration updateRegistration = registrationInterface.getRegistrationById(registrationId);
+                        PricePackage pack = pricePackageDAO.getPricePackageById(updateRegistration.getPackId());
+                        request.setAttribute("pack", pack);
+                        User user = userDAO.getUserById(updateRegistration.getUserId());
+                        request.setAttribute("user", user);
+                        Subject subject = subjectDAO.getSubjectbyId(pack.getSubjectId());
+                        request.setAttribute("subject", subject);
+                        request.setAttribute("updateRegistration", updateRegistration);
+                        request.getRequestDispatcher("jsp/updateRegistration.jsp").forward(request, response);
+                    }
+
+                }
+            }
+
+            /**
+             * Service: update registration information
+             */
+            if (service.equalsIgnoreCase("updateRegistrationInformation")) {
+                /* Get user and role on session scope */
+                User currUser = (User) request.getSession().getAttribute("currUser");
+                UserRole currRole = (UserRole) request.getSession().getAttribute("role");
+                /* If user is not logged in, or not admin/expert, redirect to index */
+                if ((currUser == null) || (currRole == null)
+                        || ((!currRole.getUserRoleName().equalsIgnoreCase("admin"))
+                        && (!currRole.getUserRoleName().equalsIgnoreCase("sale")))) {
+                    sendDispatcher(request, response, "error.jsp");
+                } else {
+                    int updateRegId = Integer.parseInt(request.getParameter("updateRegId"));
+                    boolean status = request.getParameter("status").equals("1");
+                    String note = (String) request.getParameter("note").trim();
+                    int lastUpdateBy = currUser.getUserId();
+                    String message = "";
+                    String color = "red";
+                    Registration updatedRegistration = registrationInterface.getRegistrationById(updateRegId);
+                    if (note == null) {
+                        note = "";
+                    }
+                    /* Perform the updates on subject lesson */
+                    updatedRegistration.setNote(note);
+                    updatedRegistration.setLastUpdatedBy(lastUpdateBy);
+                    updatedRegistration.setStatus(status);
+                    registrationInterface.editRegistration(updatedRegistration.getRegId(), updatedRegistration);
+                    Registration updateRegistration = registrationInterface.getRegistrationById(updatedRegistration.getRegId());
+                    request.setAttribute("updateRegistration", updateRegistration);
+                    request.setAttribute("message", "Update successfully!!");
+                    request.getRequestDispatcher("registrationController?service=getFilterInformation")
+                            .forward(request, response);
+
                 }
             }
         } catch (Exception ex) {

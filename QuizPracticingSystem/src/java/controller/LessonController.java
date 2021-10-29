@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Oct 26, 2021, 9:12:17 AM
+ *  Lesson Controller
+ *  Quiz practicing system
+
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  22/10/21     1.0         TuanPAHE150543  First Deploy
  */
 package controller;
 
