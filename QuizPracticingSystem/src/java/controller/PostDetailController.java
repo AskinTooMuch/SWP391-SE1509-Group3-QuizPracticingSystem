@@ -42,13 +42,15 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 /**
  * This class has the process request to edit blog detail
  *
- * @author Admin
+ * @author DuongNHHE150328
  */
 public class PostDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods. Function Post Detail: allow the marketing member to update blog
+     * methods.
+     * 
+     * Function Post Detail: allow the marketing member to update blog
      * information
      *
      * @param request servlet request

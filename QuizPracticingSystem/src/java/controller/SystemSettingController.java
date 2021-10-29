@@ -48,7 +48,7 @@ public class SystemSettingController extends HttpServlet {
      * methods.
      *
      * Function Setting List: Display all system setting Function Setting
-     * Detail: Allow admin to edit or add new system settings
+     * Function Setting Detail: Allow admin to edit or add new system settings
      *
      * @param request servlet request
      * @param response servlet response
@@ -59,7 +59,7 @@ public class SystemSettingController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String service = request.getParameter("service");
+            String service = request.getParameter("service").trim();
             //declare all DAO
             UserRoleDAO userRoleDAO = new UserRoleDAOImpl();
             PostCateDAO postCateDAO = new PostCateDAOImpl();
@@ -87,7 +87,7 @@ public class SystemSettingController extends HttpServlet {
                 ArrayList<LessonType> lessonTypeList = lessonTypeDAO.getAllStatusLessonType();
                 //get all dimesion's type
                 ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllStatusDimensionTypes();
-                String message = request.getParameter("message");
+                String message = request.getParameter("message").trim();
                 if (message != null) {//if there is a message
                     request.setAttribute("message", message);
                 }
@@ -105,7 +105,7 @@ public class SystemSettingController extends HttpServlet {
              * Filter setting list by type of system setting.
              */
             if (service.equalsIgnoreCase("filter")) {
-                String field = request.getParameter("field");
+                String field = request.getParameter("field").trim();
                 if (field.equalsIgnoreCase("userRole")) { // if admin  want to get all user role list
                     ArrayList<UserRole> userRoleList = userRoleDAO.getAllStatusUserRole();
                     request.setAttribute("userRoleList", userRoleList);
@@ -135,8 +135,8 @@ public class SystemSettingController extends HttpServlet {
              * Get information to edit a system setting
              */
             if (service.equalsIgnoreCase("getEditInformation")) {
-                String field = request.getParameter("field");
-                int objectId = Integer.parseInt(request.getParameter("id"));
+                String field = request.getParameter("field").trim();
+                int objectId = Integer.parseInt(request.getParameter("id").trim());
                 String message = request.getParameter("message");
                 String fieldName = ""; //save the field name
                 String objectName = ""; //save settings's name
