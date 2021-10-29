@@ -163,7 +163,6 @@ public class RegistrationController extends HttpServlet {
                     UserDAO userDAO = new UserDAOImpl();
                     PricePackageDAO pricePackageDAO = new PricePackageDAOImpl();
                     String message = "";
-                    String color = "red";
                     /* Get parameters from jsp */
                     int userId = Integer.parseInt(request.getParameter("userId").trim());          
                     int packageId = Integer.parseInt(request.getParameter("packageId").trim());
@@ -188,7 +187,6 @@ public class RegistrationController extends HttpServlet {
                         Registration updateRegistration = new Registration(0, userId, null, packageId, cost, validFrom, validTo, lastUpdateBy, note, status);
                         int check = registrationInterface.addRegistration(updateRegistration);
                         if (check > 0) {
-                            color = "green";
                             message = "Add registration successfully.";
                         } else {
                             message = "Add registration failed.";
