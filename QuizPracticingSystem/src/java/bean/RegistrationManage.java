@@ -18,7 +18,7 @@ public class RegistrationManage {
     private Date validTo; /*Ending valid date*/
     private String lastUpdatedBy; /*Last updated by user*/
     private String note; /*Update note*/
-    private boolean status; /*Registration Status*/
+    private String status; /*Registration Status*/
     
     /**
      * Blank Constructor
@@ -40,7 +40,9 @@ public class RegistrationManage {
      * @param note
      * @param status 
      */
-    public RegistrationManage(int regId, String userMail, Date regTime, String subjectName, String packName, double cost, Date validFrom, Date validTo, String lastUpdatedBy, String note, boolean status) {
+    
+
+    public RegistrationManage(int regId, String userMail, Date regTime, String subjectName, String packName, double cost, Date validFrom, Date validTo, String lastUpdatedBy, String note, String status) {
         this.regId = regId;
         this.userMail = userMail;
         this.regTime = regTime;
@@ -134,13 +136,14 @@ public class RegistrationManage {
         this.note = note;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
+
     
     
     
