@@ -1,7 +1,13 @@
+
 <%-- 
-    Document   : lessonDetails
+    Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
     Created on : Oct 20, 2021, 9:29:08 PM
-    Author     : tuan
+    LessonDetail
+
+    Record of change:
+    Date        Version     Author          Description
+    20/10/21    1.0         TuanPAHE150543  First Deploy
+    
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

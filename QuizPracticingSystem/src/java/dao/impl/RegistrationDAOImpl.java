@@ -9,6 +9,7 @@
  *  23/9/21     1.0         NamDHHE150519  First Deploy
  *  9/10/21     1.0         NamDHHE150519  add method View,convertJson
  *  24/10/21    1.0         NamDHHE150519  comment
+ *  25/10/21    1.0         TuanPAHE150543  add method Add, filter
  */
 package dao.impl;
 
@@ -34,7 +35,12 @@ import java.util.HashMap;
  * @author admin
  */
 public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO {
-
+    
+    /**
+     * getAllRegistration
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Registration> getAllRegistration() throws Exception {
         ArrayList<Registration> registrationsList = new ArrayList();
@@ -67,7 +73,13 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return registrationsList;
     }
-
+    
+    /**
+     * getRegistrationById
+     * @param registrationId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Registration getRegistrationById(int registrationId) throws Exception {
         Connection conn = null;
@@ -100,7 +112,13 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return null;
     }
-
+    
+    /**
+     * addRegistration
+     * @param newRegistration
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addRegistration(Registration newRegistration) throws Exception {
         Connection conn = null;
@@ -139,6 +157,14 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         x.setCost(30);
         dao.addRegistration(x);
     }
+    
+    /**
+     * editRegistration
+     * @param registrationId
+     * @param editedRegistration
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int editRegistration(int registrationId, Registration editedRegistration) throws Exception {
         int i = 0;
