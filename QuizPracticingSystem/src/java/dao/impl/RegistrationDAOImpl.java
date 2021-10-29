@@ -70,18 +70,102 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
 
     @Override
     public Registration getRegistrationById(int registrationId) throws Exception {
-
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT * FROM [Registration] WHERE regId=?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, registrationId);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                return new Registration(rs.getInt("regId"),
+                        rs.getInt("userId"),
+                        rs.getDate("regTime"),
+                        rs.getInt("packId"),
+                        rs.getDouble("cost"),
+                        rs.getDate("validFrom"),
+                        rs.getDate("validTo"),
+                        rs.getInt("lastUpdatedBy"),
+                        rs.getString("note"),
+                        rs.getBoolean("status"));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
         return null;
     }
 
     @Override
     public int addRegistration(Registration newRegistration) throws Exception {
-        return 0;
-    }
+        Connection conn = null;
+        ResultSet rs = null;/* Result set returned by the sqlserver */
+        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
 
+        String sql = "INSERT INTO [QuizSystem].[dbo].[Registration]"
+                + "(userId,regTime,packId,cost,validFrom,validTo,lastUpdatedBy,note,status)"
+                + " values (?,GETDATE(),?,?,?,?,?,?,?)";
+        int count = 0;
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, newRegistration.getUserId());
+            pre.setInt(2, newRegistration.getPackId());
+            pre.setDouble(3, newRegistration.getCost());
+            pre.setDate(4, (Date) newRegistration.getValidFrom());
+            pre.setDate(5, (Date) newRegistration.getValidTo());
+            pre.setInt(6, newRegistration.getLastUpdatedBy());
+            pre.setString(7, newRegistration.getNote());
+            pre.setBoolean(8, newRegistration.isStatus());
+            count = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return count;
+    }
+    
+    public static void main(String[] args) throws Exception {
+        RegistrationDAO dao = new RegistrationDAOImpl();
+        Registration x = dao.getRegistrationById(1);
+        x.setCost(30);
+        dao.addRegistration(x);
+    }
     @Override
     public int editRegistration(int registrationId, Registration editedRegistration) throws Exception {
-        return 0;
+        int i = 0;
+        Connection conn = null;
+        PreparedStatement pre = null;
+        /* Prepared statement for executing sql queries */
+
+        String sql = "UPDATE [QuizSystem].[dbo].[Registration] \n"
+                + "SET lastUpdatedBy=?,\n"
+                + "	note=?,\n"
+                + "	[status]=?\n"
+                + "	WHERE regId=?";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            pre.setInt(1, editedRegistration.getLastUpdatedBy());
+            pre.setString(2, editedRegistration.getNote());
+            pre.setBoolean(3, editedRegistration.isStatus());
+            pre.setInt(4, registrationId);
+            i = pre.executeUpdate();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return i;
     }
 
     @Override
@@ -509,98 +593,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     @Override
-    public ArrayList<Registration> getFilterRegistration(String type, String value) throws Exception {
-        Connection conn = null;
-        ResultSet rs = null;/* Result set returned by the sqlserver */
-        PreparedStatement pre = null;/* Prepared statement for executing sql queries */
-        ArrayList<Registration> registrationList = new ArrayList<>();
-        String sql = "";
-        switch (type) {
-            case "subject":
-                sql = "SELECT [regId]\n"
-                        + "      ,R.[userId]\n"
-                        + "      ,[regTime]\n"
-                        + "      ,R.[packId]\n"
-                        + "      ,[cost]\n"
-                        + "      ,[validFrom]\n"
-                        + "      ,[validTo]\n"
-                        + "      ,[lastUpdatedBy]\n"
-                        + "      ,[note]\n"
-                        + "      ,R.[status]\n"
-                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
-                        + "        INNER JOIN [QuizSystem].[dbo].PricePackage PP ON R.packId = PP.packId\n"
-                        + "        INNER JOIN [QuizSystem].[dbo].[Subject] S ON S.subjectId=PP.subjectId\n"
-                        + "WHERE S.subjectId = ?";
-                break;
-            case "from":
-                sql = "SELECT [regId]\n"
-                        + "      ,R.[userId]\n"
-                        + "      ,[regTime]\n"
-                        + "      ,R.[packId]\n"
-                        + "      ,[cost]\n"
-                        + "      ,[validFrom]\n"
-                        + "      ,[validTo]\n"
-                        + "      ,[lastUpdatedBy]\n"
-                        + "      ,[note]\n"
-                        + "      ,R.[status]\n"
-                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
-                        + "WHERE R.validFrom >= ?";
-                break;
-            case "to":
-                sql = "SELECT [regId]\n"
-                        + "      ,R.[userId]\n"
-                        + "      ,[regTime]\n"
-                        + "      ,R.[packId]\n"
-                        + "      ,[cost]\n"
-                        + "      ,[validFrom]\n"
-                        + "      ,[validTo]\n"
-                        + "      ,[lastUpdatedBy]\n"
-                        + "      ,[note]\n"
-                        + "      ,R.[status]\n"
-                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
-                        + "WHERE R.validTo <= ?";
-                break;
-            case "email":
-                sql = "SELECT [regId]\n"
-                        + "      ,R.[userId]\n"
-                        + "      ,[regTime]\n"
-                        + "      ,R.[packId]\n"
-                        + "      ,[cost]\n"
-                        + "      ,[validFrom]\n"
-                        + "      ,[validTo]\n"
-                        + "      ,[lastUpdatedBy]\n"
-                        + "      ,[note]\n"
-                        + "      ,R.[status]\n"
-                        + "  FROM [QuizSystem].[dbo].[Registration] R INNER JOIN [QuizSystem].[dbo].[User] U ON R.userId=U.userId\n"
-                        + "WHERE U.userMail = ?";
-                break;
-        }
-
-        Registration registration = null;
-        try {
-            conn = getConnection();
-            pre = conn.prepareStatement(sql);
-            pre.setString(1, value);
-            rs = pre.executeQuery();
-            while (rs.next()) {
-                registration = new Registration(rs.getInt("regId"),
-                        rs.getInt("userId"), rs.getDate("regTime"),
-                        rs.getInt("packId"), rs.getDouble("cost"),
-                        rs.getDate("validFrom"), rs.getDate("validTo"),
-                        rs.getInt("lastUpdatedBy"), rs.getString("note"),
-                        rs.getBoolean("status"));
-                registrationList.add(registration);
-            }
-        } catch (Exception ex) {
-            throw ex;
-        } finally {
-            closeResultSet(rs);
-            closePreparedStatement(pre);
-            closeConnection(conn);
-        }
-        return registrationList;
-    }
-
     public ArrayList<RegistrationManage> getFilterRegistration(int subjectId, int userId) throws Exception {
         Connection conn = null;
         ResultSet rs = null;/* Result set returned by the sqlserver */
@@ -636,13 +628,32 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
             while (rs.next()) {
-                registrationManage = new RegistrationManage(rs.getInt("regId"),
-                        userDAO.getUserById(rs.getInt("userId")).getUserMail(),
-                        rs.getDate("regTime"), subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
-                        pricePackageDAO.getPricePackageById(rs.getInt("packId")).getPackName(),
-                        rs.getDouble("cost"), rs.getDate("validFrom"), rs.getDate("validTo"),
-                        userDAO.getUserById(rs.getInt("userId")).getUserName(),
-                        rs.getString("note"), rs.getBoolean("status"));
+                boolean status = rs.getBoolean("status");
+                if (rs.wasNull()) {
+                    registrationManage = new RegistrationManage(rs.getInt("regId"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserMail(),
+                            rs.getDate("regTime"), subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                            pricePackageDAO.getPricePackageById(rs.getInt("packId")).getPackName(),
+                            rs.getDouble("cost"), rs.getDate("validFrom"), rs.getDate("validTo"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserName(),
+                            rs.getString("note"), "Submitted");
+                } else if (status) {
+                    registrationManage = new RegistrationManage(rs.getInt("regId"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserMail(),
+                            rs.getDate("regTime"), subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                            pricePackageDAO.getPricePackageById(rs.getInt("packId")).getPackName(),
+                            rs.getDouble("cost"), rs.getDate("validFrom"), rs.getDate("validTo"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserName(),
+                            rs.getString("note"), "Paid");
+                } else if (!status) {
+                    registrationManage = new RegistrationManage(rs.getInt("regId"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserMail(),
+                            rs.getDate("regTime"), subjectDAO.getSubjectbyId(rs.getInt("subjectId")).getSubjectName(),
+                            pricePackageDAO.getPricePackageById(rs.getInt("packId")).getPackName(),
+                            rs.getDouble("cost"), rs.getDate("validFrom"), rs.getDate("validTo"),
+                            userDAO.getUserById(rs.getInt("userId")).getUserName(),
+                            rs.getString("note"), "Unpaid");
+                }
                 registrationList.add(registrationManage);
             }
         } catch (Exception ex) {
@@ -654,8 +665,5 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return registrationList;
     }
-       public static void main(String[] args) throws Exception {
-        RegistrationDAO reg = new RegistrationDAOImpl();
-           System.out.println(reg.getFilterRegistration(2, 11).size());
-    }
+
 }

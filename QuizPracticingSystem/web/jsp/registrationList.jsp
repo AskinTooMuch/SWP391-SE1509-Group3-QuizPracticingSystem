@@ -23,6 +23,11 @@
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
         <link rel="stylesheet" href="${contextPath}/css/questionList.css">
         <script src="${contextPath}/js/questionList.js"></script>
+        <style>
+            th{
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
         <div class="wrap">
@@ -43,7 +48,7 @@
                         <h2 class="text-center">Filter</h2>
                         <%-- Start filter form --%>
                         <%-- Start filter form --%>
-                        <form action="${contextPath}/registrationController" method="POST">
+                        <form action="${contextPath}/registrationController" method="POST" id="1">
                             <div class="form-group">
                                 <h5>Filter by Subject</h5>
                                 <%-- Choose Subject Filter --%>
@@ -64,7 +69,7 @@
                             </div>
                             <div class="input-group">
                                 <button type="submit" id="submit" class="btn btn-success" style="width: 100%">Filter</button>
-                                <input type="hidden" name="service" value="filterRegistration">
+                                <input type="hidden" name="service" value="filterRegistration" >
                             </div>
                         </form>
                     </div>
@@ -81,6 +86,7 @@
                                     <option value="20">20</option>
 
                                 </select>
+                                <a href="${contextPath}/jsp/registrationDetail.jsp"><button class="btn btn-success" style="float:right;margin: 5px">Add Registration</button></a>
                                 <c:if test="${message != null}">
                                     <h5 style="color: red"><c:out value="${message}" /></h5>
                                 </c:if>
@@ -91,15 +97,15 @@
                                 <thead>
                                     <%-- Headers of Table--%>
                                     <tr style="background-color: #F0D8D5;">
-                                        <th>Id</th>
-                                        <th>Email</th>
-                                        <th>Registration Time</th>
-                                        <th>Subject</th>
-                                        <th>Package</th>
-                                        <th>Total cost</th>
-                                        <th>Status</th>
-                                        <th>Valid from</th>
-                                        <th>Valid to</th>
+                                        <th onclick="sortTable(0)">Id</th>
+                                        <th onclick="sortTable(1)">Email</th>
+                                        <th onclick="sortTable(2)">Registration Time</th>
+                                        <th onclick="sortTable(3)">Subject</th>
+                                        <th onclick="sortTable(4)">Package</th>
+                                        <th onclick="sortTable(5)">Total cost</th>
+                                        <th onclick="sortTable(6)">Status</th>
+                                        <th onclick="sortTable(7)">Valid from</th>
+                                        <th onclick="sortTable(8)">Valid to</th>
                                         <th>Last updated by</th>
                                         <th>Action</th>
                                     </tr>
@@ -117,22 +123,13 @@
                                                     <td><c:out value="${registration.getUserMail()}"/></td>
                                                     <td><c:out value="${registration.getRegTime()}"/></td>
                                                     <td><c:out value="${registration.getSubjectName()}"/></td>
-                                                    <td><c:out value="${registration.getPackId()}"/></td>
+                                                    <td><c:out value="${registration.getPackName()}"/></td>
                                                     <td><c:out value="${registration.getCost()}"/></td>
-                                                    <td><c:if test="${registration.isStatus()}">
-                                                            Paid
-                                                        </c:if>
-                                                        <c:if test="${!registration.isStatus()}">
-                                                            Unpaid
-                                                        </c:if>
-                                                        <c:if test="${registration.isStatus()==null}">
-                                                            Submitted
-                                                        </c:if>
-                                                    </td>
+                                                    <td><c:out value="${registration.getStatus()}"/></td>
                                                     <td><c:out value="${registration.getValidFrom()}"/></td>
                                                     <td><c:out value="${registration.getValidTo()}"/></td>
                                                     <td><c:out value="${registration.getLastUpdatedBy()}"/></td>
-                                                    <td><a>Edit</div></a></td>
+                                                    <td><a href="questionController?service=editRegistration&type=update&registrationId=${registration.getRegId()}"><div class="btn btn-success">Edit</div></a></td>
                                                 </tr>
                                             </c:forEach> 
 
@@ -143,7 +140,7 @@
                             <%--Start Pagination --%>
                             <div class='pagination-container'>
                                 <nav>
-                                    <ul class="pagination" style="">
+                                    <ul class="pagination" style="justify-content: center">
                                         <li data-page="prev" >
                                             <span> <button class="btn btn-light" style="border: solid 1px">Prev</button></span>
                                         </li>
@@ -288,6 +285,62 @@
                 }
             }
 
+        </script>
+        <script>
+            function sortTable(n) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("table-id");
+                switching = true;
+                //Set the sorting direction to ascending:
+                dir = "asc";
+                /*Make a loop that will continue until
+                 no switching has been done:*/
+                while (switching) {
+                    //start by saying: no switching is done:
+                    switching = false;
+                    rows = table.rows;
+                    /*Loop through all table rows (except the
+                     first, which contains table headers):*/
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        //start by saying there should be no switching:
+                        shouldSwitch = false;
+                        /*Get the two elements you want to compare,
+                         one from current row and one from the next:*/
+                        x = rows[i].getElementsByTagName("TD")[n];
+                        y = rows[i + 1].getElementsByTagName("TD")[n];
+                        /*check if the two rows should switch place,
+                         based on the direction, asc or desc:*/
+                        if (dir == "asc") {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                //if so, mark as a switch and break the loop:
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else if (dir == "desc") {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                //if so, mark as a switch and break the loop:
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (shouldSwitch) {
+                        /*If a switch has been marked, make the switch
+                         and mark that a switch has been done:*/
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                        //Each time a switch is done, increase this count by 1:
+                        switchcount++;
+                    } else {
+                        /*If no switching has been done AND the direction is "asc",
+                         set the direction to "desc" and run the while loop again.*/
+                        if (switchcount == 0 && dir == "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
+                    }
+                }
+            }
         </script>
     </body>
 </html>

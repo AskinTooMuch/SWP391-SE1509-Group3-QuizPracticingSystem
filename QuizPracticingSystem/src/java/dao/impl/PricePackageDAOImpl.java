@@ -23,7 +23,32 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
 
     @Override
     public ArrayList<PricePackage> getAllPricePackage() throws Exception {
-        return null;
+       ArrayList<PricePackage> packageList = new ArrayList();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pre = null;
+        String sql = "SELECT * FROM [PricePackage]";
+        try {
+            conn = getConnection();
+            pre = conn.prepareStatement(sql);
+            rs = pre.executeQuery();
+            while (rs.next()) {
+                packageList.add(new PricePackage(rs.getInt("packId"),
+                        rs.getString("packName"),
+                        rs.getInt("subjectId"),
+                        rs.getInt("duration"),
+                        rs.getFloat("listPrice"),
+                        rs.getFloat("salePrice"),
+                        rs.getBoolean("status")));
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            closeResultSet(rs);
+            closePreparedStatement(pre);
+            closeConnection(conn);
+        }
+        return packageList;
     }
 
     @Override
