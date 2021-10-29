@@ -526,7 +526,7 @@ public class UserDAOImpl extends DBConnection implements UserDAO {
                         + "				  ,[userMobile]\n"
                         + "				  ,[status]\n"
                         + "				  FROM [QuizSystem].dbo.[User]\n"
-                        + queryCriteria + ") A\n" + pageBoundary + sort;
+                        + queryCriteria + ") A\n" + pageBoundary;
         
         try {
             conn = getConnection();

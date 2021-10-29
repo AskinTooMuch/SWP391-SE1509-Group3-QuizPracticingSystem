@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 .wrap{
-    min-height: 45vh;
+    min-height: 55vh;
 }
 
 .big-button{
@@ -20,6 +20,7 @@ and open the template in the editor.
     border-radius: 5px;
     margin: 3vh 3vw;
     display: inline-block;
+    padding: 20px;
 }
 
 .big-button:hover{

@@ -39,22 +39,16 @@
                             <span class="fas fa-user-shield">Quiz Detail Page</span>  
                         </div>
                     </a>
-                </div>
-                <div class="text-center">
                     <a href="${contextPath}/jsp/quizList.jsp" style="text-decoration: none;color:black" >
                         <div class="text-center big-button">
                             <span class="fas fa-user-shield">Quiz List Page</span>  
                         </div> 
-                    </a>
-                </div>
-                <div class="text-center">        
+                    </a>    
                     <a href="${contextPath}/userList" style="text-decoration: none;color:black" >
                         <div class="text-center big-button">
                             <span class="fas fa-user-shield">User List</span>  
                         </div>
-                    </a>
-                </div>   
-                        <div class="text-center">        
+                    </a>      
                     <a href="${contextPath}/dashboard" style="text-decoration: none;color:black" >
                         <div class="text-center big-button">
                             <span class="fas fa-user-shield">Dashboard</span>  
