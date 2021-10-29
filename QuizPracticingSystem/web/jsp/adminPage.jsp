@@ -29,9 +29,9 @@
         </c:if>
         <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
-        
+
         <div class="wrap">
-            
+
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
                 <div class="text-center text-center">
                     <a href="${contextPath}/jsp/quizDetail.jsp" style="text-decoration: none;color:black" >
@@ -55,11 +55,18 @@
                         </div>
                     </a>
                 </div>
+                <div class="text-center">        
+                    <a href="${contextPath}/jsp/settingList.jsp" style="text-decoration: none;color:black" >
+                        <div class="text-center big-button">
+                            <span class="fas fa-user-shield">Setting List</span>  
+                        </div>
+                    </a>
+                </div>  
             </c:if>
             <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
-                    <h2 style="text-align: center;">You don't have the right to access this page</h2>
+                <h2 style="text-align: center;">You don't have the right to access this page</h2>
             </c:if>
-            
+
         </div>
         <%-- Include footer page --%>
         <jsp:include page="/jsp/footer.jsp"/>
