@@ -53,7 +53,14 @@
                             <span class="fas fa-user-shield">User List</span>  
                         </div>
                     </a>
-                </div>    
+                </div>   
+                        <div class="text-center">        
+                    <a href="${contextPath}/dashboard" style="text-decoration: none;color:black" >
+                        <div class="text-center big-button">
+                            <span class="fas fa-user-shield">Dashboard</span>  
+                        </div>
+                    </a>
+                </div>
             </c:if>
             <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
                     <h2 style="text-align: center;">You don't have the right to access this page</h2>
