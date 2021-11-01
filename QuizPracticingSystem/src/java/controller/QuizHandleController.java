@@ -1,7 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  QuizController map
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author          Description
+ *  23/9/21     1.0         NamDHHe510519   First Deploy
+ *  24/9/21     1.0         NamDHHE150519   Update quiz handle
+ *  25/9/21     1.0         NamDHHE150519   Update quiz review
+ *  26/9/21     1.0         NamDHHE150519   Update quiz summary
+ *  26/9/21     1.1         NamDHHE150519   Update simulation Exam
  */
 package controller;
 
@@ -256,7 +265,7 @@ public class QuizHandleController extends HttpServlet {
                 int quizTakeId = Integer.parseInt(request.getParameter("quizTakeId"));
                 request.setAttribute("quizTakeId", quizTakeId);
                 CustomerQuizDAO customerQuizInterface = new CustomerQuizDAOImpl();
-                
+
                 //get Quiz information(right,wrong answer, number of question)
                 QuizQuizHandle doingQuiz = quizQHInterface.getReviewQuiz(quizTakeId);
                 ArrayList<QuestionQuizHandle> quizReview = doingQuiz.getQuestions();

@@ -7,8 +7,8 @@
  *  Record of change:
  *  Date        Version     Author          Description
  *  18/9/21     1.0         NamDHHe150519   First Deploy
- * 19/9/21     1.0         NamDHHe150519   update service
- * 15/10/21    1.0         NamDHHe150519   them comment
+ *  19/9/21     1.0         NamDHHe150519   update service
+ *  15/10/21    1.0         NamDHHe150519   them comment
  */
 package controller;
 
@@ -28,8 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *  This class has the process request of blog(public
- * feature)
+ * This class has the process request of blog(public feature)
  *
  * @author ADMN
  */

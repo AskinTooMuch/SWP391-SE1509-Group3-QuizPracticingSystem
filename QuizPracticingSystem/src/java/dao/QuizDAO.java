@@ -65,19 +65,78 @@ public interface QuizDAO {
      */
     public ArrayList<Quiz> getAllSimulationQuizByUser(int userId, int subjectId, String quizName) throws Exception;
 
+    /**
+     * edit existed quiz in the database
+     *
+     * @param quizId
+     * @param quiz
+     * @return
+     * @throws Exception
+     */
     public int editQuiz(int quizId, Quiz quiz) throws Exception;
 
+    /**
+     * add a quiz into the database
+     *
+     * @param quiz
+     * @return
+     * @throws Exception
+     */
     public int addQuiz(Quiz quiz) throws Exception;
 
+    /**
+     * delete a quiz from the database
+     *
+     * @param quizId
+     * @return
+     * @throws Exception
+     */
     public int deleteQuiz(int quizId) throws Exception;
 
+    /**
+     * Get quiz that have some same attribute
+     *
+     * @param quiz
+     * @return
+     * @throws Exception
+     */
     public int getQuizIdCreated(Quiz quiz) throws Exception;
 
+    /**
+     * add quiz's question to the database
+     *
+     * @param quizId
+     * @param questionId
+     * @return
+     * @throws Exception
+     */
     public int addQuizQuestion(int quizId, int questionId) throws Exception;
 
+    /**
+     * Get all quiz that have the same subjectId and quizTypeId
+     *
+     * @param subjectId
+     * @param quizTypeId
+     * @return
+     * @throws Exception
+     */
     public ArrayList<Quiz> getFilteredQuiz(int subjectId, int quizTypeId) throws Exception;
 
+    /**
+     * Get all quiz that have the name similar to searchName
+     *
+     * @param searchName
+     * @return
+     * @throws Exception
+     */
     public ArrayList<Quiz> getQuizByName(String searchName) throws Exception;
 
+    /**
+     * delete all question of a quiz
+     *
+     * @param quizId
+     * @return
+     * @throws Exception
+     */
     public int removeQuizQuestion(int quizId) throws Exception;
 }

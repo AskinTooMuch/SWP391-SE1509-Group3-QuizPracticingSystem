@@ -59,7 +59,7 @@
                                     <form action="${contextPath}/importQuestion" method="POST">
                                         <div class="text-center">
                                             <div class="image-upload-wrap">
-                                               <input class="file-upload-input" type='file' onchange="openFile(event);" accept="text/plain" />
+                                               <input class="file-upload-input" type='file' onchange="openFile(event);" accept=".xml" />
                                             <div class="drag-text">
                                               <h4>Drag and drop or select a file</h4>
                                             </div>  

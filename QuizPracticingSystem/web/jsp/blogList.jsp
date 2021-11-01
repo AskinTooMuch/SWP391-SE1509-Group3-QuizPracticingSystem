@@ -66,7 +66,7 @@
                                         </div>
                                     </c:forEach>    
                                 </div>
-                                <input type="submit" class="btn btn-primary" value="Search" style="background-color:#4472c4;color:white; margin-top: 10px;"/>
+                                <input type="submit" class="btn btn-primary" value="Search" style="margin-top: 10px;"/>
                                 <input hidden name="service" value="blogList"/>
                             </div>
                         </form>

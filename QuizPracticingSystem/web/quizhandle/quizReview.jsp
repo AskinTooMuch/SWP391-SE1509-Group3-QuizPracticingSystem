@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>        
-                        <a href="${contextPath}/simulationExamController" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/practiceController?service=getPracticeListInformation" class="goBack" type="button" class="btn" style="" onclick=""> Go Back</a>
                     </div>
                     <%-- Cac thong tin: diem so, thoi gian lam, thoi gian nop --%>
                     <div class="col-6" style="display:flex;">    
@@ -293,6 +293,9 @@
                     y[i].style.display = 'inline-flex';
                 }
             });
+            function goBack(){
+                history.back();
+            }
         </script>
 
 

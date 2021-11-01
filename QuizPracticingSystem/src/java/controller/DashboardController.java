@@ -30,9 +30,6 @@ import dao.impl.UserDAOImpl;
 import dao.impl.UserRoleDAOImpl;
 import dao.impl.ViewDAOImpl;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,14 +43,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author ADMN
+ * This class has the process request of dashboard
+ * @author NamDH
  */
 public class DashboardController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. Service for viewing system's statistics
      *
      * @param request servlet request
      * @param response servlet response
@@ -88,6 +85,7 @@ public class DashboardController extends HttpServlet {
                     Date date = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                     String currentDate = formatter.format(date.getTime());
+                    
                     //default date range 1 week
                     if (to == null) {
                         to = currentDate;

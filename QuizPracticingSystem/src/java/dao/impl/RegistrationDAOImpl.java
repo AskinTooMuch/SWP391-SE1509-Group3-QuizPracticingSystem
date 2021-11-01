@@ -35,11 +35,12 @@ import java.util.HashMap;
  * @author admin
  */
 public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO {
-    
+
     /**
      * getAllRegistration
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public ArrayList<Registration> getAllRegistration() throws Exception {
@@ -73,12 +74,13 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return registrationsList;
     }
-    
+
     /**
      * getRegistrationById
+     *
      * @param registrationId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public Registration getRegistrationById(int registrationId) throws Exception {
@@ -112,12 +114,13 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return null;
     }
-    
+
     /**
      * addRegistration
+     *
      * @param newRegistration
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int addRegistration(Registration newRegistration) throws Exception {
@@ -150,20 +153,21 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         }
         return count;
     }
-    
+
     public static void main(String[] args) throws Exception {
         RegistrationDAO dao = new RegistrationDAOImpl();
         Registration x = dao.getRegistrationById(1);
         x.setCost(30);
         dao.addRegistration(x);
     }
-    
+
     /**
      * editRegistration
+     *
      * @param registrationId
      * @param editedRegistration
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public int editRegistration(int registrationId, Registration editedRegistration) throws Exception {
@@ -488,6 +492,14 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return list;
     }
 
+    /**
+     * get paid registration
+     *
+     * @param type "true" or "false" == paid or unpaid
+     * @return list of registration. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     @Override
     public ArrayList<Registration> getPaidRegistration(String type) throws Exception {
         ArrayList<Registration> list = new ArrayList();

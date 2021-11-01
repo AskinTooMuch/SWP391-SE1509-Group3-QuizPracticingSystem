@@ -235,6 +235,7 @@ public class LessonDAOImpl extends DBConnection implements LessonDAO {
      *
      * @param newLesson It is a <code>Object</code> primitive type
      * @return count. It is a <code>int</code> object.
+     * @throws java.lang.Exception
      */
     @Override
     public int addLesson(Lesson newLesson) throws Exception {

@@ -23,7 +23,7 @@
     </head>
     <jsp:include page="/jsp/header.jsp"/>
     <body>
-        <div class="container-fluid" style="margin-bottom: 300px;">
+        <div class="container" style="margin-bottom: 300px;">
             <div class="row functions" style="margin-top: 30px;">
                 <div class="col-1">
                     <h5 style="float:right; margin-top: 6px;">Subject:</h5>
@@ -50,15 +50,15 @@
                                        aria-describedby="search-addon" name="searchQuizName" value="${searchQuizName}" />
                                 <input hidden name="subjectSearchId" value="${subjectSearchId}">
                                 <input hidden name="service" value="simulationExam">
-                                <button onclick="submit()" type="button" class="btn btn-outline-primary">search</button>
+                                <button onclick="submit()" type="button" class="btn btn-success">search</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="row table" style="margin-top: 10px;">
+            <div class="row table table-bordered table-striped" style="margin-top: 10px;">
                 <table>
-                    <tr class="table-primary">
+                    <tr class="" style="background-color: #F0D8D5;">
                         <th>Id</th>
                         <th>Subject</th>
                         <th>Simulation Exam</th>

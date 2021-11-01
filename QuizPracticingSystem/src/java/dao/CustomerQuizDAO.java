@@ -68,5 +68,12 @@ public interface CustomerQuizDAO {
      */
     public CustomerQuiz getLastAddedCustomerQuiz() throws Exception;
 
+    /**
+     * check if this test have already been take
+     *
+     * @param quizId
+     * @return
+     * @throws Exception
+     */
     public boolean checkTeakedQuiz(int quizId) throws Exception;
 }

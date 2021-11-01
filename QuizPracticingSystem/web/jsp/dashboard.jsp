@@ -60,6 +60,7 @@
                             },
                 </c:forEach>
                         ]
+                        
                     }
                     );
                     function addData(data) {
@@ -199,8 +200,7 @@
                 <c:if test="${option=='customer'}">
                     <div class="row" style="padding-bottom: 100px; padding-top: 20px;">
                         <div class="choose col-3" style="display: grid;">
-                            <a class="btn ${target=="newlyRegistered"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=newlyRegistered">Newly Registered</a>
-                            <a class="btn ${target=="newlyBought"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=newlyBought">Newly Bought</a>
+                            <a class="btn ${target=="newlyRegistered"?"active":""}" role="button" href="${contextPath}/dashboard?&from=${from}&to=${to}&option=${option}&target=newlyRegistered">Newly Registered</a>                           
                         </div>
                         <div class="col-3"></div>
                     </div>
@@ -283,7 +283,7 @@
                                 <div class="modal fade bd-example-modal-sm userInfo" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <h5 class="modal-title" id="exampleModalLabel" style="margin-left:12px;">Registration</h5>                           
+                                            <h5 class="modal-title" id="exampleModalLabel" style="margin-left:12px;">Users</h5>                           
                                             <div class="modal-header">
                                             </div>
                                             <div class="modal-body">

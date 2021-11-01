@@ -54,7 +54,7 @@ public interface LessonTypeDAO {
     
     /**
      * delete existed lesson 
-     * @param ltId
+     * @param lessonTypeId
      * @return
      * @throws Exception 
      */

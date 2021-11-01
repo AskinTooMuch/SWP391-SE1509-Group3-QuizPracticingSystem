@@ -35,7 +35,7 @@ public interface DimensionTypeDAO {
      * @return
      * @throws Exception 
      */
-    public DimensionType getDimensionTypeById(int dtId) throws Exception;
+    public DimensionType getDimensionTypeById(int dimensionTypeId) throws Exception;
     
     /**
      * Update dimension type

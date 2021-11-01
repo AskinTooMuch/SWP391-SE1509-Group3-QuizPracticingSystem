@@ -30,7 +30,7 @@
             <div class="infomation">
                 <div class="info row" style="">
                     <div col-1>
-                        <a href="${contextPath}/simulationExamController" class="goBack" type="button" class="btn" style=""> Go Back</a>
+                        <a href="${contextPath}/practiceController?service=getPracticeListInformation" class="goBack" type="button" class="btn" style=""> Go Back</a>
                     </div>
                     <div class="col-11">    
                         <div class="detail">
@@ -182,7 +182,7 @@
             </div>
             <!--                        end peek modal-->
             <div class="funtionBar fixed-bottom" style='height:70px; background-color: #4472c4;'>
-                <div style="margin-left: 43%; margin-top:20px; <c:if test="${quizType==2}"> display:flex; margin-left: 31%;</c:if>">
+                <div style="margin-left: 43%; margin-top:20px; <c:if test="${quizType==3}"> display:flex; margin-left: 31%;</c:if>">
                         <div>
                         <c:if test="${quizType==3}">                               
                             <button style="margin-right: 3px;border: 1px solid #4472c4;color:#4472c4;background:#ffffff;" type="button" class="btn" data-toggle="modal" data-target=".bd-example-modal-sm">Peek At Answer</button>
@@ -355,6 +355,10 @@
                     y[i].style.display = 'inline-flex';
                 }
             });
+            
+            function goBack(){
+                history.back();
+            }
             <%--  End filter question  --%>
         </script>
 
