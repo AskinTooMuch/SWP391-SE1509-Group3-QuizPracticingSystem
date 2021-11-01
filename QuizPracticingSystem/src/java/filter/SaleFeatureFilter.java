@@ -1,44 +1,70 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/**
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  Sale Feature Filter
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author              Description
+ *  1/11/21     1.0         ChucNVHE150618      First Deploy
+*/
 package filter;
 
 import bean.User;
+import bean.UserRole;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Bùi Thanh Tùng
- */
-public class Filter {
-    
-    private static final boolean debug = true;
 
-    // The filter configuration object we are associated with.  If
-    // this value is null, this filter instance is not currently
-    // configured. 
+@WebFilter(
+        filterName = "SaleFeatureFilter",
+        urlPatterns = {"/jsp/registrationDetail.jsp", "/jsp/registrationList.jsp", 
+                        "/jsp/updateRegistration.jsp", "/registrationController"
+        })
+        
+/**
+ * This class has the required methods for filtering pages/requests that require
+ * the user having the role "Admin" or "Sale"
+ * @author ChucNVHE150618
+ */
+public class SaleFeatureFilter implements Filter {
+
+    private static final boolean debug = true;
+    /**
+     * The filter configuration object we are associated with
+     * If this value is null, this filter instance is not currently configured.
+     */
     private FilterConfig filterConfig = null;
-    
-    public Filter() {
+
+    /**
+     * Blank constructor
+     */
+    public SaleFeatureFilter() {
     }
-    
+
+    /**
+     * Needed actions before filtering
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("Filter:DoBeforeProcessing");
+            log("SaleFeatureFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -62,11 +88,18 @@ public class Filter {
 	}
          */
     }
-    
+
+    /**
+     * Needed actions before filtering
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException 
+     */
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("Filter:DoAfterProcessing");
+            log("SaleFeatureFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -78,7 +111,6 @@ public class Filter {
 	    String name = (String)en.nextElement();
 	    Object value = request.getAttribute(name);
 	    log("attribute: " + name + "=" + value.toString());
-
 	}
          */
         // For example, a filter might append something to the response.
@@ -89,7 +121,7 @@ public class Filter {
     }
 
     /**
-     *
+     * Filtering actions
      * @param request The servlet request we are processing
      * @param response The servlet response we are creating
      * @param chain The filter chain we are processing
@@ -97,44 +129,44 @@ public class Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
-            log("Filter:doFilter()");
+            log("SaleFeatureFilter:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
+        /**
+         * Create request and response to use session
+         */
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        String contextPath = httpRequest.getContextPath();
+        /*Get Session*/
         HttpSession session = httpRequest.getSession();
-//        String url = httpRequest.getServletPath();
-        Object currUser = session.getAttribute("currSession");
-        if (currUser == null) {
-            httpResponse.sendRedirect("home.jsp");
-        } else {
-            User user = (User) currUser;
-            if (user.getRoleId() == 5) {
-                httpResponse.sendRedirect("home.jsp");
-            }
+        User user = (User) session.getAttribute("currUser");
+        UserRole role = (UserRole) session.getAttribute("role");
+
+        /**
+         * If the session user or role is null, or the role is not admin or sale
+         * , redirect to filterPage
+         */
+        if ((user == null) || (role == null) || 
+                ((!role.getUserRoleName().equalsIgnoreCase("admin")) &&
+                (!role.getUserRoleName().equalsIgnoreCase("sale")))) {
+            httpResponse.sendRedirect(contextPath+"/jsp/filterPage.jsp");
         }
-        
+
         Throwable problem = null;
-        try {
-            chain.doFilter(request, response);
-        } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
-        }
-        
+
         doAfterProcessing(request, response);
 
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
+        /**
+         * Re-throw the problems if any known ones, else log the problem
+         */
         if (problem != null) {
             if (problem instanceof ServletException) {
                 throw (ServletException) problem;
@@ -148,6 +180,7 @@ public class Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -165,17 +198,20 @@ public class Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig
      */
+    @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {
-                log("Filter:Initializing filter");
+                log("SaleFeatureFilter:Initializing filter");
             }
         }
     }
@@ -186,17 +222,22 @@ public class Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("Filter()");
+            return ("SaleFeatureFilter()");
         }
-        StringBuffer sb = new StringBuffer("Filter(");
+        StringBuffer sb = new StringBuffer("SaleFeatureFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
     }
-    
+
+    /**
+     * Send processing errors
+     * @param t
+     * @param response 
+     */
     private void sendProcessingError(Throwable t, ServletResponse response) {
         String stackTrace = getStackTrace(t);
-        
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
@@ -211,7 +252,7 @@ public class Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
@@ -223,7 +264,12 @@ public class Filter {
             }
         }
     }
-    
+
+    /**
+     * Get stack trace
+     * @param t
+     * @return 
+     */
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -233,13 +279,17 @@ public class Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }
-    
+
+    /**
+     * Log message
+     * @param msg 
+     */
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);
     }
-    
+
 }
