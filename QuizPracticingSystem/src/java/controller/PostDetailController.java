@@ -47,9 +47,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class PostDetailController extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     * 
      * Function Post Detail: allow the marketing member to update blog
      * information
      *

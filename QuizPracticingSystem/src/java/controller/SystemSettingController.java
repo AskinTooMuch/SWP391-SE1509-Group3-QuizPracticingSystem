@@ -44,9 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemSettingController extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
      * Function Setting List: Display all system setting Function Setting
      * Function Setting Detail: Allow admin to edit or add new system settings
      *
@@ -87,7 +84,7 @@ public class SystemSettingController extends HttpServlet {
                 ArrayList<LessonType> lessonTypeList = lessonTypeDAO.getAllStatusLessonType();
                 //get all dimesion's type
                 ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllStatusDimensionTypes();
-                String message = request.getParameter("message").trim();
+                String message = request.getParameter("message");
                 if (message != null) {//if there is a message
                     request.setAttribute("message", message);
                 }
