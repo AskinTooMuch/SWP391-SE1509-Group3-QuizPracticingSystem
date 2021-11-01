@@ -69,7 +69,7 @@ public interface UserDAO {
     /**
      * get user from User table using userMobile
      *
-     * @param userMobile is an String
+     * @param Mobile is an String
      * @return <code>User</code> object.
      */
     public User getUserByMobile(String Moblie) throws Exception;

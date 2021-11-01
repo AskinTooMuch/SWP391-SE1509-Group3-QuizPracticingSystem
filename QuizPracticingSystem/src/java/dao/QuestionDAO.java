@@ -25,6 +25,7 @@ public interface QuestionDAO {
      *
      * @return list of all question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     ArrayList<Question> getAllQuestion() throws Exception;
     
@@ -34,6 +35,7 @@ public interface QuestionDAO {
      * @param questionId the target question's id. It is a <code>int</code>
      * primitive type
      * @return a question. It is a <code>Question</code> object.
+     * @throws java.lang.Exception
      */
     public Question getQuestionById(int questionId) throws Exception;
     
@@ -44,6 +46,7 @@ public interface QuestionDAO {
      * type
      * @return a list of question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     public ArrayList<Question> getQuestionByQuizId(int quizId) throws Exception;
     
@@ -54,6 +57,7 @@ public interface QuestionDAO {
      * primitive type
      * @return a list of question. It is a <code>java.util.ArrayList</code>
      * object.
+     * @throws java.lang.Exception
      */
     public ArrayList<QuestionManage> getQuestionByContent(String content) throws Exception;
     
@@ -62,6 +66,7 @@ public interface QuestionDAO {
      *
      * @param newQuestion It is a <code>Object</code> primitive type
      * @return count. It is a <code>int</code> object.
+     * @throws java.lang.Exception
      */
     public int addQuestion(Question newQuestion) throws Exception;
     
@@ -69,7 +74,7 @@ public interface QuestionDAO {
      * edit Question
      *
      * @param questionId the target questionId. It is a <code>int</code>
-     * @param question the target questionId. It is a <code>Object</code>
+     * @param editedQuestion the target questionId. It is a <code>Object</code>
      * @return i. It is a <code>int</code>
      * @throws Exception
      */

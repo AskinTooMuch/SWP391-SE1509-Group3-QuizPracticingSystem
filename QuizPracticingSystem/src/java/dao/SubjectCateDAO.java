@@ -89,7 +89,6 @@ public interface SubjectCateDAO {
     /**
      * Update subject Category
      *
-     * @param subjectCategoryId
      * @param updatedSubjectCate Update Subject Category
      * @return
      * @throws Exception

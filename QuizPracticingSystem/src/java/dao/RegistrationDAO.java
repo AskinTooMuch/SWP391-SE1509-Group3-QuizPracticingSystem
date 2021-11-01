@@ -20,35 +20,40 @@ import java.util.ArrayList;
  * @author NamDH
  */
 public interface RegistrationDAO {
+
     /**
      * getAllRegistration
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public ArrayList<Registration> getAllRegistration() throws Exception;
-    
+
     /**
      * getRegistrationById
+     *
      * @param registrationId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public Registration getRegistrationById(int registrationId) throws Exception;
-    
+
     /**
      * addRegistration
+     *
      * @param newRegistration
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public int addRegistration(Registration newRegistration) throws Exception;
-    
+
     /**
      * editRegistration
+     *
      * @param registrationId
      * @param editedRegistration
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public int editRegistration(int registrationId, Registration editedRegistration) throws Exception;
 
@@ -147,14 +152,23 @@ public interface RegistrationDAO {
      */
     public ArrayList<Subject> getRegistedSubjectbyUserId(int userId) throws Exception;
 
+    /**
+     * get paid registration
+     *
+     * @param type "true" or "false" == paid or unpaid
+     * @return list of registration. It is a <code>java.util.ArrayList</code>
+     * object.
+     * @throws java.lang.Exception
+     */
     public ArrayList<Registration> getPaidRegistration(String type) throws Exception;
-    
+
     /**
      * getFilterRegistration
+     *
      * @param subjectId
      * @param userId
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public ArrayList<RegistrationManage> getFilterRegistration(int subjectId, int userId) throws Exception;
 }

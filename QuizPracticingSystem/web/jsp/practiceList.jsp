@@ -75,7 +75,7 @@
                                 </select>
                             </div>
                             <%-- Table of QuestionList--%>
-                            <table id="table-id" class="table table-bordered table-striped"">
+                            <table id="table-id" class="table table-bordered table-striped">
                                 <thead>
                                     <%-- Headers of Table--%>
                                     <tr style="background-color: #F0D8D5;">
@@ -106,7 +106,7 @@
                                                 <td><c:out value="${quiz.getDateTaken()}"/></td>
                                                 <td><c:out value="${quiz.getDurationString()}"/></td>
                                                 <td><c:out value="${quiz.getScore()}"/></td>
-                                                <td><a href="#" > Detail </a></td>
+                                                <td><a href="${contextPath}/quizHandleController?service=quizReview&quizTakeId=${quiz.getQuizTakeId()}&questionNumber=1"> Detail </a></td>
                                             </tr>
                                         </c:forEach>
                                     </c:if>

@@ -113,7 +113,7 @@ public interface SubjectDAO {
     
     /**
      * Add new subject into database
-     * @param newSubject
+     * @param subject
      * @return
      * @throws Exception 
      */
