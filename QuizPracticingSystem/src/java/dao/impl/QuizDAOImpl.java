@@ -813,4 +813,12 @@ public class QuizDAOImpl extends DBConnection implements QuizDAO {
         }
         return check;
     }
+    
+    public static void main(String[] args) throws Exception {
+        QuizDAOImpl dao = new QuizDAOImpl();
+        ArrayList<Quiz> list = dao.getQuizByName("pra");
+        for (Quiz quiz : list) {
+            System.out.println(quiz.getQuizId());
+        }
+    }
 }
