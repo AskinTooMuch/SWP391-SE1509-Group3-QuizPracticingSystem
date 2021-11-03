@@ -52,7 +52,7 @@
                                             later. Sorry for the inconvenience!</span>
                                     </p>
                                     <div class='col text-center'>
-                                        <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questiontemplate.txt" download>Give me the template!</a>
+                                        <a class="btn btn-success" style="margin: auto" href ="${contextPath}/questionTemplate/questionTemplate.xml" download>Give me the template!</a>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
