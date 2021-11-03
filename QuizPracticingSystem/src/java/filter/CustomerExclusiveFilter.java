@@ -153,8 +153,9 @@ public class CustomerExclusiveFilter implements Filter {
          * If the session user or role is null, or the role is not higher than 
          * customer, redirect to filterPage
          */
-        if ((user == null) || (role == null) || 
-                ((!role.getUserRoleName().equalsIgnoreCase("admin")) &&
+        if ((user == null) || (role == null)) {
+            httpResponse.sendRedirect(contextPath+"/login/login.jsp");
+        } else if(((!role.getUserRoleName().equalsIgnoreCase("admin")) &&
                 (!role.getUserRoleName().equalsIgnoreCase("expert")) &&
                 (!role.getUserRoleName().equalsIgnoreCase("sale")) &&
                 (!role.getUserRoleName().equalsIgnoreCase("marketing")))) {

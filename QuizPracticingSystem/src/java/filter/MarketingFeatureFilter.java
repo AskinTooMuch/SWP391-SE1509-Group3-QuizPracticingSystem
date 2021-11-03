@@ -153,8 +153,9 @@ public class MarketingFeatureFilter implements Filter {
          * If the session user or role is null, or the role is not admin or
          * marketing, redirect to filterPage
          */
-        if ((user == null) || (role == null) || 
-                ((!role.getUserRoleName().equalsIgnoreCase("admin")) &&
+        if ((user == null) || (role == null)) {
+            httpResponse.sendRedirect(contextPath+"/login/login.jsp");
+        } else if(((!role.getUserRoleName().equalsIgnoreCase("admin")) &&
                 (!role.getUserRoleName().equalsIgnoreCase("marketing")))) {
             httpResponse.sendRedirect(contextPath+"/jsp/filterPage.jsp");
         }

@@ -156,7 +156,7 @@ public class LoginFilter implements Filter {
          * redirect to filterPage
          */
         if ((user == null) || (role == null)) {
-            httpResponse.sendRedirect(contextPath+"/jsp/filterPage.jsp");
+            httpResponse.sendRedirect(contextPath+"/login/login.jsp");
         }
 
         Throwable problem = null;
