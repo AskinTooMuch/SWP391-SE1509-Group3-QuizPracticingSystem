@@ -31,8 +31,11 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 /**
+ * Lớp này có các phương thức thực hiện truy xuất và ghi dữ liệu vào database
+ * liên quan tới bảng Registration phục vụ cho các chức năng liên quan tới Registration
+ * của dự án
  *
- * @author admin
+ * @author Đinh Hải Nam
  */
 public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO {
 

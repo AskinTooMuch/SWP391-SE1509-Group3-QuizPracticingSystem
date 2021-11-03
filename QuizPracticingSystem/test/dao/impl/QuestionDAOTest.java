@@ -179,9 +179,9 @@ public class QuestionDAOTest {
         int dimensionId = 1;
         int lessonId = 1;
         QuestionDAOImpl instance = new QuestionDAOImpl();
-        ArrayList<QuestionManage> expResult = null;
+        int expResult = 4;
         ArrayList<QuestionManage> result = instance.getQuestionManage(subjectId, dimensionId, lessonId);
-        assertEquals(5, result.size());
+        assertEquals(expResult, result.size());
         
     }
 

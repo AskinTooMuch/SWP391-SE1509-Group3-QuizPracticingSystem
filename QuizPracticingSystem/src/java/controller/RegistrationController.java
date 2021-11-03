@@ -144,7 +144,12 @@ public class RegistrationController extends HttpServlet {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     validTo = Date.valueOf(dateFormat.format(calendar.getTime()));
                     int lastUpdateBy = currUser.getUserId();
-                    String note = request.getParameter("note").trim();
+                    String note = null;
+                    if (request.getParameter("note") == null) {
+                        note = "";
+                    } else {
+                        note = note.trim();
+                    }
                     boolean status = request.getParameter("status").equals("1");
                     /* Check boundaries */
                     if (userId == 0) {
