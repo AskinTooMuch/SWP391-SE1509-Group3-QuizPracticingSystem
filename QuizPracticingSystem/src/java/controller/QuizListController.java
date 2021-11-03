@@ -48,16 +48,17 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class has the process request of quizList and quizDetail
+ *
  * @author Admin
  */
 public class QuizListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     * Function Quiz List: allow the user to view all quiz in the system 
-     * Function Quiz Detail: allow the user to create new quiz
-     * Function Quiz Update: allow the user to update the quiz information
+     * methods. Function Quiz List: allow the user to view all quiz in the
+     * system Function Quiz Detail: allow the user to create new quiz Function
+     * Quiz Update: allow the user to update the quiz information
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -67,7 +68,7 @@ public class QuizListController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-                        String service = request.getParameter("service");
+            String service = request.getParameter("service");
 
             /**
              * Get information to display in the quizDetail page
@@ -98,7 +99,7 @@ public class QuizListController extends HttpServlet {
                 }
                 request.getRequestDispatcher("jsp/quizDetail.jsp").forward(request, response);
             }
-            
+
             /**
              * Get information from quizDetail to create quiz then add to the
              * database
@@ -151,7 +152,7 @@ public class QuizListController extends HttpServlet {
                 request.getRequestDispatcher("QuizListController?service=getQuizDetailInformation")
                         .forward(request, response);
             }
-            
+
             //Get information to display in the quizList page
             if (service.equalsIgnoreCase("getQuizListInformation")) {
                 SubjectDAO subjectDAO = new SubjectDAOImpl();
@@ -178,7 +179,7 @@ public class QuizListController extends HttpServlet {
                 if (quizName == null) {
                     //if user don't enter anything then get all quiz
                     quizList = quizDAO.getQuizByName(null);
-                }else if (quizName.trim().length() == 0 ) {
+                } else if (quizName.trim().length() == 0) {
                     //if user don't enter anything then get all quiz
                     quizList = quizDAO.getQuizByName(null);
                 } else {

@@ -76,14 +76,14 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button class="profile-edit-btn"><a href="editProfile.jsp">Edit profile</a></button>
+                        <button class="profile-edit-btn"><a href="${contextPath}/login/editProfile.jsp">Edit profile</a></button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <br>
                         <div class="profile-work">
-                            <button class="profile-edit-btn"><a href="uploadImage.jsp">Change image!</a></button>
+                            <button class="profile-edit-btn"><a href="${contextPath}/login/uploadImage.jsp">Change image!</a></button>
                         </div>
                     </div>
                     <div class="col-md-8">
