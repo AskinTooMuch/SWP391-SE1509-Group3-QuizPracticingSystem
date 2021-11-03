@@ -161,6 +161,16 @@ public class LoginFilter implements Filter {
 
         Throwable problem = null;
 
+        try {
+            chain.doFilter(request, response);
+        } catch (Exception t) {
+            /**
+             * If an exception is thrown somewhere down the filter chain,
+             * execute our after processing, and then re-throw the problem.
+             */
+            problem = t;
+            t.printStackTrace();
+        }
         doAfterProcessing(request, response);
 
         /**
@@ -251,7 +261,7 @@ public class LoginFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         } else {
             try {
@@ -278,7 +288,7 @@ public class LoginFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
         }
         return stackTrace;
     }

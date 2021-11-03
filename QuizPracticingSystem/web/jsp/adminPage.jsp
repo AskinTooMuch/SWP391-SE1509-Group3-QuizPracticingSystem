@@ -31,7 +31,6 @@
         <jsp:include page="/jsp/header.jsp"/>
 
         <div class="wrap">
-
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
                 <div class="text-center text-center">
                     <a href="${contextPath}/jsp/quizDetail.jsp" style="text-decoration: none;color:black" >

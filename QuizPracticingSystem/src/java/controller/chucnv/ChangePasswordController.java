@@ -44,8 +44,15 @@ public class ChangePasswordController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             UserDAO userDAO = new UserDAOImpl();
             
-            String password = request.getParameter("oldPassword").trim();  /*Old password , get from request*/
-            String newPassword = request.getParameter("newPassword").trim();   /*New password , get from request*/
+            String password = "";
+            if (request.getParameter("oldPassword")==null){
+                sendDispatcher(request, response, "login/changePassword.jsp");
+            } else password = request.getParameter("oldPassword").trim();  /*Old password , get from request*/
+            
+            String newPassword = "";   
+            if (request.getParameter("newPassword")==null){
+                sendDispatcher(request, response, "login/changePassword.jsp");
+            } else newPassword = request.getParameter("newPassword").trim();  /*New password , get from request*/
             User currUser = (User) request.getSession().getAttribute("currUser");   /*Current User from session*/
             /**
              * If the user enter the wrong old password: redirect back to 

@@ -156,13 +156,23 @@ public class AdminFilter implements Filter {
         /**
          * If the session user or role is null, or the role is not admin, redirect to filterPage
          */
-        if ((user == null) || (role == null) || 
-                (!role.getUserRoleName().equalsIgnoreCase("admin"))) {
+        if ((user == null) || (role == null)) {
+            httpResponse.sendRedirect(contextPath+"/login/login.jsp");
+        } else if (!role.getUserRoleName().equalsIgnoreCase("admin")) {
             httpResponse.sendRedirect(contextPath+"/jsp/filterPage.jsp");
         }
-
+        
         Throwable problem = null;
-
+        try {
+            chain.doFilter(request, response);
+        } catch (Exception t) {
+            /**
+             * If an exception is thrown somewhere down the filter chain,
+             * execute our after processing, and then re-throw the problem.
+             */
+            problem = t;
+            t.printStackTrace();
+        }
         doAfterProcessing(request, response);
 
         /**
@@ -253,7 +263,7 @@ public class AdminFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         } else {
             try {
@@ -280,7 +290,7 @@ public class AdminFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
         }
         return stackTrace;
     }
