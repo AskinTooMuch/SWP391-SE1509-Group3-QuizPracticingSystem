@@ -61,21 +61,10 @@
                                     <a class="dropdown-item" href="${contextPath}/courseContentList">Course Content List</a>
                                     <a class="dropdown-item" href="${contextPath}/jsp/questionList.jsp">Question List</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </li>
                         </c:if>
-                        <c:if test="${(role.getUserRoleName().equalsIgnoreCase('sale'))}">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-weight: bold;">
-                                    Manage
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="${contextPath}/jsp/registrationList.jsp">Registration List</a>
-                                    <div class="dropdown-divider"></div>                                   
-                                </div>
-                            </li>
-                        </c:if>    
+                           
                     </ul>
 
                     <c:choose>    
@@ -116,18 +105,11 @@
                                         <span class="fas fa-book-open">Create practice</span>  
                                     </a>
                                     <%-- If role is admin or owner--%>
-                                    <c:if test="${currUser != null && role.getUserRoleName().equalsIgnoreCase('admin')}">
+                                    <c:if test="${currUser != null && !role.getUserRoleName().equalsIgnoreCase('customer')}">
                                         <a href="${contextPath}/jsp/adminPage.jsp" style="text-decoration: none;color:black" >
-                                            <span class="fas fa-user-shield">Admin Page</span>  
+                                            <span class="fas fa-user-shield">System Manage</span>  
                                         </a>
                                     </c:if>
-                                    <%-- If role is admin or marketing--%>
-                                    <c:if test="${currUser != null && (role.getUserRoleName().equalsIgnoreCase('admin') || role.getUserRoleName().equalsIgnoreCase('marketing'))}">
-                                        <a href="${contextPath}/jsp/postDetail.jsp" style="text-decoration: none;color:black" >
-                                            <span class="fas fa-user-shield">Create Post</span>  
-                                        </a>
-                                    </c:if>
-                                    
                                     <hr>
                                     <%-- Logout --%>
                                     <a href="${contextPath}/userController?service=logout" style="text-decoration: none;color:black" >

@@ -30,43 +30,53 @@
         <%-- Include header page --%>
         <jsp:include page="/jsp/header.jsp"/>
 
-        <div class="wrap">
+        <div class="wrap text-center">
             <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
-                <div class="text-center text-center">
-                    <a href="${contextPath}/jsp/quizDetail.jsp" style="text-decoration: none;color:black" >
-                        <div class="big-button">
-                            <span class="fas fa-user-shield">Quiz Detail Page</span>  
-                        </div>
-                    </a>
-                    <a href="${contextPath}/jsp/quizList.jsp" style="text-decoration: none;color:black" >
-                        <div class="text-center big-button">
-                            <span class="fas fa-user-shield">Quiz List Page</span>  
-                        </div> 
-                    </a>    
-                    <a href="${contextPath}/userList" style="text-decoration: none;color:black" >
-                        <div class="text-center big-button">
-                            <span class="fas fa-user-shield">User List</span>  
-                        </div>
-                    </a>      
-                    <a href="${contextPath}/dashboard" style="text-decoration: none;color:black" >
-                        <div class="text-center big-button">
-                            <span class="fas fa-user-shield">Dashboard</span>  
-                        </div>
-                    </a>
-                </div>
-                <div class="text-center">        
-                    <a href="${contextPath}/jsp/settingList.jsp" style="text-decoration: none;color:black" >
-                        <div class="text-center big-button">
-                            <span class="fas fa-user-shield">Setting List</span>  
-                        </div>
-                    </a>
-                </div>  
+                <a href="${contextPath}/jsp/quizDetail.jsp" style="text-decoration: none;color:black" >
+                    <div class="big-button">
+                        <span class="fas fa-user-shield">Create quiz</span>  
+                    </div>
+                </a>
+                <a href="${contextPath}/jsp/quizList.jsp" style="text-decoration: none;color:black" >
+                    <div class="text-center big-button">
+                        <span class="fas fa-user-shield">Quiz List Page</span>  
+                    </div> 
+                </a>    
+                <a href="${contextPath}/userList" style="text-decoration: none;color:black" >
+                    <div class="text-center big-button">
+                        <span class="fas fa-user-shield">User List</span>  
+                    </div>
+                </a>      
+                <a href="${contextPath}/jsp/settingList.jsp" style="text-decoration: none;color:black" >
+                    <div class="text-center big-button">
+                        <span class="fas fa-user-shield">Setting List</span>  
+                    </div>
+                </a>
             </c:if>
-            <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
-                <h2 style="text-align: center;">You don't have the right to access this page</h2>
+            <a href="${contextPath}/dashboard" style="text-decoration: none;color:black" >
+                <div class="text-center big-button">
+                    <span class="fas fa-user-shield">Dashboard</span>  
+                </div>
+            </a>
+            <c:if test="${ sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') || sessionScope.role.getUserRoleName().equalsIgnoreCase('Marketing')}">
+                <a href="${contextPath}/jsp/postDetail.jsp" style="text-decoration: none;color:black" >
+                    <div class="text-center big-button">
+                        <span class="fas fa-user-shield">Create Post</span>  
+                    </div>
+                </a>
             </c:if>
 
+            <c:if test="${(role.getUserRoleName().equalsIgnoreCase('admin') || role.getUserRoleName().equalsIgnoreCase('sale'))}">
+                <a href="${contextPath}/jsp/registrationList.jsp" style="text-decoration: none;color:black" >
+                    <div class="text-center big-button">
+                        <span class="fas fa-user-shield">Registration List</span>  
+                    </div>
+                </a>
+            </c:if> 
         </div>
+        <c:if test="${ !sessionScope.role.getUserRoleName().equalsIgnoreCase('admin') && !sessionScope.role.getUserRoleName().equalsIgnoreCase('Expert')}">
+            <h2 style="text-align: center;">You don't have the right to access this page</h2>
+        </c:if>
         <%-- Include footer page --%>
         <jsp:include page="/jsp/footer.jsp"/>
     </body>
