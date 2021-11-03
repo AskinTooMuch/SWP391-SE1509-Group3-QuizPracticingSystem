@@ -10,7 +10,6 @@
  */
 package controller.chucnv;
 
-import bean.Subject;
 import bean.User;
 import bean.UserRole;
 import dao.UserDAO;
@@ -37,7 +36,10 @@ public class UserListController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * User list function: show the list of user paginated.
+     * - Can search with name, mail and mobile
+     * - Can filter with status, gender and role
+     * - Can sort the list with id, fullname, gender, email, mobile, role, status
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

@@ -59,7 +59,8 @@ public class ImportQuestionController extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
+     * Import question: allow the user to import questions from .xml files, select
+     * lesson and dimension, change any mistakes and add to the database
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

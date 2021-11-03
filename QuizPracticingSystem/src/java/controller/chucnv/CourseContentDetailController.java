@@ -53,7 +53,9 @@ public class CourseContentDetailController extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods. Service for viewing and updating course content detail and
      * dimension
-     *
+     * Function: Course Content detail
+     * Allow the user to view the subject's information and make changes when
+     * needed.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

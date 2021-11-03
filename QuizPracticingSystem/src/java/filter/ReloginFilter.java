@@ -153,11 +153,21 @@ public class ReloginFilter implements Filter {
          * If the session user or role is null, or the role is not admin, redirect to filterPage
          */
         if ((user != null) && (role != null)) {
-            httpResponse.sendRedirect(contextPath+"/jsp/filterPage.jsp");
+            httpResponse.sendRedirect(contextPath+"/index.jsp");
         }
 
         Throwable problem = null;
-
+        try {
+            chain.doFilter(request, response);
+        } catch (IOException | ServletException t) {
+            /**
+             * If an exception is thrown somewhere down the filter chain,
+             * execute our after processing, and then re-throw the problem.
+             */
+            problem = t;
+            t.printStackTrace();
+        }
+        
         doAfterProcessing(request, response);
 
         /**
