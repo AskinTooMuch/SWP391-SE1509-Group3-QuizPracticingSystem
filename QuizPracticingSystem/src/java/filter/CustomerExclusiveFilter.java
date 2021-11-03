@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(
         filterName = "CustomerExclusiveFilter",
-        urlPatterns = {"/dashboard", "/jsp/dashboard.jsp"
+        urlPatterns = {"/dashboard", "/jsp/dashboard.jsp", "/jsp/adminPage.jsp"
         })
         
 /**

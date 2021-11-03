@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(
         filterName = "AdminFilter",
-        urlPatterns = {"/jsp/adminPage.jsp", "/jsp/settingDetail.jsp", 
+        urlPatterns = { "/jsp/settingDetail.jsp", 
                         "/jsp/settingList.jsp", "/jsp/userList.jsp",
                         "/SystemSettingController","/userList",
                         "/adminController"

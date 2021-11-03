@@ -37,8 +37,7 @@ import javax.servlet.http.HttpSession;
                         "/jsp/updateQuestion.jsp", "/jsp/updateQuiz.jsp",
                         "/questionController", "/QuizListController",
                         "/courseContentList", "/courseContentDetail",
-                        "/importQuestion" +
-""
+                        "/importQuestion"
         })
         
 /**
