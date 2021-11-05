@@ -99,14 +99,14 @@
                                         <%--Question forms--%>
                                         <div class="row question-form">
                                             <div class="col-md-8 question-content">
-                                                <label><c:out value="${question.getQuestionId()}"/>.</label>
+                                                <label style="margin-top: 2px;"><span style="color: red">*</span><c:out value="${question.getQuestionId()}"/>.</label>
                                                     <textarea class="input-question" name="questionContent" 
-                                                              oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' required><c:out value="${question.getContent()}"/></textarea><br>
+                                                              rows="2" style="vertical-align: top" required><c:out value="${question.getContent()}"/></textarea>
                                                 <label style="font-style: italic">Explanation: </label>
-                                                    <input style="width:85%; border:none;" type="text" name="questionExplanation" value="${question.getExplanation()}"><br>
-                                                <label style="font-weight: bold">*A.</label>
+                                                    <input style="width:85%; border:none; background-color:#FCFFF2" type="text" name="questionExplanation" value="${question.getExplanation()}"><br>
+                                                    <label style="font-weight: bold"><span style="color: red">*</span>A.</label>
                                                     <input class="input-question" type="text" name="questionAnswerRight" value="${question.getAnswers().get(0).getAnswerContent()}" required><br>
-                                                <label>*B.</label>
+                                                <label><span style="color: red">*</span>B.</label>
                                                     <input class="input-question" type="text" name="questionAnswerWrong1" value="${question.getAnswers().get(1).getAnswerContent()}" required><br>
                                                 <label>C.</label>
                                                     <input class="input-question" type="text" name="questionAnswerWrong2" value="${question.getAnswers().get(2).getAnswerContent()}"><br>

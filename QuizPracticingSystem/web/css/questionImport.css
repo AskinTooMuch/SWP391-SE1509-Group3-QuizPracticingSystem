@@ -14,9 +14,10 @@ body {
   }
   
   .input-question{
-      width: 96%;
-      border: none;
-      overflow: visible; 
+    width: 96%;
+    border: none;
+    overflow: visible; 
+    background-color: #FCFFF2;
   }
   
   .question-form{

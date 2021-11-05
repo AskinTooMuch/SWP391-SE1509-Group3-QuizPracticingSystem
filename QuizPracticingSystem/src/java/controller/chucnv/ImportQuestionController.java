@@ -159,7 +159,7 @@ public class ImportQuestionController extends HttpServlet {
                         if ((content != null && !"".equals(content.getTextContent().trim()))
                                 && (trueAnswer != null || !"".equals(trueAnswer.getTextContent().trim()))
                                 && (wrongAnswer1 != null || !"".equals(wrongAnswer1.getTextContent().trim()))) {
-                            Question addQuestion = new Question(itr, 
+                            Question addQuestion = new Question(itr+1, 
                                     subjectId, 
                                     -1, 
                                     -1, 
@@ -170,13 +170,13 @@ public class ImportQuestionController extends HttpServlet {
                             if (explanation != null || !"".equals(explanation.getTextContent().trim())){
                                 addQuestion.setExplanation(explanation.getTextContent().trim());
                             }
-                            answerList.add(new Answer(0, itr, trueAnswer.getTextContent().trim(), true, true));
-                            answerList.add(new Answer(1, itr, wrongAnswer1.getTextContent().trim(), false, true));
+                            answerList.add(new Answer(0, itr+1, trueAnswer.getTextContent().trim(), true, true));
+                            answerList.add(new Answer(1, itr+1, wrongAnswer1.getTextContent().trim(), false, true));
                             if (wrongAnswer2 != null || !"".equals(wrongAnswer2.getTextContent().trim())){
-                                answerList.add(new Answer(2, itr, wrongAnswer2.getTextContent().trim(), false, true));
+                                answerList.add(new Answer(2, itr+1, wrongAnswer2.getTextContent().trim(), false, true));
                             }
                             if (wrongAnswer3 != null || !"".equals(wrongAnswer3.getTextContent().trim())){
-                                answerList.add(new Answer(2, itr, wrongAnswer3.getTextContent().trim(), false, true));
+                                answerList.add(new Answer(2, itr+1, wrongAnswer3.getTextContent().trim(), false, true));
                             }
                             addQuestion.setAnswers(answerList);
                             questionList.add(addQuestion);
