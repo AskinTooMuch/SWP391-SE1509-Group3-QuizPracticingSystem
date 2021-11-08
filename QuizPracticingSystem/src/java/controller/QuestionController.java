@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * This class has the process request in Manage Question
  * @author tuan
  */
 public class QuestionController extends HttpServlet {
