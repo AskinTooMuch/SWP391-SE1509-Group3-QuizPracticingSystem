@@ -21,7 +21,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- * Lớp này chứa các method của LessonTypeDAOImpl
+ * The class has methods needed for initialize connection with database and
+ * execute queries with LessonType and associate tables
  *
  * @author tuan
  */
@@ -69,7 +70,7 @@ public class LessonTypeDAOImpl extends DBConnection implements LessonTypeDAO {
     /**
      * get lesson type by id
      *
-     * @param ltId
+     * @param lessonTypeId
      * @return
      * @throws Exception
      */

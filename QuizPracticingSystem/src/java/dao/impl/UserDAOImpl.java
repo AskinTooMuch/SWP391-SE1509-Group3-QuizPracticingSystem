@@ -23,7 +23,8 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 /**
- * Lớp này chứa các Method của UserDAOImpl
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with User and associate tables
  *
  * @author ChucNV
  */

@@ -22,10 +22,10 @@ import dao.SubjectCateDAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Lớp này chứa các method của SubjectCateDAOImpl
+ * The class has methods needed for initialize connection with database and
+ * execute queries with SubjectCate and associate tables
  *
  * @author ChucNV
  */

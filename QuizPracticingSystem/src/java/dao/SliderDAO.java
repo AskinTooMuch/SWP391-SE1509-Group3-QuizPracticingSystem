@@ -21,15 +21,12 @@ import java.util.ArrayList;
  */
 public interface SliderDAO {
 
-    /*Get all Slider from table*/
+    /**
+     * get all slider in database
+     *
+     * @return <code>ArrayList<Slider><code> object
+     * @throws java.lang.Exception
+     */
     public ArrayList<Slider> getSlider() throws Exception;
-
-    public Slider getSliderById(int sliderId) throws Exception;
-
-    public int editSlider(int sliderId, Slider editedSlider) throws Exception;
-
-    public int addSlider(Slider newSlder) throws Exception;
-
-    public int deleteSlider(int sliderId) throws Exception;
 
 }

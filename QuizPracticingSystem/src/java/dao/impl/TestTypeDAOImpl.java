@@ -21,6 +21,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with TestType and associate tables
  *
  * @author duong
  */

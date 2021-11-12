@@ -21,7 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
- *  Lớp này chứa các method của UserRoleDAOImpl
+ * The class has methods needed for initialize connection with database and 
+ * execute queries with UserRole and associate tables
+ * 
  * @author ChucNV
  */
 public class UserRoleDAOImpl extends DBConnection implements UserRoleDAO {
