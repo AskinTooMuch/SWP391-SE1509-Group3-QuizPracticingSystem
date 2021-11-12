@@ -16,7 +16,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Question List</title>
+        <title>Practice List</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -55,7 +55,8 @@
                             <input type="hidden" name="service" value="filterPracticeListInformation">
                             <button type="submit" id="submit" class="btn btn-success" style="float: left;">Search</button>
                         </form>
-                        <a href="${contextPath}/jsp/practiceDetail.jsp"><button class="btn btn-success" style="float: right;margin: 10px;">New Practice</button></a>
+                        <c:if test="${doingQuiz==null}"><a href="${contextPath}/jsp/practiceDetail.jsp"><button class="btn btn-success" style="float: right;margin: 10px;">New Practice</button></a></c:if>
+                        <c:if test="${doingQuiz!=null}"><a href="${contextPath}/jsp/practiceDetail.jsp"><button class="btn btn-success" disabled style="float: right;margin: 10px;">Currently taking another quiz</button></a></c:if>
                         <a href="${contextPath}/simulationExamController"><button class="btn btn-success" style="float: right;margin: 10px;">Simulation Exam</button></a>
                     </div>
                     <div class="col-md-12" style="clear: both;">
@@ -88,6 +89,26 @@
                                 </thead>
                                 <tbody>
                                     <%-- Check if listQuestionManage not null then display listQuestionManage --%>
+                                    <c:if test="${doingQuiz!=null}">
+                                        <tr>
+                                            <td>
+                                                Subject name: <c:out value="${doingQuiz.getSubject().getSubjectName()}"/>
+                                                <br>
+                                                Exam name: 
+                                                <c:if test="${doingQuiz.getQuizName() == null}">
+                                                    None
+                                                </c:if>
+                                                <c:if test="${doingQuiz.getQuizName() != null}">
+                                                    <c:out value="${doingQuiz.getQuizName()}"/>
+                                                </c:if>
+                                            </td>
+                                            <td>${doingQuiz.getTestTypeName()}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><a href="${contextPath}/quizHandleController?service=quizHandle"> Continue </a></td>
+                                        </tr>
+                                    </c:if>
                                     <c:if test="${!empty customerQuizs}">
                                         <c:forEach items="${customerQuizs}" var="quiz">
                                             <tr>

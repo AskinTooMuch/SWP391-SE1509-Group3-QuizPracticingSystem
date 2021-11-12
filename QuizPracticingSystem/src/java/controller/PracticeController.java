@@ -18,6 +18,7 @@ import bean.Subject;
 import bean.User;
 import bean.CustomerQuiz;
 import bean.Dimension;
+import bean.QuizQuizHandle;
 import dao.CustomerQuizDAO;
 import dao.DimensionDAO;
 import dao.QuestionDAO;
@@ -42,15 +43,16 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class has the process request of practiceList and practiceDetail
+ *
  * @author Admin
  */
 public class PracticeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     * Function Practice List: allow the user to view all taken practice 
-     * Function Practice Detail: allow the user to create new practice 
+     * methods. Function Practice List: allow the user to view all taken
+     * practice Function Practice Detail: allow the user to create new practice
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -96,7 +98,7 @@ public class PracticeController extends HttpServlet {
                     request.getRequestDispatcher("jsp/practiceDetail.jsp").forward(request, response);
                     return;
                 }
-                
+
                 //setup quiz information to create new ppractice
                 Quiz quiz = new Quiz();
                 Subject subject = subjectDAO.getSubjectbyId(subjectId);
@@ -121,10 +123,19 @@ public class PracticeController extends HttpServlet {
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 RegistrationDAO registrationDAO = new RegistrationDAOImpl();
                 CustomerQuizDAO customerQuizDAO = new CustomerQuizDAOImpl();
+                QuizDAO quizDAO = new QuizDAOImpl();
                 ArrayList<Subject> registedSubject = registrationDAO.getRegistedSubject(currUser.getUserId());
                 ArrayList<CustomerQuiz> customerQuizs = customerQuizDAO.getQuizByUser(currUser.getUserId());
                 request.setAttribute("registedSubject", registedSubject);
                 request.setAttribute("customerQuizs", customerQuizs);
+
+                Object object = request.getSession().getAttribute("doingQuiz");
+                if (object != null) {
+                    QuizQuizHandle doingQuiz = (QuizQuizHandle) object;
+                    Quiz doingQuizInfo = quizDAO.getQuizById(doingQuiz.getQuiz().getQuizId());
+                    request.setAttribute("doingQuiz", doingQuizInfo);
+                }
+
                 request.getRequestDispatcher("jsp/practiceList.jsp").forward(request, response);
             }
 

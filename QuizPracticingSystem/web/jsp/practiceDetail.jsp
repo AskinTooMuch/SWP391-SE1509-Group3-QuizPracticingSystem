@@ -29,6 +29,10 @@
         <c:if test="${sessionScope.currUser == null}">
             <c:redirect url="/index.jsp"/>
         </c:if>
+
+        <c:if test="${sessionScope.doingQuiz != null}">
+            <c:redirect url="${contextPath}/practiceController?service=getPracticeListInformation"/>
+        </c:if>
         <%-- Check If user registedSubject is avaiable not, if not redirect to load information --%>
         <c:if test="${registedSubject == null}">
             <c:redirect url="/practiceController?service=getPracticeDetail"/>
@@ -91,7 +95,7 @@
                             <br>
                             <%-- Submit form --%>
                             <div class="input-group">
-                                <button type="submit" id="submit" class="btn btn-success">Practice</button>
+                                <button onclick ="resetTime()" type="submit" id="submit" class="btn btn-success">Practice</button>
                                 <input type="hidden" name="service" value="createPractice">
                             </div>
                         </div>
@@ -103,4 +107,9 @@
         <%-- Include footer page --%>
         <jsp:include page="/jsp/footer.jsp"/>
     </body>
+    <script>
+        function resetTime() {
+            localStorage.clear();
+        }
+    </script>
 </html>
