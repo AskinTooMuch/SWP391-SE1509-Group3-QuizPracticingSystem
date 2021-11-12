@@ -1,7 +1,7 @@
 /*
  *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
  *  Created on : Sep 23, 2021
- *  UserController map
+ *  LessonTypeDAOImpl
  *  Quiz practicing system
  *
  *  Record of change:

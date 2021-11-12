@@ -25,7 +25,12 @@ import java.sql.ResultSet;
  * @author duong
  */
 public class AnswerDAOImpl extends DBConnection implements AnswerDAO {
-
+    
+    /**
+     * get all answers
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<Answer> getAllAnswers() throws Exception {
         return null;

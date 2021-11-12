@@ -47,9 +47,21 @@ public interface QuizDAO {
      * @throws java.lang.Exception
      */
     public Quiz getQuizByQuizTakeId(int quizTakeId) throws Exception;
-
+    
+    /**
+     * get quiz by subjectId
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     public ArrayList<Quiz> getQuizBySubject(int subjectId) throws Exception;
-
+    
+    /**
+     * get quiz by lessonId
+     * @param lessonId
+     * @return
+     * @throws Exception 
+     */
     public ArrayList<Quiz> getQuizByLesson(int lessonId) throws Exception;
 
     /**

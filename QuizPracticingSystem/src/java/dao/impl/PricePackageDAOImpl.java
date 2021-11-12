@@ -1,7 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright(C) 2021, Group Tree - SWP391, SE1509, FA21
+ *  Created on : Sep 23, 2021
+ *  PricePackageDAOImpl
+ *  Quiz practicing system
+ *
+ *  Record of change:
+ *  Date        Version     Author           Description
+ *  23/10/21     1.0         TuanPAHE150543   First Deploy
  */
 package dao.impl;
 
@@ -15,11 +20,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 /**
+ * Lớp này chứa các method của PricePackageDAOImpl
  *
  * @author tuan
  */
 public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO {
 
+    /**
+     * get all price package where status = 1
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<PricePackage> getAllPricePackage() throws Exception {
        ArrayList<PricePackage> packageList = new ArrayList();
@@ -50,6 +61,12 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
         return packageList;
     }
 
+    /**
+     * get all price package by subjectId
+     * @param subjectId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public ArrayList<PricePackage> getAllPricePackagesBySubject(int subjectId) throws Exception {
         ArrayList<PricePackage> pricePackages = new ArrayList<>();
@@ -87,6 +104,12 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
         return null;
     }
 
+    /**
+     * get price package by packageId
+     * @param packId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public PricePackage getPricePackageById(int packId) throws Exception {
         Connection conn = null;
@@ -117,17 +140,35 @@ public class PricePackageDAOImpl extends DBConnection implements PricePackageDAO
         }
         return null;
     }
-
+    
+    /**
+     * 
+     * @param newPricePackage
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int addPricePackage(PricePackage newPricePackage) throws Exception {
         return 0;
     }
-
+    
+    /**
+     * 
+     * @param updatedPricePackage
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int updatePricePackage(PricePackage updatedPricePackage) throws Exception {
         return 0;
     }
-
+    
+    /**
+     * delete price package with package Id
+     * @param ppId
+     * @return
+     * @throws Exception 
+     */
     @Override
     public int deletePricePackage(int ppId) throws Exception {
         return 0;

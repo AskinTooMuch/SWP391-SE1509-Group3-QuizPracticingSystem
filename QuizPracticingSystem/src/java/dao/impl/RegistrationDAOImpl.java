@@ -157,13 +157,6 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
         return count;
     }
 
-    public static void main(String[] args) throws Exception {
-        RegistrationDAO dao = new RegistrationDAOImpl();
-        Registration x = dao.getRegistrationById(1);
-        x.setCost(30);
-        dao.addRegistration(x);
-    }
-
     /**
      * editRegistration
      *
@@ -207,7 +200,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     /**
-     *
+     *  get all subject registed
      * @param userId
      * @return @throws Exception get registed subject by user's Id
      */
@@ -243,7 +236,7 @@ public class RegistrationDAOImpl extends DBConnection implements RegistrationDAO
     }
 
     /**
-     *
+     *  get all subjects registed by userId
      * @param userId
      * @return @throws Exception get registed subject by user's Id
      */

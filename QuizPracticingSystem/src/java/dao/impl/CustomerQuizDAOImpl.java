@@ -42,7 +42,7 @@ public class CustomerQuizDAOImpl extends DBConnection implements CustomerQuizDAO
     }
 
     /**
-     *
+     *  get all quiz by userId
      * @param userId
      * @return
      * @throws Exception

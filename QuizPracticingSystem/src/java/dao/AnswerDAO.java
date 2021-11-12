@@ -19,7 +19,12 @@ import java.util.ArrayList;
  * @author NamDH
  */
 public interface AnswerDAO {
-
+    
+    /**
+     * get all answers
+     * @return
+     * @throws Exception 
+     */
     public ArrayList<Answer> getAllAnswers() throws Exception;
 
     /**
@@ -31,9 +36,21 @@ public interface AnswerDAO {
      * @throws Exception
      */
     public ArrayList<Answer> getAnswersByQuenstionId(int questionId) throws Exception;
-
+    
+    /**
+     * 
+     * @param aId
+     * @return
+     * @throws Exception 
+     */
     public int deleteAnswerById(int aId) throws Exception;
-
+    
+    /**
+     * 
+     * @param qId
+     * @return
+     * @throws Exception 
+     */
     public int deleteAnswerByQuestionId(int qId) throws Exception;
 
     /**
