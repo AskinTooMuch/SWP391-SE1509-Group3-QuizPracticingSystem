@@ -226,7 +226,7 @@
                         <%--Start Pagination --%>
                         <div class='pagination-container'>
                             <nav>
-                                <ul class="pagination" style="">
+                                <ul class="pagination" style="justify-content: center">
                                     <li data-page="prev" >
                                         <span> <button class="btn btn-light" style="border: solid 1px">Prev</button></span>
                                     </li>
