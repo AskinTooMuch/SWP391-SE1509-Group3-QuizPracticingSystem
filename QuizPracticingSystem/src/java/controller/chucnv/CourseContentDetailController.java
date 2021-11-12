@@ -66,7 +66,7 @@ public class CourseContentDetailController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String service = request.getParameter("service");
-            LessonDAO lessonInterface = new LessonDAOImpl();
+            LessonDAO lessonDAO = new LessonDAOImpl();
             LessonTypeDAO lessonTypeInterface = new LessonTypeDAOImpl();
             /*Service is null, redirect user to index*/
             if (service == null) {
@@ -103,7 +103,7 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
-                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    ArrayList<Lesson> listLesson = lessonDAO.getAllLessonBySubjectId(subjectId);
                     request.setAttribute("listLesson", listLesson);
                     ArrayList<LessonType> lessonTypes = lessonTypeInterface.getAllLessonType();
                     request.setAttribute("lessonTypes", lessonTypes);
@@ -120,7 +120,7 @@ public class CourseContentDetailController extends HttpServlet {
                 /*Subject Category DAO*/
                 DimensionTypeDAO dimensionTypeDAO = new DimensionTypeDAOImpl();
                 /*Dimension Type DAO*/
- /* Get user and role on session scope */
+                /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -130,7 +130,7 @@ public class CourseContentDetailController extends HttpServlet {
                     sendDispatcher(request, response, "error.jsp");
                 } else {
                     /* Else: get the subject detail  */
- /* Get parameters from jsp */
+                    /* Get parameters from jsp */
                     int subjectId = Integer.parseInt(request.getParameter("subjectId").trim());
                     String subjectName = request.getParameter("subjectName").trim();
                     String subjectDescription = request.getParameter("subjectDescription").trim();
@@ -200,7 +200,7 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
-                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    ArrayList<Lesson> listLesson = lessonDAO.getAllLessonBySubjectId(subjectId);
                     request.setAttribute("listLesson", listLesson);
                     request.setAttribute("detailColor", color);
                     request.setAttribute("detailMessage", message);
@@ -222,7 +222,7 @@ public class CourseContentDetailController extends HttpServlet {
                 /*Dimension Type DAO*/
                 DimensionDAO dimensionDAO = new DimensionDAOImpl();
                 /*Dimension DAO*/
- /* Get user and role on session scope */
+                /* Get user and role on session scope */
                 User currUser = (User) request.getSession().getAttribute("currUser");
                 UserRole currRole = (UserRole) request.getSession().getAttribute("role");
                 /* If user is not logged in, or not admin/expert, redirect to index */
@@ -282,7 +282,7 @@ public class CourseContentDetailController extends HttpServlet {
                     request.setAttribute("categoryRemainList", categoryRemainList);
                     ArrayList<DimensionType> dimensionTypes = dimensionTypeDAO.getAllDimensionTypes();
                     request.setAttribute("dimensionTypes", dimensionTypes);
-                    ArrayList<Lesson> listLesson = lessonInterface.getAllLessonBySubjectId(subjectId);
+                    ArrayList<Lesson> listLesson = lessonDAO.getAllLessonBySubjectId(subjectId);
                     request.setAttribute("listLesson", listLesson);
                     request.setAttribute("dimensionColor", color);
                     request.setAttribute("dimensionMessage", message);
