@@ -6,7 +6,6 @@
 package dao.impl;
 
 import bean.PricePackage;
-import bean.Question;
 
 import dao.DBConnection;
 import java.util.ArrayList;

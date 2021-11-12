@@ -115,15 +115,15 @@
 
     <body>
         <jsp:include page="header.jsp"/>
-        <div class="container-fluid" style="border-top: 1px solid black;">
+        <div class="container" style="">
 
-            <div class="row" style="text-align: center;">
+            <div class="row" style="text-align: center; margin-top: 30px;">
                 <h4>Dashboard</h4>
             </div>
             <div class="row">
-                <div class="col-md-3"></div>
+                <div class="col-md-2"></div>
                 <%--Statistics view option--%>
-                <div class="tab col-md-6" style="margin-left:70px;">
+                <div class="tab col-md-6" style="margin-left:110px;">
                     <div >
                         <a class="btn ${option=="subject"?"active":""}" role="button" href="${contextPath}/dashboard?&option=subject&target=new&attribute=revenue">Subjects</a>
                         <a class="btn ${option=="registration"?"active":""}" role="button" href="${contextPath}/dashboard?&option=registration">Registrations</a>
@@ -318,7 +318,7 @@
                 <c:if test="${option!='customer'}">
                     <c:choose>
                         <c:when test="${nameList.size()!=0}">
-                            <div class='row' style="height: 300px; width: 100%;">
+                            <div class='row' style="height: 300px; width: 100%; padding-bottom: 100px;">
                                 <div>
                                     <div class="subtabcontent" style='display:block;'>
                                         <div id="chart" style="height: 300px; width: 100%;">

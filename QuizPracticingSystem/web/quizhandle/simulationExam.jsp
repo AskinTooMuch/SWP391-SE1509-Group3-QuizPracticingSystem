@@ -28,10 +28,17 @@
                 <div class="col-1">
                     <h5 style="float:right; margin-top: 6px;">Subject:</h5>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <div class="dropdown show" style="">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Search by Subject
+                            <c:choose>
+                                <c:when test="${subjectSearchName!=null}">
+                                    ${subjectSearchName}
+                                </c:when>
+                                <c:otherwise>
+                                    Search by subject
+                                </c:otherwise>
+                            </c:choose>
                         </a> 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="${contextPath}/simulationExamController">All</a>
@@ -49,7 +56,7 @@
                                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                        aria-describedby="search-addon" name="searchQuizName" value="${searchQuizName}" />
                                 <input hidden name="subjectSearchId" value="${subjectSearchId}">
-                                <input hidden name="service" value="simulationExam">
+                                <input hidden name="service" value="simulationExam">    
                                 <button onclick="submit()" type="button" class="btn btn-success">search</button>
                             </div>
                         </form>
@@ -68,36 +75,47 @@
                         <th>Pass Rate</th>   
                         <th>Action</th>
                     </tr>
-                    <c:forEach items="${simulationList}" var="quiz">
-                        <tr>
-                            <td>${quiz.getQuizId()}</td>
-                            <td>${quiz.getSubject().getSubjectName()}</td>
-                            <td>${quiz.getQuizName()}</td>
-                            <td>${quiz.getQuizLevelName()}</td>
-                            <td>${quiz.getNumberQuestion()}</td>
-                            <td>${quiz.getQuizDuration()}</td>
-                            <td>${quiz.getPassRate()}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${doingQuiz!=null&&currUser.getUserId()==doingQuiz.getUser().getUserId()}">
-                                        <button style="" data-toggle="modal" data-target="#ModalCenter${quiz.getQuizId()}" ${doingQuiz.getQuiz().getQuizId()==quiz.getQuizId()?"":"disabled"}>${doingQuiz.getQuiz().getQuizId()==quiz.getQuizId()?"Continue":"Currently Taking Another Exam"}</button>   
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button style="" data-toggle="modal" data-target="#ModalCenter${quiz.getQuizId()}">Take Exam</button>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                        <style>
-                            button{
-                                background-color: #4472c4;border: 1px white solid; color:white;
-                            }
-                            button:disabled,
-                            button[disabled]{
-                                opacity: 0.5;
-                            }
-                        </style>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${!empty simulationList}">
+                            <c:forEach items="${simulationList}" var="quiz">
+                                <tr>
+                                    <td>${quiz.getQuizId()}</td>
+                                    <td>${quiz.getSubject().getSubjectName()}</td>
+                                    <td>${quiz.getQuizName()}</td>
+                                    <td>${quiz.getQuizLevelName()}</td>
+                                    <td>${quiz.getNumberQuestion()}</td>
+                                    <td>${quiz.getQuizDuration()}</td>
+                                    <td>${quiz.getPassRate()}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${doingQuiz!=null&&currUser.getUserId()==doingQuiz.getUser().getUserId()}">
+                                                <button style="" data-toggle="modal" data-target="#ModalCenter${quiz.getQuizId()}" ${doingQuiz.getQuiz().getQuizId()==quiz.getQuizId()?"":"disabled"}>${doingQuiz.getQuiz().getQuizId()==quiz.getQuizId()?"Continue":"Currently Taking Another Exam"}</button>   
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button style="" data-toggle="modal" data-target="#ModalCenter${quiz.getQuizId()}">Take Exam</button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+
+                            </c:forEach>
+                            <style>
+                                button{
+                                    background-color: #4472c4;border: 1px white solid; color:white;
+                                }
+                                button:disabled,
+                                button[disabled]{
+                                    opacity: 0.5;
+                                }
+                            </style>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                            <text style="color:red;">There is no simulation exam</text>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+
                 </table>
                 <c:forEach items="${simulationList}" var="quiz">
                     <div style="" class="modal fade" id="ModalCenter${quiz.getQuizId()}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

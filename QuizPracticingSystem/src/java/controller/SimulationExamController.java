@@ -11,8 +11,10 @@ import bean.Subject;
 import bean.User;
 import dao.QuizDAO;
 import dao.RegistrationDAO;
+import dao.SubjectDAO;
 import dao.impl.QuizDAOImpl;
 import dao.impl.RegistrationDAOImpl;
+import dao.impl.SubjectDAOImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -53,12 +55,15 @@ public class SimulationExamController extends HttpServlet {
 
             //information of simulation exam
             RegistrationDAO IRegistration = new RegistrationDAOImpl();
+            SubjectDAO ISubject = new SubjectDAOImpl();
             User currUser = (User) session.getAttribute("currUser");
+
             String subjectSearchIdRaw = request.getParameter("subjectSearchId");
             int subjectSearchId = 0;
             if (subjectSearchIdRaw != null && !subjectSearchIdRaw.equalsIgnoreCase("")) {
                 subjectSearchId = Integer.parseInt(subjectSearchIdRaw);
-                request.setAttribute("subjectSearchId", +subjectSearchId);
+                request.setAttribute("subjectSearchId", subjectSearchId);
+                request.setAttribute("subjectSearchName", ISubject.getSubjectbyId(subjectSearchId).getSubjectName());
             }
 
             String searchQuizName = request.getParameter("searchQuizName");

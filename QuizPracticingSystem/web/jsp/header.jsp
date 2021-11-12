@@ -31,7 +31,7 @@
         </style>
     </head>
     <body style="overflow-x:hidden">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #ecf2ff;">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -97,7 +97,7 @@
                                         <span class="fas fa-book-open">My Registration</span>  
                                     </a>
                                     </a>
-                                    <a href="${contextPath}/jsp/practiceList.jsp" style="text-decoration: none;color:black">
+                                    <a href="${contextPath}/practiceController?service=getPracticeListInformation" style="text-decoration: none;color:black">
                                         <span class="fas fa-book-open">My Taken Quiz</span>  
                                     </a>
                                     </a>
