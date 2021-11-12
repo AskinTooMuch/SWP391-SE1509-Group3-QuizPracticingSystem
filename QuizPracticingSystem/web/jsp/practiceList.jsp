@@ -88,7 +88,7 @@
                                 </thead>
                                 <tbody>
                                     <%-- Check if listQuestionManage not null then display listQuestionManage --%>
-                                    <c:if test="${customerQuizs!=null}">
+                                    <c:if test="${!empty customerQuizs}">
                                         <c:forEach items="${customerQuizs}" var="quiz">
                                             <tr>
                                                 <td>
@@ -115,7 +115,7 @@
                             <%--Start Pagination --%>
                             <div class='pagination-container'>
                                 <nav>
-                                    <ul class="pagination" style="">
+                                    <ul class="pagination" style="justify-content: center">
                                         <li data-page="prev" >
                                             <span>  <button class="btn btn-info">Prev</button></span>
                                         </li>
