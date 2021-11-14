@@ -94,7 +94,7 @@
                             </div>
                             <br>
                             <%-- Submit form --%>
-                            <div class="input-group">
+                            <div class="input-group" style="justify-content: center" >
                                 <button onclick ="resetTime()" type="submit" id="submit" class="btn btn-success">Practice</button>
                                 <input type="hidden" name="service" value="createPractice">
                             </div>

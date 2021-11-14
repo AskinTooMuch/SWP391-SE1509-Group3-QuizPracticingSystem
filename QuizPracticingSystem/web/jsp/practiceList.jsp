@@ -109,6 +109,9 @@
                                             <td><a href="${contextPath}/quizHandleController?service=quizHandle"> Continue </a></td>
                                         </tr>
                                     </c:if>
+                                    <c:if test="${empty customerQuizs}">
+                                        <tr style="color: red"><td colspan="6">No Taken Test Found</td></tr>
+                                    </c:if>
                                     <c:if test="${!empty customerQuizs}">
                                         <c:forEach items="${customerQuizs}" var="quiz">
                                             <tr>

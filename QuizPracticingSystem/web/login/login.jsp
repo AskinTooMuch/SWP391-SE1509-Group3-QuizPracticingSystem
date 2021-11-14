@@ -31,6 +31,14 @@
 
                 <%--Log in form--%>
                 <form action="${contextPath}/userController" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
+                    <%--Message when log in failed--%>
+                    <c:if test="${mess != null}">
+                        <div class="u-form-group u-form-name">
+                            <p style="color: red; font-weight: bold;">
+                                <c:out value="${mess}"/>
+                            </p>
+                        </div>
+                    </c:if>
                     <div class="u-form-group u-form-name">
                         <p>Enter your user mail:</p>
                         <input type="email" placeholder="User Mail"  name="userMail" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
@@ -40,15 +48,6 @@
                         <p>Enter your password:</p>
                         <input type="password" placeholder="Password"  name="password" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
                     </div>
-                    <%--Message when log in failed--%>
-                    <c:if test="${mess != null}">
-                            <div class="u-form-group u-form-name">
-                                <p style="color: red; font-weight: bold;">
-                                    <c:out value="${mess}"/>
-                                </p>
-                                <br>
-                            </div>
-                        </c:if>
                     <div class="u-align-center u-form-group u-form-submit">
 
                         <input type="hidden" name="service" value="login">

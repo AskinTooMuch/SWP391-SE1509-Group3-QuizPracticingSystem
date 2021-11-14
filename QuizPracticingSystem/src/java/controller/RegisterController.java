@@ -153,9 +153,8 @@ public class RegisterController extends HttpServlet {
                 String userMail = request.getParameter("userMail");
                 User user = userDAO.getUserByMail(userMail);
                 userDAO.changeStatus(user.getUserId(), true);
-                out.println("Confirmed");
-                out.println("<a href=" + "login/login.jsp"
-                        + ">Login</a>");
+                request.setAttribute("mess", "Your account have been confirmed, please login!");
+                request.getRequestDispatcher("login/login.jsp").forward(request, response);
             }
         } catch (Exception ex) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);

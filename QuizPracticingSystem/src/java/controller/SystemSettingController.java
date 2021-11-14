@@ -124,7 +124,9 @@ public class SystemSettingController extends HttpServlet {
                 } else if (field.equalsIgnoreCase("dimensionType")) {// if admin only want to get all dimension type list
                     ArrayList<DimensionType> dimensionTypeList = dimensionTypeDAO.getAllStatusDimensionTypes();
                     request.setAttribute("dimensionTypeList", dimensionTypeList);
-                }
+                } else if (field.equalsIgnoreCase("all")) {
+                    response.sendRedirect("SystemSettingController?service=getInformation");
+                }                
                 request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
             }
 
@@ -179,7 +181,7 @@ public class SystemSettingController extends HttpServlet {
                     objectStatus = editObject.isStatus();
                     fieldName = "Dimension Type";
                 }
-
+                
                 request.setAttribute("objectId", objectId);
                 request.setAttribute("objectName", objectName);
                 request.setAttribute("objectStatus", objectStatus);
@@ -197,18 +199,18 @@ public class SystemSettingController extends HttpServlet {
                 String settingName = request.getParameter("settingName").trim();
                 boolean settingStatus = Boolean.parseBoolean(request.getParameter("settingStatus").trim());
                 int checkEdit = 0;
-                
+
                 //check for blank input
-                if(field.length() == 0 || settingName.length() == 0 
-                        || field == null || settingName == null){
+                if (field.length() == 0 || settingName.length() == 0
+                        || field == null || settingName == null) {
                     request.setAttribute("messge", "You have to input all field");
                     request.getRequestDispatcher("SystemSettingController?field="
                             + field + "&id=" + objectId)
                             .forward(request, response);
                 }
-                
+
                 //check input length
-                if(settingName.length() > 100){
+                if (settingName.length() > 100) {
                     request.setAttribute("messge", "Your setting name is too long");
                     request.getRequestDispatcher("SystemSettingController?field="
                             + field + "&id=" + objectId)
@@ -268,7 +270,7 @@ public class SystemSettingController extends HttpServlet {
                 
                 if (checkEdit == 0) {
                     request.setAttribute("message", "Edit setting not successfull !!!");
-                }else {
+                } else {
                     request.setAttribute("message", "Edit setting successfull !!!");
                 }
                 
@@ -280,16 +282,16 @@ public class SystemSettingController extends HttpServlet {
                 String settingName = request.getParameter("settingName").trim();
                 boolean settingStatus = Boolean.parseBoolean(request.getParameter("settingStatus").trim());
                 int checkAdd = 0;
-                
+
                 //check for blank input
-                if(field.length() == 0 || settingName.length() == 0 
-                        || field == null || settingName == null){
+                if (field.length() == 0 || settingName.length() == 0
+                        || field == null || settingName == null) {
                     request.setAttribute("messge", "You have to input all field");
                     request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
                 }
-                
+
                 //check input length
-                if(settingName.length() > 100){
+                if (settingName.length() > 100) {
                     request.setAttribute("messge", "Your setting name is too long");
                     request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
                 }
@@ -347,7 +349,7 @@ public class SystemSettingController extends HttpServlet {
                 
                 if (checkAdd == 0) {
                     request.setAttribute("message", "Add setting not successfull !!!");
-                }else {
+                } else {
                     request.setAttribute("message", "Add setting successfull !!!");
                 }
                 

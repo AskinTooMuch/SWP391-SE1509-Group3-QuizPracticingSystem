@@ -27,9 +27,6 @@
         <c:if test="${currUser == null}">
             <c:redirect url="/login/login.jsp"></c:redirect>
         </c:if>
-        <c:if test="${mess != null}">
-            <c:out value="${mess}"></c:out>
-        </c:if>
         <header class="u-align-left u-clearfix u-header u-header" id="sec-ad7d"></header>
         <div class="u-clearfix u-sheet u-sheet-1">
             <img class="u-image u-image-default u-preserve-proportions u-image-1" src="${contextPath}/images/login/logologin2.png" alt="" data-image-width="210" data-image-height="92">
@@ -37,7 +34,13 @@
 
             <div class="u-form u-form-1">
                 <form action="${contextPath}/UserProfileController?service=editProfile" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
-
+                    <c:if test="${mess != null}">
+                        <div class="u-form-group u-form-name">
+                            <p style="color: red; font-weight: bold;">
+                                <c:out value="${mess}"/>
+                            </p>
+                        </div>
+                    </c:if>
                     <div class="u-form-group u-form-name">
                         <p>Enter your user name:</p>
                         <input type="text" value="${currUser.getUserName()}"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">

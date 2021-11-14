@@ -30,6 +30,14 @@
                 <div class="u-form u-form-1">
                     <form action="${contextPath}/register" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="custom" name="form">
 
+                        <c:if test="${mess != null}">
+                            <div class="u-form-group u-form-name">
+                                <p style="color: red; font-weight: bold;">
+                                    <c:out value="${mess}"/>
+                                </p>
+                            </div>
+                        </c:if>
+                        
                         <div class="u-form-group u-form-name">
                             <p>Enter your user name:</p>
                             <input type="text" placeholder="Username"  name="userName" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" value="${param.userName}">
@@ -56,17 +64,7 @@
                             <br>
                             <input type="radio" name="gender" value="Female" <c:if test="${param.gender.equalsIgnoreCase('Female')}">Checked</c:if> > Female
                         </div>
-
-                        <c:if test="${mess != null}">
-                            <div class="u-form-group u-form-name">
-                                <p style="color: red; font-weight: bold;">
-                                    <c:out value="${mess}"/>
-                                </p>
-                                <br>
-                            </div>
-                        </c:if>
                         
-
                         <div class="u-align-center u-form-group u-form-submit">
                             <button class="u-btn u-btn-submit u-button-style" type="submit">Register</button>
                         </div>
