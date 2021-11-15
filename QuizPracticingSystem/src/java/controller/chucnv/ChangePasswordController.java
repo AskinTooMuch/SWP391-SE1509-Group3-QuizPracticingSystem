@@ -71,7 +71,16 @@ public class ChangePasswordController extends HttpServlet {
                 request.setAttribute("message", "New Password is too long.");
                 request.setAttribute("color", "red");
                 sendDispatcher(request, response, "login/changePassword.jsp");
-            } 
+            }
+            /**
+             * If the new password is the same as the old password: redirect back to 
+             * changePassword.jsp and include a message
+             */
+            else if (newPassword.equals(password)){
+                request.setAttribute("message", "New Password can't be same as old password.");
+                request.setAttribute("color", "red");
+                sendDispatcher(request, response, "login/changePassword.jsp");
+            }
             /**
              * Else: process to change password, redirect back to 
              * changePassword.jsp and include a message
