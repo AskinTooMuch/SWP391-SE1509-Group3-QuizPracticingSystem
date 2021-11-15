@@ -29,12 +29,6 @@ import java.util.HashMap;
  * @author ChucNV
  */
 public class UserDAOImpl extends DBConnection implements UserDAO {
-    public static void main(String[] args) {
-        String name = "   ";
-        System.out.println(name.length());
-        System.out.println(name.trim().length());
-        System.out.println(name == null);
-    }
     /**
      * Get all user
      *

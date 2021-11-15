@@ -202,8 +202,7 @@ public class SystemSettingController extends HttpServlet {
 
                 //check for blank input
                 if (field == null || settingName == null) {
-                    request.setAttribute("messge", "You have to input all field");
-                    request.getRequestDispatcher("SystemSettingController?service=getInformation")
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation&message=You have to input all field")
                             .forward(request, response);
                     return;
                 }
@@ -211,8 +210,7 @@ public class SystemSettingController extends HttpServlet {
                 settingName = settingName.trim();
                 //check for blank input
                 if (field.length() == 0 || settingName.length() == 0) {
-                    request.setAttribute("messge", "You have to input all field");
-                    request.getRequestDispatcher("SystemSettingController?service=getInformation")
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation&message=You have to input all field")
                             .forward(request, response);
                     return;
                 }
@@ -285,6 +283,9 @@ public class SystemSettingController extends HttpServlet {
                 request.getRequestDispatcher("SystemSettingController?service=getInformation").forward(request, response);
             }
             
+            /**
+             * Add a system setting
+             */
             if (service.equalsIgnoreCase("addSetting")) {
                 String field = request.getParameter("settingType");
                 String settingName = request.getParameter("settingName");
@@ -294,18 +295,18 @@ public class SystemSettingController extends HttpServlet {
                 //check for blank input
                 if (field == null || settingName == null) {
                     request.setAttribute("messge", "You have to input all field");
-                    request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation&message=You have to input all field").forward(request, response);
                 }
                 
+                field = field.trim();
+                settingName = settingName.trim();
                 //check for blank input
-                if (field.trim().length() == 0 || settingName.trim().length() == 0) {
-                    request.setAttribute("messge", "You have to input all field");
-                    request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
+                if (field.length() == 0 || settingName.length() == 0) {
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation&message=You have to input all field").forward(request, response);
                 }
 
                 //check input length
                 if (settingName.length() > 100) {
-                    request.setAttribute("messge", "Your setting name is too long");
                     request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
                 }
                 
