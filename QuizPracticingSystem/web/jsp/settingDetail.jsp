@@ -94,7 +94,7 @@
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-user"></span>
                                     </span>
-                                    <input class="form-control" type="text" name="settingName" value="${objectName}">
+                                    <input class="form-control" type="text" name="settingName" value="${objectName}" required="">
                                 </div>
 
                                 <label class="label control-label">Setting Status</label>

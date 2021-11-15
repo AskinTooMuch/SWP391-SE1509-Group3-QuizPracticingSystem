@@ -66,7 +66,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span>
                                 </span>
-                                <input class="form-control" type="number" name="numberOfQuestion" min="1" max="30">
+                                <input class="form-control" type="number" name="numberOfQuestion" min="1" max="30" required="">
                             </div>
                             <label class="label control-label"> Dimension </label>
                             <div class="form-group">
@@ -84,7 +84,7 @@
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-user"></span>
                                 </span>
-                                <input class="form-control" type="number" name="duration" min="1" max="60">
+                                <input class="form-control" type="number" name="duration" min="1" max="60" required="">
                             </div>
                             <%-- Display messages, if any --%>
                             <div>

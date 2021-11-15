@@ -194,19 +194,27 @@ public class SystemSettingController extends HttpServlet {
              * Edit a system setting
              */
             if (service.equalsIgnoreCase("editSetting")) {
-                String field = request.getParameter("settingType").trim();
-                int objectId = Integer.parseInt(request.getParameter("objectId").trim());
-                String settingName = request.getParameter("settingName").trim();
+                String field = request.getParameter("settingType");
+                int objectId = Integer.parseInt(request.getParameter("objectId"));
+                String settingName = request.getParameter("settingName");
                 boolean settingStatus = Boolean.parseBoolean(request.getParameter("settingStatus").trim());
                 int checkEdit = 0;
 
                 //check for blank input
-                if (field.length() == 0 || settingName.length() == 0
-                        || field == null || settingName == null) {
+                if (field == null || settingName == null) {
                     request.setAttribute("messge", "You have to input all field");
-                    request.getRequestDispatcher("SystemSettingController?field="
-                            + field + "&id=" + objectId)
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation")
                             .forward(request, response);
+                    return;
+                }
+                field = field.trim();
+                settingName = settingName.trim();
+                //check for blank input
+                if (field.length() == 0 || settingName.length() == 0) {
+                    request.setAttribute("messge", "You have to input all field");
+                    request.getRequestDispatcher("SystemSettingController?service=getInformation")
+                            .forward(request, response);
+                    return;
                 }
 
                 //check input length
@@ -278,14 +286,19 @@ public class SystemSettingController extends HttpServlet {
             }
             
             if (service.equalsIgnoreCase("addSetting")) {
-                String field = request.getParameter("settingType").trim();
-                String settingName = request.getParameter("settingName").trim();
+                String field = request.getParameter("settingType");
+                String settingName = request.getParameter("settingName");
                 boolean settingStatus = Boolean.parseBoolean(request.getParameter("settingStatus").trim());
                 int checkAdd = 0;
 
                 //check for blank input
-                if (field.length() == 0 || settingName.length() == 0
-                        || field == null || settingName == null) {
+                if (field == null || settingName == null) {
+                    request.setAttribute("messge", "You have to input all field");
+                    request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
+                }
+                
+                //check for blank input
+                if (field.trim().length() == 0 || settingName.trim().length() == 0) {
                     request.setAttribute("messge", "You have to input all field");
                     request.getRequestDispatcher("jsp/settingList.jsp").forward(request, response);
                 }
@@ -358,7 +371,6 @@ public class SystemSettingController extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(SystemSettingController.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("errorMess", ex.toString());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
